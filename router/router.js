@@ -1,0 +1,58 @@
+import MinRouter from './MinRouter'
+
+/**
+ * 页面路由配置信息
+ * @param {path} {String} {Require}
+ * @param {type} {String} {Default=navigateTo} {'navigateTo', 'switchTab', 'reLaunch', 'redirectTo'}
+ * @param {name} {String} {Require} {unique}
+ * @param {login} {Boolean} {Require} {Default=false}
+ */
+const router = new MinRouter({
+	routes: [
+		{
+			path: 'pages/tabs/home',
+			type: 'switchTab',
+			name: 'home',
+			login: false
+		},
+		{
+			path: 'pages/tabs/shop',
+			type: 'switchTab',
+			name: 'shop',
+			login: false
+		},
+		{
+			path: 'pages/tabs/car',
+			type: 'switchTab',
+			name: 'car',
+			login: false
+		},
+		{
+			path: 'pages/tabs/mine',
+			type: 'switchTab',
+			name: 'mine',
+			login: false
+		},
+
+		{
+			path: 'pages/public/login',
+			type: 'navigateTo',
+			name: 'login',
+			login: false
+		},
+		{
+			path: 'pages/address/list',
+			type: 'navigateTo',
+			name: 'address_list',
+			login: true
+		},
+		{
+			path: 'pages/address/add',
+			type: 'navigateTo',
+			name: 'address_add',
+			login: true
+		},
+	]
+})
+
+export default router

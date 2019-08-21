@@ -1,0 +1,87 @@
+{
+	"pages": [
+		{
+			"path": "pages/tabs/home",
+			"style": {
+				"navigationBarTitleText": "首页",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/tabs/shop",
+			"style": {
+				"navigationBarTitleText": "门店"
+			}
+		},
+		{
+			"path": "pages/tabs/car",
+			"style": {
+				"navigationBarTitleText": "购物车"
+			}
+		},
+		{
+			"path": "pages/tabs/mine",
+			"style": {
+				"navigationBarTitleText": "我的"
+			}
+		},
+		
+		{
+			"path": "pages/public/login",
+			"style": {
+				"navigationBarTitleText": "登录页"
+			}
+		},
+		{
+			"path": "pages/address/list",
+			"style": {
+				"navigationBarTitleText": "我的收货地址",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/address/add",
+			"style": {
+				"navigationBarTitleText": "新增收货地址"
+			}
+		}
+	],
+	"globalStyle": {
+		"backgroundTextStyle": "light",
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "熊猫商城",
+		"navigationBarBackgroundColor": "#fff",
+		"backgroundColor": "#ccc"
+	},
+	"tabBar": {
+		"color": "#B2B2B2",
+		"selectedColor": "#FC5A5A",
+		"borderStyle": "black",
+		"list": [
+			{
+				"pagePath": "pages/tabs/home",
+				"iconPath": "static/tab/tab-home.png",
+				"selectedIconPath": "static/tab/tab-home-current.png",
+				"text": "首页"
+			},
+			{
+				"pagePath": "pages/tabs/shop",
+				"iconPath": "static/tab/tab-home.png",
+				"selectedIconPath": "static/tab/tab-home-current.png",
+				"text": "门店"
+			},
+			{
+				"pagePath": "pages/tabs/car",
+				"iconPath": "static/tab/tab-home.png",
+				"selectedIconPath": "static/tab/tab-home-current.png",
+				"text": "购物车"
+			},
+			{
+				"pagePath": "pages/tabs/mine",
+				"iconPath": "static/tab/tab-home.png",
+				"selectedIconPath": "static/tab/tab-home-current.png",
+				"text": "我的"
+			}
+		]
+	}
+}

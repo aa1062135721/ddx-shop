@@ -1,5 +1,5 @@
 <script>
-	import {mapMutations} from 'vuex'
+    import {mapMutations} from 'vuex'
 
 	export default {
 		methods: {
@@ -22,8 +22,35 @@
 		}
 	}
 </script>
-
-<style>
+<style lang="scss">
 	/*每个页面公共css */
-
+    page {
+        background-color: $background-color;
+    }
+    view,
+    scroll-view,
+    swiper,
+    swiper-item,
+    cover-view,
+    cover-image,
+    icon,
+    text,
+    rich-text,
+    progress,
+    button,
+    checkbox,
+    form,
+    input,
+    label,
+    radio,
+    slider,
+    switch,
+    textarea,
+    navigator,
+    audio,
+    camera,
+    image,
+    video {
+        box-sizing: border-box;
+    }
 </style>

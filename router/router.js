@@ -52,6 +52,12 @@ const router = new MinRouter({
 			name: 'address_add',
 			login: true
 		},
+		{
+			path: "pages/order/submit",
+			type: 'navigateTo',
+			name: 'order_submit',
+			login: true
+		}
 	]
 })
 

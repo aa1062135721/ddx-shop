@@ -6,7 +6,8 @@ import MinRouter from './router/MinRouter'
 import minRouter from './router/router'
 // vuex
 import store from './store/index'
-
+// 阿里巴巴图标库
+import './static/css/iconfont.css'
 
 Vue.config.productionTip = false
 

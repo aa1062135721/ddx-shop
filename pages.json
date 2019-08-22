@@ -1,6 +1,12 @@
 {
 	"pages": [
 		{
+			"path": "pages/tabs/car",
+			"style": {
+				"navigationBarTitleText": "购物车"
+			}
+		},
+		{
 			"path": "pages/tabs/home",
 			"style": {
 				"navigationBarTitleText": "首页",
@@ -14,18 +20,12 @@
 			}
 		},
 		{
-			"path": "pages/tabs/car",
-			"style": {
-				"navigationBarTitleText": "购物车"
-			}
-		},
-		{
 			"path": "pages/tabs/mine",
 			"style": {
 				"navigationBarTitleText": "我的"
 			}
 		},
-		
+
 		{
 			"path": "pages/public/login",
 			"style": {
@@ -44,6 +44,12 @@
 			"style": {
 				"navigationBarTitleText": "新增收货地址"
 			}
+		},
+		{
+			"path": "pages/order/submit",
+			"style": {
+				"navigationBarTitleText": "提交订单"
+			}
 		}
 	],
 	"globalStyle": {
@@ -60,26 +66,26 @@
 		"list": [
 			{
 				"pagePath": "pages/tabs/home",
-				"iconPath": "static/tab/tab-home.png",
-				"selectedIconPath": "static/tab/tab-home-current.png",
-				"text": "首页"
+				"iconPath": "static/tab/tab-shop.png",
+				"selectedIconPath": "static/tab/tab-shop-current.png",
+				"text": "商城"
 			},
 			{
 				"pagePath": "pages/tabs/shop",
-				"iconPath": "static/tab/tab-home.png",
-				"selectedIconPath": "static/tab/tab-home-current.png",
+				"iconPath": "static/tab/tab-mendian.png",
+				"selectedIconPath": "static/tab/tab-mendian-current.png",
 				"text": "门店"
 			},
 			{
 				"pagePath": "pages/tabs/car",
-				"iconPath": "static/tab/tab-home.png",
-				"selectedIconPath": "static/tab/tab-home-current.png",
+				"iconPath": "static/tab/tab-car.png",
+				"selectedIconPath": "static/tab/tab-car-current.png",
 				"text": "购物车"
 			},
 			{
 				"pagePath": "pages/tabs/mine",
-				"iconPath": "static/tab/tab-home.png",
-				"selectedIconPath": "static/tab/tab-home-current.png",
+				"iconPath": "static/tab/tab-person.png",
+				"selectedIconPath": "static/tab/tab-person-current.png",
 				"text": "我的"
 			}
 		]

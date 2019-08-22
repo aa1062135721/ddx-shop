@@ -74,3 +74,51 @@ $uni-color-subtitle: #555555; // 二级标题颜色
 $uni-font-size-subtitle:36upx;
 $uni-color-paragraph: #3F536E; // 文章段落颜色
 $uni-font-size-paragraph:30upx;
+
+/* 页面设置相关 */
+$background-color: #F2F2F2;
+
+/* 边线相关 */
+%border-color-solid-top{
+  border-top:1upx #ccc solid;
+};
+%border-color-solid-left{
+  border-left:1upx #ccc solid;
+};
+%border-color-solid-right{
+  border-right:1upx #ccc solid;
+};
+%border-color-solid-botton{
+  border-bottom:1upx #ccc solid;
+};
+
+/* 字体的主要颜色 */
+$color-primary: #FC5A5A;
+
+/* 超出行数显示 省略号*/
+%overflow-1-line{
+  word-break: break-all;/*属性规定自动换行的处理方法。normal(使用浏览器默认的换行规则。),break-all(允许在单词内换行。),keep-all(只能在半角空格或连字符处换行。)*/
+  text-overflow: ellipsis;
+  display: -webkit-box; /** 对象作为伸缩盒子模型显示 **/
+  -webkit-box-orient: vertical; /** 设置或检索伸缩盒对象的子元素的排列方式 **/
+  -webkit-line-clamp: 1; /** 显示的行数 **/
+  overflow: hidden;  /** 隐藏超出的内容 **/
+}
+
+%overflow-2-line{
+  word-break: break-all;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+%overflow-3-line{
+  word-break: break-all;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}

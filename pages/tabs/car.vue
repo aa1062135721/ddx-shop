@@ -1,34 +1,43 @@
 <template>
     <view class="container">
         <view class="car-list">
-            <view class="section">
+
+            <view class="section" v-for="(item, key) in category" :key="key">
                 <view class="shop-name">
-                    <view>江与城店</view>
-                    <view><i class="iconfont icon-ddx-shop-del icon-color"></i></view>
+                    <view>{{item.shop_name}}</view>
+                    <view @click="deleteShop(item.shop_id, key)"><i class="iconfont icon-ddx-shop-del"></i></view>
                 </view>
-                <view class="goods">
+                <view class="goods" v-for="(goods, goods_key) in item.goods" :key="goods_key">
                     <view class="chooses">
-                        <i class="iconfont icon-ddx-shop-circle icon-color"></i>
+                        <i class="iconfont icon-ddx-shop-xuanze icon-color" v-if="goods.is_checked" @click="choosesGoods(key,goods_key)"></i>
+                        <i class="iconfont icon-ddx-shop-circle" v-else @click="choosesGoods(key,goods_key)"></i>
                     </view>
                     <view class="goods-img">
-                        <image class="img"  src="../../static/images/goods.jpg"></image>
+                        <image class="img"  :src="goods.img"></image>
                     </view>
                     <view class="other">
-                        <view class="title">衍生山楂蜜梅膏植物饮品生山楂蜜梅膏植生山楂蜜梅膏植 (10G＊10生山楂蜜梅膏植生山楂蜜梅膏植)生山楂蜜梅膏植</view>
-                        <view class="specification">规格:10G＊10</view>
+                        <view class="title">{{goods.title}}</view>
+                        <view class="specification">规格: <span v-for="(category, category_key) in goods.specification" :key="category_key">{{category}}</span></view>
                         <view class="money">
-                            <view class="money-num">￥88.08</view>
-                            <view><uni-number-box :min="1" :max="5" :step="1"></uni-number-box></view>
+                            <view class="money-num">￥{{goods.price}}</view>
+                            <view>
+                                <uni-number-box :min="1" :max="goods.stock" :step="1" :value="goods.in_stock" @change="changeStock($event, key, goods_key)"></uni-number-box>
+                            </view>
                         </view>
                     </view>
                 </view>
             </view>
+
         </view>
         <view class="fixed">
-            <view class="chooses-all"><i class="iconfont icon-ddx-shop-circle"></i>全选</view>
+            <view class="chooses-all" @click="choosesAllGoods()">
+                <i class="iconfont icon-ddx-shop-xuanze icon-color" v-if="isCheckedAll"></i>
+                <i class="iconfont icon-ddx-shop-circle" v-else></i>
+                全选
+            </view>
             <view class="other">
-                <view class="money">合计：<span class="money-num">￥88.08</span></view>
-                <view class="btn" @click="goPage()">结算(2)</view>
+                <view class="money">合计：<span class="money-num">￥{{getSomeData.sum_money | moneyToFixed}}</span></view>
+                <view class="btn" @click="goPage()">结算({{getSomeData.num}})</view>
             </view>
         </view>
     </view>
@@ -40,13 +49,82 @@
         name: "car",
         data(){
           return {
-
+              category:[
+                  {
+                      id:100,
+                      shop_name:'江与城店',
+                      shop_id:1,
+                      goods:[
+                          {title: '我是商品1法第三方的的方法第三方',img:'../../static/images/goods.jpg',stock:8,price:10.88,in_stock:1,specification:['8*23','个'],is_checked:false},
+                          {title: '我是商品1法第三方的的方法第三方',img:'../../static/images/goods.jpg',stock:8,price:90.98,in_stock:2,specification:['8*23','个'],is_checked:true},
+                          {title: '我是商品1法第三方的的方法第三方',img:'../../static/images/goods.jpg',stock:8,price:50.28,in_stock:3,specification:['8*23','个'],is_checked:false},
+                      ]
+                  },
+                  {
+                      id:100,
+                      shop_name:'爱情海店',
+                      shop_id:1,
+                      goods:[
+                          {title: '我是爱情海店的商品',img:'../../static/images/goods.jpg',stock:8,price:80.08,in_stock:4,specification:['8*23','个'],is_checked:true},
+                      ]
+                  },
+              ],
           }
         },
         methods:{
             goPage(){
                 this.$openPage('order_submit')
-            }
+            },
+            deleteShop(shop_id, key){
+                console.log(shop_id,key)
+                this.category.splice(key,1)
+            },
+            choosesGoods(key,goods_key){
+                this.category[key].goods[goods_key].is_checked = !this.category[key].goods[goods_key].is_checked
+            },
+            choosesAllGoods(){
+                this.category.map((item) => {
+                    item.goods.map(goods => {
+                        goods.is_checked = true
+                    })
+                })
+            },
+            changeStock(value,key,goods_key){
+                this.category[key].goods[goods_key].in_stock = value
+            },
+        },
+        computed:{
+            //计算订单金额
+            getSomeData(){
+                let temp = {sum_money:0.00,num:0}
+                this.category.forEach((item1, index1) => {
+                    item1.goods.forEach((item2, index2) => {
+                        if (item2.is_checked) {
+                            temp.num ++
+                            temp.sum_money += item2.price * item2.in_stock
+                        }
+                    })
+                })
+                return temp
+            },
+            //是否全选
+            isCheckedAll(){
+                let sum = 0, checked_num = 0
+                this.category.forEach((item1, index1) => {
+                    item1.goods.forEach((item2, index2) => {
+                        sum ++
+                        if (item2.is_checked) {
+                            checked_num ++
+                        }
+                    })
+                })
+                return sum === checked_num ? sum !== 0 || false : false
+            },
+        },
+        watch:{
+            'getSomeData': function(newVal,oldVal){
+                console.log('newVal', newVal)
+            },
         },
         components: {uniNumberBox}
     }
@@ -113,10 +191,14 @@
         }
         .fixed{
             @extend %border-color-solid-top;
+            z-index: 99;
             background: #fff;
             position: fixed;
             width: 100%;
-            bottom: 0;
+			bottom: 0;
+			/* #ifdef H5 */
+			margin-bottom:100upx;
+			/* #endif */
             left: 0;
             display: flex;
             height: 100upx;

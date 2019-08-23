@@ -1,12 +1,17 @@
 <template>
     <view class="container">
-        提交订单
+        <span @click="checkMobile">提交订单</span>
     </view>
 </template>
 
 <script>
     export default {
-        name: "submit"
+        name: "submit",
+        methods:{
+            checkMobile(){
+                this.isPoneAvailable('15013710631',true)
+            },
+        }
     }
 </script>
 

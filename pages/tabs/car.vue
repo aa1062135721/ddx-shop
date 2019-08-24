@@ -162,6 +162,7 @@
                         .img{
                             width: 200upx;
                             height: 200upx;
+                            border-radius: $uni-border-radius-sm;
                         }
                     }
                     .other{

@@ -1,12 +1,6 @@
 {
 	"pages": [
 		{
-			"path": "pages/tabs/car",
-			"style": {
-				"navigationBarTitleText": "购物车"
-			}
-		},
-		{
 			"path": "pages/tabs/home",
 			"style": {
 				"navigationBarTitleText": "首页",
@@ -17,6 +11,12 @@
 			"path": "pages/tabs/shop",
 			"style": {
 				"navigationBarTitleText": "门店"
+			}
+		},
+		{
+			"path": "pages/tabs/car",
+			"style": {
+				"navigationBarTitleText": "购物车"
 			}
 		},
 		{
@@ -49,6 +49,12 @@
 			"path": "pages/order/submit",
 			"style": {
 				"navigationBarTitleText": "提交订单"
+			}
+		},
+		{
+			"path": "pages/order/result",
+			"style": {
+				"navigationBarTitleText": "支付结果"
 			}
 		}
 	],

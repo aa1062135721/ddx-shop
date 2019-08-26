@@ -64,6 +64,13 @@ const router = new MinRouter({
 			name: 'order_result',
 			login: true
 		},
+		{
+			path: "pages/goods/search",
+			type: 'navigateTo',
+			name: 'goods_search',
+			login: false
+		},
+		
 	]
 })
 

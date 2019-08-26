@@ -1,5 +1,5 @@
 {
-	"pages": [
+	"pages": [		
 		{
 			"path": "pages/tabs/home",
 			"style": {
@@ -55,6 +55,12 @@
 			"path": "pages/order/result",
 			"style": {
 				"navigationBarTitleText": "支付结果"
+			}
+		},
+		{
+			"path": "pages/goods/search",
+			"style": {
+				"navigationBarTitleText": "搜索"
 			}
 		}
 	],

@@ -4,6 +4,13 @@
 		<view @click="goPage()">
 			去搜索商品
 		</view>
+	
+		<br>
+		<br>
+		<br>
+		<view @click="goPage1()">
+			去商品详情
+		</view>
 	</div>
 </template>
 
@@ -20,6 +27,9 @@
 		methods: {
 			goPage(){
 				this.$openPage('goods_search')
+			},
+			goPage1(){
+				this.$openPage('goods_detail')
 			}
 		}
 	}

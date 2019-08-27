@@ -62,8 +62,14 @@
 			"style": {
 				"navigationBarTitleText": "搜索"
 			}
-		}
-	],
+		},
+		{
+            "path" : "pages/goods/detail",
+            "style": {
+            	"navigationBarTitleText": "商品详情"
+            }
+        }
+    ],
 	"globalStyle": {
 		"backgroundTextStyle": "light",
 		"navigationBarTextStyle": "black",

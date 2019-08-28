@@ -7,7 +7,7 @@
 					<view v-for="(anchor,index) in anchorlist" :class="[selectAnchor==index ?'on':'']" :key="index" @tap="toAnchor(index)">{{anchor.name}}</view>
 				</view>
 				<view class="icon-btn">
-					<view class="icon iconfont icon-ddx-shop-share" @tap="toMsg"></view>
+					<view class="icon iconfont icon-ddx-shop-share"></view>
 				</view>
 			</view>
 		</view>
@@ -68,10 +68,10 @@
 			</view>
 			<view class="item">
 				<view class="one">
-					<text class="title">数量</text>
-					<text class="comtent">
+					<view class="title">数量</view>
+					<view class="comtent">
 						<uni-number-box :min="1" :value="1" :step="1"></uni-number-box>
-					</text>		
+					</view>		
 				</view>
 				<view class="two">
 					<text class="iconfont icon-ddx-shop-content_arrows"></text>
@@ -109,6 +109,25 @@
 			<separator title="图文详情"></separator>
 			<view class="content"><rich-text :nodes="descriptionStr"></rich-text></view>
 		</view>
+
+	
+		<!-- 底部菜单 -->
+		<view class="footer">
+			<view class="icons">
+				<view class="box">
+					<view class="iconfont icon-ddx-shop-shopping"></view>
+					<view class="text">商城</view>
+				</view>
+				<view class="box">
+					<view class="iconfont icon-ddx-shop-shopping-cart-o"></view>
+					<view class="text">购物车</view>
+				</view>
+			</view>
+			<view class="btn">
+				<view class="joinCart">加入购物车</view>
+				<view class="buy" @tap="buy">立即购买</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -118,6 +137,7 @@
 	export default {
 		data() {
 			return {
+
 				//控制渐变标题栏的参数
 				beforeHeaderzIndex: 11,//层级
 				afterHeaderzIndex: 10,//层级
@@ -205,112 +225,58 @@
 </script>
 
 <style lang="scss">
-
-@keyframes showPopup {
-	0% {
-		opacity: 0;
-	}
-	100% {
-		opacity: 1;
-	}
-}
-@keyframes hidePopup {
-	0% {
-		opacity: 1;
-	}
-	100% {
-		opacity: 0;
-	}
-}
-@keyframes showLayer {
-	0% {
-		transform: translateY(0);
-	}
-	100% {
-		transform: translateY(-100%);
-	}
-}
-@keyframes hideLayer {
-	0% {
-		transform: translateY(-100%);
-	}
-	100% {
-		transform: translateY(0);
-	}
-}
-
 .container{
 	.header {
 		width: 100%;
 		height: 100upx;
-		display: flex;
-		align-items: center;
 		position: fixed;
 		top: 0;
-		z-index: 10;
 		/*  #ifdef  APP-PLUS  */
-		top: var(--status-bar-height);
+			top: var(--status-bar-height);
 		/*  #endif  */
-	
-		.after {
-			width: 100%;
-			padding: 0 4%;
-			height: 100upx;
-			display: flex;
-			align-items: center;
-			position: fixed;
-			top: 0;
-			/*  #ifdef  APP-PLUS  */
-				top: var(--status-bar-height);
-			/*  #endif  */
-			transition: opacity 0.05s linear;
-			.middle {
-				width: 100%;
-			}
-			.icon-btn {
-				width: 125upx;
-				height: 60upx;
-				flex-shrink: 0;
-				display: flex;
-				justify-content: flex-end;
-				.icon {
-					width: 60upx;
-					height: 60upx;
-					display: flex;
-					justify-content: center;
-					align-items: center;
-					font-size: 42upx;
-				}
-			}
-		}
-		
+		/*  #ifdef  H5  */
+			top: var(--window-top);
+		/*  #endif  */
+		z-index: 10;
 		.after {
 			background-color: #fff;
-			.icon-btn {
-				.icon {
-					color: #666;
-				}
-			}
-			.middle {
+			width: 100%;
+			height: 100upx;			
+			position: relative;
+			top: 0;
+			transition: opacity 0.05s linear;
+			.middle {	
 				font-size: 32upx;
-				height: 90upx;
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100upx;
 				display: flex;
 				justify-content: center;
 				align-items: center;
-				padding: 0 7%;
 				view {
-					width: (100%/3);
-					padding: 0 3%;
-					margin: 0 3%;
+					margin: 0 $uni-spacing-row-sm;
 					display: flex;
 					justify-content: center;
 					align-items: center;
 					&.on {
-						margin-bottom: -4upx;
 						color: $color-primary;
 						border-bottom: solid 4upx $color-primary;
 					}
 				}
+			}
+			.icon-btn {
+				position: absolute;
+				right: $uni-spacing-row-sm;
+				top: 0;
+				height: 100upx;
+				line-height: 100upx;
+				flex-shrink: 0;
+				display: flex;
+				justify-content: flex-end;
+				font-size: 42upx;
+				color: #666;
 			}
 		}
 	}
@@ -394,12 +360,14 @@
 			padding: $uni-spacing-col-lg 0;
 			.one{
 				width: 85%;
+				display: flex;
+				justify-content: flex-start;
 				.title{
-					width: 20%;
+					width: 10%;
 					margin-right: $uni-spacing-row-base;
 				}
 				.comtent{
-					width: 80%;
+					width: 75%;
 				}
 			}
 			.two{
@@ -480,6 +448,7 @@
 		}
 	}
 	.description {
+		margin-bottom: 100upx;
 		.title {
 			width: 100%;
 			height: 80upx;
@@ -489,6 +458,71 @@
 			font-size: 26upx;
 			color: #999;
 			background: #fff;
+		}
+	}
+
+	.footer {
+		position: fixed;
+		left: 0;
+		bottom: 0;
+		width: 100%;
+		height: 98upx;
+		background-color: #fff;
+		z-index: 99;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		.icons {
+			display: flex;
+			justify-content: center;
+			height: 80upx;
+			width: 30%;
+			.box {
+				position: relative;
+				width: 80upx;
+				height: 80upx;
+				display: flex;
+				justify-content: center;
+				flex-wrap: wrap;
+				.iconfont {
+					font-size: 50upx;
+					color: #828282;
+				}
+				.text {
+					display: flex;
+					justify-content: center;
+					width: 100%;
+					font-size: 22upx;
+					color: #666;
+				}
+				.number{
+					position: absolute;
+					top: 0;
+					right: 0;
+				}
+			}
+		}
+		.btn {
+			height: 98upx;
+			width: 70%;
+			overflow: hidden;
+			display: flex;		
+			justify-content: flex-end;
+			.joinCart,
+			.buy {
+				height: 98upx;
+				width: 250upx;
+				line-height: 98upx;
+				text-align: center;
+				color: #fff;
+				font-size: 28upx;
+			}
+			.joinCart {
+				background-color: #FC8A8A;
+			}
+			.buy {
+				background-color: #FC5A5A;
+			}
 		}
 	}
 }

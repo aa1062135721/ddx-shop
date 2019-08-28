@@ -80,20 +80,21 @@ $background-color: #F2F2F2;
 
 /* 边线相关 */
 %border-color-solid-top{
-  border-top:1upx #ccc solid;
+  border-top:1upx #E4E4E4 solid;
 };
 %border-color-solid-left{
-  border-left:1upx #ccc solid;
+  border-left:1upx #E4E4E4 solid;
 };
 %border-color-solid-right{
-  border-right:1upx #ccc solid;
+  border-right:1upx #E4E4E4 solid;
 };
 %border-color-solid-botton{
-  border-bottom:1upx #ccc solid;
+  border-bottom:1upx #E4E4E4 solid;
 };
 
-/* 字体的主要颜色 */
+/* 主要颜色 */
 $color-primary: #FC5A5A;
+$color-primary-plain:#1A1A1A;
 
 /* 超出行数显示 省略号*/
 %overflow-1-line{

@@ -16,8 +16,10 @@
                         <image class="img"  :src="goods.img"></image>
                     </view>
                     <view class="other">
-                        <view class="title">{{goods.title}}</view>
-                        <view class="specification">规格: <span v-for="(category, category_key) in goods.specification" :key="category_key">{{category}}</span></view>
+                        <view class="title-specification">
+                            <view class="title">{{goods.title}}</view>
+                            <view class="specification">规格: <span v-for="(category, category_key) in goods.specification" :key="category_key">{{category}}</span></view>
+                        </view>
                         <view class="money">
                             <view class="money-num">￥{{goods.price}}</view>
                             <view>
@@ -169,14 +171,17 @@
                         width: 57%;
                         display: flex;
                         flex-direction:column;
-                        .title{
-                           @extend %overflow-2-line;
-                            color: #1A1A1A;
-                            font-size: $uni-font-size-base;
-                        }
-                        .specification{
-                            color: #808080;
-                            font-size: $uni-font-size-sm;
+                        justify-content: space-between;
+                        .title-specification{
+                            .title{
+                                @extend %overflow-2-line;
+                                color: #1A1A1A;
+                                font-size: $uni-font-size-base;
+                            }
+                            .specification{
+                                color: #808080;
+                                font-size: $uni-font-size-sm;
+                            }
                         }
                         .money{
                             font-size:$uni-font-size-base;

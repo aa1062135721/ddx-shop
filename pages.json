@@ -1,5 +1,5 @@
 {
-	"pages": [		
+	"pages": [
 		{
 			"path": "pages/tabs/home",
 			"style": {
@@ -68,8 +68,14 @@
             "style": {
             	"navigationBarTitleText": "商品详情"
             }
-        }
-    ],
+        },
+		{
+			"path" : "pages/goods/evaluate",
+			"style": {
+				"navigationBarTitleText": "商品评价"
+			}
+		}
+	],
 	"globalStyle": {
 		"backgroundTextStyle": "light",
 		"navigationBarTextStyle": "black",

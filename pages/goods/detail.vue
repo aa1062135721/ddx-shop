@@ -13,12 +13,11 @@
 		</view>
 		<!-- 商品主图轮播 -->
 		<view class="swiper-box">
-			<swiper circular="true" autoplay="true" @change="swiperChange">
-				<swiper-item v-for="swiper in swiperList" :key="swiper.id">
-					<image :src="swiper.img"></image>
+			<swiper circular="true" autoplay="true" :indicator-dots="true" indicator-active-color="#FC8A8A">
+				<swiper-item v-for="(img_src,index) in swiperList" :key="index">
+					<image :src="img_src" @click="previewImg(img_src, swiperList)"></image>
 				</swiper-item>
 			</swiper>
-			<view class="indicator">{{currentSwiper+1}}/{{swiperList.length}}</view>
 		</view>
 		<!-- 标题 价格 -->
 		<view class="info-box goods-info">
@@ -42,7 +41,7 @@
 			<view class="item">
 				<view class="one">
 					<text class="title">配送</text>
-					<text class="comtent">重庆市 市辖区 渝北区</text>		
+					<text class="comtent">重庆市 市辖区 渝北区</text>
 				</view>
 				<view class="two">
 					<text class="iconfont icon-ddx-shop-content_arrows"></text>
@@ -51,7 +50,7 @@
 			<view class="item">
 				<view class="one">
 					<text class="title">选择</text>
-					<text class="comtent">2罐装，1件</text>		
+					<text class="comtent">2罐装，1件</text>
 				</view>
 				<view class="two">
 					<text class="iconfont icon-ddx-shop-content_arrows"></text>
@@ -60,7 +59,7 @@
 			<view class="item">
 				<view class="one">
 					<text class="title">运费</text>
-					<text class="comtent">10元邮费</text>		
+					<text class="comtent">10元邮费</text>
 				</view>
 				<view class="two">
 					<text class="iconfont icon-ddx-shop-content_arrows"></text>
@@ -71,7 +70,7 @@
 					<view class="title">数量</view>
 					<view class="comtent">
 						<uni-number-box :min="1" :value="1" :step="1"></uni-number-box>
-					</view>		
+					</view>
 				</view>
 				<view class="two">
 					<text class="iconfont icon-ddx-shop-content_arrows"></text>
@@ -83,14 +82,14 @@
 		<view class="info-box comments" id="comments">
 			<view class="row">
 				<view class="text">商品评价(500)</view>
-				<view class="arrow" @tap="toRatings">
+				<view class="arrow" @click="this.$openPage('goods_evaluate')">
 					<view class="show">
 						查看全部
 						<view class="iconfont icon-ddx-shop-content_arrows"></view>
 					</view>
 				</view>
 			</view>
-			<view class="comment" @tap="toRatings">
+			<view class="comment">
 				<view class="user-info">
 					<view class="head-name">
 						<view class="face"><image src="../../static/images/goods.jpg"></image></view>
@@ -106,27 +105,26 @@
 
 		<!-- 详情 -->
 		<view class="description">
-			<separator title="图文详情"></separator>
+			<separator title="图文详情" bgColor="#fff"></separator>
 			<view class="content"><rich-text :nodes="descriptionStr"></rich-text></view>
 		</view>
 
-	
 		<!-- 底部菜单 -->
 		<view class="footer">
 			<view class="icons">
-				<view class="box">
+				<view class="box"  @click="this.$openPage('home')">
 					<view class="iconfont icon-ddx-shop-shopping"></view>
 					<view class="text">商城</view>
 				</view>
-				<view class="box" @click="open()">
+				<view class="box" @click="this.$openPage('car')">
 					<view class="iconfont icon-ddx-shop-shopping-cart-o"></view>
 					<view class="text">购物车</view>
 					<view class="number">11</view>
 				</view>
 			</view>
 			<view class="btn">
-				<view class="joinCart">加入购物车</view>
-				<view class="buy" @tap="buy">立即购买</view>
+				<view class="joinCart" @click="open()">加入购物车</view>
+				<view class="buy" @click="open()">立即购买</view>
 				<!-- <view class='over'>已售完</view> -->
 			</view>
 		</view>
@@ -145,7 +143,7 @@
 							<view class="chooses">已选：黄色,S</view>
 						</view>
 						<view class="close">
-							<text class="iconfont icon-ddx-shop-shopping"></text>
+							<text class="iconfont icon-ddx-shop-close" @click="close()"></text>
 						</view>
 					</view>
 				</view>
@@ -211,16 +209,14 @@
 				afterHeaderzIndex: 10,//层级
 				beforeHeaderOpacity: 1,//不透明度
 				afterHeaderOpacity: 0,//不透明度
-				
+
 				//轮播主图数据
 				swiperList: [
-					{ id: 1, img: 'https://ae01.alicdn.com/kf/HTB1Mj7iTmzqK1RjSZFjq6zlCFXaP.jpg' },
-					{ id: 2, img: 'https://ae01.alicdn.com/kf/HTB1fbseTmzqK1RjSZFLq6An2XXaL.jpg' },
-					{ id: 3, img: 'https://ae01.alicdn.com/kf/HTB1dPUMThnaK1RjSZFtq6zC2VXa0.jpg' },
-					{ id: 4, img: 'https://ae01.alicdn.com/kf/HTB1OHZrTXzqK1RjSZFvq6AB7VXaw.jpg' }
+					'https://ae01.alicdn.com/kf/HTB1Mj7iTmzqK1RjSZFjq6zlCFXaP.jpg',
+					'https://ae01.alicdn.com/kf/HTB1fbseTmzqK1RjSZFLq6An2XXaL.jpg',
+					'https://ae01.alicdn.com/kf/HTB1dPUMThnaK1RjSZFtq6zC2VXa0.jpg',
+					'https://ae01.alicdn.com/kf/HTB1OHZrTXzqK1RjSZFvq6AB7VXaw.jpg'
 				],
-				//轮播图下标
-				currentSwiper: 0,
 				anchorlist:[],//导航条锚点
 				selectAnchor:0,//选中锚点
 
@@ -229,9 +225,13 @@
 			}
 		},
 		methods:{
-			//轮播图指示器
-			swiperChange(event) {
-				this.currentSwiper = event.detail.current;
+			//轮播图放大预览
+			previewImg(src,urls){
+				uni.previewImage({
+					indicator:'number',
+					current:src,
+					urls
+				})
 			},
 			//商品评论
 			toRatings(){
@@ -261,7 +261,7 @@
 					let headerHeight = uni.upx2px(100);
 					this.anchorlist[1].top = data.top - headerHeight - statusbarHeight;
 					this.anchorlist[2].top = data.bottom - headerHeight - statusbarHeight;
-					
+
 				}).exec();
 			},
 			//返回上一页
@@ -271,6 +271,9 @@
 			//打开选择规格弹框
 			open(){
 				this.$refs.selectSpecification.open()
+			},
+			close(){
+				this.$refs.selectSpecification.close()
 			},
 			//选择规格
 			change(e) {
@@ -319,11 +322,11 @@
 		.after {
 			background-color: #fff;
 			width: 100%;
-			height: 100upx;			
+			height: 100upx;
 			position: relative;
 			top: 0;
 			transition: opacity 0.05s linear;
-			.middle {	
+			.middle {
 				font-size: 32upx;
 				position: absolute;
 				top: 0;
@@ -459,7 +462,7 @@
 				border: none;
 			}
 		}
-	
+
 	}
 	.comments {
 		padding: $uni-spacing-row-base;
@@ -575,7 +578,7 @@
 				}
 				.number{
 					background: $color-primary;
-					border-radius:50%; 
+					border-radius:50%;
 					color: #fff;
 					font-size: $uni-font-size-sm;
 					width: 34upx;
@@ -592,7 +595,7 @@
 			height: 98upx;
 			width: 70%;
 			overflow: hidden;
-			display: flex;		
+			display: flex;
 			justify-content: flex-end;
 			.joinCart,
 			.buy,
@@ -617,7 +620,7 @@
 		}
 	}
 
-	/*  选择规格，数量后加入该购物车或者立即购买 */ 
+	/*  选择规格，数量后加入该购物车或者立即购买 */
 	.select-specification{
 		background: #fff;
 		.goods-info{
@@ -642,7 +645,7 @@
 				.info{
 					width: 60%;
 					height: 100%;
-					padding-left:$uni-spacing-col-base; 
+					padding-left:$uni-spacing-col-base;
 					display: flex;
 					flex-direction: column;
 					justify-content: flex-end;
@@ -671,7 +674,7 @@
 					}
 				}
 			}
-			
+
 		}
 		.specification{
 			width: 100%;
@@ -679,7 +682,7 @@
 			.main{
 				padding-top: $uni-spacing-col-base;
 				padding-bottom: $uni-spacing-col-base;
-				border-bottom:1upx #E4E4E4 solid;				
+				border-bottom:1upx #E4E4E4 solid;
 				.title{
 					color: $color-primary-plain;
 					font-size: $uni-font-size-lg;
@@ -703,7 +706,7 @@
 							color: $color-primary;
 							border: 1upx solid $color-primary;
 							background: #FAE8E8;
-						} 
+						}
 					}
 				}
 			}
@@ -736,7 +739,7 @@
 				font-size: $uni-font-size-lg;
 				text-align: center;
 				height: 98upx;
-				line-height: 98upx;	
+				line-height: 98upx;
 				width: 50%;
 			}
 		}

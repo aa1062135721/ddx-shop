@@ -11,6 +11,13 @@
 		<view @click="goPage1()">
 			去商品详情
 		</view>
+		
+		<br>
+		<br>
+		<br>
+		<view @click="goPage2()">
+			去商品评论页面
+		</view>
 	</div>
 </template>
 
@@ -30,7 +37,10 @@
 			},
 			goPage1(){
 				this.$openPage('goods_detail')
-			}
+			},
+			goPage2(){
+				this.$openPage('goods_evaluate')
+			},
 		}
 	}
 </script>

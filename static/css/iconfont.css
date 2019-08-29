@@ -1,11 +1,11 @@
 @font-face {
-  font-family: 'iconfont';  /* project id 1364550 */
-  src: url('//at.alicdn.com/t/font_1364550_24twc3h01gl.eot');
-  src: url('//at.alicdn.com/t/font_1364550_24twc3h01gl.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_1364550_24twc3h01gl.woff2') format('woff2'),
-  url('//at.alicdn.com/t/font_1364550_24twc3h01gl.woff') format('woff'),
-  url('//at.alicdn.com/t/font_1364550_24twc3h01gl.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_1364550_24twc3h01gl.svg#iconfont') format('svg');
+    font-family: 'iconfont';  /* project id 1364550 */
+    src: url('//at.alicdn.com/t/font_1364550_sxmwheu9vu.eot');
+    src: url('//at.alicdn.com/t/font_1364550_sxmwheu9vu.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_1364550_sxmwheu9vu.woff2') format('woff2'),
+    url('//at.alicdn.com/t/font_1364550_sxmwheu9vu.woff') format('woff'),
+    url('//at.alicdn.com/t/font_1364550_sxmwheu9vu.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_1364550_sxmwheu9vu.svg#iconfont') format('svg');
 }
 
 .iconfont {
@@ -17,51 +17,70 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-ddx-shop-time:before {
+    content: "\e65f";
+}
+
 .icon-ddx-shop-down:before {
-  content: "\e610";
+    content: "\e610";
 }
 
 .icon-ddx-shop-up:before {
-  content: "\e611";
+    content: "\e611";
 }
 
 .icon-ddx-shop-xuanze:before {
-  content: "\e627";
+    content: "\e627";
 }
 
 .icon-ddx-shop-share:before {
-  content: "\e626";
+    content: "\e626";
 }
 
 .icon-ddx-shop-del:before {
-  content: "\e6ac";
+    content: "\e6ac";
 }
 
 .icon-ddx-shop-anonymous-iconfont:before {
-  content: "\e601";
+    content: "\e601";
+}
+
+.icon-ddx-shop-hot:before {
+    content: "\e619";
+}
+
+.icon-ddx-shop-close:before {
+    content: "\e658";
+}
+
+.icon-ddx-shop-more:before {
+    content: "\e71f";
 }
 
 .icon-ddx-shop-wechat:before {
-  content: "\e634";
+    content: "\e634";
+}
+
+.icon-ddx-shop-more-:before {
+    content: "\e612";
 }
 
 .icon-ddx-shop-location:before {
-  content: "\e7cc";
+    content: "\e7cc";
 }
 
 .icon-ddx-shop-circle:before {
-  content: "\e7ec";
+    content: "\e7ec";
 }
 
 .icon-ddx-shop-shopping:before {
-  content: "\e62c";
+    content: "\e62c";
 }
 
 .icon-ddx-shop-content_arrows:before {
-  content: "\e603";
+    content: "\e603";
 }
 
 .icon-ddx-shop-shopping-cart-o:before {
-  content: "\e600";
+    content: "\e600";
 }
-

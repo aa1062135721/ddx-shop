@@ -1,5 +1,5 @@
 <template>
-	<div class="separator">
+	<div class="separator" :style="{background:bgColor}">
 	    <div class="circle sm"></div>
         <div class="circle base"></div>
         <div class="circle lg"></div>
@@ -17,7 +17,11 @@ export default {
         title:{
             default: '分隔栏名',
             type:String,
-        }
+        },
+        bgColor:{
+            default: '',
+            type:String,
+        },
     }
 }
 </script>
@@ -29,7 +33,6 @@ export default {
     align-items: center;
     width: 100%;
     padding: $uni-spacing-col-lg 0;
-    background:#fff;
     .txt{
         color: $color-primary-plain;
         font-size: $uni-font-size-lg;
@@ -37,7 +40,7 @@ export default {
     }
     .circle{
         background: $color-primary;
-        border-radius:50%; 
+        border-radius:50%;
         margin: 0 4px;
     }
     .sm{

@@ -47,7 +47,7 @@
 			</view>
 		</uni-popup>
 	</view>
-   
+
 </template>
 
 <script>
@@ -77,14 +77,19 @@
 			},
 			 //第一授权获取用户信息===》按钮触发
 			wxGetUserInfo() {
-				uni.getUserInfo({
+				uni.login({
 					provider: 'weixin',
-					success: function(infoRes) {
-						console.log(infoRes)
-
-					},
-					fail(res) {}
-				});
+					success: (res) => {
+						console.log("code",res)
+						uni.getUserInfo({
+							provider: 'weixin',
+							success: function(infoRes) {
+								console.log("userInfo",infoRes)
+							},
+							fail(res) {}
+						});
+					}
+				})
 			},
 			...mapActions(['saveToken', 'saveUserInfo'])
 		}
@@ -145,14 +150,14 @@
 		box-sizing: border-box;
 		border-radius: 10px;
 	}
-	
+
 	.uni-tip-title {
 		text-align: center;
 		font-weight: bold;
 		font-size: 16px;
 		color: #333;
 	}
-	
+
 	.uni-tip-content {
 		padding: 15px;
 		font-size: 14px;
@@ -161,12 +166,12 @@
 		max-height: 70vh;
 		overflow-y: scroll;
 	}
-	
+
 	.uni-tip-group-button {
 		margin-top: 10px;
 		display: flex;
 	}
-	
+
 	.uni-tip-button {
 		width: 100%;
 		text-align: center;

@@ -1,16 +1,20 @@
 <template>
 	<view class="container">
-	
+
 		<view class="navbar">
 			<view class="search">
-				<mSearch @search="search()" mode=2></mSearch>
+				<mSearch mode=2 v-model="searchVal" :show="true" @click.native="goSearch" @search.stop="search()"></mSearch>
 			</view>
 			<view class="items">
 				<view class="nav-item" :class="{current: filterIndex === 0}" @click="tabClick(0)">
 					默认
 				</view>
 				<view class="nav-item" :class="{current: filterIndex === 1}" @click="tabClick(1)">
-					销量
+					<text>销量</text>
+					<view class="p-box">
+						<text :class="{active: currentOrder === 1 && filterIndex === 1}" class="iconfont icon-ddx-shop-up"></text>
+						<text :class="{active: currentOrder === 2 && filterIndex === 1}" class="iconfont icon-ddx-shop-down"></text>
+					</view>
 				</view>
 				<view class="nav-item" :class="{current: filterIndex === 2}" @click="tabClick(2)">
 					<text>价格</text>
@@ -21,9 +25,8 @@
 				</view>
 			</view>
 		</view>
-			
+
 		<view class="goods-list">
-			
 			<mGoods></mGoods>
 			<mGoods></mGoods>
 			<mGoods></mGoods>
@@ -37,16 +40,22 @@
     export default {
         data() {
             return {
-				filterIndex: 0,
+				filterIndex: 0, //0默认 1销量 2价格
 				priceOrder: 0, //1 价格从低到高 2价格从高到低
+				currentOrder: 0, //1 销量从低到高 2销量从高到低
                 productList: [],
-                renderImage: false
-            };
+				searchVal: '',//搜索的值
+            }
         },
         methods: {
+        	//点击搜索输入框，到搜索页面
+			goSearch(){
+				if (this.searchVal === '')
+					this.$openPage('search_with_hot_history')
+			},
 			//筛选点击
 			tabClick(index){
-				if(this.filterIndex === index && index !== 2){
+				if(this.filterIndex === index && index !== 2 && index !== 1){
 					return;
 				}
 				this.filterIndex = index;
@@ -54,6 +63,11 @@
 					this.priceOrder = this.priceOrder === 1 ? 2: 1;
 				}else{
 					this.priceOrder = 0;
+				}
+				if(index === 1){
+					this.currentOrder = this.currentOrder === 1 ? 2: 1;
+				}else{
+					this.currentOrder = 0;
 				}
 				uni.pageScrollTo({
 					duration: 300,
@@ -63,68 +77,16 @@
 			search(val) {
 				console.log(val)
 			},
-            loadData(action = 'add') {
-                const data = [{
-                        image: 'https://img-cdn-qiniu.dcloud.net.cn/uploads/example/product1.jpg',
-                        title: 'Apple iPhone X 256GB 深空灰色 移动联通电信4G手机',
-                        originalPrice: 9999,
-                        favourPrice: 8888,
-                        tip: '自营'
-                    },
-                    {
-                        image: 'https://img-cdn-qiniu.dcloud.net.cn/uploads/example/product2.jpg',
-                        title: 'Apple iPad 平板电脑 2018年新款9.7英寸',
-                        originalPrice: 3499,
-                        favourPrice: 3399,
-                        tip: '优惠'
-                    },
-                    {
-                        image: 'https://img-cdn-qiniu.dcloud.net.cn/uploads/example/product3.jpg',
-                        title: 'Apple MacBook Pro 13.3英寸笔记本电脑（2017款Core i5处理器/8GB内存/256GB硬盘 MupxT2CH/A）',
-                        originalPrice: 12999,
-                        favourPrice: 10688,
-                        tip: '秒杀'
-                    },
-                    {
-                        image: 'https://img-cdn-qiniu.dcloud.net.cn/uploads/example/product4.jpg',
-                        title: 'Kindle Paperwhite电纸书阅读器 电子书墨水屏 6英寸wifi 黑色',
-                        originalPrice: 999,
-                        favourPrice: 958,
-                        tip: '秒杀'
-                    },
-                    {
-                        image: 'https://img-cdn-qiniu.dcloud.net.cn/uploads/example/product5.jpg',
-                        title: '微软（Microsoft）新Surface Pro 二合一平板电脑笔记本 12.3英寸（i5 8G内存 256G存储）',
-                        originalPrice: 8888,
-                        favourPrice: 8288,
-                        tip: '优惠'
-                    },
-                    {
-                        image: 'https://img-cdn-qiniu.dcloud.net.cn/uploads/example/product6.jpg',
-                        title: 'Apple Watch Series 3智能手表（GPS款 42毫米 深空灰色铝金属表壳 黑色运动型表带 MQL12CH/A）',
-                        originalPrice: 2899,
-                        favourPrice: 2799,
-                        tip: '自营'
-                    }
-                ];
 
-                if (action === 'refresh') {
-                    this.productList = [];
-                }
-
-                data.forEach(item => {
-                    this.productList.push(item);
-                });
-            }
         },
         onLoad() {
-            this.loadData();
-            setTimeout(() => {
-                this.renderImage = true;
-            }, 300);
+        	let _this = this
+			this.$eventHub.$on('search_word', function (data) {
+				_this.searchVal = data
+				console.log("从其他页面传过来的值",data);
+			})
         },
         onReachBottom() {
-            this.loadData();
         },
 		components: {
 			mSearch,

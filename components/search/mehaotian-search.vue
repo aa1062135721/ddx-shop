@@ -42,8 +42,12 @@ export default {
 			type: String,
 			default: '#fff'
 		},
-		border: { type: String, default: '1px #f5f5f5 solid' }
-		
+		border: { type: String, default: '1px #f5f5f5 solid' },
+		//HM修改 双向绑定
+		value: {
+			type: String,
+			default:''
+		},
 	},
 	data() {
 		return {
@@ -87,7 +91,13 @@ export default {
 				this.searchName = '取消';
 				this.isDelShow = false;
 			}
-		}
+		},
+		//HM修改 双向绑定
+		value(val) {
+			console.log("子组件",val)
+			this.inputVal = val;
+			this.isFocus = true;
+		},
 	}
 };
 </script>

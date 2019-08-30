@@ -10,7 +10,7 @@
             <text>差评(5)</text>
         </view>
         <block v-for="(txt, index) in list" :key="index">
-		    <evaluate :data="txt"></evaluate>
+		    <evaluate :evaluate="txt"></evaluate>
         </block>
         <view v-if="list.length === 0" style="text-align: center;">
             暂无评论

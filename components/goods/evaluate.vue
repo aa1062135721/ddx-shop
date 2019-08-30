@@ -2,22 +2,22 @@
 	<view class="evaluateBox">
 			<view class="item">
 				<view class="head">
-					<image :src="data.header_img" mode="widthFix" style="width:100%" />
+					<image :src="evaluate.header_img" mode="widthFix" style="width:100%" />
 				</view>
 				<view class="info">
 					<view class="name-stars">
-						<text class="name">{{ data.user_name }}</text>
-						<uni-rate  disabled="true" max="5" size="18" :value="data.rate" active-color="#FC5A5A" :is-fill="false"></uni-rate>
+						<text class="name">{{ evaluate.user_name }}</text>
+						<uni-rate  disabled="true" max="5" size="18" :value="evaluate.rate" active-color="#FC5A5A" :is-fill="false"></uni-rate>
 					</view>
 					<view class="time-size">
-						<text class="time">{{ data.create_time }}</text>
-						<text class="size">{{ data.specification }}</text>
+						<text class="time">{{ evaluate.create_time }}</text>
+						<text class="size">{{ evaluate.specification }}</text>
 					</view>
 					<view class="evaluate-content">
-						<text>{{ data.content || '用户暂未评价' }}</text>
-						<view class="imgs" v-if="data.imgs.length">
-							<block v-for="(imgurl, index) in data.imgs" :key="index">
-								<view class="imgs-box"><image :src="imgurl" mode="widthFix" style="width: 100%;" @click="previewImg(imgurl,data.imgs)"></image></view>
+						<text>{{ evaluate.content || '用户暂未评价' }}</text>
+						<view class="imgs" v-if="evaluate.imgs.length">
+							<block v-for="(imgurl, index) in evaluate.imgs" :key="index">
+								<view class="imgs-box"><image :src="imgurl" mode="widthFix" style="width: 100%;" @click="previewImg(imgurl, evaluate.imgs)"></image></view>
 							</block>
 						</view>
 					</view>
@@ -31,7 +31,7 @@
 	export default {
         props: {
             //评价列表数据
-            data: {
+            evaluate: {
                 type: Object,
                 default: {
                     header_img: "http://cs.zhangkaixing.com/face/face_2.jpg",

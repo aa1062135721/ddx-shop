@@ -23,6 +23,18 @@ Object.keys(filters).forEach(key => {
 import Utils from './utils/utils'
 Vue.use(Utils)
 
+//Global event bus
+/**
+ * page 1 step 1 *
+ * this.$eventHub.$emit('fire','data');
+ *
+ * page 2 step 2 *
+ * this.$eventHub.$on('fire', function (data) {
+ *     console.log('fire - '+data);
+ * });
+ */
+Vue.prototype.$eventHub = new Vue(); // Global event bus
+
 Vue.config.productionTip = false
 
 App.mpType = 'app'

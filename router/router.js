@@ -82,7 +82,12 @@ const router = new MinRouter({
 			name: 'goods_evaluate',
 			login: false
 		},
-	
+		{
+			path: "pages/public/search-with-hot-history",
+			type: 'navigateTo',
+			name: 'search_with_hot_history',
+			login: false
+		},
 	]
 })
 

@@ -35,8 +35,7 @@
 		{
 			"path": "pages/address/list",
 			"style": {
-				"navigationBarTitleText": "我的收货地址",
-				"enablePullDownRefresh": true
+				"navigationBarTitleText": "我的收货地址"
 			}
 		},
 		{
@@ -73,6 +72,12 @@
 			"path" : "pages/goods/evaluate",
 			"style": {
 				"navigationBarTitleText": "商品评价"
+			}
+		},
+		{
+			"path": "pages/public/search-with-hot-history",
+			"style": {
+				"navigationBarTitleText": "搜索"
 			}
 		}
 	],

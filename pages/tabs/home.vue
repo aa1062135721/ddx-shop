@@ -85,6 +85,36 @@
 					</view>
 				</view>
 
+				<view class="limited-time-kill">
+					<view class="title-bar">
+						<view class="left">
+							<view class="title-block" style="background: #F79058;">限时秒杀</view>
+						</view>
+						<view class="right">
+							<text>更多秒杀</text>
+							<text class="iconfont icon-ddx-shop-content_arrows"></text>
+						</view>
+					</view>
+					<view class="time-bar">
+
+					</view>
+					<view class="goods-list">
+
+					</view>
+				</view>
+				<view class="limited-time-kill">
+					<view class="title-bar">
+						<view class="left">
+							<view class="title-block">限时秒杀</view>
+							<text class="title-text">海量商品放心拼团</text>
+						</view>
+						<view class="right">
+							<text>更多秒杀</text>
+							<text class="iconfont icon-ddx-shop-content_arrows"></text>
+						</view>
+					</view>
+				</view>
+
 				<view class="guess-you-like">
 					<separator title="猜你喜欢"></separator>
 					<view class="goods-list">
@@ -237,6 +267,55 @@
 						font-size: $uni-font-size-base;
 						color: $color-primary-plain;
 					}
+				}
+			}
+			/*限时秒杀  精品团*/
+			.limited-time-kill{
+				background: #ffffff;
+				margin-top: 20upx;
+				.title-bar{
+					/*border: 1px solid red;*/
+					display:flex;
+					flex-direction:row;
+					flex-wrap: nowrap;
+					align-items: center;
+					justify-content: space-between;
+					font-size: $uni-font-size-base;
+					color: $color-primary-plain;
+					padding: 20upx $uni-spacing-row-base 20upx 0;
+					.left{
+						display: flex;
+						flex-direction: row;
+						justify-content: flex-start;
+						align-items: center;
+						.title-block{
+							color: #ffffff;
+							background: #BA6BE7;
+							text-align: center;
+							height: 48upx;
+							line-height: 48upx;
+							padding: 0 34upx;
+							border-radius:0 24upx 24upx 0;
+							margin-right: 30upx;
+						}
+						.title-text{
+							font-size: $uni-font-size-sm;
+						}
+					}
+					.right{
+						color: $color-primary;
+						.iconfont{
+							margin-left: 6upx;
+							font-size: $uni-font-size-base;
+						}
+					}
+
+				}
+
+				.time-bar{
+					border: 1px solid red;
+					background: #F2F2F2;
+					height: 88upx;
 				}
 			}
 			/*猜你喜欢*/

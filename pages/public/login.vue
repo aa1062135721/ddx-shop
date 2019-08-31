@@ -7,6 +7,7 @@
 					<text class="iconfont icon-ddx-shop-wechat"></text>
 					微信一键登录
 				</button>
+<!--				<button class="btn1" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">获取电话号码</button>-->
 				<button class="btn2" @click="login()">手机号登录</button>
 			</view>
 			<view class="tip">
@@ -83,6 +84,8 @@
 						console.log("code",res)
 						uni.getUserInfo({
 							provider: 'weixin',
+							lang: 'zh_CN',
+							withCredentials:true,
 							success: function(infoRes) {
 								console.log("userInfo",infoRes)
 							},
@@ -91,7 +94,22 @@
 					}
 				})
 			},
-			...mapActions(['saveToken', 'saveUserInfo'])
+			//获取用户手机号
+			getPhoneNumber: function(e) {
+				uni.login({
+					provider: 'weixin',
+					success: (res) => {
+						console.log("code", res)
+					}
+				})
+				console.log(e);
+				if (e.detail.errMsg == 'getPhoneNumber:fail user deny') {
+					console.log('用户拒绝提供手机号');
+				} else {
+					console.log('用户同意提供手机号');
+				}
+			},
+				...mapActions(['saveToken', 'saveUserInfo'])
 		}
     }
 </script>

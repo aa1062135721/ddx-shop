@@ -155,6 +155,14 @@
 		<view @click="goPage3()">
 			去搜索页面
 		</view>
+		<br>
+		<br>
+		<br>
+		<view @click="this.$openPage('address_list')">
+			去地址管理页面
+		</view>
+
+
 	</view>
 </template>
 

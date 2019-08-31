@@ -7,7 +7,7 @@
 					<text class="iconfont icon-ddx-shop-wechat"></text>
 					微信一键登录
 				</button>
-<!--				<button class="btn1" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">获取电话号码</button>-->
+				<button class="btn1" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">获取电话号码</button>
 				<button class="btn2" @click="login()">手机号登录</button>
 			</view>
 			<view class="tip">

@@ -96,11 +96,14 @@
 						</view>
 					</view>
 					<view class="time-bar">
-
+						<wlm-tab :tab-list="tabList2" :tabCur.sync="TabCur2"  select-class="tab-select" @change="tabChange2"></wlm-tab>
+						<swiper  :current="TabCur2" class="goods-list" duration="300" :circular="true" indicator-color="rgba(255,255,255,0)" indicator-active-color="rgba(255,255,255,0)" @change="swiperChange2">
+							<swiper-item v-for="(item,index) in tabList2" :key="index">
+								<div class="bg-white padding margin text-center text-black">{{item.name}}{{item.sub_title}}</div>
+							</swiper-item>
+						</swiper>
 					</view>
-					<view class="goods-list">
 
-					</view>
 				</view>
 				<view class="limited-time-kill">
 					<view class="title-bar">
@@ -159,6 +162,7 @@
     import WucTab from '@/components/wuc-tab/wuc-tab.vue'
 	import separator from "@/components/separator.vue"
 	import mGoods from '@/components/goods/goods.vue'
+	import WlmTab from '@/components/wlm-tab/wlm-tab.vue'
 
 	export default {
 		data() {
@@ -173,6 +177,16 @@
 					{ name: '选项卡六' },
 					{ name: '选项卡七' },
 					{ name: '选项卡八' }
+				],
+
+				TabCur2: 0,
+				tabList2: [
+					{ name: '10:00',sub_title: '秒杀中'},
+					{ name: '12:00',sub_title: '即将开始'},
+					{ name: '14:00',sub_title: '即将开始'},
+					{ name: '16:00',sub_title: '即将开始'},
+					{ name: '18:00',sub_title: '即将开始'},
+					{ name: '20:00',sub_title: '即将开始'},
 				],
 				//轮播主图数据
 				swiperList: [
@@ -202,15 +216,19 @@
 			tabChange(index) {
 				this.TabCur = index;
 			},
-			swiperChange(e) {
+			tabChange2(index) {
+				this.TabCur2 = index;
+			},
+			swiperChange2(e) {
 				let { current } = e.target;
-				this.TabCur = current;
+				this.TabCur2 = current;
 			},
 		},
 		components: {
 			WucTab,
 			separator,
 			mGoods,
+			WlmTab,
 		},
 		computed: {
 		},
@@ -313,9 +331,8 @@
 				}
 
 				.time-bar{
-					border: 1px solid red;
-					background: #F2F2F2;
-					height: 88upx;
+					background: grey;
+					/*height: 88upx;*/
 				}
 			}
 			/*猜你喜欢*/

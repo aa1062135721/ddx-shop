@@ -1,6 +1,6 @@
 <template>
     <div>
-        门店页面
+        拼团
     </div>
 </template>
 

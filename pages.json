@@ -101,9 +101,9 @@
 			},
 			{
 				"pagePath": "pages/tabs/shop",
-				"iconPath": "static/tab/tab-mendian.png",
-				"selectedIconPath": "static/tab/tab-mendian-current.png",
-				"text": "门店"
+				"iconPath": "static/tab/tab-person-all.png",
+				"selectedIconPath": "static/tab/tab-person-all-current.png",
+				"text": "拼团"
 			},
 			{
 				"pagePath": "pages/tabs/car",

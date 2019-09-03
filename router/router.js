@@ -41,6 +41,12 @@ const router = new MinRouter({
 			login: false
 		},
 		{
+			path: 'pages/public/login-with-mobile',
+			type: 'navigateTo',
+			name: 'login-with-mobile',
+			login: false
+		},
+		{
 			path: 'pages/address/list',
 			type: 'navigateTo',
 			name: 'address_list',

@@ -29,7 +29,13 @@
 		{
 			"path": "pages/public/login",
 			"style": {
-				"navigationBarTitleText": "登录页"
+				"navigationBarTitleText": "登录"
+			}
+		},
+		{
+			"path": "pages/public/login-with-mobile",
+			"style": {
+				"navigationBarTitleText": "登录"
 			}
 		},
 		{

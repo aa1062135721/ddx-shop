@@ -6,6 +6,11 @@ import MinRouter from './router/MinRouter'
 Vue.use(MinRouter)
 import minRouter from './router/router'
 
+// 引入http
+import MinRequest from './api/MinRequest'
+Vue.use(MinRequest) // 注册请求
+import minRequest from './api/api'
+
 // vuex
 import store from './store/index'
 Vue.prototype.$store = store
@@ -42,5 +47,6 @@ App.mpType = 'app'
 const app = new Vue({
     ...App,
     minRouter,
+    minRequest,
 })
 app.$mount()

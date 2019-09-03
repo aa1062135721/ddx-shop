@@ -1,18 +1,28 @@
 <script>
-    import {mapMutations} from 'vuex'
+    import {mapActions, mapMutations} from 'vuex'
 
 	export default {
 		methods: {
-			...mapMutations(['setToken', 'setUserInfo'])
+			...mapMutations(['setToken', 'setUserInfo']),
+            ...mapActions(['saveToken', 'saveUserInfo']),
 		},
 		onLaunch: function() {
 			console.log('App Launch')
-			uni.getStorage({
-				key: 'token',
-				success: (res) => {
-					this.setToken(res.data);
-				}
-			})
+            try {
+                const token = uni.getStorageSync('token');
+                if (token) {
+                    this.saveToken(token);
+                    this.$minApi.getUserInfo().then(res => {
+                      if (res.code === 200) {
+                          this.saveUserInfo(res.data)
+                      }
+                    }).catch(err => {
+                        console.log(err)
+                    })
+                }
+            } catch (e) {
+                // error
+            }
 		},
 		onShow: function() {
 			console.log('App Show')

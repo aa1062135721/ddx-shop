@@ -84,6 +84,7 @@
 			},
 			 //第一授权获取用户信息===》按钮触发
 			async wxGetUserInfo() {
+				this.saveToken("tokenssssssssssssssssssssssssssssssssssss")
 				await uni.login({
 					provider: 'weixin',
 					success: async (res) => {

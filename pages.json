@@ -63,6 +63,12 @@
 			}
 		},
 		{
+			"path": "pages/order/list",
+			"style": {
+				"navigationBarTitleText": "我的订单"
+			}
+		},
+		{
 			"path": "pages/goods/search",
 			"style": {
 				"navigationBarTitleText": "搜索"

@@ -161,7 +161,9 @@
 		<view @click="this.$openPage('address_list')">
 			去地址管理页面
 		</view>
-
+		<view @click="this.$openPage('order_list')">
+			去我的订单页面
+		</view>
 
 	</view>
 </template>

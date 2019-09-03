@@ -94,6 +94,12 @@ const router = new MinRouter({
 			name: 'search_with_hot_history',
 			login: false
 		},
+		{
+			path: "pages/order/list",
+			type: 'navigateTo',
+			name: 'order_list',
+			login: true
+		},
 	]
 })
 

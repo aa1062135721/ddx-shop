@@ -69,6 +69,12 @@
 			}
 		},
 		{
+			"path": "pages/order/detail",
+			"style": {
+				"navigationBarTitleText": "订单详情"
+			}
+		},
+		{
 			"path": "pages/goods/search",
 			"style": {
 				"navigationBarTitleText": "搜索"

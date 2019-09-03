@@ -100,6 +100,12 @@ const router = new MinRouter({
 			name: 'order_list',
 			login: true
 		},
+		{
+			path: "pages/order/detail",
+			type: 'navigateTo',
+			name: 'order_detail',
+			login: true
+		},
 	]
 })
 

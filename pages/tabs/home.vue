@@ -164,7 +164,9 @@
 		<view @click="this.$openPage('order_list')">
 			去我的订单页面
 		</view>
-
+		<view @click="this.$openPage('order_detail')">
+			去我的订单详情
+		</view>
 	</view>
 </template>
 

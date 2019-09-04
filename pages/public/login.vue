@@ -66,9 +66,11 @@
 					type: val
 				}).then(res => {
 					console.log(res)
-					this.agreement.title = res.title
-					this.agreement.content = res.content
-					this.$refs.popup.open()
+					if (res.code === 200) {
+						this.agreement.title = res.data.title
+						this.agreement.content = res.data.content
+						this.$refs.popup.open()
+					}
 				}).catch(err => {
 					console.log(err)
 				})

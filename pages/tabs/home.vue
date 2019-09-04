@@ -158,7 +158,7 @@
 		<br>
 		<br>
 		<br>
-		<view @click="this.$openPage('address_list')">
+		<view @click="goPageUrl('address_list')">
 			去地址管理页面
 		</view>
 		<view @click="this.$openPage('order_list')">
@@ -224,6 +224,9 @@
 			},
 			goPage3(){
 				this.$openPage('search_with_hot_history')
+			},
+			goPageUrl(url){
+				this.$openPage(url)
 			},
 			tabChange(index) {
 				this.TabCur = index;

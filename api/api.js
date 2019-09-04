@@ -101,6 +101,35 @@ export default {
     getUserInfo (data) {
       return minRequest.get('/User/getUserInfo', data)
     },
-
+    /**
+     * 获取城市
+     */
+    city(data) {
+      return minRequest.get('/index/city', data)
+    },
+    /**
+     * 获取用户地址列表
+     */
+    addressList(data) {
+      return minRequest.get('/User/address_list', data)
+    },
+    /**
+     * 新增、编辑用户地址
+     */
+    addressAddOrEdit(data) {
+      return minRequest.post('/User/add_address', data)
+    },
+    /**
+     * 删除用户地址
+     */
+    addressDel(data) {
+      return minRequest.post('/User/address_del', data)
+    },
+    /**
+     * 获取用户地址详情
+     */
+    addressInfo(data) {
+      return minRequest.get('/User/address_info', data)
+    },
   }
 }

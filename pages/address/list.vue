@@ -1,56 +1,74 @@
 <template>
 	<view class="container">
 		<view class="list-all">
-			<view class="a-list">
+			<view class="a-list" v-for="(item, index) in list" :key="index">
 				<view class="info">
 					<view class="name-moblie">
-						<view class="name">吴黎明</view>
-						<view class="mobile">15213710631</view>
+						<view class="name">{{item.name}}</view>
+						<view class="mobile">{{item.phone}}</view>
 					</view>
 					<view class="detail">
-						<span>默认</span> 重庆 重庆市渝北区汽博中心线外城市重庆市渝北区汽博中心线外城市
+						<span v-if="item.default">默认</span> {{item.addres}}
 					</view>
 				</view>
-				<view class="edit">
-					<span>编辑</span>
-				</view>
-			</view>
-			
-			<view class="a-list">
-				<view class="info">
-					<view class="name-moblie">
-						<view class="name">吴黎明</view>
-						<view class="mobile">15213710631</view>
-					</view>
-					<view class="detail">
-						重庆 重庆市渝北区汽博中心线外城市重庆市渝北区汽博中心线外城市
-					</view>
-				</view>
-				<view class="edit">
+				<view class="edit" @click="goToAddOrEdit(item)">
 					<span>编辑</span>
 				</view>
 			</view>
 		</view>
-		
-		<view class="fixed"  @click="goadd()">
+		<uni-load-more status="noMore" v-if="list.length === 0"></uni-load-more>
+		<view class="fixed"  @click="goToAddOrEdit()">
 			<span class="iconfont icon-ddx-shop-anonymous-iconfont icon-color"></span>
 			新增收货地址
 		</view>
 	</view>
-  
+
 </template>
 
 <script>
+	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
     export default {
         name: "address_list",
+		components: {
+			uniLoadMore
+		},
+		data(){
+        	return {
+				list:[
+					// {
+					// 	id: 2,    //id
+					// 	name: "任坤红",       //名称
+					// 	phone: "13028331292",
+					// 	area_ids: "110000,110100,110102",
+					// 	area_names: "广东省,广州市,东莞市",
+					// 	address: "广州塔23层",
+					// 	default: 0,       //1默认，0不默认
+					// 	addres: "广东省 广州市东莞市广州塔23层"   //地址
+					// },
+				],
+			}
+		},
 		onLoad() {
 			// 解析路由参数
 			console.log("带过来的参数",this.$parseURL())
 		},
+		onShow(){
+			this.loadData()
+		},
         methods:{
-            goadd(){
-                this.$openPage({name: 'address_add', query: {id:123,boolean_a:true,url:''}})
-            }
+            goToAddOrEdit(val = {}){
+                this.$openPage({name: 'address_add', query: val})
+            },
+			loadData(){
+				this.$minApi.addressList().then(res => {
+					console.log(res)
+					if (res.code === 200) {
+						this.list = res.data
+					}
+				}).catch(err => {
+					console.log(err)
+				})
+			},
         }
     }
 </script>
@@ -106,8 +124,9 @@
 					border-left: 1upx solid #E4E4E4;
 				}
 			}
-			
+
 		}
+		margin-bottom: 120upx;
 	}
 	.fixed{
 		background: #fff;

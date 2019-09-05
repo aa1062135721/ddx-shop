@@ -6,8 +6,8 @@ Vue.use(Vuex)
 const state = {
     token: '',
     userInfo: {
-        id: 1, // 用户id
-        name: '吴黎明'
+        // id: 1, // 用户id
+        // name: '吴黎明'
     },
 }
 

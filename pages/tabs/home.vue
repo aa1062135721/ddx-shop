@@ -130,41 +130,25 @@
 
 		</div>
 
-		首页页面
-		<view @click="goPage()">
+		<view @click="goPageUrl('goods_search')">
 			去搜索商品
 		</view>
-
-		<br>
-		<br>
-		<br>
-		<view @click="goPage1()">
+		<view @click="goPageUrl('goods_detail')">
 			去商品详情
 		</view>
-
-		<br>
-		<br>
-		<br>
-		<view @click="goPage2()">
+		<view @click="goPageUrl('goods_evaluate')">
 			去商品评论页面
 		</view>
-
-		<br>
-		<br>
-		<br>
-		<view @click="goPage3()">
+		<view @click="goPageUrl('search_with_hot_history')">
 			去搜索页面
 		</view>
-		<br>
-		<br>
-		<br>
 		<view @click="goPageUrl('address_list')">
 			去地址管理页面
 		</view>
-		<view @click="this.$openPage('order_list')">
+		<view @click="goPageUrl('order_list')">
 			去我的订单页面
 		</view>
-		<view @click="this.$openPage('order_detail')">
+		<view @click="goPageUrl('order_detail')">
 			去我的订单详情
 		</view>
 	</view>
@@ -213,18 +197,6 @@
 
 		},
 		methods: {
-			goPage(){
-				this.$openPage('goods_search')
-			},
-			goPage1(){
-				this.$openPage('goods_detail')
-			},
-			goPage2(){
-				this.$openPage('goods_evaluate')
-			},
-			goPage3(){
-				this.$openPage('search_with_hot_history')
-			},
 			goPageUrl(url){
 				this.$openPage(url)
 			},

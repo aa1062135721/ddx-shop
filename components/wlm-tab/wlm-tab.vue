@@ -1,10 +1,12 @@
 <template>
-    <scroll-view   scroll-with-animation scroll-x :scroll-left="scrollLeft">
+    <scroll-view  scroll-x="true" :scroll-left="scrollLeft" :style="tabStyle">
         <div class="tab">
-            <div class="item" :class="[index === tabCur ? selectClass + ' cur':'']" v-for="(item,index) in tabList" :key="index" :id="index" @tap="tabSelect(index,$event)">
-                <span>{{item.name}}</span>
-                <span>{{item.sub_title}}</span>
+            <block  v-for="(item,index) in tabList" :key="index" :id="index">
+            <div class="item" @tap="tabSelect(index,$event)" >
+                <span :style="tabCur === index ? selectTitleStyle : ''" class="title" :class="titleClass">{{item.name}}</span>
+                <span :style="tabCur === index ? selectSubTitleStyle : ''" class="sub-title" :class="subTitleClass">{{item.sub_title}}</span>
             </div>
+            </block>
         </div>
     </scroll-view>
 </template>
@@ -25,24 +27,26 @@
                     return 0;
                 }
             },
-            tabStyle: {
+            titleClass: {
                 type: String,
-                default() {
-                    return '';
-                }
+                default: ''
             },
-            textFlex: {
-                type: Boolean,
-                default() {
-                    return false;
-                }
-            },
-            selectClass: {
+            subTitleClass: {
                 type: String,
-                default() {
-                    return 'text-blue';
-                }
-            }
+                default: ''
+            },
+            selectTitleStyle: {
+                type: String,
+                default: ''
+            },
+            selectSubTitleStyle: {
+                type: String,
+                default: ''
+            },
+            tabStyle:{
+                type: String,
+                default: ''
+            },
         },
         methods: {
             tabSelect(index, e) {
@@ -65,6 +69,9 @@
     swiper {
         box-sizing: border-box;
     }
+    .text-color{
+        color: $color-primary;
+    }
     .tab{
         text-align: center;
         white-space: nowrap;
@@ -78,9 +85,17 @@
             flex-direction: column;
             align-items: center;
             align-content: center;
-            border: 1px solid red;
+            justify-content: center;
             margin: 0 10upx;
             padding: 0 20upx;
+            .title{
+                font-size: $uni-font-size-lg;
+                color: #1A1A1A;
+            }
+            .sub-title{
+                font-size: $uni-font-size-sm - 2upx;
+                color: #808080;
+            }
         }
     }
 </style>

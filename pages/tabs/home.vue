@@ -96,7 +96,8 @@
 						</view>
 					</view>
 					<view class="time-bar">
-						<wlm-tab :tab-list="tabList2" :tabCur.sync="TabCur2"  select-class="tab-select" @change="tabChange2"></wlm-tab>
+						<wlm-tab :tab-list="tabList2" :tabCur.sync="TabCur2"  @change="tabChange2" tabStyle="background:#F2F2F2;"
+								 selectTitleStyle="color:#fff;background:#FC5A5A;border-radius:16px;padding:0 4px;"></wlm-tab>
 						<swiper  :current="TabCur2" class="goods-list" duration="300" :circular="true" indicator-color="rgba(255,255,255,0)" indicator-active-color="rgba(255,255,255,0)" @change="swiperChange2">
 							<swiper-item v-for="(item,index) in tabList2" :key="index">
 								<div class="bg-white padding margin text-center text-black">{{item.name}}{{item.sub_title}}</div>

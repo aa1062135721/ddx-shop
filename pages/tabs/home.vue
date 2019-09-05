@@ -95,21 +95,78 @@
 							<text class="iconfont icon-ddx-shop-content_arrows"></text>
 						</view>
 					</view>
-					<view class="time-bar">
+					<view class="time-content">
 						<wlm-tab :tab-list="tabList2" :tabCur.sync="TabCur2"  @change="tabChange2" tabStyle="background:#F2F2F2;"
 								 selectTitleStyle="color:#fff;background:#FC5A5A;border-radius:16px;padding:0 4px;"></wlm-tab>
-						<swiper  :current="TabCur2" class="goods-list" duration="300" :circular="true" indicator-color="rgba(255,255,255,0)" indicator-active-color="rgba(255,255,255,0)" @change="swiperChange2">
-							<swiper-item v-for="(item,index) in tabList2" :key="index">
-								<div class="bg-white padding margin text-center text-black">{{item.name}}{{item.sub_title}}</div>
-							</swiper-item>
-						</swiper>
+						<view class="goods-list">
+							<view class="time-content-goods-list-goods">
+								<view class="image">
+									<image src="../../static/images/goods.jpg"></image>
+								</view>
+								<view class="title">
+									澳洲爱他美白金版profutura 3段澳洲爱他美白金版
+								</view>
+								<view class="price">
+									<text class="one">¥2008</text>
+									<text class="two">¥2888</text>
+								</view>
+								<view class="status">
+									<text class="one">已抢8810件</text>
+								</view>
+							</view>
+							<view class="time-content-goods-list-goods">
+								<view class="image">
+									<image src="../../static/images/goods.jpg"></image>
+								</view>
+								<view class="title">
+									澳洲爱他美白金版profutura 3段澳洲爱他美白金版
+								</view>
+								<view class="price">
+									<text class="one">¥2008</text>
+									<text class="two">¥2888</text>
+								</view>
+								<view class="status">
+									<text class="one">已抢8810件</text>
+								</view>
+							</view>
+							<view class="time-content-goods-list-goods">
+								<view class="image">
+									<image src="../../static/images/goods.jpg"></image>
+								</view>
+								<view class="title">
+									澳洲爱他美白金版profutura 3段澳洲爱他美白金版
+								</view>
+								<view class="price">
+									<text class="one">¥2008</text>
+									<text class="two">¥2888</text>
+								</view>
+								<view class="status">
+									<text class="one">已抢8810件</text>
+								</view>
+							</view>
+							<view class="time-content-goods-list-goods">
+								<view class="image">
+									<image src="../../static/images/goods.jpg"></image>
+								</view>
+								<view class="title">
+									澳洲爱他美白金版profutura 3段澳洲爱他美白金版
+								</view>
+								<view class="price">
+									<text class="one">¥2008</text>
+									<text class="two">¥2888</text>
+								</view>
+								<view class="status">
+									<text class="one">已抢8810件</text>
+								</view>
+							</view>
+						</view>
 					</view>
 
 				</view>
 				<view class="limited-time-kill">
 					<view class="title-bar">
 						<view class="left">
-							<view class="title-block">限时秒杀</view>
+							<view class="title-block">精品团</view>
 							<text class="title-text">海量商品放心拼团</text>
 						</view>
 						<view class="right">
@@ -206,10 +263,6 @@
 			},
 			tabChange2(index) {
 				this.TabCur2 = index;
-			},
-			swiperChange2(e) {
-				let { current } = e.target;
-				this.TabCur2 = current;
 			},
 		},
 		components: {
@@ -318,9 +371,63 @@
 
 				}
 
-				.time-bar{
-					background: grey;
-					/*height: 88upx;*/
+				.time-content{
+					.goods-list{
+						background: #ffffff;
+						width: 100%;
+						display: flex;
+						padding: $uni-spacing-row-base;
+						.time-content-goods-list-goods{
+							display:flex;
+							flex-direction:column;
+							width:25%;
+							margin-right:8upx;
+							&:last-child{
+								margin-right: 0;
+							}
+							overflow: hidden;
+							.image{
+								width: 100%;
+								image{
+									width: 100%;
+									height: 140upx;
+									border-radius:8upx 8upx 0upx 0upx;
+								}
+							}
+							.title{
+								@extend %overflow-2-line;
+								font-size: $uni-font-size-sm;
+								width: 100%;
+								overflow: hidden;
+								margin-bottom: 6upx;
+							}
+							.price{
+								@extend %overflow-1-line;
+								width: 100%;
+								overflow: hidden;
+								margin-bottom: 6upx;
+								display: flex;
+								justify-content: space-between;
+								.one{
+									width: 50%;
+									text-align: left;
+									font-size: $uni-font-size-sm;
+									color: $color-primary;
+								}
+								.two{
+									width: 50%;
+									text-align: right;
+									font-size: $uni-font-size-sm - 4upx;
+									color: #808080;
+									text-decoration:line-through;
+								}
+							}
+							.status{
+								font-size: $uni-font-size-sm;
+								color: #808080;
+							}
+						}
+					}
 				}
 			}
 			/*猜你喜欢*/

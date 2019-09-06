@@ -175,6 +175,7 @@
 							<view class="time-content-goods-list-goods" style="width: 33.33333%;">
 								<view class="image width-210">
 									<image class="img-33" src="../../static/images/goods.jpg"></image>
+									<view class="group-info">10人团</view>
 								</view>
 								<view class="title width-210">
 									澳洲爱他美白金版profutura 3段澳洲爱他美白金版
@@ -190,6 +191,7 @@
 							<view class="time-content-goods-list-goods" style="width: 33.33333%;">
 								<view class="image width-210">
 									<image class="img-33" src="../../static/images/goods.jpg"></image>
+									<view class="group-info">3人团</view>
 								</view>
 								<view class="title width-210">
 									澳洲爱他美白金版profutura 3段澳洲爱他美白金版
@@ -205,6 +207,7 @@
 							<view class="time-content-goods-list-goods" style="width: 33.33333%;">
 								<view class="image width-210">
 									<image class="img-33" src="../../static/images/goods.jpg"></image>
+									<view class="group-info">3人团</view>
 								</view>
 								<view class="title width-210">
 									澳洲爱他美白金版profutura 3段澳洲爱他美白金版
@@ -434,6 +437,7 @@
 							.image{
 								width: 160upx;
 								text-align: center;
+								position: relative;
 								.img-25{
 									width: 160upx;
 									height: 160upx;
@@ -444,13 +448,26 @@
 									height: 210upx;
 									border-radius:8upx 8upx 0upx 0upx;
 								}
+								.group-info{
+									position: absolute;
+									left: 0;
+									bottom: 20upx;
+									width: 88upx;
+									height: 34upx;
+									line-height: 34upx;
+									text-align: center;
+									overflow: hidden;
+									font-size: $uni-font-size-sm;
+									color: $color-primary;
+									border: 1upx solid $color-primary;
+									border-radius: 8upx;
+									background: #fff;
+								}
 							}
 							.title{
 								@extend %overflow-2-line;
 								font-size: $uni-font-size-sm;
 								width: 160upx;
-								height: 60upx;
-								overflow: hidden;
 								margin-bottom: 6upx;
 							}
 							.price{

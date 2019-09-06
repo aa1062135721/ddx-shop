@@ -1,16 +1,16 @@
 <template>
 	<view class="a-goods">
 		<view class="image">
-			<image src="../../static/images/goods.jpg"></image>
-			<view class="mask"></view>
-			<view class="tips">缺货</view>
+			<image :src="goodsInfo.pic" :lazy-load="true"></image>
+			<view class="mask" v-if="goodsInfo.status !== 1"></view>
+			<view class="tips" v-if="goodsInfo.status !== 1">已下架</view>
 		</view>
 		<view class="title">
-			澳洲爱他美白金版profutura 3段澳洲爱他美白金版
+			{{goodsInfo.title}}
 		</view>
 		<view class="price">
-			<text class="one">¥2008</text>
-			<text class="two">已售486件</text>
+			<text class="one">¥{{goodsInfo.min_price}}</text>
+			<text class="two">已售{{goodsInfo.sales}}件</text>
 		</view>
 	</view>
 </template>
@@ -19,8 +19,24 @@
 	export default {
 		data() {
 			return {
-				
-			};
+			}
+		},
+		methods: {
+		},
+		props: {
+			goodsInfo:{
+				type: Object,
+				default:{
+					id: '',
+					title: '',
+					status:1,
+					min_price: "0.00",
+					initial_sales: 0,
+					reality_sales: 0,
+					pic: "http://picture.ddxm661.com/12183201909060954457548.jpg",
+					sales: 0
+				}
+			}
 		}
 	}
 </script>

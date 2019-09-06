@@ -281,6 +281,7 @@
 			},
 		},
 		onLoad(option) {
+			console.log("带过来的参数",this.$parseURL())
 		},
 		onReady(){
 			this.calcAnchor();//计算锚点高度，页面数据是ajax加载时，请把此行放在数据渲染完成事件中执行以保证高度计算正确

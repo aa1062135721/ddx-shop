@@ -3,14 +3,14 @@
     <div v-if="!textFlex">
       <div class="wuc-tab-item" :class="[index === tabCur ? selectClass + ' cur':'']" v-for="(item,index) in tabList" :key="index" :id="index" @tap="tabSelect(index,$event)">
         <text :class="item.icon"></text>
-        <span>{{item.name}}</span>
+        <span>{{item.cname}}</span>
       </div>
     </div>
 
     <div class="flex text-center" v-if="textFlex">
       <div class="wuc-tab-item flex-sub" :class="index === tabCur ? selectClass + ' cur':''" v-for="(item,index) in tabList" :key="index" :id="index" @tap="tabSelect(index,$event)">
         <text :class="item.icon"></text>
-        <span>{{item.name}}</span>
+        <span>{{item.cname}}</span>
       </div>
     </div>
   </scroll-view>

@@ -131,5 +131,24 @@ export default {
     addressInfo(data) {
       return minRequest.get('/User/address_info', data)
     },
+    /**
+     * 获取商品分类
+     */
+    category(data) {
+      return minRequest.get('/Index/category', data)
+    },
+    /**
+     * 获取banner
+     */
+    banner(data) {
+      return minRequest.get('/Index/banner', data)
+    },
+    /**
+     * 猜你喜欢商品
+     */
+    guessYouLike(data) {
+      return minRequest.post('/Index/like_item', data)
+    },
+
   }
 }

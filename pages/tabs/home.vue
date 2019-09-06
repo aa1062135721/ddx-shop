@@ -1,12 +1,12 @@
 <template>
 	<view class="container">
 		<div>
-			<wuc-tab :tab-list="tabList" :tabCur.sync="TabCur" tab-class="tabs"  select-class="tab-select" @change="tabChange"></wuc-tab>
+			<wuc-tab :tab-list="tabList" :textFlex="true" :tabCur.sync="TabCur" tab-class="tabs"  select-class="tab-select" @change="tabChange"></wuc-tab>
 			<view class="content" v-if="TabCur === 0">
 				<view class="swiper-box">
 					<swiper circular="true" autoplay="true" :indicator-dots="true" indicator-active-color="#FC8A8A">
-						<swiper-item v-for="(img_src,index) in swiperList" :key="index">
-							<image class="banner-img" :src="img_src" @click=""></image>
+						<swiper-item class="swiper-item" v-for="(item, index) in swiperList" :key="index">
+							<image class="banner-img" :lazy-load="true"	:src="item.thumb" @click="_clickBanner(index)" mode="center"></image>
 						</swiper-item>
 					</swiper>
 				</view>
@@ -227,36 +227,12 @@
 				<view class="guess-you-like">
 					<separator title="猜你喜欢"></separator>
 					<view class="goods-list">
-						<mGoods></mGoods>
-						<mGoods></mGoods>
-						<mGoods></mGoods>
+						<mGoods v-for="(item, index) in tabList[TabCur].goodsList" :key="index" :goodsInfo="item" @click.native="_goPage('goods_detail', {id:item.id})"></mGoods>
 					</view>
 				</view>
 			</view>
-
+			<uni-load-more :status="moreStatus" :show-icon="true"></uni-load-more>
 		</div>
-
-		<view @click="goPageUrl('goods_search')">
-			去搜索商品
-		</view>
-		<view @click="goPageUrl('goods_detail')">
-			去商品详情
-		</view>
-		<view @click="goPageUrl('goods_evaluate')">
-			去商品评论页面
-		</view>
-		<view @click="goPageUrl('search_with_hot_history')">
-			去搜索页面
-		</view>
-		<view @click="goPageUrl('address_list')">
-			去地址管理页面
-		</view>
-		<view @click="goPageUrl('order_list')">
-			去我的订单页面
-		</view>
-		<view @click="goPageUrl('order_detail')">
-			去我的订单详情
-		</view>
 	</view>
 </template>
 
@@ -265,21 +241,28 @@
 	import separator from "@/components/separator.vue"
 	import mGoods from '@/components/goods/goods.vue'
 	import WlmTab from '@/components/wlm-tab/wlm-tab.vue'
+	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue'
 
 	export default {
 		data() {
 			return {
-				TabCur: 0,
+				moreStatus: 'loading',//可选值：more（loading前）、loading（loading中）、noMore（没有更多了）
+				//首页tab栏
+				TabCur: 0,//当前选中的下标
 				tabList: [
-					{ name: '推荐' },
-					{ name: '选项卡二' },
-					{ name: '选项卡三' },
-					{ name: '选项卡四' },
-					{ name: '选项卡五' },
-					{ name: '选项卡六' },
-					{ name: '选项卡七' },
-					{ name: '选项卡八' }
+					{
+						cname: '推荐',
+						id: 0,
+						thumb:'',
+						requestData: {
+							page:1,
+							limit:10,
+						},
+						goodsList:[],
+					},
 				],
+				//推荐tab中的轮播图
+				swiperList: [],
 
 				TabCur2: 0,
 				tabList2: [
@@ -290,27 +273,74 @@
 					{ name: '18:00',sub_title: '即将开始'},
 					{ name: '20:00',sub_title: '即将开始'},
 				],
-				//轮播主图数据
-				swiperList: [
-					'https://ae01.alicdn.com/kf/HTB1Mj7iTmzqK1RjSZFjq6zlCFXaP.jpg',
-					'https://ae01.alicdn.com/kf/HTB1fbseTmzqK1RjSZFLq6An2XXaL.jpg',
-					'https://ae01.alicdn.com/kf/HTB1dPUMThnaK1RjSZFtq6zC2VXa0.jpg',
-					'https://ae01.alicdn.com/kf/HTB1OHZrTXzqK1RjSZFvq6AB7VXaw.jpg'
-				],
+				// 推荐里的数据
+
+
 			}
 		},
-		onLoad() {
-
+		async onLoad() {
+			await this._getCategory()
+			await this._getBanner()
+			await this._getGuessYouLike()
+		},
+		async onReachBottom() {
+			if (this.moreStatus === 'noMore') {
+				return
+			}
+			this.tabList[this.TabCur].requestData.page ++
+			if (this.TabCur === 0) {
+				await this._getGuessYouLike()
+			}
 		},
 		methods: {
-			goPageUrl(url){
-				this.$openPage(url)
+			_goPage(url, query = {}){
+				this.$openPage({name:url, query})
 			},
 			tabChange(index) {
 				this.TabCur = index;
+				console.log(this.tabList[index])
 			},
 			tabChange2(index) {
 				this.TabCur2 = index;
+			},
+			_getCategory(pid) {
+				this.$minApi.category({pid}).then(res => {
+					if (res.code === 200){
+						let newArr = res.data.map((item, index) => {
+							item .requestData = {page:1, limit:10}
+							item .goodsList = []
+							return item
+						})
+						this.tabList.push(...newArr)
+					}
+				})
+			},
+			_getBanner() {
+				this.$minApi.banner().then(res => {
+					if (res.code === 200){
+						this.swiperList = res.data
+					}
+				})
+			},
+			_clickBanner(key) {
+				console.log(this.swiperList[key])
+			},
+			_getGuessYouLike() {
+				this.moreStatus = 'loading'
+				let data = {
+					page:this.tabList[this.TabCur].requestData.page,
+					limit:this.tabList[this.TabCur].requestData.limit,
+				}
+				this.$minApi.guessYouLike(data).then(res => {
+					if (res.code === 200){
+						this.tabList[this.TabCur].goodsList.push(...res.data)
+						if (res.data.length <  this.tabList[this.TabCur].requestData.limit) {
+							this.moreStatus = 'noMore'
+						} else {
+							this.moreStatus = 'more'
+						}
+					}
+				})
 			},
 		},
 		components: {
@@ -318,6 +348,7 @@
 			separator,
 			mGoods,
 			WlmTab,
+			uniLoadMore,
 		},
 		computed: {
 		},
@@ -342,9 +373,16 @@
 				padding: 10upx $uni-spacing-row-sm 0 $uni-spacing-row-sm;
 				width: 100%;
 				border-radius: 4upx;
-				background: #000;
-				.banner-img{
-					border-radius: 4upx;
+				background: #fff;
+				overflow: hidden;
+				.swiper-item{
+					width: 100%;
+					overflow: hidden;
+					.banner-img{
+						width: 100%;
+						height:100%;
+						border-radius: 10upx;
+					}
 				}
 			}
 			/*限时抢购*/
@@ -502,7 +540,6 @@
 			}
 			/*猜你喜欢*/
 			.guess-you-like{
-				padding: 190upx 0;
 				.goods-list{
 					padding: 10upx $uni-spacing-row-sm 0 $uni-spacing-row-sm;
 					display:flex;

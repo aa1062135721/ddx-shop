@@ -101,14 +101,13 @@
 						<view class="goods-list">
 							<view class="time-content-goods-list-goods">
 								<view class="image">
-									<image src="../../static/images/goods.jpg"></image>
+									<image class="img-25" src="../../static/images/goods.jpg"></image>
 								</view>
 								<view class="title">
 									澳洲爱他美白金版profutura 3段澳洲爱他美白金版
 								</view>
 								<view class="price">
 									<text class="one">¥2008</text>
-									<text class="two">¥2888</text>
 								</view>
 								<view class="status">
 									<text class="one">已抢8810件</text>
@@ -116,14 +115,13 @@
 							</view>
 							<view class="time-content-goods-list-goods">
 								<view class="image">
-									<image src="../../static/images/goods.jpg"></image>
+									<image class="img-25" src="../../static/images/goods.jpg"></image>
 								</view>
 								<view class="title">
-									澳洲爱他美白金版profutura 3段澳洲爱他美白金版
+									澳洲爱
 								</view>
 								<view class="price">
 									<text class="one">¥2008</text>
-									<text class="two">¥2888</text>
 								</view>
 								<view class="status">
 									<text class="one">已抢8810件</text>
@@ -131,14 +129,13 @@
 							</view>
 							<view class="time-content-goods-list-goods">
 								<view class="image">
-									<image src="../../static/images/goods.jpg"></image>
+									<image class="img-25" src="../../static/images/goods.jpg"></image>
 								</view>
 								<view class="title">
-									澳洲爱他美白金版profutura 3段澳洲爱他美白金版
+									澳洲爱他
 								</view>
 								<view class="price">
 									<text class="one">¥2008</text>
-									<text class="two">¥2888</text>
 								</view>
 								<view class="status">
 									<text class="one">已抢8810件</text>
@@ -146,14 +143,13 @@
 							</view>
 							<view class="time-content-goods-list-goods">
 								<view class="image">
-									<image src="../../static/images/goods.jpg"></image>
+									<image class="img-25" src="../../static/images/goods.jpg"></image>
 								</view>
 								<view class="title">
 									澳洲爱他美白金版profutura 3段澳洲爱他美白金版
 								</view>
 								<view class="price">
 									<text class="one">¥2008</text>
-									<text class="two">¥2888</text>
 								</view>
 								<view class="status">
 									<text class="one">已抢8810件</text>
@@ -172,6 +168,55 @@
 						<view class="right">
 							<text>更多秒杀</text>
 							<text class="iconfont icon-ddx-shop-content_arrows"></text>
+						</view>
+					</view>
+					<view class="time-content">
+						<view class="goods-list">
+							<view class="time-content-goods-list-goods" style="width: 33.33333%;">
+								<view class="image width-210">
+									<image class="img-33" src="../../static/images/goods.jpg"></image>
+								</view>
+								<view class="title width-210">
+									澳洲爱他美白金版profutura 3段澳洲爱他美白金版
+								</view>
+								<view class="price width-210">
+									<text class="one">¥2008</text>
+									<text class="two">¥2888</text>
+								</view>
+								<view class="status width-210">
+									<text class="one">已拼8810件</text>
+								</view>
+							</view>
+							<view class="time-content-goods-list-goods" style="width: 33.33333%;">
+								<view class="image width-210">
+									<image class="img-33" src="../../static/images/goods.jpg"></image>
+								</view>
+								<view class="title width-210">
+									澳洲爱他美白金版profutura 3段澳洲爱他美白金版
+								</view>
+								<view class="price width-210">
+									<text class="one">¥2008</text>
+									<text class="two">¥2888</text>
+								</view>
+								<view class="status width-210">
+									<text class="one">已拼8810件</text>
+								</view>
+							</view>
+							<view class="time-content-goods-list-goods" style="width: 33.33333%;">
+								<view class="image width-210">
+									<image class="img-33" src="../../static/images/goods.jpg"></image>
+								</view>
+								<view class="title width-210">
+									澳洲爱他美白金版profutura 3段澳洲爱他美白金版
+								</view>
+								<view class="price width-210">
+									<text class="one">¥2008</text>
+									<text class="two">¥2888</text>
+								</view>
+								<view class="status width-210">
+									<text class="one">已拼8810件</text>
+								</view>
+							</view>
 						</view>
 					</view>
 				</view>
@@ -381,50 +426,58 @@
 							display:flex;
 							flex-direction:column;
 							width:25%;
-							margin-right:8upx;
+							margin-right:10upx;
 							&:last-child{
 								margin-right: 0;
 							}
 							overflow: hidden;
 							.image{
-								width: 100%;
-								image{
-									width: 100%;
-									height: 140upx;
+								width: 160upx;
+								text-align: center;
+								.img-25{
+									width: 160upx;
+									height: 160upx;
+									border-radius:8upx 8upx 0upx 0upx;
+								}
+								.img-33{
+									width: 210upx;
+									height: 210upx;
 									border-radius:8upx 8upx 0upx 0upx;
 								}
 							}
 							.title{
 								@extend %overflow-2-line;
 								font-size: $uni-font-size-sm;
-								width: 100%;
+								width: 160upx;
+								height: 60upx;
 								overflow: hidden;
 								margin-bottom: 6upx;
 							}
 							.price{
 								@extend %overflow-1-line;
-								width: 100%;
+								width: 160upx;
 								overflow: hidden;
 								margin-bottom: 6upx;
 								display: flex;
-								justify-content: space-between;
+								justify-content: flex-start;
 								.one{
-									width: 50%;
-									text-align: left;
-									font-size: $uni-font-size-sm;
+									font-size: $uni-font-size-base;
 									color: $color-primary;
+									margin-right: 6upx;
 								}
 								.two{
-									width: 50%;
-									text-align: right;
-									font-size: $uni-font-size-sm - 4upx;
+									font-size: $uni-font-size-sm;
 									color: #808080;
 									text-decoration:line-through;
 								}
 							}
 							.status{
+								width: 160upx;
 								font-size: $uni-font-size-sm;
 								color: #808080;
+							}
+							.width-210{
+								width: 210upx;
 							}
 						}
 					}

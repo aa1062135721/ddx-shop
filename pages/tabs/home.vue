@@ -1,6 +1,17 @@
 <template>
 	<view class="container">
 		<div>
+			<view class="status_bar">
+				<!-- 这里是状态栏 -->
+			</view>
+			<view class="search-input">
+				<view>
+					<view class="input">
+						<text class="iconfont icon-ddx-shop-hot"></text>
+						<text>万千商品，等你来采购</text>
+					</view>
+				</view>
+			</view>
 			<wuc-tab :tab-list="tabList" :textFlex="true" :tabCur.sync="TabCur" tab-class="tabs"  select-class="tab-select" @change="tabChange"></wuc-tab>
 			<view class="content" v-if="TabCur === 0">
 				<view class="swiper-box">
@@ -357,6 +368,39 @@
 
 <style lang="scss">
 	.container{
+		.status_bar{
+			height: var(--status-bar-height);
+			width: 100%;
+			background: #ffffff;
+		}
+		.search-input{
+			z-index: 999;
+			position: fixed;
+			width: 100%;
+			height: 60upx;
+			padding: 0 $uni-spacing-row-base;
+			background: #ffffff;
+			display: flex;
+			justify-content: flex-start;
+			align-items: center;
+			view{
+				width: 500upx;
+				.input{
+					border: 1upx solid #DCDCDC;
+					color: #DCDCDC;
+					font-size: $uni-font-size-base;
+					background: #fff;
+					height: 60upx;
+					width: 500upx;
+					padding: 0 10upx;
+					line-height: 60upx;
+					border-radius:30upx;
+					.iconfont{
+						margin-right: 10upx;
+					}
+				}
+			}
+		}
 		.tab-select{
 			color: $color-primary;
 			border-color: $color-primary;
@@ -367,6 +411,9 @@
 			color: $color-primary-plain;
 			font-size: $uni-font-size-base;
 			text-align: center;
+			margin-top: 60upx;
+			position: fixed;
+			z-index: 999;
 		}
 		.content{
 			.swiper-box{

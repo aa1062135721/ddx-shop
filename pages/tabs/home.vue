@@ -227,7 +227,7 @@
 					</view>
 				</view>
 			</view>
-			<uni-load-more :status="moreStatus" :show-icon="true"></uni-load-more>
+			<uni-load-more :status="tabList[TabCur].requestData.moreStatus" :show-icon="true"></uni-load-more>
 	</view>
 </template>
 
@@ -236,13 +236,12 @@
 	import separator from "@/components/separator.vue"
 	import mGoods from '@/components/goods/goods.vue'
 	import WlmTab from '@/components/wlm-tab/wlm-tab.vue'
-	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue'
+	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue' //可选值：more（loading前）、loading（loading中）、noMore（没有更多了）
 	import uniNavBar from "@/components/uni-nav-bar/uni-nav-bar.vue"
 
 	export default {
 		data() {
 			return {
-				moreStatus: 'loading',//可选值：more（loading前）、loading（loading中）、noMore（没有更多了）
 				//首页tab栏
 				TabCur: 0,//当前选中的下标
 				tabList: [
@@ -253,6 +252,7 @@
 						requestData: {
 							page:1,
 							limit:10,
+							moreStatus: 'loading',
 						},
 						goodsList:[],
 					},
@@ -284,7 +284,7 @@
 			await this._getGuessYouLike()
 		},
 		async onReachBottom() {
-			if (this.moreStatus === 'noMore') {
+			if (this.tabList[this.TabCur].requestData.moreStatus === 'noMore') {
 				return
 			}
 			this.tabList[this.TabCur].requestData.page ++
@@ -300,6 +300,9 @@
 			},
 			async tabChange(index) {
 				this.TabCur = index
+				if (index === 0) {
+					return
+				}
 				console.log('被点击的tab信息', this.tabList[index])
 				await this.$minApi.category({pid:this.tabList[index].id}).then(res => {
 					if (res.code === 200){
@@ -313,7 +316,7 @@
 
 			},
 			async _getGoodsList(type){
-				this.moreStatus = 'loading'
+				this.tabList[this.TabCur].requestData.moreStatus = 'loading'
 				let data = {
 					type:this.tabList[type].id,
 					page:this.tabList[this.TabCur].requestData.page,
@@ -323,9 +326,9 @@
 					if (res.code === 200){
 						this.tabList[this.TabCur].goodsList.push(...res.data)
 						if (res.data.length <  this.tabList[this.TabCur].requestData.limit) {
-							this.moreStatus = 'noMore'
+							this.tabList[this.TabCur].requestData.moreStatus = 'noMore'
 						} else {
-							this.moreStatus = 'more'
+							this.tabList[this.TabCur].requestData.moreStatus = 'more'
 						}
 					}
 				})
@@ -337,7 +340,7 @@
 				this.$minApi.category({pid}).then(res => {
 					if (res.code === 200){
 						let newArr = res.data.map((item, index) => {
-							item .requestData = {page:1, limit:10}
+							item .requestData = {page:1, limit:10, moreStatus: 'loading'}
 							item .goodsList = []
 							return item
 						})
@@ -356,7 +359,7 @@
 				console.log(this.swiperList[key])
 			},
 			_getGuessYouLike() {
-				this.moreStatus = 'loading'
+				this.tabList[this.TabCur].requestData.moreStatus = 'loading'
 				let data = {
 					page:this.tabList[this.TabCur].requestData.page,
 					limit:this.tabList[this.TabCur].requestData.limit,
@@ -365,9 +368,9 @@
 					if (res.code === 200){
 						this.tabList[this.TabCur].goodsList.push(...res.data)
 						if (res.data.length <  this.tabList[this.TabCur].requestData.limit) {
-							this.moreStatus = 'noMore'
+							this.tabList[this.TabCur].requestData.moreStatus = 'noMore'
 						} else {
-							this.moreStatus = 'more'
+							this.tabList[this.TabCur].requestData.moreStatus = 'more'
 						}
 					}
 				})

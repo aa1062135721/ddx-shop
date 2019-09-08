@@ -147,8 +147,14 @@ export default {
      * 猜你喜欢商品
      */
     guessYouLike(data) {
-      return minRequest.post('/Index/like_item', data)
+      return minRequest.get('/Index/like_item', data)
     },
 
+    /**
+     * 根据分类获取商品列表
+     */
+    goodsByCategoryId(data) {
+      return minRequest.get('/Index/getItem_category', data)
+    },
   }
 }

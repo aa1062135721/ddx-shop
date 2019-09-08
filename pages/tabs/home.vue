@@ -62,38 +62,6 @@
 							<text>限时抢购</text>
 						</view>
 					</view>
-					<view class="item">
-						<view>
-							<image src="../../static/icon/icon-pay-succeed.png"></image>
-						</view>
-						<view>
-							<text>限时抢购</text>
-						</view>
-					</view>
-					<view class="item">
-						<view>
-							<image src="../../static/icon/icon-pay-succeed.png"></image>
-						</view>
-						<view>
-							<text>限时抢购</text>
-						</view>
-					</view>
-					<view class="item">
-						<view>
-							<image src="../../static/icon/icon-pay-succeed.png"></image>
-						</view>
-						<view>
-							<text>限时抢购</text>
-						</view>
-					</view>
-					<view class="item">
-						<view>
-							<image src="../../static/icon/icon-pay-succeed.png"></image>
-						</view>
-						<view>
-							<text>限时抢购</text>
-						</view>
-					</view>
 				</view>
 
 				<view class="limited-time-kill">
@@ -242,6 +210,23 @@
 					</view>
 				</view>
 			</view>
+			<view class="content" v-if="TabCur !== 0">
+				<view class="limited-time">
+					<view class="item" v-for="(item, index) in subTab" :key="index">
+						<view>
+							<image :src="item.thumb" :lazy-load="true"></image>
+						</view>
+						<view>
+							<text>{{item.cname}}</text>
+						</view>
+					</view>
+				</view>
+				<view class="guess-you-like">
+					<view class="goods-list">
+						<mGoods v-for="(item, index) in tabList[TabCur].goodsList" :key="index" :goodsInfo="item" @click.native="_goPage('goods_detail', {id:item.id})"></mGoods>
+					</view>
+				</view>
+			</view>
 			<uni-load-more :status="moreStatus" :show-icon="true"></uni-load-more>
 	</view>
 </template>
@@ -272,6 +257,10 @@
 						goodsList:[],
 					},
 				],
+
+				subTab: [
+
+				],
 				//推荐tab中的轮播图
 				swiperList: [],
 
@@ -301,15 +290,45 @@
 			this.tabList[this.TabCur].requestData.page ++
 			if (this.TabCur === 0) {
 				await this._getGuessYouLike()
+			} else {
+				await this._getGoodsList(this.tabList[this.TabCur].id)
 			}
 		},
 		methods: {
 			_goPage(url, query = {}){
 				this.$openPage({name:url, query})
 			},
-			tabChange(index) {
-				this.TabCur = index;
-				console.log(this.tabList[index])
+			async tabChange(index) {
+				this.TabCur = index
+				console.log('被点击的tab信息', this.tabList[index])
+				await this.$minApi.category({pid:this.tabList[index].id}).then(res => {
+					if (res.code === 200){
+						this.subTab = res.data
+					}
+				})
+				console.log('返回的子分类信息', this.subTab)
+				if (this.tabList[index].goodsList.length===0) {
+					await this._getGoodsList(index)
+				}
+
+			},
+			async _getGoodsList(type){
+				this.moreStatus = 'loading'
+				let data = {
+					type:this.tabList[type].id,
+					page:this.tabList[this.TabCur].requestData.page,
+					limit:this.tabList[this.TabCur].requestData.limit,
+				}
+				await this.$minApi.goodsByCategoryId(data).then(res => {
+					if (res.code === 200){
+						this.tabList[this.TabCur].goodsList.push(...res.data)
+						if (res.data.length <  this.tabList[this.TabCur].requestData.limit) {
+							this.moreStatus = 'noMore'
+						} else {
+							this.moreStatus = 'more'
+						}
+					}
+				})
 			},
 			tabChange2(index) {
 				this.TabCur2 = index;

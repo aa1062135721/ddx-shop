@@ -14,8 +14,8 @@
 		<!-- 商品主图轮播 -->
 		<view class="swiper-box">
 			<swiper circular="true" autoplay="true" :indicator-dots="true" indicator-active-color="#FC8A8A">
-				<swiper-item v-for="(img_src,index) in swiperList" :key="index">
-					<image :src="img_src" @click="previewImg(img_src, swiperList)"></image>
+				<swiper-item v-for="(img_src,index) in goodsInfo.pics" :key="index">
+					<image :src="img_src" @click="previewImg(img_src, goodsInfo.pics)"></image>
 				</swiper-item>
 			</swiper>
 		</view>
@@ -23,53 +23,57 @@
 		<view class="info-box goods-info">
 			<view class="price">
 				<view>
-					<text class="one">￥500.96</text>
-					<text class="two">￥680</text>
+					<text class="one">￥{{goodsInfo.price}}</text>
+<!--					<text class="two">￥680</text>-->
 				</view>
 				<view>
-					<text class="two">月销 600</text>
+					<text class="two">月销 {{goodsInfo.sales}}</text>
 				</view>
 			</view>
 			<view class="title">
-				<text class="tag">直营</text>
-				我是商品标题我是商品标题我是商品标题我是商品标题我是商品标题我是商品标题我是商品标题我是商品标题我是商品标题
+				<text class="tag" v-if="goodsInfo.mold">{{goodsInfo.mold}}</text>
+				{{goodsInfo.title}}
 			</view>
 		</view>
 
 		<!--商品信息  -->
 		<view class="info-box goods-info2">
-			<view class="item">
-				<view class="one">
-					<text class="title">配送</text>
-					<text class="comtent">重庆市 市辖区 渝北区</text>
-				</view>
-				<view class="two">
-					<text class="iconfont icon-ddx-shop-content_arrows"></text>
-				</view>
-			</view>
-			<view class="item">
+<!--			<view class="item">-->
+<!--				<view class="one">-->
+<!--					<text class="title">配送</text>-->
+<!--					<text class="comtent">重庆市 市辖区 渝北区</text>-->
+<!--				</view>-->
+<!--				<view class="two">-->
+<!--					<text class="iconfont icon-ddx-shop-content_arrows"></text>-->
+<!--				</view>-->
+<!--			</view>-->
+			<view class="item" v-if="goodsInfo.specs_list.length" @click="open('chooses')">
 				<view class="one">
 					<text class="title">选择</text>
-					<text class="comtent">2罐装，1件</text>
+					<text class="comtent">
+						<text v-for="(item, index) in choosesGoodsInfo.specs_ids" :key="index" style="margin-right: 4upx;">{{item.name}}</text>
+						<text v-if="!choosesGoodsInfo.specs_ids.length">请选择规格</text>
+					</text>
 				</view>
 				<view class="two">
 					<text class="iconfont icon-ddx-shop-content_arrows"></text>
 				</view>
 			</view>
-			<view class="item">
-				<view class="one">
-					<text class="title">运费</text>
-					<text class="comtent">10元邮费</text>
-				</view>
-				<view class="two">
-					<text class="iconfont icon-ddx-shop-content_arrows"></text>
-				</view>
-			</view>
+<!--			<view class="item">-->
+<!--				<view class="one">-->
+<!--					<text class="title">运费</text>-->
+<!--					<text class="comtent">10元邮费</text>-->
+<!--				</view>-->
+<!--				<view class="two">-->
+<!--					<text class="iconfont icon-ddx-shop-content_arrows"></text>-->
+<!--				</view>-->
+<!--			</view>-->
 			<view class="item">
 				<view class="one">
 					<view class="title">数量</view>
 					<view class="comtent">
-						<uni-number-box :min="1" :value="1" :step="1"></uni-number-box>
+						<uni-number-box v-if="specsInfo.store !== -1" :min="1" :step="1" :max="specsInfo.store" :value="choosesGoodsInfo.num" @change="changeNum"></uni-number-box>
+						<uni-number-box v-else :min="1" :step="1" :value="choosesGoodsInfo.num" @change="changeNum"></uni-number-box>
 					</view>
 				</view>
 				<view class="two">
@@ -106,7 +110,9 @@
 		<!-- 详情 -->
 		<view class="description">
 			<separator title="图文详情" bgColor="#fff"></separator>
-			<view class="content"><rich-text :nodes="descriptionStr"></rich-text></view>
+			<view class="content">
+				<image v-for="(img, index) in goodsInfo.content" :src="img" :key="index" style="width: 100%;"></image>
+			</view>
 		</view>
 
 		<!-- 底部菜单 -->
@@ -123,9 +129,11 @@
 				</view>
 			</view>
 			<view class="btn">
-				<view class="joinCart" @click="open()">加入购物车</view>
-				<view class="buy" @click="open()">立即购买</view>
-				<!-- <view class='over'>已售完</view> -->
+				<block v-if="specsInfo.store">
+					<view class="joinCart" @click="open('car')">加入购物车</view>
+					<view class="buy" @click="open('buy')">立即购买</view>
+				</block>
+				<view class='over' v-else>已售完</view>
 			</view>
 		</view>
 
@@ -135,12 +143,17 @@
 				<view class="goods-info">
 					<view class="main">
 						<view class="image">
-							<image class="img" src='../../static/images/goods.jpg'></image>
+							<image class="img" :src='specsInfo.pic'></image>
 						</view>
 						<view class="info">
-							<view class="price">￥398</view>
-							<view class="stock">库存充足</view>
-							<view class="chooses">已选：黄色,S</view>
+							<view class="price">￥{{specsInfo.price}}</view>
+							<view class="stock">
+								<text v-if="specsInfo.store === -1">库存充足</text>
+								<text v-else>库存：{{specsInfo.store}}</text>
+							</view>
+							<view class="chooses">已选：
+								<text v-for="(item, index) in choosesGoodsInfo.specs_ids" :key="index" style="margin-right: 4upx;">{{item.name}}</text>
+							</view>
 						</view>
 						<view class="close">
 							<text class="iconfont icon-ddx-shop-close" @click="close()"></text>
@@ -148,28 +161,12 @@
 					</view>
 				</view>
 				<view class="specification">
-					<view class="main">
+					<view class="main" v-for="(item, index) in goodsInfo.specs_list" :key="index">
 						<view class="title">
-							主要颜色
+							{{item.tname}}
 						</view>
 						<view class="content">
-							<text class="on">黄色</text>
-							<text>白色</text>
-							<text>其他</text>
-							<text>水水水水</text>
-							<text>黄色</text>
-							<text>白色</text>
-							<text>其他</text>
-						</view>
-					</view>
-					<view class="main">
-						<view class="title">
-							尺码
-						</view>
-						<view class="content">
-							<text>XS</text>
-							<text class="on">S</text>
-							<text>M</text>
+							<text v-for="(sItem, sIndex) in item.value" :key="sIndex" @click="choosesSpecs(index, sIndex)" :class="{on: sItem.isActive}">{{sItem.name}}</text>
 						</view>
 					</view>
 				</view>
@@ -179,17 +176,21 @@
 							购买数量
 						</view>
 						<view class="content">
-							<uni-number-box :min="1" :value="1" :step="1"></uni-number-box>
+							<uni-number-box v-if="specsInfo.store !== -1" :min="1" :step="1" :max="specsInfo.store" :value="choosesGoodsInfo.num" @change="changeNum"></uni-number-box>
+							<uni-number-box v-else :min="1" :step="1" :value="choosesGoodsInfo.num" @change="changeNum"></uni-number-box>
 						</view>
 					</view>
 				</view>
 				<view class="btns">
-					<view class="btn" style="background:#FC8A8A;">
-						加入购物车
-					</view>
-					<view class="btn">
-						立即购买
-					</view>
+					<block v-if="specsInfo.store">
+						<view class="btn" style="background:#FC8A8A;">
+							加入购物车
+						</view>
+						<view class="btn">
+							立即购买
+						</view>
+					</block>
+					<view class='over' v-else>已售完</view>
 				</view>
 			</view>
 		</uni-popup>
@@ -210,18 +211,47 @@
 				beforeHeaderOpacity: 1,//不透明度
 				afterHeaderOpacity: 0,//不透明度
 
-				//轮播主图数据
-				swiperList: [
-					'https://ae01.alicdn.com/kf/HTB1Mj7iTmzqK1RjSZFjq6zlCFXaP.jpg',
-					'https://ae01.alicdn.com/kf/HTB1fbseTmzqK1RjSZFLq6An2XXaL.jpg',
-					'https://ae01.alicdn.com/kf/HTB1dPUMThnaK1RjSZFtq6zC2VXa0.jpg',
-					'https://ae01.alicdn.com/kf/HTB1OHZrTXzqK1RjSZFvq6AB7VXaw.jpg'
-				],
+				// 商品信息
+				goodsInfo:{
+					id: 17,   //id
+					title: "奶粉罐装",    //名称
+					mold_id: 2,
+					price: "90.00",   //  金额
+					initial_sales: 36,
+					reality_sales: 0,
+					lvid: 2,
+					content: [],//图文详情
+					pics: ["http://picture.ddxm661.com/6dae4201909051617308036.jpg"],//图片
+					sales: 36,        //销量
+					specs_list: [
+						{
+							tid: "1",
+							tname: "颜色",        //规格组名称
+							value:[     //详细规格
+								{
+									id: 35,       //规格id（注意，选规格时传入此id的组合）
+									name: "黄色"  //规格名称
+								},
+							],
+							cont: 2
+						},
+					],
+					mold: "第一.1类型"    //类型
+				},
+				specsInfo:{
+					price: 0.00,//金额
+					store: 0, //库存，注意：库存为-1表示无限库存，反正则为库存剩余数
+					pic: '', //对应规格的图片
+				},
+
 				anchorlist:[],//导航条锚点
 				selectAnchor:0,//选中锚点
 
-				descriptionStr:'<div style="text-align:center;"><img width="100%" src="https://ae01.alicdn.com/kf/HTB1t0fUl_Zmx1VjSZFGq6yx2XXa5.jpg"/><img width="100%" src="https://ae01.alicdn.com/kf/HTB1LzkjThTpK1RjSZFKq6y2wXXaT.jpg"/><img width="100%" src="https://ae01.alicdn.com/kf/HTB18dkiTbvpK1RjSZPiq6zmwXXa8.jpg"/></div>',
-
+				//当前已经选择了的商品，数量
+				choosesGoodsInfo:{
+					specs_ids:[],//规格子id的组合
+					num:1,//选择购物数量
+				},
 			}
 		},
 		methods:{
@@ -269,19 +299,98 @@
 				uni.navigateBack();
 			},
 			//打开选择规格弹框
-			open(){
-				this.$refs.selectSpecification.open()
+			open(type){
+				switch (type) {
+					case 'car':
+						if (this.choosesGoodsInfo.specs_ids.length !== this.goodsInfo.specs_list.length){
+							this.$refs.selectSpecification.open()
+						} else {
+							console.log('购物车按钮')
+						}
+						break
+					case 'buy':
+						if (this.choosesGoodsInfo.specs_ids.length !== this.goodsInfo.specs_list.length){
+							this.$refs.selectSpecification.open()
+						} else {
+							console.log('立即购买')
+						}
+						break
+					case 'chooses':
+						console.log('选择规格')
+						this.$refs.selectSpecification.open()
+						break
+				}
 			},
 			close(){
 				this.$refs.selectSpecification.close()
+			},
+			//购买数量更改
+			changeNum(e){
+				console.log(e)
+				this.choosesGoodsInfo.num = e
 			},
 			//选择规格
 			change(e) {
 				console.log(e.show)
 			},
+			choosesSpecs(index, sIndex){
+				console.log(index,sIndex)
+				console.log(this.goodsInfo.specs_list[index].value[sIndex])
+				this.goodsInfo.specs_list[index].value.map((item) => {
+					return item.isActive = false
+				})
+				this.goodsInfo.specs_list[index].value[sIndex].isActive = !this.goodsInfo.specs_list[index].value[sIndex].isActive
+				this.choosesSpecsInfo()
+			},
+			async choosesSpecsInfo() {
+				let arr = []
+				this.goodsInfo.specs_list.map((item) => {
+					item.value.map((sItem) => {
+						if (sItem.isActive){
+							arr.push(sItem)
+						}
+					})
+				})
+				console.log(arr)
+				this.choosesGoodsInfo.specs_ids = arr
+				if (arr.length === this.goodsInfo.specs_list.length){
+					let arr_ids = []
+					arr.map((item) => {
+						arr_ids.push(item.id)
+					})
+					let data = {
+						specs_ids: arr_ids.join('_'),
+						id: this.$parseURL().id,
+					}
+					await this.$minApi.goodsDetailSpecs(data).then(res => {
+						console.log(res)
+						if (res.code === 200) {
+							this.specsInfo = res.data
+						}
+					})
+				}
+			},
 		},
-		onLoad(option) {
+		async onLoad() {
 			console.log("带过来的参数",this.$parseURL())
+			await this.$minApi.goodsDetail({id:this.$parseURL().id}).then(res => {
+				console.log(res)
+				if (res.code === 200){
+					res.data.specs_list.map((item, index) => {
+						res.data.specs_list[index].value.map((sItem, sIndex) => {
+							if (sIndex === 0) {
+								return sItem.isActive = true
+							} else {
+								return sItem.isActive = false
+							}
+						})
+					})
+					this.goodsInfo = res.data
+				}
+			})
+			if (this.goodsInfo.specs_list){
+				await this.choosesSpecsInfo()
+			}
 		},
 		onReady(){
 			this.calcAnchor();//计算锚点高度，页面数据是ajax加载时，请把此行放在数据渲染完成事件中执行以保证高度计算正确
@@ -742,6 +851,14 @@
 				height: 98upx;
 				line-height: 98upx;
 				width: 50%;
+			}
+			.over{
+				background: #666666;;
+				font-size: $uni-font-size-lg;
+				text-align: center;
+				height: 98upx;
+				line-height: 98upx;
+				width: 100%;
 			}
 		}
 	}

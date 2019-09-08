@@ -156,5 +156,20 @@ export default {
     goodsByCategoryId(data) {
       return minRequest.get('/Index/getItem_category', data)
     },
+
+    /**
+     * 商品详情
+     */
+    goodsDetail(data) {
+      return minRequest.get('/Index/item_info', data)
+    },
+
+    /**
+     * 商品详情-获取规格对应的价格与金额
+     */
+    goodsDetailSpecs(data) {
+      return minRequest.get('/Index/info_specs', data)
+    },
+
   }
 }

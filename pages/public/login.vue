@@ -3,12 +3,11 @@
 		<view style="height: 100%;width: 100%;background: #333333;opacity:0.5;"></view>
 		<view class="fixed">
 			<view class="btns">
-				<button class="btn1" type="primary" open-type="getUserInfo" withCredentials="true" lang="zh_CN" @getuserinfo="wxGetUserInfo" :disabled="!isAgreement">
+				<button class="btn1" type="primary" open-type="getUserInfo" withCredentials="true" lang="zh_CN" @getuserinfo="wxGetUserInfo" :disabled="!isAgreement" v-if="!responseData.openId">
 					<text class="iconfont icon-ddx-shop-wechat"></text>
-					微信一键登录
+					授权微信昵称、头像
 				</button>
-<!--				<button class="btn1" type="primary" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">获取电话号码</button>-->
-				<button class="btn2" type="default" plain @click="this.$openPage('login-with-mobile')" :disabled="!isAgreement">手机号登录</button>
+				<button class="btn2" type="default" plain @click="_goPage('login-with-mobile', responseData)" :disabled="!isAgreement" v-if="responseData.openId">手机号登录</button>
 			</view>
 			<view>
 				<checkbox-group  @change="checkboxChange">
@@ -22,18 +21,6 @@
 				</checkbox-group>
 			</view>
 		</view>
-		<uni-popup ref="popup" type="center" :custom="true" :mask-click="false">
-			<view class="uni-tip">
-				<view class="uni-tip-title">{{agreement.title}}</view>
-				<view class="uni-tip-content">
-					{{agreement.content}}
-				</view>
-				<view class="uni-tip-group-button">
-					<view class="uni-tip-button" @click="closePopup()">取消</view>
-					<view class="uni-tip-button" @click="closePopup()">确定</view>
-				</view>
-			</view>
-		</uni-popup>
 	</view>
 
 </template>
@@ -47,13 +34,13 @@
 		data(){
         	return {
         		isAgreement: false,
-        		agreement: {
-        			title: '',
-					content: ''
-				},
+				responseData:{},
 			}
 		},
 		methods:{
+			_goPage(url, query = {}){
+				this.$openPage({name:url, query})
+			},
 			checkboxChange(e) {
 				if (e.detail.value.length) {
 					this.isAgreement = true
@@ -67,67 +54,53 @@
 				}).then(res => {
 					console.log(res)
 					if (res.code === 200) {
-						this.agreement.title = res.data.title
-						this.agreement.content = res.data.content
-						this.$refs.popup.open()
+						this._goPage('rich_text', res.data)
 					}
-				}).catch(err => {
-					console.log(err)
 				})
-			},
-			closePopup(){
-			    this.$refs.popup.close()
-			},
-			login(){
-				this.saveToken("tokenssssssssssssssssssssssssssssssssssss")
-				uni.navigateBack({
-					delta: 2
-				});
 			},
 			 //第一授权获取用户信息===》按钮触发
 			async wxGetUserInfo() {
-				this.saveToken("tokenssssssssssssssssssssssssssssssssssss")
 				await uni.login({
-					provider: 'weixin',
-					success: async (res) => {
-						console.log("code",res)
-						await uni.getUserInfo({
-							provider: 'weixin',
-							lang: 'zh_CN',
-							withCredentials:true,
-							success: async (infoRes) =>{
-								console.log("userInfo",infoRes)
-								await this.$minApi.loginWeChat({
-									js_code: res.code,
-									iv: infoRes.iv,
-									encryptedData: infoRes.encryptedData,
-								}).then(res => {
-									console.log(res)
-								}).catch(err => {
-									console.log(err)
-								})
-							},
-							fail(res) {}
-						});
-					}
-				})
+						provider: 'weixin',
+						success: async (res) => {
+							console.log("code",res)
+							await uni.getUserInfo({
+								provider: 'weixin',
+								lang: 'zh_CN',
+								withCredentials:true,
+								success: async (infoRes) =>{
+									console.log("userInfo",infoRes)
+									await this.$minApi.loginWeChat({
+										js_code: res.code,
+										iv: infoRes.iv,
+										encryptedData: infoRes.encryptedData,
+									}).then(res => {
+										console.log(res)
+										// TODO
+										// 如果是返回token保存，否则用手机号授权登录
+										if (res.code === 200) {
+											this.saveToken(res.data.token)
+											this.$minApi.getUserInfo().then(userInfo => {
+												if (userInfo.code === 200) {
+													this.saveUserInfo(userInfo.data)
+												}
+											}).catch(err => {
+												console.log(err)
+											})
+											uni.navigateBack()
+										} else if (res.code === 400) {
+											this.responseData = res.data
+										}
+									}).catch(err => {
+										console.log(err)
+									})
+								},
+								fail(res) {}
+							});
+						}
+					})
 			},
-			//获取用户手机号
-			getPhoneNumber: function(e) {
-				uni.login({
-					provider: 'weixin',
-					success: (res) => {
-						console.log("code", res)
-					}
-				})
-				console.log(e);
-				if (e.detail.errMsg == 'getPhoneNumber:fail user deny') {
-					console.log('用户拒绝提供手机号');
-				} else {
-					console.log('用户同意提供手机号');
-				}
-			},
-				...mapActions(['saveToken', 'saveUserInfo'])
+			...mapActions(['saveToken', 'saveUserInfo'])
 		}
     }
 </script>

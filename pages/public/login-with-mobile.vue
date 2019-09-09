@@ -24,6 +24,9 @@
               canGetCode: false,
           }
         },
+        onLoad(){
+          console.log("带过来的参数",this.$parseURL())
+        },
         methods:{
             ...mapActions(['saveToken', 'saveUserInfo']),
             async getCode(){
@@ -42,9 +45,12 @@
             },
             async login(){
                 if (this.isPoneAvailable(this.mobile, true) &&  this.code.length > 0) {
-                    await this.$minApi.mobileLogin({
+                    await this.$minApi.wxLoginBMobile({
                         mobile: this.mobile,
                         code: this.code,
+                        openid: this.$parseURL().openId,
+                        avatarUrl: this.$parseURL().avatarUrl,
+                        nickName: this.$parseURL().nickName,
                     }).then(res => {
                         this.saveToken(res.data.token)
                         this.$minApi.getUserInfo().then(userInfo => {

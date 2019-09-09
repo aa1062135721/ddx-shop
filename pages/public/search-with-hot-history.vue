@@ -39,6 +39,7 @@
 
 <script>
     import mSearch from '@/components/search/mehaotian-search.vue'
+
     export default {
         name: "search-with-hot-history",
         data(){

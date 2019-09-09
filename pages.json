@@ -104,6 +104,12 @@
 			"style": {
 				"navigationBarTitleText": "网页"
 			}
+		},
+		{
+			"path": "pages/web-view/rich-text",
+			"style": {
+				"navigationBarTitleText": "富文本"
+			}
 		}
 	],
 	"globalStyle": {

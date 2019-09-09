@@ -3,11 +3,13 @@
         <view class="bg">
             <view class="user-info">
                 <view class="head">
-                    <image src="../../static/images/goods.jpg"></image>
+                    <image :src="userInfo.pic" v-if="userInfo.pic"></image>
+                    <image src="../../static/images/head.png" v-else @click="goPage('login')"></image>
                 </view>
                 <view class="name">
-                    <text class="one">{{userInfo.nickname}}</text>
-                    <text class="two">粉丝 20</text>
+                    <text class="one" v-if="userInfo.nickName">{{userInfo.nickname}}</text>
+                    <text class="one" v-else @click="goPage('login')">未登录</text>
+                    <text class="two" v-if="userInfo.nickName">粉丝 20</text>
                 </view>
                 <view class="setting">
                     <text class="iconfont icon-ddx-shop-setting"></text>
@@ -52,7 +54,7 @@
                         <text class="iconfont icon-ddx-shop-content_arrows"></text>
                     </view>
                 </view>
-                <view class="box">
+                <view class="box" style="justify-content: space-between;">
                     <view class="item" @click="goPage('order_list',{type:1})">
                         <view>
                             <i class="iconfont icon-ddx-shop-daifukuan"></i>
@@ -62,14 +64,14 @@
                         </view>
                         <view class="red">11</view>
                     </view>
-                    <view class="item" @click="goPage('order_list',{type:2})">
-                        <view>
-                            <i class="iconfont icon-ddx-shop-daichengtuan"></i>
-                        </view>
-                        <view>
-                            <text>待成团</text>
-                        </view>
-                    </view>
+<!--                    <view class="item" @click="goPage('order_list',{type:2})">-->
+<!--                        <view>-->
+<!--                            <i class="iconfont icon-ddx-shop-daichengtuan"></i>-->
+<!--                        </view>-->
+<!--                        <view>-->
+<!--                            <text>待成团</text>-->
+<!--                        </view>-->
+<!--                    </view>-->
                     <view class="item" @click="goPage('order_list',{type:3})">
                         <view>
                             <i class="iconfont icon-ddx-shop-daifahuo1"></i>
@@ -113,6 +115,14 @@
                             <text>经营数据</text>
                         </view>
                     </view>
+                    <view class="item" style="width: 25%;">
+                        <view>
+                            <image src="../../static/icon/business-data.png"></image>
+                        </view>
+                        <view>
+                            <text>经营数据(原)</text>
+                        </view>
+                    </view>
                     <view class="item" style="width: 25%;" @click="goPage('address_list')">
                         <view>
                             <image src="../../static/icon/location.png"></image>
@@ -121,7 +131,7 @@
                             <text>收货地址</text>
                         </view>
                     </view>
-                    <view class="item" style="width: 25%;">
+                    <view class="item" style="width: 25%;display: none;">
                         <view>
                             <image src="../../static/icon/invite-friend.png"></image>
                         </view>
@@ -129,7 +139,7 @@
                             <text>邀请好友</text>
                         </view>
                     </view>
-                    <view class="item" style="width: 25%;">
+                    <view class="item" style="width: 25%;display: none;">
                         <view>
                             <image src="../../static/icon/collection.png"></image>
                         </view>
@@ -137,7 +147,7 @@
                             <text>我的收藏</text>
                         </view>
                     </view>
-                    <view class="item" style="width: 25%;">
+                    <view class="item" style="width: 25%;display: none;">
                         <view>
                             <image src="../../static/icon/footprint.png"></image>
                         </view>
@@ -145,7 +155,7 @@
                             <text>我的足迹</text>
                         </view>
                     </view>
-                    <view class="item" style="width: 25%;">
+                    <view class="item" style="width: 25%;display: none;">
                         <view>
                             <image src="../../static/icon/suggestion.png"></image>
                         </view>

@@ -112,6 +112,12 @@ const router = new MinRouter({
 			name: 'web_view',
 			login: false
 		},
+		{
+			path: "pages/web-view/rich-text",
+			type: 'navigateTo',
+			name: 'rich_text',
+			login: false
+		},
 	]
 })
 

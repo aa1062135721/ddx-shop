@@ -68,7 +68,7 @@
                   page:1,
                   limit:10,
               },
-              moreStatus: 'loading',
+              moreStatus: 'noMore',
               //统计
               mySum:{
                   sum_money:0.00,

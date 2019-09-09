@@ -101,6 +101,12 @@ export default {
       return minRequest.post('/login/mobileLogin', data)
     },
     /**
+     * 微信登陆-绑定手机号
+     */
+    wxLoginBMobile(data) {
+      return minRequest.post('/Login/bd_mobile', data)
+    },
+    /**
      * 获取用户信息
      */
     getUserInfo (data) {
@@ -202,6 +208,13 @@ export default {
      */
     carEdit(data) {
       return minRequest.post('/cart/edit_cart', data)
+    },
+
+    /**
+     * 搜索界面-热搜与历史搜索
+     */
+    searchHistoryOrHot(data) {
+      return minRequest.post('/Index/search_history', data)
     },
 
   }

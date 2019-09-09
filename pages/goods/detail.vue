@@ -36,6 +36,44 @@
 			</view>
 		</view>
 
+		<!--服务说明-->
+		<view class="info-box goods-info2" v-if="goodsInfo.item_service_ids.length" @click="openService">
+			<view class="item">
+				<view class="one">
+					<text class="title">服务</text>
+					<text class="comtent">
+						<block v-for="(serviceItem, serviceIndex) in goodsInfo.item_service_ids" :key="serviceIndex">
+							<block v-if="serviceIndex + 1 !== goodsInfo.item_service_ids.length">{{serviceItem.title + ' · '}}</block>
+							<block v-else>{{serviceItem.title}}</block>
+						</block>
+					</text>
+				</view>
+				<view class="two">
+					<text class="iconfont icon-ddx-shop-content_arrows"></text>
+				</view>
+			</view>
+		</view>
+		<!-- 购买的时候选择规格，数量…… -->
+		<uni-popup ref="myService" type="bottom" :custom="true">
+			<view class="my-service">
+				<view class="my-service-title">服务说明</view>
+				<view class="my-service-box">
+					<view class="item" v-for="(item, index) in goodsInfo.item_service_ids" :key="index">
+						<view class="title-and-point">
+							<view class="point"></view>
+							<view class="title">{{item.title}}</view>
+						</view>
+						<view class="title-and-point">
+							<view class="point on"></view>
+							<view class="title on">{{item.content}}</view>
+						</view>
+
+					</view>
+				</view>
+				<view class="btn" @click="closeService">确定</view>
+			</view>
+		</uni-popup>
+
 		<!--商品信息  -->
 		<view class="info-box goods-info2">
 <!--			<view class="item">-->
@@ -393,6 +431,15 @@
 					}
 				})
 			},
+
+			//打开服务说明
+			openService(){
+				this.$refs.myService.open()
+			},
+			closeService(){
+				this.$refs.myService.close()
+			},
+
 		},
 		async onLoad() {
 			console.log("带过来的参数",this.$parseURL())
@@ -889,5 +936,72 @@
 		}
 	}
 
+	/* 服务说明  */
+	.service{
+		.service-point{
+			padding: 0 8upx;
+			font-size: $uni-font-size-lg;
+			&:last-child{
+				display: none;
+			}
+		}
+	}
+	.my-service {
+		background: #fff;
+		.my-service-title {
+			@extend %border-color-solid-botton;
+			line-height: 60upx;
+			font-size: $uni-font-size-lg;
+			padding: 15upx 0;
+			text-align: center;
+		}
+		.my-service-box {
+			background: #fff;
+			padding: $uni-spacing-row-base;
+			display: flex;
+			flex-direction: column;
+			.item{
+				display: flex;
+				flex-direction: column;
+				padding:$uni-spacing-col-base;
+				.title-and-point{
+					padding: $uni-spacing-col-sm 0;
+					font-size: $uni-font-size-lg;
+					color: #1A1A1A;
+					display: flex;
+					flex-direction: row;
+					align-items: center;
+					.point{
+						margin-right: 20upx;
+						width: 14upx;
+						height: 14upx;
+						border-radius: 50%;
+						background: #E4E4E4;
+						&.on{
+							opacity: 0;
+						}
+					}
+					.title{
+						font-size: $uni-font-size-lg;
+						color: #1A1A1A;
+						&.on{
+							font-size: $uni-font-size-base;
+							color: #808080;
+						}
+					}
+				}
+			}
+		}
+		.btn{
+			margin-top: 300upx;
+			width: 100%;
+			height: 98upx;
+			line-height: 98upx;
+			font-size: $uni-font-size-lg;
+			color: #ffffff;
+			text-align: center;
+			background: $color-primary;
+		}
+	}
 }
 </style>

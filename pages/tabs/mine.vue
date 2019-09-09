@@ -107,7 +107,7 @@
                     </view>
                 </view>
                 <view class="box">
-                    <view class="item" style="width: 25%;">
+                    <view class="item" style="width: 25%;" @click="goPage('web_view', {url: 'http://192.168.0.105:8080'})">
                         <view>
                             <image src="../../static/icon/business-data.png"></image>
                         </view>
@@ -115,7 +115,7 @@
                             <text>经营数据</text>
                         </view>
                     </view>
-                    <view class="item" style="width: 25%;">
+                    <view class="item" style="width: 25%;" @click="goPage('web_view', {url: 'http://dd.ddxm661.com/dist/#/home/mall'})">
                         <view>
                             <image src="../../static/icon/business-data.png"></image>
                         </view>

@@ -183,10 +183,10 @@
 				</view>
 				<view class="btns">
 					<block v-if="specsInfo.store">
-						<view class="btn" style="background:#FC8A8A;">
+						<view class="btn" style="background:#FC8A8A;" @click="open('car')">
 							加入购物车
 						</view>
-						<view class="btn">
+						<view class="btn" @click="open('buy')">
 							立即购买
 						</view>
 					</block>
@@ -376,6 +376,9 @@
 			await this.$minApi.goodsDetail({id:this.$parseURL().id}).then(res => {
 				console.log(res)
 				if (res.code === 200){
+					if(!res.data.specs_list){
+						res.data.specs_list = []
+					}
 					res.data.specs_list.map((item, index) => {
 						res.data.specs_list[index].value.map((sItem, sIndex) => {
 							if (sIndex === 0) {
@@ -388,7 +391,7 @@
 					this.goodsInfo = res.data
 				}
 			})
-			if (this.goodsInfo.specs_list){
+			if (this.goodsInfo.specs_list.length){
 				await this.choosesSpecsInfo()
 			}
 		},

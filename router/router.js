@@ -106,6 +106,12 @@ const router = new MinRouter({
 			name: 'order_detail',
 			login: true
 		},
+		{
+			path: "pages/web-view/web-view",
+			type: 'navigateTo',
+			name: 'web_view',
+			login: false
+		},
 	]
 })
 

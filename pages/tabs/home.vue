@@ -357,6 +357,19 @@
 			},
 			_clickBanner(key) {
 				console.log(this.swiperList[key])
+				// this.swiperList[key].type   //类型：1不跳转，2:跳转页面（地址加全），3商品详情',
+				// this.swiperList[key].value //跳转地址：type=2时为地址，type=3时为商品id
+				switch (this.swiperList[key].type) {
+					case 1:
+
+						break
+					case 2:
+						this._goPage('web_view',{url: this.swiperList[key].value})
+						break
+					case 3:
+						this._goPage('goods_detail',{id: this.swiperList[key].value})
+						break
+				}
 			},
 			_getGuessYouLike() {
 				this.tabList[this.TabCur].requestData.moreStatus = 'loading'

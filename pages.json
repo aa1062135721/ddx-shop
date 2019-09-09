@@ -98,6 +98,12 @@
 			"style": {
 				"navigationBarTitleText": "搜索"
 			}
+		},
+		{
+			"path": "pages/web-view/web-view",
+			"style": {
+				"navigationBarTitleText": "网页"
+			}
 		}
 	],
 	"globalStyle": {

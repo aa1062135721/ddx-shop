@@ -40,6 +40,14 @@
             </view>
             <uni-load-more :status="moreStatus" v-if="myResponseData.length !== 0"></uni-load-more>
         </view>
+        <view class="no-car-list" v-if="myResponseData.length === 0">
+            <view>购物车没有商品哦</view>
+            <view class="btn">
+                <text @click="_goPage('home')">
+                    去逛逛
+                </text>
+            </view>
+        </view>
         <view class="fixed">
             <view class="chooses-all" @click="choosesAllGoods()">
                 <i class="iconfont icon-ddx-shop-xuanze icon-color" v-if="isCheckedAll"></i>
@@ -57,6 +65,7 @@
 <script>
     import uniNumberBox from "@/components/uni-number-box/uni-number-box.vue"
     import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue'
+    import { mapGetters } from 'vuex'
 
     export default {
         name: "car",
@@ -76,8 +85,10 @@
               }
           }
         },
-        async onLoad(){
-            await this.loadData()
+        async onShow(){
+          if (this.myResponseData.length===0 && this.userInfo.id) {
+              await this.loadData()
+          }
         },
         async onReachBottom() {
             if (this.moreStatus === 'noMore') {
@@ -220,6 +231,7 @@
             },
         },
         computed:{
+            ...mapGetters(['userInfo']),
             //是否全选
             isCheckedAll(){
                 let sum = 0, checked_num = 0
@@ -336,6 +348,22 @@
                         }
                     }
                 }
+            }
+        }
+        .no-car-list{
+            padding: $uni-spacing-row-base;
+            font-size: $uni-font-size-base;
+            color: #AFAFAF;
+            text-align: center;
+            .btn{
+                margin-top: 100upx;
+                text{
+                    color: #fff;
+                    background: $color-primary;
+                    text-align: center;
+                    padding: $uni-spacing-col-lg $uni-spacing-row-lg;
+                }
+
             }
         }
         .fixed{

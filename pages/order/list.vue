@@ -24,7 +24,7 @@
 
                     <!-- 订单列表 -->
                     <view class="car-list">
-                        <view class="section" v-for="(item, key) in tabItem.orderList" :key="key">
+                        <view class="section" v-for="(item, key) in tabItem.orderList" :key="key" @click="goPage('order_detail',{id:item.id})">
                             <view class="shop-name">
                                 <view>{{item.shop_name}}</view>
                                 <view>订单状态</view>
@@ -137,6 +137,9 @@
         },
 
         methods: {
+            goPage(url,query = {}){
+                this.$openPage({name: url, query: query})
+            },
             //获取订单列表
             loadData(source){
                 //这里是将订单挂载到tab列表下

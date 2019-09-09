@@ -201,6 +201,7 @@
 	import uniNumberBox from "@/components/uni-number-box/uni-number-box.vue"
 	import separator from "@/components/separator.vue"
 	import uniPopup from '@/components/uni-popup/uni-popup.vue'
+	import add from "../address/add";
 	export default {
 		data() {
 			return {
@@ -306,6 +307,7 @@
 							this.$refs.selectSpecification.open()
 						} else {
 							console.log('购物车按钮')
+							this.addCar()
 						}
 						break
 					case 'buy':
@@ -369,6 +371,27 @@
 						}
 					})
 				}
+			},
+			//加入购物车
+			async addCar(){
+				this.close()
+				console.log('需要添加到购物车里的数据：', this.choosesGoodsInfo)
+				let arr = []
+				this.choosesGoodsInfo.specs_ids.map((item) => {
+					arr.push(item.id)
+				})
+				let data = {
+					item_id: this.$parseURL().id,
+					specs_ids: arr.join('_'),
+					num: this.choosesGoodsInfo.num
+				}
+				await this.$minApi.carAdd(data).then(res => {
+					console.log(res)
+					if (res.code === 200){
+						// TODO
+						this.msg(res.msg)
+					}
+				})
 			},
 		},
 		async onLoad() {

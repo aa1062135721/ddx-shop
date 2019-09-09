@@ -53,6 +53,11 @@ const codeMessage = {
 
 // 响应拦截器
 minRequest.interceptors.response((response) => {
+  if (response.data.code === "-1") {
+    uni.navigateTo({
+      url: `/pages/public/login`
+    })
+  }
   if (response.statusCode !== 200){
     Vue.prototype.msg(codeMessage[response.statusCode])
   }
@@ -169,6 +174,34 @@ export default {
      */
     goodsDetailSpecs(data) {
       return minRequest.get('/Index/info_specs', data)
+    },
+
+    /**
+     * 添加到购物车
+     */
+    carAdd(data) {
+      return minRequest.post('/cart/add_cart', data)
+    },
+
+    /**
+     * 购物车列表
+     */
+    carList(data) {
+      return minRequest.get('/cart/cart_list', data)
+    },
+
+    /**
+     * 删除购物车商品
+     */
+    carDel(data) {
+      return minRequest.post('/cart/del_cart', data)
+    },
+
+    /**
+     * 修改购物车数量
+     */
+    carEdit(data) {
+      return minRequest.post('/cart/edit_cart', data)
     },
 
   }

@@ -3,7 +3,7 @@
 
 		<view class="navbar">
 			<view class="search">
-				<mSearch mode=2 v-model="searchVal" :show="true" @click.native="goSearch" @search.stop="search()"></mSearch>
+				<mSearch v-model="requestData.searchVal" :show="true"  @search="searchValue"></mSearch>
 			</view>
 			<view class="items">
 				<view class="nav-item" :class="{current: filterIndex === 0}" @click="tabClick(0)">
@@ -27,16 +27,19 @@
 		</view>
 
 		<view class="goods-list">
-			<mGoods></mGoods>
-			<mGoods></mGoods>
-			<mGoods></mGoods>
+			<mGoods v-for="(item, index) in productList" :key="index" :goodsInfo="item" @click.native="_goPage('goods_detail', {id:item.id})"></mGoods>
+		</view>
+		<view>
+			<uni-load-more :status="moreStatus" :show-icon="true"></uni-load-more>
 		</view>
 	</view>
 </template>
 
 <script>
 	import mGoods from '@/components/goods/goods.vue'
-	import mSearch from '@/components/search/mehaotian-search.vue';
+	import mSearch from '@/components/search/mehaotian-search.vue'
+	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue' //可选值：more（loading前）、loading（loading中）、noMore（没有更多了）
+
     export default {
         data() {
             return {
@@ -44,14 +47,17 @@
 				priceOrder: 0, //1 价格从低到高 2价格从高到低
 				currentOrder: 0, //1 销量从低到高 2销量从高到低
                 productList: [],
-				searchVal: '',//搜索的值
+				moreStatus: 'more',
+				requestData:{
+					page: 1,
+					limit:10,
+					searchVal: '',//要搜索的内容
+				}
             }
         },
         methods: {
-        	//点击搜索输入框，到搜索页面
-			goSearch(){
-				if (this.searchVal === '')
-					this.$openPage('search_with_hot_history')
+			_goPage(url, query = {}){
+				this.$openPage({name:url, query})
 			},
 			//筛选点击
 			tabClick(index){
@@ -74,23 +80,66 @@
 					scrollTop: 0
 				})
 			},
-			search(val) {
+			searchValue(val){
 				console.log(val)
+				this.requestData.page = 1
+				this.requestData.searchVal = val
+				this.search()
 			},
-
+			async search() {
+				this.moreStatus = 'loading'
+				let data = {
+					page: this.requestData.page,
+					limit: this.requestData.limit,
+				}
+				if (this.$parseURL().id) {
+					data.type = this.$parseURL().id
+				} else {
+					data.title = this.requestData.searchVal
+				}
+				switch (this.filterIndex) {
+					case 0:
+						break
+					case 1://销量升降序
+						data.sales = this.currentOrder
+						break
+					case 2://价格升降序
+						data.price = this.priceOrder
+				}
+				console.log("请求数据",data)
+				await this.$minApi.searchGoods(data).then(res => {
+					console.log("请求结果",res)
+					if (res.code === 200){
+						if (data.page === 1) {
+							this.productList = res.data
+						} else {
+							this.productList.push(...res.data)
+						}
+						if (res.data.length <  this.requestData.limit) {
+							this.moreStatus = 'noMore'
+						} else {
+							this.moreStatus = 'more'
+						}
+					}
+				})
+			},
         },
         onLoad() {
-        	let _this = this
-			this.$eventHub.$on('search_word', function (data) {
-				_this.searchVal = data
-				console.log("从其他页面传过来的值",data);
-			})
+			console.log("其他页面带过来的值：",this.$parseURL())
+			this.requestData.searchVal = this.$parseURL().title
+			this.search()
         },
-        onReachBottom() {
-        },
+		async onReachBottom() {
+			if (this.moreStatus === 'noMore') {
+				return
+			}
+			this.requestData.page ++
+			await this.search()
+		},
 		components: {
 			mSearch,
-			mGoods
+			mGoods,
+			uniLoadMore,
 		},
     };
 </script>
@@ -153,7 +202,7 @@
 				height: 14upx;
 				line-height: 1;
 				margin-left: 4upx;
-				font-size: 26upx;
+				font-size: 16upx;
 				color: #888;
 				&.active{
 					color: $color-primary;

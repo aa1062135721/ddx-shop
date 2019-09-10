@@ -214,8 +214,23 @@ export default {
      * 搜索界面-热搜与历史搜索
      */
     searchHistoryOrHot(data) {
-      return minRequest.post('/Index/search_history', data)
+      return minRequest.get('/Index/search_history', data)
     },
+
+    /**
+     * 搜索界面-热搜与历史搜索-删除
+     */
+    searchHistoryDel(data) {
+      return minRequest.post('/user/del_history', data)
+    },
+
+    /**
+     * 搜索商品
+     */
+    searchGoods(data) {
+      return minRequest.get('/Index/search_item', data)
+    },
+
 
   }
 }

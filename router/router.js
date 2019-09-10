@@ -77,6 +77,12 @@ const router = new MinRouter({
 			login: false
 		},
 		{
+			path: "pages/goods/search",
+			type: 'redirectTo',
+			name: 'goods_search_redirect',
+			login: false
+		},
+		{
 			path: "pages/goods/detail",
 			type: 'navigateTo',
 			name: 'goods_detail',

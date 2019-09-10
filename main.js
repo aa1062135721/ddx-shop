@@ -31,12 +31,20 @@ Vue.use(Utils)
 //Global event bus
 /**
  * page 1 step 1 *
- * this.$eventHub.$emit('fire','data');
+ * methods{
+ *     fn(){
+ *          this.$eventHub.$emit('search_word','data');
+ *     }
+ * }
  *
  * page 2 step 2 *
- * this.$eventHub.$on('fire', function (data) {
- *     console.log('fire - '+data);
- * });
+ * onLoad() {
+ *    let _this = this
+ *    this.$eventHub.$on('search_word', function (data) {
+ *        _this.getValue = data
+ *        console.log("从其他页面传过来的值",data);
+ *    })
+ * }
  */
 Vue.prototype.$eventHub = new Vue(); // Global event bus
 

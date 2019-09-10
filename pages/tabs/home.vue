@@ -12,8 +12,12 @@
 					</view>
 				</view>
 			</uni-nav-bar>
-			<wuc-tab :tab-list="tabList" :textFlex="true" :tabCur.sync="TabCur" tab-class="tabs"  select-class="tab-select" @change="tabChange"></wuc-tab>
+			<wuc-tab :tab-list="tabList" :textFlex="true" :tabCur.sync="TabCur" tab-class="tabs"  select-class="tab-select" @change="tabChange"
+					 style="position: fixed;left: 0;width: 100%;z-index: 999;"
+					 :style="style"
+			></wuc-tab>
 			<view class="content" v-if="TabCur === 0">
+				<view class="my-block"></view>
 				<view class="swiper-box" v-if="swiperList.length">
 					<swiper circular="true" autoplay="true" :indicator-dots="true" indicator-active-color="#FC8A8A">
 						<swiper-item class="swiper-item" v-for="(item, index) in swiperList" :key="index">
@@ -211,8 +215,9 @@
 				</view>
 			</view>
 			<view class="content" v-if="TabCur !== 0">
+				<view class="my-block"></view>
 				<view class="limited-time">
-					<view class="item" v-for="(item, index) in subTab" :key="index">
+					<view class="item" v-for="(item, index) in subTab" :key="index" @click="_clickSubTab(item)">
 						<view>
 							<image :src="item.thumb" :lazy-load="true"></image>
 						</view>
@@ -388,6 +393,10 @@
 					}
 				})
 			},
+			_clickSubTab(item){
+				console.log(item)
+				this._goPage('goods_search', {id: item.id, title: item.cname})
+			}
 		},
 		components: {
 			WucTab,
@@ -398,6 +407,15 @@
 			uniNavBar,
 		},
 		computed: {
+			style() {
+				//#ifdef MP-WEIXIN
+				var systemInfo = uni.getSystemInfoSync()
+				return `top:${systemInfo.statusBarHeight + 44}px`
+				//#endif
+				//#ifdef APP-PLUS
+				return ''
+				//#endif
+			},
 		},
 	}
 </script>
@@ -441,13 +459,19 @@
 			font-size: $uni-font-size-base;
 			text-align: center;
 			width: 100%;
+			/* #ifndef MP-WEIXIN */
 			position: fixed;
 			z-index: 999;
-			top: 64px;
+			top: calc(44px + var(--status-bar-height));
 			left: 0;
+			/* #endif */
 		}
 		.content{
-			padding-top: calc(64px + 90upx);
+			.my-block{
+				width: 100%;
+				height: calc(44px + var(--status-bar-height) + 90upx + 30upx);
+				background: #fff;
+			}
 			.swiper-box{
 				padding: 10upx $uni-spacing-row-sm 0 $uni-spacing-row-sm;
 				width: 100%;

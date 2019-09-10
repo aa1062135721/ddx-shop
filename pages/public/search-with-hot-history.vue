@@ -1,7 +1,7 @@
 <template>
     <view class="container">
         <view class="search">
-            <mSearch  mode=2 v-model="searchVal" :show="true" @search="goSearch"></mSearch>
+            <mSearch v-model="searchVal" :show="true" @search="goSearch"></mSearch>
         </view>
         <view class="my-content">
             <view class="title">
@@ -10,28 +10,20 @@
                 </view>
             </view>
             <view class="tags">
-                <text class="tag" @click="clickTag('iphone X')">iphone X</text>
-                <text class="tag" @click="clickTag('iphone XS max')">iphone XS max</text>
-                <text class="tag" @click="clickTag('华为')">华为</text>
-                <text class="tag" @click="clickTag('荣耀手机')">荣耀手机</text>
-                <text class="tag" @click="clickTag('智博会')">智博会</text>
+                <text class="tag" v-for="(item, index) in responseData.hot" @click="clickTag(item.title)" :key="index">{{item.title}}</text>
             </view>
         </view>
-        <view class="my-content">
+        <view class="my-content" v-if="responseData.history.length">
             <view class="title">
                 <view>
                     <text class="iconfont icon-ddx-shop-time"></text> 历史搜索
                 </view>
                 <view>
-                    <text class="iconfont icon-ddx-shop-del"></text>
+                    <text class="iconfont icon-ddx-shop-del" @click="del"></text>
                 </view>
             </view>
             <view class="tags">
-                <text class="tag" @click="clickTag('iphone X')">iphone X</text>
-                <text class="tag" @click="clickTag('iphone XS max')">iphone XS max</text>
-                <text class="tag" @click="clickTag('华为')">华为</text>
-                <text class="tag" @click="clickTag('荣耀手机')">荣耀手机</text>
-                <text class="tag" @click="clickTag('智博会')">智博会</text>
+                <text class="tag" v-for="(item, index) in responseData.history" @click="clickTag(item.title)" :key="index">{{item.title}}</text>
             </view>
         </view>
     </view>
@@ -45,31 +37,65 @@
         data(){
           return {
               searchVal: '',
+              responseData:{
+                  hot:[
+                      // {
+                      //     id: 1,
+                      //     title: "奶粉" //热搜名称
+                      // },
+                  ],
+                  history:[
+                      // {
+                      //     id: 1,
+                      //     title: "奶粉"
+                      // },
+                  ]
+              }
           }
         },
         components: {
             mSearch,
         },
         methods:{
+            _goPage(url, query = {}){
+                this.$openPage({name:url, query})
+            },
             clickTag(val){
                 console.log("选中",val)
                 this.searchVal = val
+                this._goPage('goods_search_redirect',{title:val})
             },
             goSearch(val){
-                console.log("返回页面，带上这个",val)
-                let _this = this
-                uni.navigateBack({
-                    delta: 1,
-                    success: function (res) {
-                    },
-                    fail: function (err) {
-                    },
-                    complete: function (ss) {
-                        _this.$eventHub.$emit('search_word', val);
+                console.log(val)
+                this._goPage('goods_search_redirect',{title:val})
+                // console.log("返回页面，带上这个",val)
+                // let _this = this
+                // uni.navigateBack({
+                //     delta: 1,
+                //     success: function (res) {
+                //     },
+                //     fail: function (err) {
+                //     },
+                //     complete: function (ss) {
+                //         _this.$eventHub.$emit('search_word', val);
+                //     }
+                // })
+            },
+            async del(){
+                await this.$minApi.searchHistoryDel().then(res => {
+                    if (res.code === 200){
+                        this.responseData.history = []
                     }
                 })
-            },
+            }
         },
+        async onShow(){
+            await this.$minApi.searchHistoryOrHot().then(res => {
+                if (res.code === 200){
+                   this.responseData = res.data
+                }
+            })
+        }
     }
 </script>
 
@@ -79,9 +105,9 @@
     }
     .container{
         width: 100%;
-        /*.search{*/
-        /*    border-bottom: none!important;*/
-        /*}*/
+        .search{
+            border-bottom: none!important;
+        }
         .my-content{
             padding: $uni-spacing-row-base;
             .title{

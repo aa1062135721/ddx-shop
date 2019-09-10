@@ -231,6 +231,11 @@ export default {
       return minRequest.get('/Index/search_item', data)
     },
 
-
+    /**
+     * 订单-根据选中的地址和商品计算运费
+     */
+    freight(data) {
+      return minRequest.post('/order/getPostage', data)
+    },
   }
 }

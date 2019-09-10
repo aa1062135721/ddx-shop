@@ -1,19 +1,33 @@
 <template>
     <view class="container">
         <view class="address">
-            <view  class="has-address" v-if="address.name">
-                <view>
-                    <i class="iconfont icon-ddx-shop-location"></i>
-                </view>
-                <view class="text">
-                    <view>{{address.name}}<span class="mobile">{{address.mobile}}</span></view>
-                    <view class="address-detail">{{address.detail}}</view>
-                </view>
-                <view>
-                    <i class="iconfont icon-ddx-shop-content_arrows"></i>
-                </view>
+            <view  class="has-address" v-if="addressList.length"  @click="choosesAddressOpen">
+                <block v-if="address.id">
+                    <view>
+                        <i class="iconfont icon-ddx-shop-location"></i>
+                    </view>
+                    <view class="text">
+                        <view>{{address.name}}<span class="mobile">{{address.phone}}</span></view>
+                        <view class="address-detail">{{address.addres}}</view>
+                    </view>
+                    <view @click.stop="_goPage('address_list')">
+                        <i class="iconfont icon-ddx-shop-content_arrows"></i>
+                    </view>
+                </block>
+                <block v-else>
+                    <view>
+                        <i class="iconfont icon-ddx-shop-location"></i>
+                    </view>
+                    <view class="text">
+                        <view>请选择<span class="mobile">联系方式</span></view>
+                        <view class="address-detail">详细地址</view>
+                    </view>
+                    <view>
+                        <i class="iconfont icon-ddx-shop-content_arrows"></i>
+                    </view>
+                </block>
             </view>
-            <view  class="no-address" v-else>
+            <view  class="no-address" v-else @click="_goPage('address_add')">
                 <view>
                     <i class="iconfont icon-ddx-shop-anonymous-iconfont icon-color"></i>
                 </view>
@@ -21,22 +35,24 @@
             </view>
         </view>
         <view class="car-list">
-            <view class="section" v-for="(item, key) in category" :key="key">
+            <view class="section" v-for="(item, key) in myResponseData" :key="key">
                 <view class="shop-name">
-                    <view>{{item.shop_name}}</view>
-                    <view>共{{item.goods.length}}件</view>
+                    <view>{{item.name}}</view>
+                    <view>共{{item.data.length}}件</view>
                 </view>
-                <view class="goods" v-for="(goods, goods_key) in item.goods" :key="goods_key">
+                <view class="goods" v-for="(sItem, sKey) in item.data" :key="sKey">
                     <view class="goods-img">
-                        <image class="img"  :src="goods.img"></image>
+                        <image class="img"  :src="sItem.pic"></image>
                     </view>
                     <view class="other">
-                        <view class="title">{{goods.title}}</view>
-                        <view class="specification">规格: <span v-for="(category, category_key) in goods.specification" :key="category_key">{{category}}</span></view>
+                        <view class="title">{{sItem.title}}</view>
+                        <view class="specification">规格:
+                            <text style="margin-right:6upx;" v-for="(category, category_key) in sItem.categoryArr" :key="category_key">{{category}}</text>
+                        </view>
                         <view class="money">
                             <view class="money-num"></view>
                             <view>
-                                X{{goods.in_stock}}
+                                X{{sItem.num}}
                             </view>
                         </view>
                     </view>
@@ -45,64 +61,138 @@
             <view class="section">
                 <view class="shop-name" style="border: none;">
                     <view>商品金额</view>
-                    <view style="color: #dd524d;">￥3000</view>
+                    <view style="color: #dd524d;">￥{{sumMoney}}</view>
                 </view>
                 <view class="shop-name" style="border: none;">
                     <view>运费</view>
-                    <view>￥10</view>
+                    <view>￥{{freight}}</view>
                 </view>
             </view>
         </view>
 
         <view class="fixed">
             <view class="other">
-                <view class="num">共3件，</view>
-                <view class="money">合计：<span class="money-num">￥{{500}}</span></view>
-                <view class="btn" @click="goPage()">提交订单</view>
+                <view class="num">共{{sumNum}}件，</view>
+                <view class="money">合计：<span class="money-num">￥{{sumMoney + freight}}</span></view>
+                <view class="btn" @click="submitOrder">提交订单</view>
             </view>
         </view>
+
+        <!-- 选择收货 -->
+        <uni-popup ref="address" type="top" :custom="true" @change="addressChange" v-if="addressList.length">
+            <view class="address" style="height: auto;">
+                <view  class="has-address" style="margin: 28upx 0;" v-for="(address, index) in addressList" :key="index" @click="choosesAddress(address)">
+                    <view>
+                        <i class="iconfont icon-ddx-shop-location"></i>
+                    </view>
+                    <view class="text">
+                        <view>{{address.name}}<span class="mobile">{{address.phone}}</span></view>
+                        <view class="address-detail">{{address.addres}}</view>
+                    </view>
+                    <view>
+                        <i class="iconfont icon-ddx-shop-content_arrows"></i>
+                    </view>
+                </view>
+            </view>
+        </uni-popup>
     </view>
 </template>
 
 <script>
+    import uniPopup from '@/components/uni-popup/uni-popup.vue'
+
     export default {
         name: "submit",
         data(){
           return {
-              address: {
-                  name: '小可爱',
-                  mobile: '15213710631',
-                  detail: '重庆 重庆市 渝北区 汽博中心 重庆市渝北区汽博中心线外城市花园4栋22楼捣蛋熊猫'
-              },
-              category:[
-                  {
-                      id:100,
-                      shop_name:'江与城店',
-                      shop_id:1,
-                      goods:[
-                          {title: '我是商品1法第三方的的方法第三方',img:'../../static/images/goods.jpg',stock:8,price:10.88,in_stock:1,specification:['8*23','个'],is_checked:false},
-                          {title: '我是商品1法第三方的的方法第三方',img:'../../static/images/goods.jpg',stock:8,price:90.98,in_stock:2,specification:['8*23','个'],is_checked:true},
-                          {title: '我是商品1法第三方的的方法第三方',img:'../../static/images/goods.jpg',stock:8,price:50.28,in_stock:3,specification:['8*23','个'],is_checked:false},
-                      ]
-                  },
-                  {
-                      id:100,
-                      shop_name:'爱情海店',
-                      shop_id:1,
-                      goods:[
-                          {title: '我是爱情海店的商品',img:'../../static/images/goods.jpg',stock:8,price:80.08,in_stock:4,specification:['8*23','个'],is_checked:true},
-                      ]
-                  },
-              ],
+              addressList: [],//地址列表
+              address: {},
+
+              myResponseData:[],//购买的商品数据
+              sumNum:0,//件数
+              sumSum:0,//总量
+              sumMoney:0.0,//总金额
+
+              freight: 0.0, // 运费
           }
         },
+        async onLoad(){
+            console.log("带过来的参数:",this.$parseURL())
+            this.myResponseData = this.$parseURL().myResponseData
+            this.sumNum = this.$parseURL().sumNum
+            this.sumSum = this.$parseURL().sumSum
+            this.sumMoney = this.$parseURL().sumMoney
+        },
+        async onShow(){
+            await this.loadAddressData()
+            await this.getFreight()
+        },
         methods:{
-            checkMobile(){
-                this.isPoneAvailable('15013710631',true)
+            _goPage(url, query = {}){
+                this.$openPage({name:url, query})
             },
-            goPage(){
-                this.$openPage('order_result')
+            async loadAddressData(){
+                await this.$minApi.addressList().then(res => {
+                    console.log(res)
+                    if (res.code === 200 && res.data.length) {
+                        this.addressList = res.data
+                        res.data.map((item) => {
+                            if (item.default) {
+                                this.address = item
+                            }
+                        })
+                    }
+                })
+            },
+            addressChange(e) {
+                console.log(e.show)
+            },
+            choosesAddressOpen(){
+                this.$refs.address.open()
+            },
+            choosesAddress(val){
+                this.address = val
+                this.$refs.address.close()
+                this.getFreight()
+            },
+            //获取运费
+            async getFreight(){
+                let data = {
+                    address_id: this.address.id || '',
+                    item: []
+                }
+                this.myResponseData.forEach((item1, index1) => {
+                    let obj =  {
+                            id:16,        //商品id
+                            num:6,        //商品数量
+                            specs_ids:""  //规格的id组，注意：如果是统一规格，也必须传此字段，值为空字符串
+                    }
+                    item1.data.forEach((item2, index2) => {
+                        obj.id = item2.item_id
+                        obj.num = item2.num
+                        obj.specs_ids = item2.key || ''
+                        data.item.push(obj)
+                    })
+                })
+
+                await this.$minApi.freight(data).then(res => {
+                    console.log(res)
+                    if (res.code === 200) {
+                        this.freight = res.data
+                    }
+                })
+            },
+            //提交订单
+            submitOrder(){
+                if(this.address.id){
+                    this._goPage('order_result')
+                } else {
+                    this.msg('未选择收货地址')
+                }
             }
+        },
+        components: {
+            uniPopup,
         }
     }
 </script>

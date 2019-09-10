@@ -41,4 +41,25 @@ exports.install = function (Vue, options) {
             icon
         })
     }
+
+    /***
+     * 深复制一个对象
+     * @param p
+     * @param c
+     * @returns {*|{}}
+     */
+    Vue.prototype.deepCopy = (obj, c) => {
+        // 只拷贝对象
+        if (typeof obj !== 'object') return
+        // 根据obj的类型判断是新建一个数组还是一个对象
+        let newObj = obj instanceof Array ? [] : {}
+        for (let key in obj) {
+            // 遍历obj,并且判断是obj的属性才拷贝
+            if (obj.hasOwnProperty(key)) {
+                // 判断属性值的类型，如果是对象递归调用深拷贝
+                newObj[key] = typeof obj[key] === 'object' ? Vue.prototype.deepCopy(obj[key]) : obj[key]
+            }
+        }
+        return newObj
+    }
 }

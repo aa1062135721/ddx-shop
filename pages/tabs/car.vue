@@ -32,7 +32,8 @@
                         <view class="money">
                             <view class="money-num">￥{{goods.price}}</view>
                             <view>
-                                <uni-number-box :min="1" :max="goods.store" :step="1" :value="goods.num" @change="changeStock($event, key, goods_key)"></uni-number-box>
+                                <uni-number-box v-if="goods.store === -1" :min="1"  :step="1" :value="goods.num" @change="changeStock($event, key, goods_key)"></uni-number-box>
+                                <uni-number-box v-else :min="1" :max="goods.store" :step="1" :value="goods.num" @change="changeStock($event, key, goods_key)"></uni-number-box>
                             </view>
                         </view>
                     </view>
@@ -120,8 +121,47 @@
             _goPage(url, query = {}){
                 this.$openPage({name:url, query})
             },
+            // 提价订单了
             goPage(){
-                this.$openPage('order_submit')
+                let sumNum = 0, sumSum = 0, sumMoney = 0, myResponseData = []  //件数，总量，总金额, 商品参数
+                this.myResponseData.forEach((item1, index1) => {
+                   console.log("SUB",item1)
+                    let oneObj = {
+                        mold_id: item1.mold_id,
+                        name: item1.name,
+                        data:[]
+                   }
+                    let subData = []
+                    item1.data.forEach((item2, index2) => {
+                        console.log("sub",item2)
+                        if (item2.is_checked) {
+                            subData.push(item2)
+                            sumMoney += parseFloat(item2.num) * parseFloat(item2.price)
+                            sumNum ++
+                            sumSum += parseInt(item2.num)
+                        }
+                        if (subData.length) {
+                            oneObj.data = subData
+                        }
+                    })
+                    if (oneObj.data.length){
+                        myResponseData.push(oneObj)
+                    }
+                })
+                console.log("深拷贝出来的数据,二维数组，商品最里面的item_id是商品id，id就是购物车id，也是要传入结算页面的数据：",myResponseData)
+                console.log("sumNum,也是要传入结算页面的数据：",sumNum)
+                console.log("sumSum,也是要传入结算页面的数据：",sumSum)
+                console.log("sumMoney,也是要传入结算页面的数据：",sumMoney)
+                if (myResponseData.length) {
+                    this._goPage('order_submit',{
+                        myResponseData,//购买的商品数据
+                        sumNum,//件数
+                        sumSum,//总量
+                        sumMoney,//总金额
+                    })
+                } else {
+                    this.msg('没有选择商品哦')
+                }
             },
             async deleteShop(key){
                 let arr_ids = this.myResponseData[key].data.map((item) => {

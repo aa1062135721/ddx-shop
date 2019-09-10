@@ -53,7 +53,7 @@
 				</view>
 			</view>
 		</view>
-		<!-- 购买的时候选择规格，数量…… -->
+		<!-- 服务说明 -->
 		<uni-popup ref="myService" type="bottom" :custom="true">
 			<view class="my-service">
 				<view class="my-service-title">服务说明</view>
@@ -239,7 +239,7 @@
 	import uniNumberBox from "@/components/uni-number-box/uni-number-box.vue"
 	import separator from "@/components/separator.vue"
 	import uniPopup from '@/components/uni-popup/uni-popup.vue'
-	import add from "../address/add";
+
 	export default {
 		data() {
 			return {

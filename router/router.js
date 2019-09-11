@@ -124,6 +124,12 @@ const router = new MinRouter({
 			name: 'rich_text',
 			login: false
 		},
+		{
+			path: "pages/group-buy/detail",
+			type: 'navigateTo',
+			name: 'group_buy_detail',
+			login: false
+		},
 	]
 })
 

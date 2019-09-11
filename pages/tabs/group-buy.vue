@@ -1,7 +1,7 @@
 <template>
    <view class="container">
       <view class="group-buy">
-         <view class="item">
+         <view class="item" @click="_goPage('group_buy_detail')">
             <view class="left">
                <image src="../../static/images/goods.jpg" class="img"></image>
             </view>
@@ -36,7 +36,7 @@
                   </view>
             </view>
          </view>
-         <view class="item">
+         <view class="item" @click="_goPage('group_buy_detail')">
             <view class="left">
                <image src="../../static/images/goods.jpg" class="img"></image>
             </view>
@@ -87,7 +87,9 @@
           }
         },
         methods:{
-
+           _goPage(url = '', query = {}){
+              this.$openPage({name:url, query})
+           }
         },
        components:{
           uniLoadMore,
@@ -109,7 +111,7 @@
             width:100%;
             height:auto;
             background: #fff;
-            box-shadow:0upx 0upx 10upx 0upx #B7B7B7;
+            box-shadow:0px 0px 20px 0px rgba(183,183,183,0.3);
             border-radius:8upx;
             display: flex;
             justify-content: space-between;
@@ -117,7 +119,7 @@
                width: 188upx;
                height: 188upx;
                .img{
-                  border-radius:10upx;
+                  border-radius:8upx;
                   width:188upx;
                   height: 188upx;
                }

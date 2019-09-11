@@ -110,6 +110,12 @@
 			"style": {
 				"navigationBarTitleText": "富文本"
 			}
+		},
+		{
+			"path": "pages/group-buy/detail",
+			"style": {
+				"navigationBarTitleText": "一起拼团"
+			}
 		}
 	],
 	"globalStyle": {

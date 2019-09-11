@@ -167,11 +167,18 @@
 				</view>
 			</view>
 			<view class="btn">
-				<block v-if="specsInfo.store">
-					<view class="joinCart" @click="open('car')">加入购物车</view>
-					<view class="buy" @click="open('buy')">立即购买</view>
+				<block v-if="goodsInfo.status === 1">
+					<block v-if="specsInfo.store === 0">
+						<view class='over'>已售完</view>
+					</block>
+					<block  v-else>
+						<view class="joinCart" @click="open('car')">加入购物车</view>
+						<view class="buy" @click="open('buy')">立即购买</view>
+					</block>
 				</block>
-				<view class='over' v-else>已售完</view>
+				<block  v-else>
+					<view class='over'>已下架</view>
+				</block>
 			</view>
 		</view>
 
@@ -220,15 +227,18 @@
 					</view>
 				</view>
 				<view class="btns">
-					<block v-if="specsInfo.store">
-						<view class="btn" style="background:#FC8A8A;" @click="open('car')">
-							加入购物车
-						</view>
-						<view class="btn" @click="open('buy')">
-							立即购买
-						</view>
+					<block v-if="goodsInfo.status === 1">
+						<block v-if="specsInfo.store === 0">
+							<view class='over'>已售完</view>
+						</block>
+						<block  v-else>
+							<view class="btn" style="background:#FC8A8A;" @click="open('car')">加入购物车</view>
+							<view class="btn" @click="open('buy')">立即购买</view>
+						</block>
 					</block>
-					<view class='over' v-else>已售完</view>
+					<block  v-else>
+						<view class='over'>已下架</view>
+					</block>
 				</view>
 			</view>
 		</uni-popup>
@@ -277,6 +287,7 @@
 					],
 					mold: "第一.1类型"    //类型
 				},
+				//当前选中的规格，返回的数据
 				specsInfo:{
 					price: 0.00,//金额
 					store: 0, //库存，注意：库存为-1表示无限库存，反正则为库存剩余数
@@ -294,6 +305,9 @@
 			}
 		},
 		methods:{
+			_goPage(url, query = {}){
+				this.$openPage({name:url, query})
+			},
 			//轮播图放大预览
 			previewImg(src,urls){
 				uni.previewImage({
@@ -337,7 +351,7 @@
 			back() {
 				uni.navigateBack();
 			},
-			//打开选择规格弹框
+			// 如果没有选择规格，则打开选择规格弹框,如果选择了规格，则加入购物车或者立即够买
 			open(type){
 				switch (type) {
 					case 'car':
@@ -353,6 +367,7 @@
 							this.$refs.selectSpecification.open()
 						} else {
 							console.log('立即购买')
+							this.buyNow()
 						}
 						break
 					case 'chooses':
@@ -440,6 +455,54 @@
 				this.$refs.myService.close()
 			},
 
+			//立即购买
+			async buyNow(){
+				console.log("当前选中的商品信息，规格和数量",this.choosesGoodsInfo)
+				let categoryIdArr = [], categoryNameArr = []
+				this.choosesGoodsInfo.specs_ids.forEach(item => {
+					categoryIdArr.push(item.id)
+					categoryNameArr.push(item.name)
+				})
+				//件数，总量，总金额, 商品参数
+				let 	sumNum = 1,
+						sumSum = this.choosesGoodsInfo.num,
+						sumMoney = parseFloat(this.choosesGoodsInfo.num) * parseFloat(this.specsInfo.price),
+						myResponseData = [
+							{
+								mold_id: this.goodsInfo.mold_id,
+								name: this.goodsInfo.mold,
+								data:[]
+							}
+						]
+				let goods = {
+					categoryArr: categoryNameArr,//["S", "通过热望各位梵蒂冈如果", "还惹我"],//当前选中的规格名组合成数组
+					id: 0,//购物车id,这里是直接够买不是购物车够买，所以这里的数据设置为0
+					is_checked: false,//购物车里被选中为结算商品,这里是直接够买不是购物车够买，所以这里的数据设置为false
+					item_id: this.goodsInfo.id, // 商品id
+					key: categoryIdArr.join('_'),//"10_15_17",//当前选中的规格id组合
+					key_name: categoryNameArr.join('_'),// "S_通过热望各位梵蒂冈如果_还惹我", //当前选中的规格名组合
+					mold: myResponseData[0].name,//"第一.1类型",//
+					mold_id: myResponseData[0].mold_id,//2,//
+					num: this.choosesGoodsInfo.num,//2,//够买数量
+					pic: this.specsInfo.pic,//"http://picture.ddxm661.com/75b9420190906171730779.jpg",//商品图片
+					price:  this.specsInfo.price,//"15.00",//商品价格
+					status: this.goodsInfo.status,// 1,//商品状态
+					store: this.specsInfo.store, // -1,//商品库存
+					title: this.goodsInfo.title,// "测试2",//商品标题
+				}
+				myResponseData[0].data.push(goods)
+				console.log("深拷贝出来的数据,二维数组，商品最里面的item_id是商品id，id就是购物车id，也是要传入结算页面的数据：",myResponseData)
+				console.log("sumNum,也是要传入结算页面的数据：",sumNum)
+				console.log("sumSum,也是要传入结算页面的数据：",sumSum)
+				console.log("sumMoney,也是要传入结算页面的数据：",sumMoney)
+				this._goPage('order_submit', {
+					myResponseData,//购买的商品数据
+					sumNum,//件数
+					sumSum,//总量
+					sumMoney,//总金额
+				})
+			},
+
 		},
 		async onLoad() {
 			console.log("带过来的参数",this.$parseURL())
@@ -462,7 +525,20 @@
 				}
 			})
 			if (this.goodsInfo.specs_list.length){
+				// 多规格获取 商品库存，价格，图片
 				await this.choosesSpecsInfo()
+			} else {
+				// 单规格获取 商品库存，价格，图片
+				let data = {
+					id: this.$parseURL().id,
+					specs_ids: '',
+				}
+				await this.$minApi.goodsDetailSpecs(data).then(res => {
+					console.log(res)
+					if (res.code === 200) {
+						this.specsInfo = res.data
+					}
+				})
 			}
 		},
 		onReady(){

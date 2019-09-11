@@ -87,7 +87,7 @@
           }
         },
         async onShow(){
-          if (this.myResponseData.length===0 && this.userInfo.id) {
+          if (this.userInfo.id) {
               await this.loadData()
           }
         },
@@ -108,7 +108,11 @@
                 await this.$minApi.carList(data).then(res => {
                   console.log(res)
                   if (res.code === 200){
-                      this.responseData.push(...res.data)
+                      if (data.page === 1) {
+                          this.responseData = res.data
+                      } else {
+                          this.responseData.push(...res.data)
+                      }
                       if (res.data.length <  this.requestData.limit) {
                           this.moreStatus = 'noMore'
                       } else {

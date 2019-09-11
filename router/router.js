@@ -16,9 +16,9 @@ const router = new MinRouter({
 			login: false
 		},
 		{
-			path: 'pages/tabs/shop',
+			path: 'pages/tabs/group-buy',
 			type: 'switchTab',
-			name: 'shop',
+			name: 'group-buy',
 			login: false
 		},
 		{

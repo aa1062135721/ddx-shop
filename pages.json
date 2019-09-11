@@ -9,9 +9,9 @@
 			}
 		},
 		{
-			"path": "pages/tabs/shop",
+			"path": "pages/tabs/group-buy",
 			"style": {
-				"navigationBarTitleText": "门店"
+				"navigationBarTitleText": "今日比团"
 			}
 		},
 		{
@@ -131,7 +131,7 @@
 				"text": "商城"
 			},
 			{
-				"pagePath": "pages/tabs/shop",
+				"pagePath": "pages/tabs/group-buy",
 				"iconPath": "static/tab/tab-person-all.png",
 				"selectedIconPath": "static/tab/tab-person-all-current.png",
 				"text": "拼团"

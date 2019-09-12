@@ -125,6 +125,12 @@ const router = new MinRouter({
 			login: false
 		},
 		{
+			path: "pages/tabs/group-buy",
+			type: 'switchTab',
+			name: 'group_buy_list',
+			login: false
+		},
+		{
 			path: "pages/group-buy/detail",
 			type: 'navigateTo',
 			name: 'group_buy_detail',

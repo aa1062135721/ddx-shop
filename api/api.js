@@ -237,5 +237,20 @@ export default {
     freight(data) {
       return minRequest.post('/order/getPostage', data)
     },
+
+    /**
+     * 拼团列表
+     */
+    assembleList(data) {
+      return minRequest.get('/Index/assemble_list', data)
+    },
+
+    /**
+     * 拼团详情
+     */
+    assembleDetail(data) {
+      return minRequest.get('/Index/assemble_info', data)
+    },
+
   }
 }

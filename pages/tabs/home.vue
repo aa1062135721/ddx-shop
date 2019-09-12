@@ -142,65 +142,33 @@
 					</view>
 
 				</view>
-				<view class="limited-time-kill">
+				<view class="limited-time-kill" v-if="groupBuyList.length">
 					<view class="title-bar">
 						<view class="left">
 							<view class="title-block">精品团</view>
 							<text class="title-text">海量商品放心拼团</text>
 						</view>
-						<view class="right">
-							<text>更多秒杀</text>
+						<view class="right" @click="_goPage('group_buy_list')">
+							<text>更多拼团</text>
 							<text class="iconfont icon-ddx-shop-content_arrows"></text>
 						</view>
 					</view>
 					<view class="time-content">
 						<view class="goods-list">
-							<view class="time-content-goods-list-goods" style="width: 33.33333%;">
+							<view v-for="(item, index) in groupBuyList" :key="index" @click="_goPage('group_buy_detail', {id: item.id})" class="time-content-goods-list-goods" style="width: 33.33333%;">
 								<view class="image width-210">
-									<image class="img-33" src="../../static/images/goods.jpg"></image>
+									<image class="img-33" :src="item.pic"></image>
 									<view class="group-info">10人团</view>
 								</view>
 								<view class="title width-210">
-									澳洲爱他美白金版profutura 3段澳洲爱他美白金版
+									{{item.title}}
 								</view>
 								<view class="price width-210">
-									<text class="one">¥2008</text>
-									<text class="two">¥2888</text>
+									<text class="one">¥{{item.price}}</text>
+									<text class="two">¥{{item.old_price}}</text>
 								</view>
 								<view class="status width-210">
-									<text class="one">已拼8810件</text>
-								</view>
-							</view>
-							<view class="time-content-goods-list-goods" style="width: 33.33333%;">
-								<view class="image width-210">
-									<image class="img-33" src="../../static/images/goods.jpg"></image>
-									<view class="group-info">3人团</view>
-								</view>
-								<view class="title width-210">
-									澳洲爱他美白金版profutura 3段澳洲爱他美白金版
-								</view>
-								<view class="price width-210">
-									<text class="one">¥2008</text>
-									<text class="two">¥2888</text>
-								</view>
-								<view class="status width-210">
-									<text class="one">已拼8810件</text>
-								</view>
-							</view>
-							<view class="time-content-goods-list-goods" style="width: 33.33333%;">
-								<view class="image width-210">
-									<image class="img-33" src="../../static/images/goods.jpg"></image>
-									<view class="group-info">3人团</view>
-								</view>
-								<view class="title width-210">
-									澳洲爱他美白金版profutura 3段澳洲爱他美白金版
-								</view>
-								<view class="price width-210">
-									<text class="one">¥2008</text>
-									<text class="two">¥2888</text>
-								</view>
-								<view class="status width-210">
-									<text class="one">已拼8810件</text>
+									<text class="one">已拼{{item.assemble_num}}件</text>
 								</view>
 							</view>
 						</view>
@@ -269,6 +237,10 @@
 				//推荐tab中的轮播图
 				swiperList: [],
 
+				/**
+				 * 推荐里的数据
+				 */
+				//限时秒杀
 				TabCur2: 0,
 				tabList2: [
 					{ name: '10:00',sub_title: '秒杀中'},
@@ -278,14 +250,15 @@
 					{ name: '18:00',sub_title: '即将开始'},
 					{ name: '20:00',sub_title: '即将开始'},
 				],
-				// 推荐里的数据
-
+				//精品团购
+				groupBuyList: [],
 
 			}
 		},
 		async onLoad() {
 			await this._getCategory()
 			await this._getBanner()
+			await this._assembleList()
 			await this._getGuessYouLike()
 		},
 		async onReachBottom() {
@@ -396,7 +369,16 @@
 			_clickSubTab(item){
 				console.log(item)
 				this._goPage('goods_search', {id: item.id, title: item.cname})
-			}
+			},
+			// 拼团
+			async _assembleList(){
+				await this.$minApi.assembleList({hot:1}).then(res => {
+					console.log("拼团商品列表",res)
+					if (res.code === 200) {
+						this.groupBuyList = res.data
+					}
+				})
+			},
 		},
 		components: {
 			WucTab,
@@ -508,8 +490,8 @@
 					width: 20%;
 					padding: $uni-spacing-col-sm 0;
 					image{
-						width:96upx;
-						height: 80upx;
+						width:98upx;
+						height: 98upx;
 					}
 					text{
 						font-size: $uni-font-size-base;

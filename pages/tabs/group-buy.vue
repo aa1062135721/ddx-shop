@@ -1,31 +1,32 @@
 <template>
    <view class="container">
       <view class="group-buy">
-         <view class="item" @click="_goPage('group_buy_detail')">
+
+         <view class="item" v-for="(item, index) in groupBuyList" :key="index" @click="_goPage('group_buy_detail', {id: item.id})">
             <view class="left">
-               <image src="../../static/images/goods.jpg" class="img"></image>
+               <image :src="item.pic" class="img"></image>
             </view>
             <view class="right">
                   <view class="top">
                      <view class="title">
-                        我是商品标题我是商品标题我是商品标题我是商品标题我是商品标题我是商品标题我是商品标题
+                        {{item.title}}
                      </view>
                      <view class="specifications">
-                        规格：X 红色
+                     <!-- 规格：X 红色-->
                      </view>
                   </view>
                   <view class="bottom">
                      <view class="num">
                         <view>
                            <view class="show-num">
-                              已拼460件
+                              已拼{{item.assemble_num}}件
                            </view>
                         </view>
                      </view>
                      <view class="money-btn">
                         <view class="money">
-                           <view class="new-money">￥59</view>
-                           <view class="old-money">￥210</view>
+                           <view class="new-money">￥{{item.price}}</view>
+                           <view class="old-money">￥{{item.old_price}}</view>
                         </view>
                         <view>
                            <view class="btn">
@@ -36,41 +37,7 @@
                   </view>
             </view>
          </view>
-         <view class="item" @click="_goPage('group_buy_detail')">
-            <view class="left">
-               <image src="../../static/images/goods.jpg" class="img"></image>
-            </view>
-            <view class="right">
-               <view class="top">
-                  <view class="title">
-                     我是商品标
-                  </view>
-                  <view class="specifications">
-                     规格：X 红色
-                  </view>
-               </view>
-               <view class="bottom">
-                  <view class="num">
-                     <view>
-                        <view class="show-num">
-                           已拼460件
-                        </view>
-                     </view>
-                  </view>
-                  <view class="money-btn">
-                     <view class="money">
-                        <view class="new-money">￥59</view>
-                        <view class="old-money">￥210</view>
-                     </view>
-                     <view>
-                        <view class="btn">
-                           去拼团
-                        </view>
-                     </view>
-                  </view>
-               </view>
-            </view>
-         </view>
+
       </view>
       <uni-load-more :status="tabList[TabCur].requestData.moreStatus" :show-icon="true"></uni-load-more>
    </view>
@@ -84,13 +51,60 @@
         data(){
           return {
              moreStatus: 'loading',
+             requestData:{
+                page: 1,
+                limit: 10,
+             },
+             groupBuyList: [
+                {
+                   id: 8,    //拼团活动id
+                   pic: "http://picture.ddxm661.com/6dae4201909051617308036.jpg",    //图片
+                   title: "奶粉罐装",    //标题
+                   old_price: "90.00",   //原价
+                   price: "80.00",       //拼团价
+                   assemble_num: 0,       //已成功拼团人数
+                   people_num: 50,   //开团人数
+               }
+             ],
           }
         },
+       async onLoad(){
+         await this._assembleList()
+       },
         methods:{
            _goPage(url = '', query = {}){
               this.$openPage({name:url, query})
-           }
+           },
+           async _assembleList(){
+              this.moreStatus = 'loading'
+              let data = {
+                 page: this.requestData.page,
+                 limit: this.requestData.limit,
+              }
+              await this.$minApi.assembleList(data).then(res => {
+                 console.log("拼团商品列表",res)
+                 if (res.code === 200) {
+                    if (data.page === 1) {
+                       this.groupBuyList = res.data
+                    } else {
+                       this.groupBuyList.push(...res.data)
+                    }
+                    if (res.data.length <  this.requestData.limit) {
+                       this.moreStatus = 'noMore'
+                    } else {
+                       this.moreStatus = 'more'
+                    }
+                 }
+              })
+           },
         },
+       async onReachBottom() {
+          if (this.moreStatus === 'noMore') {
+             return
+          }
+          this.requestData.page ++
+          await this._assembleList()
+       },
        components:{
           uniLoadMore,
        }

@@ -4,7 +4,6 @@
 			"path": "pages/tabs/home",
 			"style": {
 				"navigationBarTitleText": "首页",
-				"enablePullDownRefresh": true,
 				"navigationStyle": "custom"
 			}
 		},

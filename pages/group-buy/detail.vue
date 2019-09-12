@@ -14,8 +14,8 @@
 		<!-- 商品主图轮播 -->
 		<view class="swiper-box">
 			<swiper circular="true" autoplay="true" :indicator-dots="true" indicator-active-color="#FC8A8A">
-				<swiper-item v-for="(img_src,index) in swiperList" :key="index">
-					<image :src="img_src" @click="previewImg(img_src, swiperList)"></image>
+				<swiper-item v-for="(img_src,index) in goodsInfo.pics" :key="index">
+					<image :src="img_src" @click="previewImg(img_src, goodsInfo.pics)"></image>
 				</swiper-item>
 			</swiper>
 		</view>
@@ -23,12 +23,12 @@
 		<view class="info-box pintuan" style="background: #FC5A5A;margin-bottom: 0;">
 			<view class="one">
 				<text class="one-title">拼团价</text>
-				<text class="one-box">3人拼团</text>
+				<text class="one-box">{{goodsInfo.people_num}}人拼团</text>
 			</view>
 			<view class="two">
 				<view>
-					<text class="two-title">￥39.9</text>
-					<text class="two-title2">￥68.88</text>
+					<text class="two-title">￥{{goodsInfo.price}}</text>
+					<text class="two-title2">￥{{goodsInfo.old_price}}</text>
 				</view>
 				<view>
 					<text>已团6万</text>
@@ -37,15 +37,15 @@
 		</view>
 		<view class="info-box goods-info">
 			<view class="title">
-				<text class="tag">直营</text>
-				我是商品标题我是商品标题我是商品标题我是商品标题我是商品标题我是商品标题我是商品标题我是商品标题我是商品标题
+				<text class="tag" v-if="goodsInfo.mold_id">{{goodsInfo.mold}}</text>
+				{{goodsInfo.title}}
 			</view>
 		</view>
 
 		<!-- 其他拼团信息 -->
-		<view class="info-box comments" style="padding-bottom: 0;">
+		<view class="info-box comments" style="padding-bottom: 0;" v-if="goodsInfo.count">
 			<view class="row">
-				<view class="text" style="font-size: 28upx;">有<text style="color: #FC5A5A;">10人</text>正在拼团，你可以直接参与哦~</view>
+				<view class="text" style="font-size: 28upx;">有<text style="color: #FC5A5A;">{{goodsInfo.count}}人</text>正在拼团，你可以直接参与哦</view>
 				<view class="arrow" @click="openMoreOtherGroupBuy">
 					<view class="show">
 						查看全部
@@ -53,14 +53,14 @@
 					</view>
 				</view>
 			</view>
-			<view class="many-group-buy">
+			<view class="many-group-buy" v-for="(item, index) in goodsInfo.assemble_list" :key="index" v-if="index < 2">
 				<view class="one">
-					<view><image src="../../static/images/goods.jpg" class="img"></image></view>
-					<view>小可爱</view>
+					<view><image :src="item.pic" class="img"></image></view>
+					<view>{{item.nickname}}</view>
 				</view>
 				<view class="two">
 					<view class="info">
-						<view class="info-title">还差1人成团</view>
+						<view class="info-title">还差{{item.r_num}}人成团</view>
 						<view class="info-time">仅剩 28:23:21</view>
 					</view>
 					<view class="btns">
@@ -70,23 +70,7 @@
 					</view>
 				</view>
 			</view>
-			<view class="many-group-buy">
-				<view class="one">
-					<view><image src="../../static/images/goods.jpg" class="img"></image></view>
-					<view>小可爱</view>
-				</view>
-				<view class="two">
-					<view class="info">
-						<view class="info-title">还差1人成团</view>
-						<view class="info-time">仅剩 28:23:21</view>
-					</view>
-					<view class="btns">
-						<view class="btn">
-							一键成团
-						</view>
-					</view>
-				</view>
-			</view>
+
 		</view>
 		<!-- 其他拼团信息，查看更多 -->
 		<uni-popup ref="moreOtherGroupBuy" type="center" :custom="true" :mask-click="false">
@@ -186,14 +170,16 @@
 		</uni-popup>
 
 		<!--服务说明-->
-		<view class="info-box goods-info2" v-if="item_service_ids.length" @click="openService">
+		<view class="info-box goods-info2" v-if="goodsInfo.item_service_ids.length" @click="openService">
 			<view class="item">
 				<view class="one">
 					<text class="title">服务</text>
 					<text class="comtent">
-						<block v-for="(serviceItem, serviceIndex) in item_service_ids" :key="serviceIndex">
-							<block v-if="serviceIndex + 1 !== item_service_ids.length">{{serviceItem.title + ' · '}}</block>
-							<block v-else>{{serviceItem.title}}</block>
+						<block v-for="(serviceItem, serviceIndex) in goodsInfo.item_service_ids" :key="serviceIndex">
+							<block v-if="serviceIndex < 3">
+								{{serviceItem.title + ' · '}}
+							</block>
+							<block v-if="serviceIndex === 2">{{serviceItem.title}}</block>
 						</block>
 					</text>
 				</view>
@@ -207,7 +193,7 @@
 			<view class="my-service">
 				<view class="my-service-title">服务说明</view>
 				<view class="my-service-box">
-					<view class="item" v-for="(item, index) in item_service_ids" :key="index">
+					<view class="item" v-for="(item, index) in goodsInfo.item_service_ids" :key="index">
 						<view class="title-and-point">
 							<view class="point"></view>
 							<view class="title">{{item.title}}</view>
@@ -216,7 +202,6 @@
 							<view class="point on"></view>
 							<view class="title on">{{item.content}}</view>
 						</view>
-
 					</view>
 				</view>
 				<view class="btn" @click="closeService">确定</view>
@@ -251,7 +236,9 @@
 		<!-- 详情 -->
 		<view class="description">
 			<separator title="图文详情" bgColor="#fff"></separator>
-			<view class="content"><rich-text :nodes="descriptionStr"></rich-text></view>
+			<view class="content">
+				<image v-for="(img, index) in goodsInfo.content" :src="img" :key="index" style="width: 100%;"></image>
+			</view>
 		</view>
 
 		<!-- 底部菜单 -->
@@ -268,19 +255,23 @@
 				</view>
 			</view>
 			<view class="btn">
-				<view class="joinCart" @click="open()">
-					<view class="inner">
-						￥68 <br>
-						单独够买
+				<block v-if="goodsInfo.remaining_stock === 0">
+					 <view class='over'>已售完</view>
+				</block>
+				<block v-else>
+					<view class="joinCart" @click="open()">
+						<view class="inner">
+							￥{{goodsInfo.old_price}}<br />
+							单独够买
+						</view>
 					</view>
-				</view>
-				<view class="buy" @click="open()">
-					<view class="inner">
-						￥28<br>
-						一键开团
+					<view class="buy" @click="open()">
+						<view class="inner">
+							￥{{goodsInfo.price}}<br />
+							一键开团
+						</view>
 					</view>
-				</view>
-				<!-- <view class='over'>已售完</view> -->
+				</block>
 			</view>
 		</view>
 
@@ -308,23 +299,29 @@
 							购买数量
 						</view>
 						<view class="content">
-							<uni-number-box :min="1" :value="1" :step="1"></uni-number-box>
+							<uni-number-box v-if="goodsInfo.buy_num <= goodsInfo.remaining_stock" :min="1" :max="goodsInfo.buy_num" :value="1" :step="1"></uni-number-box>
+							<uni-number-box v-else :min="1" :max="goodsInfo.remaining_stock" :value="1" :step="1"></uni-number-box>
 						</view>
 					</view>
 				</view>
 				<view class="btns">
-					<view class="btn" style="background:#FC8A8A;">
-						<view class="inner">
-							￥68 <br>
-							单独够买
+					<block v-if="goodsInfo.remaining_stock === 0">
+						<view class='over'>已下架</view>
+					</block>
+					<block v-else>
+						<view class="btn" style="background:#FC8A8A;">
+							<view class="inner">
+								￥{{goodsInfo.old_price}}<br />
+								单独够买
+							</view>
 						</view>
-					</view>
-					<view class="btn">
-						<view class="inner">
-							￥28<br>
-							一键开团
+						<view class="btn">
+							<view class="inner">
+								￥{{goodsInfo.price}}<br />
+								一键开团
+							</view>
 						</view>
-					</view>
+					</block>
 				</view>
 			</view>
 		</uni-popup>
@@ -335,23 +332,11 @@
 	import uniNumberBox from "@/components/uni-number-box/uni-number-box.vue"
 	import separator from "@/components/separator.vue"
 	import uniPopup from '@/components/uni-popup/uni-popup.vue'
+
 	export default {
 		data() {
 			return {
-				item_service_ids: [       //服务
-					{
-						title: "品质保障",
-						content: "大手大脚按时缴费等是否会受到返回到数据库恢复1"
-					},
-					{
-						title: "品质保障",
-						content: "大手大脚按时缴费等是否会受到返回到数据库恢复1"
-					},
-					{
-						title: "品质保障",
-						content: "大手大脚按时缴费等是否会受到返回到数据库恢复1"
-					},
-				],
+				goodsInfo: {},
 
 				//控制渐变标题栏的参数
 				beforeHeaderzIndex: 11,//层级
@@ -359,17 +344,8 @@
 				beforeHeaderOpacity: 1,//不透明度
 				afterHeaderOpacity: 0,//不透明度
 
-				//轮播主图数据
-				swiperList: [
-					'https://ae01.alicdn.com/kf/HTB1Mj7iTmzqK1RjSZFjq6zlCFXaP.jpg',
-					'https://ae01.alicdn.com/kf/HTB1fbseTmzqK1RjSZFLq6An2XXaL.jpg',
-					'https://ae01.alicdn.com/kf/HTB1dPUMThnaK1RjSZFtq6zC2VXa0.jpg',
-					'https://ae01.alicdn.com/kf/HTB1OHZrTXzqK1RjSZFvq6AB7VXaw.jpg'
-				],
 				anchorlist:[],//导航条锚点
 				selectAnchor:0,//选中锚点
-
-				descriptionStr:'<div style="text-align:center;"><img width="100%" src="https://ae01.alicdn.com/kf/HTB1t0fUl_Zmx1VjSZFGq6yx2XXa5.jpg"/><img width="100%" src="https://ae01.alicdn.com/kf/HTB1LzkjThTpK1RjSZFKq6y2wXXaT.jpg"/><img width="100%" src="https://ae01.alicdn.com/kf/HTB18dkiTbvpK1RjSZPiq6zmwXXa8.jpg"/></div>',
 
 			}
 		},
@@ -445,8 +421,14 @@
 				this.$refs.moreOtherGroupBuy.close()
 			},
 		},
-		onLoad(option) {
+		async onLoad() {
 			console.log("带过来的参数",this.$parseURL())
+			await this.$minApi.assembleDetail({id: this.$parseURL().id}).then(res => {
+				console.log("拼团详情：",res)
+				if (res.code === 200){
+					this.goodsInfo = res.data
+				}
+			})
 		},
 		onReady(){
 			this.calcAnchor();//计算锚点高度，页面数据是ajax加载时，请把此行放在数据渲染完成事件中执行以保证高度计算正确

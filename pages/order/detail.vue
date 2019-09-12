@@ -79,6 +79,7 @@
         <view class="fixed-btns">
             <button class="active">付款</button>
             <button>查看物流</button>
+            <button @click="_goPage('group_buy_group')">查看拼团</button>
         </view>
     </view>
 </template>
@@ -114,6 +115,11 @@
                   },
               ]
           }
+        },
+        methods: {
+            _goPage(url, query = {}){
+                this.$openPage({name:url, query})
+            },
         },
     }
 </script>

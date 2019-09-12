@@ -116,6 +116,12 @@
 			"style": {
 				"navigationBarTitleText": "一起拼团"
 			}
+		},
+		{
+			"path": "pages/group-buy/group",
+			"style": {
+				"navigationBarTitleText": "查看拼团"
+			}
 		}
 	],
 	"globalStyle": {

@@ -1,4 +1,4 @@
-	<template>
+<template>
 	<view class="container">
 		<view class="header">
 			<!-- 头部-滚动渐变显示 -->

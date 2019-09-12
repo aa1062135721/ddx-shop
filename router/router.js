@@ -136,6 +136,24 @@ const router = new MinRouter({
 			name: 'group_buy_group',
 			login: false
 		},
+		{
+			path: "pages/user/setting",
+			type: 'navigateTo',
+			name: 'setting',
+			login: true
+		},
+		{
+			path: "pages/user/id-card-authentication",
+			type: 'navigateTo',
+			name: 'id_card_authentication',
+			login: true
+		},
+		{
+			path: "pages/user/feedback",
+			type: 'navigateTo',
+			name: 'feedback',
+			login: true
+		},
 	]
 })
 

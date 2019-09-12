@@ -11,7 +11,7 @@
                     <text class="one" v-else @click="goPage('login')">未登录</text>
                     <text class="two" v-if="userInfo.id">粉丝 20</text>
                 </view>
-                <view class="setting">
+                <view class="setting" @click="goPage('setting')">
                     <text class="iconfont icon-ddx-shop-setting"></text>
                 </view>
             </view>
@@ -155,7 +155,7 @@
                             <text>我的足迹</text>
                         </view>
                     </view>
-                    <view class="item" style="width: 25%;display: none;">
+                    <view class="item" style="width: 25%;" @click="goPage('feedback')">
                         <view>
                             <image src="../../static/icon/suggestion.png"></image>
                         </view>

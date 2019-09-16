@@ -61,7 +61,7 @@
 				<view class="two">
 					<view class="info">
 						<view class="info-title">还差{{item.r_num}}人成团</view>
-						<view class="info-time">仅剩 28:23:21</view>
+						<view class="info-time">仅剩 {{item.timeStr}}</view>
 					</view>
 					<view class="btns">
 						<view class="btn">
@@ -73,89 +73,19 @@
 
 		</view>
 		<!-- 其他拼团信息，查看更多 -->
-		<uni-popup ref="moreOtherGroupBuy" type="center" :custom="true" :mask-click="false">
+		<uni-popup ref="moreOtherGroupBuy" type="center" :custom="true" :mask-click="false" v-if="goodsInfo.assemble_list.length">
 			<view class="more-other-group-buy">
 				<view class="box">
 					<view class="title">参与可直接成团</view>
 					<view class="center">
-						<view class="item">
+						<view class="item" v-for="(item, index) in goodsInfo.assemble_list" :key="index">
 							<view class="left">
 								<view>
-									<image src="../../static/images/goods.jpg" class="img"></image>
+									<image :src="item.pic" class="img"></image>
 								</view>
 								<view class="info">
-									<view>张三：还差一人成团</view>
-									<view>仅剩 20:12:20</view>
-								</view>
-							</view>
-							<view class="right">
-								<view class="btn">一键成团</view>
-							</view>
-						</view>
-						<view class="item">
-							<view class="left">
-								<view>
-									<image src="../../static/images/goods.jpg" class="img"></image>
-								</view>
-								<view class="info">
-									<view>张三：还差一人成团</view>
-									<view>仅剩 20:12:20</view>
-								</view>
-							</view>
-							<view class="right">
-								<view class="btn">一键成团</view>
-							</view>
-						</view>
-						<view class="item">
-							<view class="left">
-								<view>
-									<image src="../../static/images/goods.jpg" class="img"></image>
-								</view>
-								<view class="info">
-									<view>张三：还差一人成团</view>
-									<view>仅剩 20:12:20</view>
-								</view>
-							</view>
-							<view class="right">
-								<view class="btn">一键成团</view>
-							</view>
-						</view>
-						<view class="item">
-							<view class="left">
-								<view>
-									<image src="../../static/images/goods.jpg" class="img"></image>
-								</view>
-								<view class="info">
-									<view>张三：还差一人成团</view>
-									<view>仅剩 20:12:20</view>
-								</view>
-							</view>
-							<view class="right">
-								<view class="btn">一键成团</view>
-							</view>
-						</view>
-						<view class="item">
-							<view class="left">
-								<view>
-									<image src="../../static/images/goods.jpg" class="img"></image>
-								</view>
-								<view class="info">
-									<view>张三：还差一人成团</view>
-									<view>仅剩 20:12:20</view>
-								</view>
-							</view>
-							<view class="right">
-								<view class="btn">一键成团</view>
-							</view>
-						</view>
-						<view class="item">
-							<view class="left">
-								<view>
-									<image src="../../static/images/goods.jpg" class="img"></image>
-								</view>
-								<view class="info">
-									<view>张三：还差一人成团</view>
-									<view>仅剩 20:12:20</view>
+									<view>{{item.nickname}}：还差{{item.r_num}}人成团</view>
+									<view>仅剩 {{item.timeStr}}</view>
 								</view>
 							</view>
 							<view class="right">
@@ -163,7 +93,7 @@
 							</view>
 						</view>
 					</view>
-					<view class="bottom">仅显示10个正在拼团</view>
+					<view class="bottom">最多仅显示10个正在拼团</view>
 				</view>
 				<view class="iconfont icon-ddx-shop-close close" @click="closeMoreOtherGroupBuy"></view>
 			</view>
@@ -244,11 +174,11 @@
 		<!-- 底部菜单 -->
 		<view class="footer">
 			<view class="icons">
-				<view class="box"  @click="this.$openPage('home')">
+				<view class="box"  @click="_goPage('home')">
 					<view class="iconfont icon-ddx-shop-shopping"></view>
 					<view class="text">商城</view>
 				</view>
-				<view class="box" @click="this.$openPage('car')">
+				<view class="box" @click="_goPage('car')">
 					<view class="iconfont icon-ddx-shop-shopping-cart-o"></view>
 					<view class="text">购物车</view>
 					<view class="number">11</view>
@@ -281,11 +211,12 @@
 				<view class="goods-info">
 					<view class="main">
 						<view class="image">
-							<image class="img" src='../../static/images/goods.jpg'></image>
+							<image class="img" :src='goodsInfo.pics[0]'></image>
 						</view>
 						<view class="info">
-							<view class="price">￥398</view>
-							<view class="stock">库存充足</view>
+							<view class="price">￥{{goodsInfo.price}}</view>
+							<view class="stock">库存:{{goodsInfo.all_stock}}</view>
+							<view class="stock">限购:{{goodsInfo.buy_num}}</view>
 							<view class="chooses"></view>
 						</view>
 						<view class="close">
@@ -299,8 +230,8 @@
 							购买数量
 						</view>
 						<view class="content">
-							<uni-number-box v-if="goodsInfo.buy_num <= goodsInfo.remaining_stock" :min="1" :max="goodsInfo.buy_num" :value="1" :step="1"></uni-number-box>
-							<uni-number-box v-else :min="1" :max="goodsInfo.remaining_stock" :value="1" :step="1"></uni-number-box>
+							<uni-number-box v-if="goodsInfo.buy_num <= goodsInfo.remaining_stock" :min="1" :max="goodsInfo.buy_num" :value="1" :step="1" @change="changeNum"></uni-number-box>
+							<uni-number-box v-else :min="1" :max="goodsInfo.remaining_stock" :value="1" :step="1" @change="changeNum"></uni-number-box>
 						</view>
 					</view>
 				</view>
@@ -309,13 +240,13 @@
 						<view class='over'>已下架</view>
 					</block>
 					<block v-else>
-						<view class="btn" style="background:#FC8A8A;">
+						<view class="btn" style="background:#FC8A8A;" @click="buyNow(2)">
 							<view class="inner">
 								￥{{goodsInfo.old_price}}<br />
 								单独够买
 							</view>
 						</view>
-						<view class="btn">
+						<view class="btn" @click="buyNow(1)">
 							<view class="inner">
 								￥{{goodsInfo.price}}<br />
 								一键开团
@@ -332,6 +263,7 @@
 	import uniNumberBox from "@/components/uni-number-box/uni-number-box.vue"
 	import separator from "@/components/separator.vue"
 	import uniPopup from '@/components/uni-popup/uni-popup.vue'
+	var myTimer = null //用来关闭定时器
 
 	export default {
 		data() {
@@ -347,9 +279,16 @@
 				anchorlist:[],//导航条锚点
 				selectAnchor:0,//选中锚点
 
+				//当前已经选择了的商品，数量
+				choosesGoodsInfo:{
+					num:1,//选择购物数量
+				},
 			}
 		},
 		methods:{
+			_goPage(url, query = {}){
+				this.$openPage({name:url, query})
+			},
 			//轮播图放大预览
 			previewImg(src,urls){
 				uni.previewImage({
@@ -420,12 +359,92 @@
 			closeMoreOtherGroupBuy(){
 				this.$refs.moreOtherGroupBuy.close()
 			},
+
+			//购买数量更改
+			changeNum(e){
+				console.log(e)
+				this.choosesGoodsInfo.num = e
+			},
+
+			/**
+			 * 倒计时
+			 */
+			timeStrChange(){
+				this.goodsInfo.assemble_list.map(item => {
+					item.timeStr =  this.getRTime(this.goodsInfo.assemble_list[0].now_time, item.end_time)
+					this.goodsInfo.assemble_list[0].now_time += 1
+				})
+			},
+
+			/**
+			 * 一键开团或者单独购买
+			 * type = 1,2
+			 */
+			buyNow(type = 1){
+				this.close()
+				console.log("商品信息: ",this.goodsInfo, ', 购买参数：', this.choosesGoodsInfo)
+				let price = 0.0
+				switch (type) {
+					case 1:
+						price = this.goodsInfo.price // price 拼团价
+						break
+					case 2:
+						price = this.goodsInfo.old_price // old_price 原价 单独购买
+						break
+				}
+
+				//件数，总量，总金额, 商品参数
+				let 	sumNum = 1,
+						sumSum = this.choosesGoodsInfo.num,
+						sumMoney = parseFloat(this.choosesGoodsInfo.num) * parseFloat(price),
+						myResponseData = [
+							{
+								mold_id: this.goodsInfo.mold_id,
+								name: this.goodsInfo.mold,
+								data:[]
+							}
+						]
+				let goods = {
+					categoryArr: [],//["S", "通过热望各位梵蒂冈如果", "还惹我"],//当前选中的规格名组合成数组
+					id: 0,//购物车id,这里是直接够买不是购物车够买，所以这里的数据设置为0
+					is_checked: false,//购物车里被选中为结算商品,这里是直接够买不是购物车够买，所以这里的数据设置为false
+					item_id: this.goodsInfo.id, // 商品id
+					key: "",//"10_15_17",//当前选中的规格id组合
+					key_name: "",// "S_通过热望各位梵蒂冈如果_还惹我", //当前选中的规格名组合
+					mold: myResponseData[0].name,//"第一.1类型",//
+					mold_id: myResponseData[0].mold_id,//2,//
+					num: this.choosesGoodsInfo.num,//2,//够买数量
+					pic: this.goodsInfo.pics[0],//"http://picture.ddxm661.com/75b9420190906171730779.jpg",//商品图片
+					price:  price,//"15.00",//商品价格
+					status: 1,// 1,//商品状态
+					store: this.goodsInfo.buy_num, // -1,//商品库存
+					title: this.goodsInfo.title,// "测试2",//商品标题
+				}
+				myResponseData[0].data.push(goods)
+				console.log('拼团或者直接购买的数据：')
+				console.log("深拷贝出来的数据,二维数组，商品最里面的item_id是商品id，id就是购物车id，也是要传入结算页面的数据：",myResponseData)
+				console.log("sumNum,也是要传入结算页面的数据：",sumNum)
+				console.log("sumSum,也是要传入结算页面的数据：",sumSum)
+				console.log("sumMoney,也是要传入结算页面的数据：",sumMoney)
+				this._goPage('order_submit', {
+					myResponseData,//购买的商品数据
+					sumNum,//件数
+					sumSum,//总量
+					sumMoney,//总金额
+				})
+			},
 		},
 		async onLoad() {
 			console.log("带过来的参数",this.$parseURL())
 			await this.$minApi.assembleDetail({id: this.$parseURL().id}).then(res => {
 				console.log("拼团详情：",res)
 				if (res.code === 200){
+					if (res.data.assemble_list.length) {
+						res.data.assemble_list.map((item, index) => {
+							item.timeStr = ''
+						})
+						myTimer = setInterval(this.timeStrChange, 1000);//设置定时器 每一秒执行一次
+					}
 					this.goodsInfo = res.data
 				}
 			})
@@ -444,6 +463,9 @@
 			//切换层级
 			this.beforeHeaderzIndex = e.scrollTop > 0 ? 10 : 11;
 			this.afterHeaderzIndex = e.scrollTop > 0 ? 11 : 10;
+		},
+		onUnload(){
+			clearInterval(myTimer);
 		},
 		components: {
 			uniNumberBox,

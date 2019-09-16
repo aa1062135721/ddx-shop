@@ -62,4 +62,38 @@ exports.install = function (Vue, options) {
         }
         return newObj
     }
+
+    /**
+     * 传两时间戳，返回相差多少时间
+     * @param EndTime
+     * @constructor
+     */
+    Vue.prototype.getRTime = (NowTime, EndTime) => {
+        // js获取的时间戳是13位的，精确到毫秒，而php获取的时间戳用strtotime是10位的，
+        let t =(EndTime * 1000) -(NowTime * 1000)
+        if (t<=0){
+            return `00:00:00`
+        }
+        let d=Math.floor(t/1000/60/60/24) //天
+        let h=Math.floor(t/1000/60/60%24) //时
+        let m=Math.floor(t/1000/60%60) //分
+        let s=Math.floor(t/1000%60) //秒
+        if(parseInt(d)<10){
+            d="0"+d
+        }
+        if(parseInt(h)<10){
+            h="0"+h
+        }
+        if(parseInt(m)<10){
+            m="0"+m
+        }
+        if(parseInt(s)<10){
+            s="0"+s
+        }
+        if (d === '00') {
+            return `${h}:${m}:${s}`
+        } else {
+            return `${d}天${h}:${m}:${s}`
+        }
+    }
 }

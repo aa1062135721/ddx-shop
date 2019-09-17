@@ -160,6 +160,12 @@ const router = new MinRouter({
 			name: 'feedback',
 			login: true
 		},
+		{
+			path: "pages/spike/detail",
+			type: 'navigateTo',
+			name: 'spike_detail',
+			login: false
+		},
 	]
 })
 

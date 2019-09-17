@@ -106,10 +106,11 @@
 					<text class="title">服务</text>
 					<text class="comtent">
 						<block v-for="(serviceItem, serviceIndex) in goodsInfo.item_service_ids" :key="serviceIndex">
+							<!-- 标题只渲染 0,1,2-->
 							<block v-if="serviceIndex < 3">
-								{{serviceItem.title + ' · '}}
+								<block v-if="serviceIndex !== 2">{{serviceItem.title + ' · '}}</block>
+								<block v-else>{{serviceItem.title}}</block>
 							</block>
-							<block v-if="serviceIndex === 2">{{serviceItem.title}}</block>
 						</block>
 					</text>
 				</view>
@@ -119,7 +120,7 @@
 			</view>
 		</view>
 		<!-- 服务说明 -->
-		<uni-popup ref="myService" type="bottom" :custom="true">
+		<uni-popup ref="myService" type="bottom" :custom="true" v-if="goodsInfo.item_service_ids.length">
 			<view class="my-service">
 				<view class="my-service-title">服务说明</view>
 				<view class="my-service-box">
@@ -189,13 +190,13 @@
 					 <view class='over'>已售完</view>
 				</block>
 				<block v-else>
-					<view class="joinCart" @click="open()">
+					<view class="joinCart my-vam" @click="open()">
 						<view class="inner">
 							￥{{goodsInfo.old_price}}<br />
 							单独够买
 						</view>
 					</view>
-					<view class="buy" @click="open()">
+					<view class="buy my-vam" @click="open()">
 						<view class="inner">
 							￥{{goodsInfo.price}}<br />
 							一键开团
@@ -240,13 +241,13 @@
 						<view class='over'>已下架</view>
 					</block>
 					<block v-else>
-						<view class="btn" style="background:#FC8A8A;" @click="buyNow(2)">
+						<view class="btn my-vam" style="background:#FC8A8A;" @click="buyNow(2)">
 							<view class="inner">
 								￥{{goodsInfo.old_price}}<br />
 								单独够买
 							</view>
 						</view>
-						<view class="btn" @click="buyNow(1)">
+						<view class="btn my-vam" @click="buyNow(1)">
 							<view class="inner">
 								￥{{goodsInfo.price}}<br />
 								一键开团
@@ -477,520 +478,7 @@
 
 <style lang="scss">
 	.container{
-		.header {
-			width: 100%;
-			height: 100upx;
-			position: fixed;
-			top: 0;
-			/*  #ifdef  APP-PLUS  */
-			top: var(--status-bar-height);
-			/*  #endif  */
-			/*  #ifdef  H5  */
-			top: var(--window-top);
-			/*  #endif  */
-			z-index: 10;
-			.after {
-				background-color: #fff;
-				width: 100%;
-				height: 100upx;
-				position: relative;
-				top: 0;
-				transition: opacity 0.05s linear;
-				.middle {
-					font-size: 32upx;
-					position: absolute;
-					top: 0;
-					left: 0;
-					width: 100%;
-					height: 100upx;
-					display: flex;
-					justify-content: center;
-					align-items: center;
-					view {
-						margin: 0 $uni-spacing-row-sm;
-						display: flex;
-						justify-content: center;
-						align-items: center;
-						&.on {
-							color: $color-primary;
-							border-bottom: solid 4upx $color-primary;
-						}
-					}
-				}
-				.icon-btn {
-					position: absolute;
-					right: $uni-spacing-row-sm;
-					top: 0;
-					height: 100upx;
-					line-height: 100upx;
-					flex-shrink: 0;
-					display: flex;
-					justify-content: flex-end;
-					font-size: 42upx;
-					color: #666;
-				}
-			}
-		}
-		.swiper-box {
-			position: relative;
-			width: 100%;
-			height: 100vw;
-			swiper {
-				width: 100%;
-				height: 100vw;
-				swiper-item {
-					image {
-						width: 100%;
-						height: 100vw;
-					}
-				}
-			}
-			.indicator{
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				padding: 0 25upx;
-				height: 40upx;
-				border-radius: 40upx;
-				font-size: 22upx;
-				position: absolute;
-				bottom: 20upx;
-				right: 20upx;
-				color: #fff;
-				background-color: rgba(0, 0, 0, 0.2);
-			}
-		}
-		.info-box {
-			width: 100%;
-			padding: 0 $uni-spacing-row-base;
-			background-color: #fff;
-			margin-bottom: 20upx;
-		}
-		.goods-info {
-			padding: $uni-spacing-row-base;
-			.price {
-				display: flex;
-				justify-content:space-between;
-				align-items: center;
-				margin-bottom: $uni-spacing-col-sm;
-				.one{
-					color: $color-primary;
-					font-size: $uni-font-size-lg;
-					margin-right: 20upx;
-				}
-				.two{
-					color: #808080;
-					font-size: $uni-font-size-base;
-				}
-			}
-			.title {
-				@extend %overflow-2-line;
-				text-align: justify;
-				color: $color-primary-plain;
-				font-size: $uni-font-size-base;
-				.tag{
-					background: $color-primary;
-					color: #ffffff;
-					padding: 0 8upx;
-					margin-right: $uni-spacing-row-base;
-					border-radius: $uni-border-radius-sm;
-				}
-			}
-		}
-		.goods-info2{
-			.item{
-				display: flex;
-				justify-content:space-between;
-				align-items: center;
-				width: 100%;
-				height: 80upx;
-				@extend  %border-color-solid-botton;
-				@extend %overflow-1-line;
-				font-size: $uni-font-size-base;
-				color: $color-primary-plain;
-				padding: $uni-spacing-col-lg 0;
-				.one{
-					width: 85%;
-					display: flex;
-					justify-content: flex-start;
-					.title{
-						width: 10%;
-						margin-right: $uni-spacing-row-base;
-					}
-					.comtent{
-						width: 75%;
-					}
-				}
-				.two{
-					width: 10%;
-					text-align: right;
-					.iconfont{
-						font-size:$uni-font-size-sm;
-					}
-				}
-				&:last-child{
-					border: none;
-				}
-			}
-
-		}
-		.comments {
-			padding: $uni-spacing-row-base;
-			.row {
-				width: 100%;
-				height: 40upx;
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				margin: 0 0 30upx 0;
-				.text {
-					font-size: 30upx;
-				}
-				.arrow {
-					font-size: 28upx;
-					color: #cccccc;
-					.show {
-						display: flex;
-						align-items: center;
-						.iconfont {
-							font-size: 30upx;
-							color: #cccccc;
-						}
-					}
-				}
-			}
-			.comment {
-				width: 100%;
-				.user-info {
-					width: 100%;
-					height: 40upx;
-					display: flex;
-					align-items: center;
-					justify-content:space-between;
-					.head-name{
-						display: flex;
-						align-items: center;
-						.face {
-							width: 40upx;
-							height: 40upx;
-							margin-right: 8upx;
-							image {
-								width: 40upx;
-								height: 40upx;
-								border-radius: 100%;
-							}
-						}
-						.username {
-							font-size: 24upx;
-							color: #999;
-						}
-					}
-					.time{
-						font-size: 24upx;
-						color: #999;
-					}
-				}
-				.content {
-					@extend  %overflow-2-line;
-					text-align: justify;
-					margin-top: 10upx;
-					font-size: 26upx;
-				}
-			}
-		}
-		.description {
-			margin-bottom: 100upx;
-			.title {
-				width: 100%;
-				height: 80upx;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				font-size: 26upx;
-				color: #999;
-				background: #fff;
-			}
-		}
-
-		.footer {
-			position: fixed;
-			left: 0;
-			bottom: 0;
-			width: 100%;
-			height: 98upx;
-			background-color: #fff;
-			z-index: 99;
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			.icons {
-				display: flex;
-				justify-content: center;
-				height: 98upx;
-				width: 30%;
-				.box {
-					position: relative;
-					width: 98upx;
-					height: 98upx;
-					display: flex;
-					justify-content: center;
-					flex-wrap: wrap;
-					.iconfont {
-						font-size: 60upx;
-						color: #828282;
-					}
-					.text {
-						display: flex;
-						justify-content: center;
-						width: 100%;
-						font-size: 22upx;
-						color: #666;
-					}
-					.number{
-						background: $color-primary;
-						border-radius:50%;
-						color: #fff;
-						font-size: $uni-font-size-sm;
-						width: 34upx;
-						height: 34upx;
-						text-align: center;
-						line-height: 34upx;
-						position: absolute;
-						top: 4upx;
-						right: 0;
-					}
-				}
-			}
-			.btn {
-				height: 98upx;
-				width: 70%;
-				overflow: hidden;
-				display: flex;
-				justify-content: flex-end;
-				.joinCart,
-				.buy,
-				.over {
-					height: 98upx;
-					width: 250upx;
-					display: table; /*重点*/
-					text-align: center;
-					.inner{
-						display: table-cell;
-						vertical-align:middle;
-					}
-					color: #fff;
-					font-size: 28upx;
-				}
-				.joinCart {
-					background-color: #FC8A8A;
-				}
-				.buy {
-					background-color: #FC5A5A;
-				}
-				.over{
-					background:#666666;
-					width:100%;
-				}
-			}
-		}
-
-		/*  选择规格，数量后加入该购物车或者立即购买 */
-		.select-specification{
-			background: #fff;
-			.goods-info{
-				width: 100%;
-				padding: 0 $uni-spacing-col-base;
-				.main{
-					padding-top: $uni-spacing-col-base;
-					padding-bottom: $uni-spacing-col-base;
-					border-bottom:1upx #E4E4E4 solid;
-					display: flex;
-					flex-wrap: nowrap;
-					justify-content: space-between;
-					.image{
-						width: 30%;
-						height: 100%;
-						.img{
-							width: 208upx;
-							height: 208upx;
-							border-radius: 4upx;
-						}
-					}
-					.info{
-						width: 60%;
-						height: 100%;
-						padding-left:$uni-spacing-col-base;
-						display: flex;
-						flex-direction: column;
-						justify-content: flex-end;
-						.price{
-							color: $color-primary;
-							font-size: $uni-font-size-lg;
-						}
-						.stock{
-							color: #808080;
-							font-size: $uni-font-size-base;
-						}
-						.chooses{
-							color: $color-primary-plain;
-							font-size: $uni-font-size-lg;
-						}
-					}
-					.close{
-						width: 10%;
-						height: 100%;
-						position: relative;
-						.iconfont{
-							position: absolute;
-							top: 0;
-							right: 0;
-							font-size: $uni-font-size-lg + $uni-font-size-sm;
-						}
-					}
-				}
-
-			}
-			.specification{
-				width: 100%;
-				padding:0 $uni-spacing-col-base;
-				.main{
-					padding-top: $uni-spacing-col-base;
-					padding-bottom: $uni-spacing-col-base;
-					border-bottom:1upx #E4E4E4 solid;
-					.title{
-						color: $color-primary-plain;
-						font-size: $uni-font-size-lg;
-						padding-bottom: $uni-spacing-col-base;
-					}
-					.content{
-						display: flex;
-						flex-direction: row;
-						justify-content: flex-start;
-						flex-wrap: wrap;
-						text{
-							background: #F2F2F2;
-							border: 1upx solid #F2F2F2;
-							color: $color-primary-plain;
-							font-size: $uni-font-size-base;
-							margin-right: 20upx;
-							margin-bottom: 20upx;
-							padding:10upx 24upx;
-							border-radius:4upx;
-							&.on{
-								color: $color-primary;
-								border: 1upx solid $color-primary;
-								background: #FAE8E8;
-							}
-						}
-					}
-				}
-			}
-			.buy-num{
-				width: 100%;
-				margin-bottom: 20upx;
-				.main{
-					padding: $uni-spacing-col-base;
-					display: flex;
-					justify-content: space-between;
-					.title{
-						color: $color-primary-plain;
-						font-size: $uni-font-size-lg;
-						padding-bottom: $uni-spacing-col-base;
-					}
-					.content{
-						font-size: $uni-font-size-sm;
-					}
-				}
-			}
-			.btns{
-				width: 100%;
-				height: 98upx;
-				display: flex;
-				justify-content:space-between;
-				color: #fff;
-				.btn{
-					background: $color-primary;
-					font-size: $uni-font-size-lg;
-					text-align: center;
-					height: 98upx;
-					width: 50%;
-					display: table;
-					.inner{
-						display: table-cell;
-						vertical-align:middle;
-					}
-				}
-			}
-		}
-
-		/* 服务说明  */
-		.service{
-			.service-point{
-				padding: 0 8upx;
-				font-size: $uni-font-size-lg;
-				&:last-child{
-					display: none;
-				}
-			}
-		}
-		.my-service {
-			background: #fff;
-			.my-service-title {
-				@extend %border-color-solid-botton;
-				line-height: 60upx;
-				font-size: $uni-font-size-lg;
-				padding: 15upx 0;
-				text-align: center;
-			}
-			.my-service-box {
-				background: #fff;
-				padding: $uni-spacing-row-base;
-				display: flex;
-				flex-direction: column;
-				.item{
-					display: flex;
-					flex-direction: column;
-					padding:$uni-spacing-col-base;
-					.title-and-point{
-						padding: $uni-spacing-col-sm 0;
-						font-size: $uni-font-size-lg;
-						color: #1A1A1A;
-						display: flex;
-						flex-direction: row;
-						align-items: center;
-						.point{
-							margin-right: 20upx;
-							width: 14upx;
-							height: 14upx;
-							border-radius: 50%;
-							background: #E4E4E4;
-							&.on{
-								opacity: 0;
-							}
-						}
-						.title{
-							font-size: $uni-font-size-lg;
-							color: #1A1A1A;
-							&.on{
-								font-size: $uni-font-size-base;
-								color: #808080;
-							}
-						}
-					}
-				}
-			}
-			.btn{
-				margin-top: 300upx;
-				width: 100%;
-				height: 98upx;
-				line-height: 98upx;
-				font-size: $uni-font-size-lg;
-				color: #ffffff;
-				text-align: center;
-				background: $color-primary;
-			}
-		}
-
+		@import '../../static/css/goods_detail.scss';
 		/* 拼团展示 */
 		.pintuan{
 			color:#ffffff;
@@ -1199,6 +687,13 @@
 				top: -40upx;
 				z-index: 2;
 			}
+		}
+	}
+	.my-vam{
+		display: table;
+		.inner{
+			display: table-cell;
+			vertical-align:middle;
 		}
 	}
 </style>

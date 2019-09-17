@@ -139,6 +139,12 @@
 			"style": {
 				"navigationBarTitleText": "意见反馈"
 			}
+		},
+		{
+			"path": "pages/spike/detail",
+			"style": {
+				"navigationBarTitleText": "抢购详情"
+			}
 		}
 	],
 	"globalStyle": {

@@ -73,16 +73,16 @@
 						<view class="left">
 							<view class="title-block" style="background: #F79058;">限时秒杀</view>
 						</view>
-						<view class="right">
-							<text>更多秒杀</text>
-							<text class="iconfont icon-ddx-shop-content_arrows"></text>
-						</view>
+<!--						<view class="right">-->
+<!--							<text>更多秒杀</text>-->
+<!--							<text class="iconfont icon-ddx-shop-content_arrows"></text>-->
+<!--						</view>-->
 					</view>
 					<view class="time-content">
 						<wlm-tab :tab-list="tabList2" :tabCur.sync="TabCur2"  @change="tabChange2" tabStyle="background:#F2F2F2;"
 								 selectTitleStyle="color:#fff;background:#FC5A5A;border-radius:16px;padding:0 4px;"></wlm-tab>
 						<view class="goods-list">
-							<view class="time-content-goods-list-goods">
+							<view class="time-content-goods-list-goods" @click="_goPage('spike_detail',{id:1})">
 								<view class="image">
 									<image class="img-25" src="../../static/images/goods.jpg"></image>
 								</view>
@@ -96,7 +96,7 @@
 									<text class="one">已抢8810件</text>
 								</view>
 							</view>
-							<view class="time-content-goods-list-goods">
+							<view class="time-content-goods-list-goods" @click="_goPage('spike_detail',{id:1})">
 								<view class="image">
 									<image class="img-25" src="../../static/images/goods.jpg"></image>
 								</view>
@@ -110,7 +110,7 @@
 									<text class="one">已抢8810件</text>
 								</view>
 							</view>
-							<view class="time-content-goods-list-goods">
+							<view class="time-content-goods-list-goods" @click="_goPage('spike_detail',{id:1})">
 								<view class="image">
 									<image class="img-25" src="../../static/images/goods.jpg"></image>
 								</view>
@@ -124,7 +124,7 @@
 									<text class="one">已抢8810件</text>
 								</view>
 							</view>
-							<view class="time-content-goods-list-goods">
+							<view class="time-content-goods-list-goods" @click="_goPage('spike_detail',{id:1})">
 								<view class="image">
 									<image class="img-25" src="../../static/images/goods.jpg"></image>
 								</view>

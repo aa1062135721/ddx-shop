@@ -151,6 +151,12 @@
 			"style": {
 				"navigationBarTitleText": "查看物流"
 			}
+		},
+		{
+			"path": "pages/user/fans",
+			"style": {
+				"navigationBarTitleText": "我的粉丝"
+			}
 		}
 	],
 	"globalStyle": {

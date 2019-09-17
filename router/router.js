@@ -172,6 +172,12 @@ const router = new MinRouter({
 			name: 'logistics_view',
 			login: true
 		},
+		{
+			path: "pages/user/fans",
+			type: 'navigateTo',
+			name: 'user_fans',
+			login: true
+		},
 	]
 })
 

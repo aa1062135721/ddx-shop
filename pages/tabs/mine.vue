@@ -9,7 +9,7 @@
                 <view class="name">
                     <text class="one" v-if="userInfo.mobile">{{userInfo.mobile}}</text>
                     <text class="one" v-else @click="goPage('login')">未登录</text>
-                    <text class="two" v-if="userInfo.id">粉丝 20</text>
+                    <text class="two" v-if="userInfo.id" @click="goPage('user_fans')">粉丝 20</text>
                 </view>
                 <view class="setting" @click="goPage('setting')">
                     <text class="iconfont icon-ddx-shop-setting"></text>

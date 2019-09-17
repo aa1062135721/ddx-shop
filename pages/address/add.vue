@@ -47,6 +47,37 @@
 				</view>
 			</view>
 		</view>
+		<uni-collapse class="my-collapse">
+			<uni-collapse-item title="选填身份证信息" class="id-info">
+				<view class="address">
+					<view class="a-input">
+						<view class="name">
+							身份证信息
+						</view>
+						<view class="value">
+							<input type="text" placeholder="选填(仅用于保税仓和澳洲仓订单)" disabled="true">
+						</view>
+					</view>
+					<view class="a-input" @click="upIdInfo">
+						<view class="name">
+							上传身份证
+						</view>
+						<view class="value">
+							<input type="text" placeholder="点击上传" disabled="true">
+						</view>
+					</view>
+					<view class="tips">
+						<view class="title">
+							为什么要上传身份证信息？
+						</view>
+						<view class="text">
+							根据海关相关规定，购买跨境商品需要办理清关手续；上传身份证信息，可确保您购买的商品顺利通过海关检查。捣蛋熊承诺：您所传身份证信息仅用于办理跨境商品清关手续，系统加密保存，他人无法获取相关信息。
+						</view>
+					</view>
+				</view>
+			</uni-collapse-item>
+		</uni-collapse>
+
 		<view class=btns>
 			<button type="warn" class="save" @click="saveAddress">保存地址</button>
 			<button type="warn" class="del" v-if="address.id" @click="detAddress(address.id)">删除地址</button>
@@ -55,6 +86,9 @@
 </template>
 
 <script>
+	import uniCollapse from '@/components/uni-collapse/uni-collapse.vue'
+	import uniCollapseItem from '@/components/uni-collapse-item/uni-collapse-item.vue'
+
 	export default {
 		name: "address_add",
 		data(){
@@ -111,6 +145,9 @@
 			}
 		},
 		methods: {
+			_goPage(url, query = {}){
+				this.$openPage({name:url, query})
+			},
 			async detAddress(id){
 				try {
 					const res = await this.$minApi.addressDel({id})
@@ -195,6 +232,18 @@
 					console.log(err)
 				}
 			},
+			upIdInfo(){
+				if (this.$parseURL().id){
+					console.log('编辑的时候，编辑身份证信息')
+					this._goPage('id_card_authentication', {address_id: this.$parseURL().id})
+				} else {
+					this._goPage('id_card_authentication')
+				}
+			},
+		},
+		components: {
+			uniCollapse,
+			uniCollapseItem,
 		}
 	}
 </script>
@@ -236,8 +285,48 @@
 					}
 				}
 			}
+			&:last-child{
+				margin-bottom: 0;
+				border: none;
+			}
+			.tips{
+				padding: 46upx 0;
+				font-size: $uni-font-size-base;
+				.title{
+					width: 100%;
+					text-align: left;
+					color: #F82B2B;
+					margin-bottom: 18upx;
+				}
+				.text{
+					width: 100%;
+					text-align: justify;
+					color: #808080;
+				}
+			}
+		}
+		.my-collapse{
+			/deep/ .uni-collapse{
+				/*&::before{*/
+				/*	height: 0;*/
+				/*	background: none;*/
+				/*}*/
+				&::after{
+					height: 0;
+					background: none;
+				}
+			}
+			.id-info{
+				/deep/ .uni-collapse-cell{
+					&::after{
+						height: 0;
+						background: none;
+					}
+				}
+			}
 		}
 		.btns{
+			margin-top: $uni-spacing-col-base * 3;
 			padding: $uni-spacing-col-base;
 			.save{
 				background: $color-primary;

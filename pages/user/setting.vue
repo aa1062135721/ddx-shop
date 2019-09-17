@@ -31,11 +31,35 @@
                     </view>
                 </view>
             </view>
+            <view class="item">
+                <view class="left">
+                    <view class="title">查看物流</view>
+                    <view class="value"></view>
+                </view>
+                <view class="right">
+                    <view class="btn" @click="_goPage('logistics_view')">
+                        前往
+                    </view>
+                </view>
+            </view>
+            <view class="item">
+                <view class="left">
+                    <view class="title">退出登录</view>
+                    <view class="value">注销登录</view>
+                </view>
+                <view class="right">
+                    <view class="btn" @click="loginOut">
+                        注销
+                    </view>
+                </view>
+            </view>
         </view>
     </view>
 </template>
 
 <script>
+    import {mapMutations,mapActions} from 'vuex'
+
     export default {
         name: "setting",
         data() {
@@ -47,7 +71,12 @@
             _goPage(url, query = {}){
                 this.$openPage({name:url, query})
             },
-
+            loginOut(){
+                this.saveUserInfo()
+                this.saveToken()
+                uni.navigateBack()
+            },
+            ...mapActions(['saveToken', 'saveUserInfo'])
         }
     }
 </script>

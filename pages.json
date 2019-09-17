@@ -145,6 +145,12 @@
 			"style": {
 				"navigationBarTitleText": "抢购详情"
 			}
+		},
+		{
+			"path": "pages/logistics/view",
+			"style": {
+				"navigationBarTitleText": "查看物流"
+			}
 		}
 	],
 	"globalStyle": {

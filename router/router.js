@@ -166,6 +166,12 @@ const router = new MinRouter({
 			name: 'spike_detail',
 			login: false
 		},
+		{
+			path: "pages/logistics/view",
+			type: 'navigateTo',
+			name: 'logistics_view',
+			login: true
+		},
 	]
 })
 

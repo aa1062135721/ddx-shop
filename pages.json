@@ -157,6 +157,12 @@
 			"style": {
 				"navigationBarTitleText": "我的粉丝"
 			}
+		},
+		{
+			"path": "pages/order/evaluate",
+			"style": {
+				"navigationBarTitleText": "发表评价"
+			}
 		}
 	],
 	"globalStyle": {

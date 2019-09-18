@@ -53,6 +53,28 @@
                     </view>
                 </view>
             </view>
+            <view class="item">
+                <view class="left">
+                    <view class="title">评价订单</view>
+                    <view class="value">购买商品心得，去评价</view>
+                </view>
+                <view class="right">
+                    <view class="btn" @click="_goPage('order_evaluate')">
+                        评价
+                    </view>
+                </view>
+            </view>
+            <view class="item">
+                <view class="left">
+                    <view class="title">拼团详情</view>
+                    <view class="value">去拼团详情</view>
+                </view>
+                <view class="right">
+                    <view class="btn" @click="_goPage('group_buy_group')">
+                        前往
+                    </view>
+                </view>
+            </view>
         </view>
     </view>
 </template>

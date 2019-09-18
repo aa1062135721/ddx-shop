@@ -178,6 +178,12 @@ const router = new MinRouter({
 			name: 'user_fans',
 			login: true
 		},
+		{
+			path: "pages/order/evaluate",
+			type: 'navigateTo',
+			name: 'order_evaluate',
+			login: true
+		},
 	]
 })
 

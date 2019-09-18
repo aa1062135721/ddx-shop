@@ -48,22 +48,15 @@
 			</view>
 		</view>
 		<uni-collapse class="my-collapse">
-			<uni-collapse-item title="选填身份证信息" class="id-info">
+			<uni-collapse-item title="选填身份证(仅用于保税仓和澳洲仓订单)" class="id-info">
 				<view class="address">
 					<view class="a-input">
-						<view class="name">
-							身份证信息
-						</view>
-						<view class="value">
-							<input type="text" placeholder="选填(仅用于保税仓和澳洲仓订单)" disabled="true">
-						</view>
-					</view>
-					<view class="a-input" @click="upIdInfo">
 						<view class="name">
 							上传身份证
 						</view>
 						<view class="value">
-							<input type="text" placeholder="点击上传" disabled="true">
+							<input type="text" placeholder="已上传" disabled="true" v-if="address.id_info.length || address.attestation_id">
+							<input type="text" placeholder="点击上传" @click="upIdInfo" disabled="true" v-else>
 						</view>
 					</view>
 					<view class="tips">
@@ -103,6 +96,8 @@
 					area_names: '', //城市名称，使用 逗号隔开  城市1，城市2，城市3
 					default: 0,//	是否默认：1默认，0不默认
 					address: '',
+					id_info:[],
+					attestation_id: '',
 				}
 			}
 		},
@@ -143,6 +138,11 @@
 				let area3 = await this.getCity(area2[0].id)
 				this.multiArray = [area1, area2, area3]
 			}
+		    let _this = this
+			this.$eventHub.$on('attestation_id', function (data) {
+			    _this.address.attestation_id = data.attestation_id
+				console.log("从其他页面传过来的值",data);
+			})
 		},
 		methods: {
 			_goPage(url, query = {}){
@@ -222,8 +222,18 @@
 				){
 					return
 				}
+				let data = {
+					name: this.address.name,
+					phone: this.address.phone,
+					area_ids: this.address.area_ids,
+					area_names: this.address.area_names,
+					address: this.address.address,
+					id: this.address.id,
+					default: this.address.default,
+					attestation_id: this.address.attestation_id,
+				}
 				try {
-					const res = await this.$minApi.addressAddOrEdit(this.address)
+					const res = await this.$minApi.addressAddOrEdit(data)
 					console.log(res)
 					if (res.code === 200) {
 						uni.navigateBack()

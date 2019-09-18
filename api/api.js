@@ -22,6 +22,7 @@ import Vue from 'vue'
 import MinRequest from './MinRequest'
 import store from '../store/index'
 
+const baseUrl = `http://testmd.ddxm661.com/wxshop`
 const minRequest = new MinRequest()
 
 // 请求拦截器
@@ -69,13 +70,20 @@ minRequest.interceptors.response((response) => {
 
 // 设置默认配置
 minRequest.setConfig((config) => {
-  config.baseURL = 'http://testmd.ddxm661.com/wxshop'
+  config.baseURL = `${baseUrl}`
   return config
 })
 
 
 export default {
   apis: {
+    urls:{
+      /**
+       * 上传接口
+       */
+      upload: `${baseUrl}/Base/upload`,
+
+    },
     /**
      * 登录页面-获取协议
      */
@@ -251,6 +259,14 @@ export default {
     assembleDetail(data) {
       return minRequest.get('/Index/assemble_info', data)
     },
+
+    /**
+     * 验证身份信息
+     */
+    checkingIdCard(data){
+      return minRequest.post('/User/CheckingIdCard', data)
+    },
+
 
   }
 }

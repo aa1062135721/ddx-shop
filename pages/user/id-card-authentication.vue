@@ -37,10 +37,10 @@
             return {
                 idCard1 : '../../static/images/idcard1.png',
                 idCard2 : '../../static/images/idcard2.png'
-            };
+            }
         },
         onLoad:function(){
-            _self = this;
+            _self = this
         },
         methods: {
             selectImg1 : function() {
@@ -78,30 +78,86 @@
                     uni.showToast({title:"请选择身份证照片", icon:"none"});
                     return;
                 }
+                //图片上传成功后返回的信息
+                let checkingIdCardData = {
+                    front: '',
+                    back: ''
+                }
+
                 // 因底层限制一次上传一个
                 uni.showLoading({title:"上传中"});
                 // 上传正面
-                var uploadTask1 = uni.uploadFile({
-                    url: 'https://unidemo.dcloud.net.cn/upload',
+                let uploadTask1 = uni.uploadFile({
+                    url: _self.$minApi.urls.upload,
                     filePath: _self.idCard1,
                     fileType: 'image',
-                    name: 'data',
-                    success: function (uploadFileRes) {
+                    name: 'file',
+                    success: function (uploadFileRes1) {
                         // 上传成功后返回服务器端保存的路径
-                        console.log(uploadFileRes.data);
+                        console.log(uploadFileRes1.data)
+
+                        if("string" === typeof uploadFileRes1.data){
+                            if (JSON.parse(uploadFileRes1.data).code === 200) {
+                                checkingIdCardData.front =  JSON.parse(uploadFileRes1.data).data.key
+                            }
+                        }else{
+                            if (uploadFileRes1.data.code === 200) {
+                                checkingIdCardData.front = uploadFileRes1.data.data.key
+                            }
+                        }
+
                         // 上传背面
                         var uploadTask2 = uni.uploadFile({
-                            url: 'https://unidemo.dcloud.net.cn/upload',
+                            url: _self.$minApi.urls.upload,
                             filePath: _self.idCard2,
                             fileType: 'image',
-                            name: 'data',
-                            success: function (uploadFileRes) {
+                            name: 'file',
+                            success: function (uploadFileRes2) {
                                 // 上传成功后返回服务器端保存的路径
-                                console.log(uploadFileRes.data);
+                                console.log(uploadFileRes2.data);
+                                if("string" === typeof uploadFileRes2.data){
+                                    if (JSON.parse(uploadFileRes2.data).code === 200) {
+                                        checkingIdCardData.back =  JSON.parse(uploadFileRes2.data).data.key
+                                    }
+                                }else{
+                                    if (uploadFileRes2.data.code === 200) {
+                                        checkingIdCardData.back = uploadFileRes2.data.data.key
+                                    }
+                                }
+                                /**
+                                 * 验证上传的图片是不是身份证
+                                 */
+                                _self.$minApi.checkingIdCard(checkingIdCardData).then(res => {
+                                    console.log(res)
+                                    if (res.code === 200){
+                                        //这儿返回到编辑地址
+                                        uni.navigateBack({
+                                            delta: 1,
+                                            success: function (res) {
+                                            },
+                                            fail: function (err) {
+                                            },
+                                            complete: function (ss) {
+                                                _self.$eventHub.$emit('attestation_id', res.data);
+                                            }
+                                        })
+                                    } else {
+                                        uni.showToast({title:"未能识别你上传的身份证", icon:"none"});
+                                    }
+                                    uni.hideLoading()
+                                })
+
                                 // 至此2张照片上传完毕
-                                uni.hideLoading();
+                            },
+                            fail: function (err) {
+                                console.log(err)
+                                uni.hideLoading()
                             }
                         });
+                    },
+                    fail: function (err) {
+                        console.log(err)
+                        uni.hideLoading()
                     }
                 });
             }

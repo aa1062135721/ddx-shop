@@ -15,7 +15,7 @@
 		<view class="swiper-box">
 			<swiper circular="true" autoplay="true" :indicator-dots="true" indicator-active-color="#FC8A8A">
 				<swiper-item v-for="(img_src,index) in goodsInfo.pics" :key="index">
-					<image :src="img_src" @click="previewImg(img_src, goodsInfo.pics)"></image>
+					<image :src="img_src" @click="previewImg(img_src, goodsInfo.pics)" :lazy-load="true" mode="aspectFit"></image>
 				</swiper-item>
 			</swiper>
 		</view>
@@ -152,7 +152,7 @@
 		<view class="description">
 			<separator title="图文详情" bgColor="#fff"></separator>
 			<view class="content">
-				<image v-for="(img, index) in goodsInfo.content" :src="img" :key="index" style="width: 100%;"></image>
+				<image v-for="(img, index) in goodsInfo.content" :src="img" :key="index" style="width: 100%" :lazy-load="true" mode="widthFix"></image>
 			</view>
 		</view>
 
@@ -265,30 +265,30 @@
 
 				// 商品信息
 				goodsInfo:{
-					id: 17,   //id
-					title: "奶粉罐装",    //名称
-					mold_id: 2,
-					price: "90.00",   //  金额
-					initial_sales: 36,
+					id: 0,   //id
+					title: "",    //名称
+					mold_id: 0,
+					price: "00.00",   //  金额
+					initial_sales: 0,
 					reality_sales: 0,
-					lvid: 2,
+					lvid: 0,
 					content: [],//图文详情
-					pics: ["http://picture.ddxm661.com/6dae4201909051617308036.jpg"],//图片
+					pics: [],//图片
 					sales: 36,        //销量
 					specs_list: [
 						{
-							tid: "1",
-							tname: "颜色",        //规格组名称
+							tid: "",
+							tname: "",        //规格组名称
 							value:[     //详细规格
 								{
-									id: 35,       //规格id（注意，选规格时传入此id的组合）
-									name: "黄色"  //规格名称
+									id: 0,       //规格id（注意，选规格时传入此id的组合）
+									name: ""  //规格名称
 								},
 							],
-							cont: 2
+							cont: 0
 						},
 					],
-					mold: "第一.1类型"    //类型
+					mold: ""    //类型
 				},
 				//当前选中的规格，返回的数据
 				specsInfo:{

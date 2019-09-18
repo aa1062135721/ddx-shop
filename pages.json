@@ -163,6 +163,24 @@
 			"style": {
 				"navigationBarTitleText": "发表评价"
 			}
+		},
+		{
+			"path": "pages/order/pay",
+			"style": {
+				"navigationBarTitleText": "确认付款"
+			}
+		},
+		{
+			"path": "pages/user/money",
+			"style": {
+				"navigationBarTitleText": "我的钱包"
+			}
+		},
+		{
+			"path": "pages/user/record",
+			"style": {
+				"navigationBarTitleText": "我的明细"
+			}
 		}
 	],
 	"globalStyle": {

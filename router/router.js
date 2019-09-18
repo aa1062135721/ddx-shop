@@ -184,6 +184,24 @@ const router = new MinRouter({
 			name: 'order_evaluate',
 			login: true
 		},
+		{
+			path: "pages/order/pay",
+			type: 'navigateTo',
+			name: 'order_pay',
+			login: true
+		},
+		{
+			path: "pages/user/money",
+			type: 'navigateTo',
+			name: 'user_money',
+			login: true
+		},
+		{
+			path: "pages/user/record",
+			type: 'navigateTo',
+			name: 'user_record',
+			login: true
+		},
 	]
 })
 

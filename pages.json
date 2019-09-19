@@ -181,6 +181,18 @@
 			"style": {
 				"navigationBarTitleText": "我的明细"
 			}
+		},
+		{
+			"path": "pages/order_return/refund",
+			"style": {
+				"navigationBarTitleText": "申请退款"
+			}
+		},
+		{
+			"path": "pages/order_return/status",
+			"style": {
+				"navigationBarTitleText": "申请退款"
+			}
 		}
 	],
 	"globalStyle": {

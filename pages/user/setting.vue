@@ -75,6 +75,28 @@
                     </view>
                 </view>
             </view>
+            <view class="item">
+                <view class="left">
+                    <view class="title">提交退单</view>
+                    <view class="value">去退单</view>
+                </view>
+                <view class="right">
+                    <view class="btn" @click="_goPage('order_return_refund')">
+                        前往
+                    </view>
+                </view>
+            </view>
+            <view class="item">
+                <view class="left">
+                    <view class="title">退单状态</view>
+                    <view class="value">去查看</view>
+                </view>
+                <view class="right">
+                    <view class="btn" @click="_goPage('order_return_status')">
+                        前往
+                    </view>
+                </view>
+            </view>
         </view>
     </view>
 </template>

@@ -202,6 +202,19 @@ const router = new MinRouter({
 			name: 'user_record',
 			login: true
 		},
+		{
+			path: "pages/order_return/refund",
+			type: 'navigateTo',
+			name: 'order_return_refund',
+			login: true
+		},
+		{
+			path: "pages/order_return/status",
+			type: 'navigateTo',
+			name: 'order_return_status',
+			login: true
+		},
+
 	]
 })
 

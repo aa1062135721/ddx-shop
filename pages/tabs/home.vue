@@ -19,9 +19,9 @@
 			<view class="content" v-if="TabCur === 0">
 				<view class="my-block"></view>
 				<view class="swiper-box" v-if="swiperList.length">
-					<swiper circular="true" autoplay="true" :indicator-dots="true" indicator-active-color="#FC8A8A">
+					<swiper circular="true" autoplay="true" :indicator-dots="true" indicator-active-color="#FC8A8A" style="width: 710upx;height: 268upx;">
 						<swiper-item class="swiper-item" v-for="(item, index) in swiperList" :key="index">
-							<image class="banner-img" :lazy-load="true"	:src="item.thumb" @click="_clickBanner(index)" mode="center"></image>
+							<image class="banner-img" :lazy-load="true"	:src="item.thumb" @click="_clickBanner(index)" mode="widthFix"></image>
 						</swiper-item>
 					</swiper>
 				</view>
@@ -455,17 +455,17 @@
 				background: #fff;
 			}
 			.swiper-box{
-				padding: 10upx $uni-spacing-row-sm 0 $uni-spacing-row-sm;
+				padding: 10upx $uni-spacing-row-sm;
 				width: 100%;
-				border-radius: 4upx;
+				height: auto;
+				border-radius: 10upx;
 				background: #fff;
 				overflow: hidden;
 				.swiper-item{
 					width: 100%;
-					overflow: hidden;
+					height: 100%;
 					.banner-img{
 						width: 100%;
-						height:100%;
 						border-radius: 10upx;
 					}
 				}

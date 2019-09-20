@@ -66,7 +66,7 @@ const router = new MinRouter({
 		},
 		{
 			path: "pages/order/result",
-			type: 'navigateTo',
+			type: 'redirectTo',
 			name: 'order_result',
 			login: true
 		},
@@ -186,7 +186,7 @@ const router = new MinRouter({
 		},
 		{
 			path: "pages/order/pay",
-			type: 'navigateTo',
+			type: 'redirectTo',
 			name: 'order_pay',
 			login: true
 		},

@@ -46,7 +46,8 @@
                     </view>
                     <view class="other">
                         <view class="title">{{sItem.title}}</view>
-                        <view class="specification">规格:
+                        <view class="specification" v-if="sItem.categoryArr.length">
+                            规格:
                             <text style="margin-right:6upx;" v-for="(category, category_key) in sItem.categoryArr" :key="category_key">{{category}}</text>
                         </view>
                         <view class="money">
@@ -183,12 +184,64 @@
                 })
             },
             //提交订单
-            submitOrder(){
-                if(this.address.id){
-                    this._goPage('order_result')
-                } else {
+            async submitOrder(){
+                if (!this.address.id) {
                     this.msg('未选择收货地址')
+                    return
                 }
+                let requestData = {
+                    address_id: this.address.id,
+                    item: [],
+                }
+                switch (this.$parseURL().createOrderType){
+                    case 'car': // 购物车下单
+                        this.myResponseData.forEach((item1) => {
+                            item1.data.forEach((item2) => {
+                                let obj =  {
+                                    id:0,        //商品id
+                                    num:0,        //商品数量
+                                    specs_ids: '',  //规格的id组，注意：如果是统一规格，也必须传此字段，值为空字符串
+                                    card_id:0,   //购物车id
+                                }
+                                obj.card_id = item2.id || ''
+                                obj.id = item2.item_id
+                                obj.num = item2.num
+                                obj.specs_ids = item2.key || ''
+                                requestData.item.push(obj)
+                            })
+                        })
+                        console.log('购物车下单', requestData)
+                        break
+                    case 'buy_now': // 直接下单
+                        this.myResponseData.forEach((item1, index1) => {
+                            let obj =  {
+                                id:0,        //商品id
+                                num:0,        //商品数量
+                                specs_ids:""  //规格的id组，注意：如果是统一规格，也必须传此字段，值为空字符串
+                            }
+                            item1.data.forEach((item2, index2) => {
+                                obj.id = item2.item_id
+                                obj.num = item2.num
+                                obj.specs_ids = item2.key || ''
+                                requestData.item.push(obj)
+                            })
+                        })
+                        console.log('直接下单', requestData)
+                        break
+                    case 'group':
+
+                        console.log('拼团下单')
+                        break
+                    case 'miaosha':
+
+                        console.log('秒杀下单')
+                        break
+                }
+                await this.$minApi.createOrder(requestData).then(res => {
+                    if (res.code === 200) {
+                        this._goPage('order_pay', res.data)
+                    }
+                })
             }
         },
         components: {

@@ -2,7 +2,7 @@
     <view>
         <view class="bg">
             <view class="name">总金额（元）</view>
-            <view class="money">5,000.00</view>
+            <view class="money">{{userInfo.money}}</view>
         </view>
         <view class="my-box">
             <view class="item">
@@ -11,7 +11,7 @@
                         可提现金额(元)
                     </text>
                     <text>
-                        500.00
+                        {{userInfo.out_money}}
                     </text>
                 </view>
                 <view class="tag">
@@ -35,6 +35,8 @@
 </template>
 
 <script>
+    import { mapGetters } from 'vuex'
+
     export default {
         name: "user_money",
         data(){
@@ -46,7 +48,10 @@
             _goPage(url, query = {}){
                 this.$openPage({name:url, query})
             },
-        }
+        },
+        computed: {
+            ...mapGetters(['userInfo'])
+        },
     }
 </script>
 

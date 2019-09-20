@@ -267,6 +267,12 @@ export default {
       return minRequest.post('/User/CheckingIdCard', data)
     },
 
+    /**
+     * 商品详情、购物车  ----提交订单
+     */
+    createOrder(data){
+      return minRequest.post('/order/order_doPost', data)
+    }
 
   }
 }

@@ -127,7 +127,7 @@
             },
             // 提价订单了
             goPage(){
-                let sumNum = 0, sumSum = 0, sumMoney = 0, myResponseData = []  //件数，总量，总金额, 商品参数
+                let sumNum = 0, createOrderType = 'car', sumSum = 0, sumMoney = 0, myResponseData = []  //件数，下单方式，总量，总金额, 商品参数
                 this.myResponseData.forEach((item1, index1) => {
                    console.log("SUB",item1)
                     let oneObj = {
@@ -159,6 +159,7 @@
                 if (myResponseData.length) {
                     this._goPage('order_submit',{
                         myResponseData,//购买的商品数据
+                        createOrderType,//下单方式
                         sumNum,//件数
                         sumSum,//总量
                         sumMoney,//总金额
@@ -236,9 +237,7 @@
                 for(let i = 0; i < this.responseData.length; i++){
                     let ai = this.responseData[i]
                     ai.is_checked = false
-                    ai.categoryArr = this.responseData[i].key_name.split('_').map((item) => {
-                            return item
-                    })
+                    ai.categoryArr = this.responseData[i].key_name.length ? this.responseData[i].key_name.split('_') : []
                     if(!map[ai.mold_id]){
                         dest.push({
                             mold_id: ai.mold_id,
@@ -256,7 +255,7 @@
                         }
                     }
                 }
-                console.log('ssssssss', dest)
+                console.log('把请求的数据组合成自己想要的格式：', dest)
                 this.myResponseData = dest
             },
             //计算订单金额

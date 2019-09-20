@@ -466,8 +466,9 @@
 					categoryIdArr.push(item.id)
 					categoryNameArr.push(item.name)
 				})
-				//件数，总量，总金额, 商品参数
+				//件数，下单方式，总量，总金额, 商品参数
 				let 	sumNum = 1,
+						createOrderType = 'buy_now',
 						sumSum = this.choosesGoodsInfo.num,
 						sumMoney = parseFloat(this.choosesGoodsInfo.num) * parseFloat(this.specsInfo.price),
 						myResponseData = [
@@ -501,6 +502,7 @@
 				this._goPage('order_submit', {
 					myResponseData,//购买的商品数据
 					sumNum,//件数
+					createOrderType,//下单方式
 					sumSum,//总量
 					sumMoney,//总金额
 				})

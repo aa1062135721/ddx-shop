@@ -121,6 +121,10 @@
                 this.$openPage({name:url, query})
             },
         },
+        onLoad(data) {
+            console.log("参数1",data)
+            console.log("参数2", this.$parseURL())
+        }
     }
 </script>
 

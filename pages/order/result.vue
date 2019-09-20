@@ -9,11 +9,11 @@
             <view>支付失败</view>
         </view>
         <view class="text">
-            <view>订单编号：{{orderSn}}</view>
+            <view>订单编号：{{order_sn}}</view>
             <view class="msg">{{msg}}</view>
         </view>
         <view class="button">
-            <button type="warn">查看订单</button>
+            <button type="warn" @click="viewOrder">查看订单</button>
         </view>
     </view>
 </template>
@@ -24,11 +24,27 @@
         data(){
           return {
               result: false,//支付结果
-              orderSn: 'OR12546815fa3dsf45415461',
-              msg: '您已经成功下单，我们将及时为您处理', // 您已经成功下单，我们将及时为您处理 or 您已经成功下单，但您未支付
+              order_id:0,//订单id
+              order_sn: '',//订单号
+              msg: '', // 您已经成功下单，我们将及时为您处理 or 您已经成功下单，但您未支付
           }
         },
+        onLoad(){
+            console.log("其他页面带过来的参数：", this.$parseURL())
+            this.order_sn = this.$parseURL().sn
+            this.order_id = this.$parseURL().id
+            this.result = this.$parseURL().result
+            if (this.$parseURL().result) {
+                this.msg = '您已经成功下单，我们将及时为您处理'
+            } else {
+                this.msg = '您已经成功下单，但您未支付'
+            }
+        },
         methods:{
+            viewOrder(){
+                console.log('这里跳转到订单详情，订单id：', this.order_id)
+                this.$openPage({name:'order_detail_redirect', query:{order_id: this.order_id}})
+            }
         }
     }
 </script>
@@ -77,7 +93,7 @@
 			color: #fff;
 			padding-left: $uni-spacing-row-sm;
 			padding-right: $uni-spacing-row-sm;
-			background: $color-primary;	
+			background: $color-primary;
 			width: 268upx;
 			font-size: $uni-font-size-base;
 		}

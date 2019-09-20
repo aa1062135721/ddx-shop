@@ -113,6 +113,12 @@ const router = new MinRouter({
 			login: true
 		},
 		{
+			path: "pages/order/detail",
+			type: 'navigateTo',
+			name: 'order_detail_redirect',
+			login: true
+		},
+		{
 			path: "pages/web-view/web-view",
 			type: 'navigateTo',
 			name: 'web_view',

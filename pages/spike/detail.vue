@@ -15,7 +15,7 @@
         <view class="swiper-box">
             <swiper circular="true" autoplay="true" :indicator-dots="true" indicator-active-color="#FC8A8A">
                 <swiper-item v-for="(img_src,index) in goodsInfo.pics" :key="index">
-                    <image :src="img_src" @click="previewImg(img_src, goodsInfo.pics)"></image>
+                    <image :src="img_src" @click="previewImg(img_src, goodsInfo.pics)" :lazy-load="true"></image>
                 </swiper-item>
             </swiper>
         </view>
@@ -214,7 +214,7 @@
                             单独购买
                         </view>
                     </view>
-                    <view class="btn" @click="buyNow(1)" v-if="goodsInfo.begin === 1">
+                    <view class="btn" @click="createOreder" v-if="goodsInfo.begin === 1">
                        立即秒杀
                     </view>
                     <view class="btn" style="background:#F9A13A;" v-if="goodsInfo.begin === 2">
@@ -231,6 +231,7 @@
 
 <script>
     var myTimer = null
+
     import uniNumberBox from "@/components/uni-number-box/uni-number-box.vue"
     import separator from "@/components/separator.vue"
     import uniPopup from '@/components/uni-popup/uni-popup.vue'
@@ -365,6 +366,50 @@
                 }
                 this.goodsInfo.now_time ++
                 this.timer = {h, m, s,}
+            },
+
+            /**
+             * 下单
+             */
+            createOreder(){
+                this.close()
+                //件数，订单类型，总量，总金额, 商品参数
+                let sumNum = 1,
+                    createOrderType = 'spike',
+                    sumSum = 1,
+                    sumMoney = this.goodsInfo.price,
+                    myResponseData = [
+                        {
+                            mold_id: this.goodsInfo.mold_id,
+                            name: this.goodsInfo.mold,
+                            data:[]
+                        }
+                    ]
+                let goods = {
+                    categoryArr: [],//["S", "通过热望各位梵蒂冈如果", "还惹我"],//当前选中的规格名组合成数组
+                    id: 0,//购物车id,这里是直接够买不是购物车够买，所以这里的数据设置为0
+                    is_checked: false,//购物车里被选中为结算商品,这里是直接够买不是购物车够买，所以这里的数据设置为false
+                    item_id: this.goodsInfo.item_id, // 商品id
+                    key: "",//"10_15_17",//当前选中的规格id组合
+                    key_name: "",// "S_通过热望各位梵蒂冈如果_还惹我", //当前选中的规格名组合
+                    mold: myResponseData[0].name,//"第一.1类型",//
+                    mold_id: myResponseData[0].mold_id,//2,//
+                    num: 1,//2,//够买数量
+                    pic: this.goodsInfo.pics[0],//"http://picture.ddxm661.com/75b9420190906171730779.jpg",//商品图片
+                    price:  this.goodsInfo.price,//"15.00",//商品价格
+                    status: 1,// 1,//商品状态
+                    store: -1, // -1,//商品库存
+                    title: this.goodsInfo.title,// "测试2",//商品标题
+                }
+                myResponseData[0].data.push(goods)
+                this._goPage('order_submit', {
+                    myResponseData,//购买的商品数据
+                    sumNum,//件数
+                    createOrderType,//订单类型
+                    sumSum,//总量
+                    sumMoney,//总金额
+                    seckill_id: this.goodsInfo.id,//秒杀商品id
+                })
             },
         },
         components: {

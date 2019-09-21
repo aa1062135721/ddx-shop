@@ -323,5 +323,12 @@ export default {
       return minRequest.get('/Index/seckillInfo', data)
     },
 
+    /**
+     * 秒杀下单
+     */
+    createOrderBySeckill(data) {
+      return minRequest.post('/order/seckill_doPost', data)
+    },
+
   }
 }

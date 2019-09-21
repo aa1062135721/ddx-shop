@@ -259,8 +259,19 @@
                             console.log(err)
                         })
                         break
-                    case 'miaosha':
+                    case 'spike':
                         console.log('秒杀下单提交了')
+                        let skillRequestData = {
+                            address_id: this.address.id,
+                            seckill_id: this.$parseURL().seckill_id
+                        }
+                        await this.$minApi.createOrderBySeckill(skillRequestData).then(res => {
+                            if (res.code === 200) {
+                                this._goPage('order_pay', res.data)
+                            }
+                        }).catch(err => {
+                            console.log(err)
+                        })
                         break
                 }
             }

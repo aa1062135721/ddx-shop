@@ -62,9 +62,9 @@
         },
         filters:{
             //1：正在抢购，2即将开始，3已结束
-            statusToString(){
+            statusToString(status){
                 let str = '即将开始'
-                switch (str) {
+                switch (status) {
                     case 1:
                         str = '秒杀中'
                         break

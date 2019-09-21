@@ -23,3 +23,25 @@ export const timeStampToTime = (timestamp, is_ymd = false) => {
 export const moneyToFixed = (money = 0) => {
   return parseFloat(money).toFixed(2)
 }
+
+/**
+ * 1待付款，2待发货，3待收货，4待评价
+ */
+export const orderStatusToString = (status) => {
+  let sStatus = '订单状态'
+  switch (status) {
+    case 1:
+      sStatus = '待付款'
+      break
+    case 2:
+      sStatus = '待发货'
+      break
+    case 3:
+      sStatus = '待收货'
+      break
+    case 4:
+      sStatus = '待评价'
+      break
+  }
+  return sStatus
+}

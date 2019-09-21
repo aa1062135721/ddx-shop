@@ -49,13 +49,13 @@
                     <view class="left">
                         <text>我的订单</text>
                     </view>
-                    <view class="right" @click="goPage('order_list')">
+                    <view class="right" @click="goPage('order_list', {status: 0})">
                         <text>查看全部</text>
                         <text class="iconfont icon-ddx-shop-content_arrows"></text>
                     </view>
                 </view>
                 <view class="box" style="justify-content: space-between;">
-                    <view class="item" @click="goPage('order_list',{type:1})">
+                    <view class="item" @click="goPage('order_list',{status: 1})">
                         <view>
                             <i class="iconfont icon-ddx-shop-daifukuan"></i>
                         </view>
@@ -64,7 +64,7 @@
                         </view>
                         <view class="red" v-if="userInfo.stay_pay">{{userInfo.stay_pay}}</view>
                     </view>
-                    <view class="item" @click="goPage('order_list',{type:3})">
+                    <view class="item" @click="goPage('order_list',{status: 2})">
                         <view>
                             <i class="iconfont icon-ddx-shop-daifahuo1"></i>
                         </view>
@@ -73,7 +73,7 @@
                         </view>
                         <view class="red" v-if="userInfo.stay_sendout">{{userInfo.stay_sendout}}</view>
                     </view>
-                    <view class="item" @click="goPage('order_list',{type:4})">
+                    <view class="item" @click="goPage('order_list',{status: 3})">
                         <view>
                             <i class="iconfont icon-ddx-shop-daishouhuo"></i>
                         </view>
@@ -82,7 +82,7 @@
                         </view>
                         <view class="red" v-if="userInfo.stay_takeover">{{userInfo.stay_takeover}}</view>
                     </view>
-                    <view class="item" @click="goPage('order_list',{type:5})">
+                    <view class="item" @click="goPage('order_list',{status:4})">
                         <view>
                             <i class="iconfont icon-ddx-shop-daipingjia"></i>
                         </view>

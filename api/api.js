@@ -288,5 +288,13 @@ export default {
       return minRequest.get('/user/sendTemplateMessage', data)
     },
 
+    /**
+     * 获取订单列表
+     */
+    orderList(data) {
+      return minRequest.get('/Orderinfo/getAllList', data)
+    },
+
+
   }
 }

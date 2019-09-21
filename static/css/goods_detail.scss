@@ -220,7 +220,7 @@
   }
 }
 .description {
-  margin-bottom: 100upx;
+  margin-bottom: 120upx;
   .title {
     width: 100%;
     height: 80upx;
@@ -230,6 +230,10 @@
     font-size: 26upx;
     color: #999;
     background: #fff;
+  }
+  .content{
+    display: flex;
+    flex-direction: column;
   }
 }
 

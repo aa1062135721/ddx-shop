@@ -24,7 +24,7 @@
             <view class="left">
                 <view class="top">
                     <text class="price">
-                        ￥39.9
+                        ￥{{goodsInfo.price}}
                     </text>
                     <text class="time-kill">
                         限时秒杀
@@ -32,12 +32,12 @@
                 </view>
                 <view class="bottom">
                     <text class="old-price">
-                        ￥50.89
+                        ￥{{goodsInfo.old_price}}
                     </text>
                 </view>
             </view>
             <view class="right">
-                <view class="one">
+                <view class="one" v-if="goodsInfo.begin === 1">
                     <view class="title">距离结束还剩</view>
                     <view class="time">
                         <text class="tag">{{timer.h}}</text>
@@ -45,6 +45,18 @@
                         <text class="tag">{{timer.m}}</text>
                         <text class="no-tag">:</text>
                         <text class="tag">{{timer.s}}</text>
+                    </view>
+                </view>
+                <view class="one" v-if="goodsInfo.begin === 3">
+                    <view class="title">秒杀状态</view>
+                    <view class="time">
+                        <text class="tag">已经结束</text>
+                    </view>
+                </view>
+                <view class="one" v-if="goodsInfo.begin === 2">
+                    <view class="title">秒杀状态</view>
+                    <view class="time">
+                        <text class="tag">即将开始</text>
                     </view>
                 </view>
                 <view>
@@ -129,7 +141,7 @@
         <view class="description">
             <separator title="图文详情" bgColor="#fff"></separator>
             <view class="content">
-                <image v-for="(img, index) in goodsInfo.content" :src="img" :key="index" style="width: 100%;"></image>
+                <image v-for="(img, index) in goodsInfo.content" :src="img" :key="index" style="width: 100%;" :lazy-load="true" mode="widthFix"></image>
             </view>
         </view>
 
@@ -147,17 +159,22 @@
                 </view>
             </view>
             <view class="btn">
-                <block v-if="goodsInfo.remaining_stock === 0">
-                    <view class='over'>已售完</view>
-                </block>
-                <block v-else>
-                    <view class="joinCart" @click="open()">
-                        加入购物车
+                <view class="joinCart" @click="_goPage('goods_detail_redirect', {id:goodsInfo.item_id})">
+                    <view class="inner">
+                        ￥{{goodsInfo.old_price}}
+                        <br>
+                        单独购买
                     </view>
-                    <view class="buy" @click="open()">
-                      立即购买
-                    </view>
-                </block>
+                </view>
+                <view class="buy" @click="open()" v-if="goodsInfo.begin === 1">
+                    立即秒杀
+                </view>
+                <view class="buy" style="background:#F9A13A;" v-if="goodsInfo.begin === 2">
+                    待开始
+                </view>
+                <view class="buy" style="background:#F9A13A;" v-if="goodsInfo.begin === 3">
+                    已结束
+                </view>
             </view>
         </view>
 
@@ -171,8 +188,7 @@
                         </view>
                         <view class="info">
                             <view class="price">￥{{goodsInfo.price}}</view>
-                            <view class="stock">库存:{{goodsInfo.all_stock}}</view>
-                            <view class="stock">限购:{{goodsInfo.buy_num}}</view>
+                            <view class="stock">限购: 1</view>
                             <view class="chooses"></view>
                         </view>
                         <view class="close">
@@ -186,23 +202,27 @@
                             购买数量
                         </view>
                         <view class="content">
-                            <uni-number-box v-if="goodsInfo.buy_num <= goodsInfo.remaining_stock" :min="1" :max="goodsInfo.buy_num" :value="1" :step="1" @change="changeNum"></uni-number-box>
-                            <uni-number-box v-else :min="1" :max="goodsInfo.remaining_stock" :value="1" :step="1" @change="changeNum"></uni-number-box>
+                            <uni-number-box  :min="1" :max="1" :value="1" :step="1" @change="changeNum"></uni-number-box>
                         </view>
                     </view>
                 </view>
                 <view class="btns">
-                    <block v-if="goodsInfo.remaining_stock === 0">
-                        <view class='over'>已下架</view>
-                    </block>
-                    <block v-else>
-                        <view class="btn" style="background:#FC8A8A;" @click="buyNow(2)">
-                            加入购物车
+                    <view class="btn" style="background:#FC8A8A;" @click="_goPage('goods_detail_redirect', {id:goodsInfo.item_id})">
+                        <view class="inner">
+                            ￥{{goodsInfo.old_price}}
+                            <br>
+                            单独购买
                         </view>
-                        <view class="btn" @click="buyNow(1)">
-                           立即购买
-                        </view>
-                    </block>
+                    </view>
+                    <view class="btn" @click="buyNow(1)" v-if="goodsInfo.begin === 1">
+                       立即秒杀
+                    </view>
+                    <view class="btn" style="background:#F9A13A;" v-if="goodsInfo.begin === 2">
+                        待开始
+                    </view>
+                    <view class="btn" style="background:#F9A13A;" v-if="goodsInfo.begin === 3">
+                        已结束
+                    </view>
                 </view>
             </view>
         </uni-popup>
@@ -226,47 +246,22 @@
                 },
 
                 goodsInfo: {
-                    id: 7,
-                    update: 4,
-                    pics: [
-                        "http://picture.ddxm661.com/eb01020190906170524340.jpg"
-                    ],
-                    mold_id: 3,
-                    content: [        //详情图片
-                        "http://picture.ddxm661.com/77ee2201909061705302142.jpg",
-                        "http://picture.ddxm661.com/d0830201909061705309030.jpg"
-                    ],
-                    title: "商品标题商品标题商品标题商品标题商品标题商品标题商品标题",   //名称
-                    item_id: 21,  //商品id
-                    item_name: "测试shang",
-                    old_price: "0.00",    //原价
-                    price: "2.00",        //拼团价
-                    commander_price: "2.00",
-                    people_num: 2,    //拼团一个需要多少人
-                    buy_num: 2,   //每人限购数量
-                    all_stock: 2,
-                    remaining_stock: 2,       //剩余可拼团购买的数量
-                    retail: 1,
-                    begin_time: 1568251746,
-                    end_time: 1568251748,
-                    now_time: 1568251746,
-                    hot: 0,
-                    postage_id: 0,
-                    mold: "熊猫自营",
-                    item_service_ids: [       //服务
-                        {
-                            title: "品质保障",
-                            content: "大手大脚按时缴费等是否会受到返回到数据库恢复1"
-                        },
-                        {
-                            title: "质量保障",
-                            content: "的撒发个递四方速递高富帅对光反射"
-                        },
-                        {
-                            title: "权益保障",
-                            content: "的挥洒复活点速发货速度符合速递会受到核辐射的回复数"
-                        }
-                    ],
+                     id: 0,
+                     item_id: 0,
+                     old_price: "0.00",
+                     price: "0.00",
+                     start_time: 1569027600,
+                     end_time: 1569031200,
+                     title: "",
+                     item_service_ids: [],
+                     num: 0,
+                     pics: [],
+                     content: [],
+                     mold_id: 0,
+                     begin: 1,
+                     end_or_start: "",
+                     now_time: 1569054271,
+                     mold: ""
                 },
 
                 //控制渐变标题栏的参数
@@ -377,9 +372,21 @@
             separator,
             uniPopup,
         },
+        onLoad(){
+          console.log("其他页面带过来的参数：",this.$parseURL())
+            this.$minApi.seckillGoodsInfo({id:this.$parseURL().id}).then(res => {
+                if (res.code === 200) {
+                    this.goodsInfo = res.data
+                    //1：正在抢购，2即将开始，3已结束
+                    if (res.data.begin === 1){
+                        myTimer = setInterval(this.getRTime, 1000);//设置定时器 每一秒执行一次
+                    }
+
+                }
+            })
+        },
         onReady(){
             this.calcAnchor();//计算锚点高度，页面数据是ajax加载时，请把此行放在数据渲染完成事件中执行以保证高度计算正确
-            myTimer = setInterval(this.getRTime, 1000);//设置定时器 每一秒执行一次
         },
         onUnload(){
             clearInterval(myTimer);

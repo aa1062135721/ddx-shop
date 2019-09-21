@@ -302,6 +302,26 @@ export default {
       return minRequest.get('/Orderinfo/getAllList', data)
     },
 
+    /**
+     * 首页秒杀----获取时间段
+     */
+    seckillTime(data){
+      return minRequest.get('/Index/seckill_list', data)
+    },
+
+    /**
+     * 首页秒杀----根据时间段 获取商品
+     */
+    seckillGoodsList(data){
+      return minRequest.get('/Index/seckill_list_goods', data)
+    },
+
+    /**
+     * 秒杀详情
+     */
+    seckillGoodsInfo(data){
+      return minRequest.get('/Index/seckillInfo', data)
+    },
 
   }
 }

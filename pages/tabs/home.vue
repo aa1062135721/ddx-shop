@@ -68,7 +68,8 @@
 					</view>
 				</view>
 
-				<view class="limited-time-kill">
+				<!--秒杀-->
+				<view class="limited-time-kill" v-if="tabList2.length">
 					<view class="title-bar">
 						<view class="left">
 							<view class="title-block" style="background: #F79058;">限时秒杀</view>
@@ -82,66 +83,26 @@
 						<wlm-tab :tab-list="tabList2" :tabCur.sync="TabCur2"  @change="tabChange2" tabStyle="background:#F2F2F2;"
 								 selectTitleStyle="color:#fff;background:#FC5A5A;border-radius:16px;padding:0 4px;"></wlm-tab>
 						<view class="goods-list">
-							<view class="time-content-goods-list-goods" @click="_goPage('spike_detail',{id:1})">
+							<view class="time-content-goods-list-goods" v-for="(item, index) in tabList2[TabCur2].goodsList" :key="index" @click="_goPage('spike_detail',{id:item.id})">
 								<view class="image">
-									<image class="img-25" src="../../static/images/goods.jpg"></image>
+									<image class="img-25" :lazy-load="true" :src="item.pic"></image>
 								</view>
 								<view class="title">
-									澳洲爱他美白金版profutura 3段澳洲爱他美白金版
+									{{item.item_name}}
 								</view>
 								<view class="price">
-									<text class="one">¥2008</text>
+									<text class="one">¥{{item.price}}</text>
 								</view>
 								<view class="status">
-									<text class="one">已抢8810件</text>
-								</view>
-							</view>
-							<view class="time-content-goods-list-goods" @click="_goPage('spike_detail',{id:1})">
-								<view class="image">
-									<image class="img-25" src="../../static/images/goods.jpg"></image>
-								</view>
-								<view class="title">
-									澳洲爱
-								</view>
-								<view class="price">
-									<text class="one">¥2008</text>
-								</view>
-								<view class="status">
-									<text class="one">已抢8810件</text>
-								</view>
-							</view>
-							<view class="time-content-goods-list-goods" @click="_goPage('spike_detail',{id:1})">
-								<view class="image">
-									<image class="img-25" src="../../static/images/goods.jpg"></image>
-								</view>
-								<view class="title">
-									澳洲爱他
-								</view>
-								<view class="price">
-									<text class="one">¥2008</text>
-								</view>
-								<view class="status">
-									<text class="one">已抢8810件</text>
-								</view>
-							</view>
-							<view class="time-content-goods-list-goods" @click="_goPage('spike_detail',{id:1})">
-								<view class="image">
-									<image class="img-25" src="../../static/images/goods.jpg"></image>
-								</view>
-								<view class="title">
-									澳洲爱他美白金版profutura 3段澳洲爱他美白金版
-								</view>
-								<view class="price">
-									<text class="one">¥2008</text>
-								</view>
-								<view class="status">
-									<text class="one">已抢8810件</text>
+									<text class="one">已抢{{item.already_num}}件</text>
 								</view>
 							</view>
 						</view>
 					</view>
 
 				</view>
+
+				<!--团购-->
 				<view class="limited-time-kill" v-if="groupBuyList.length">
 					<view class="title-bar">
 						<view class="left">
@@ -242,14 +203,7 @@
 				 */
 				//限时秒杀
 				TabCur2: 0,
-				tabList2: [
-					{ name: '10:00',sub_title: '秒杀中'},
-					{ name: '12:00',sub_title: '即将开始'},
-					{ name: '14:00',sub_title: '即将开始'},
-					{ name: '16:00',sub_title: '即将开始'},
-					{ name: '18:00',sub_title: '即将开始'},
-					{ name: '20:00',sub_title: '即将开始'},
-				],
+				tabList2: [],
 				//精品团购
 				groupBuyList: [],
 
@@ -259,6 +213,7 @@
 			await this._getCategory()
 			await this._getBanner()
 			await this._assembleList()
+			await this._getSeckillTime()
 			await this._getGuessYouLike()
 		},
 		async onReachBottom() {
@@ -376,6 +331,24 @@
 					console.log("拼团商品列表",res)
 					if (res.code === 200) {
 						this.groupBuyList = res.data
+					}
+				})
+			},
+			//推荐-秒杀
+			async _getSeckillTime(){
+				await this.$minApi.seckillTime().then(async res => {
+					console.log("秒杀时间段",res)
+					if (res.code === 200) {
+						res.data.map(async (item, index) => {
+							item.goodsList = []
+							await this.$minApi.seckillGoodsList({start_time: res.data[index].start_time}).then(sub_res => {
+								console.log(`第${index}秒杀时间段的商品`, sub_res)
+								if (sub_res.code === 200) {
+									item.goodsList = sub_res.data
+								}
+							})
+						})
+						this.tabList2 = res.data
 					}
 				})
 			},

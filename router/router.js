@@ -89,6 +89,12 @@ const router = new MinRouter({
 			login: false
 		},
 		{
+			path: "pages/goods/detail",
+			type: 'redirectTo',
+			name: 'goods_detail_redirect',
+			login: false
+		},
+		{
 			path: "pages/goods/evaluate",
 			type: 'navigateTo',
 			name: 'goods_evaluate',
@@ -114,7 +120,7 @@ const router = new MinRouter({
 		},
 		{
 			path: "pages/order/detail",
-			type: 'navigateTo',
+			type: 'redirectTo',
 			name: 'order_detail_redirect',
 			login: true
 		},

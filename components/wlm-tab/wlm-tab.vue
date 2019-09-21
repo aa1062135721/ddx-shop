@@ -3,8 +3,8 @@
         <div class="tab">
             <block  v-for="(item,index) in tabList" :key="index" :id="index">
             <div class="item" @tap="tabSelect(index,$event)" >
-                <span :style="tabCur === index ? selectTitleStyle : ''" class="title" :class="titleClass">{{item.name}}</span>
-                <span :style="tabCur === index ? selectSubTitleStyle : ''" class="sub-title" :class="subTitleClass">{{item.sub_title}}</span>
+                <span :style="tabCur === index ? selectTitleStyle : ''" class="title" :class="titleClass">{{item.start}}</span>
+                <span :style="tabCur === index ? selectSubTitleStyle : ''" class="sub-title" :class="subTitleClass">{{item.begin | statusToString}}</span>
             </div>
             </block>
         </div>
@@ -59,6 +59,24 @@
             scrollLeft() {
                 return (this.tabCur - 1) * 60;
             }
+        },
+        filters:{
+            //1：正在抢购，2即将开始，3已结束
+            statusToString(){
+                let str = '即将开始'
+                switch (str) {
+                    case 1:
+                        str = '秒杀中'
+                        break
+                    case 2:
+                        str = '即将开始'
+                        break
+                    case 3:
+                        str = '已结束'
+                        break
+                }
+                return str
+            }
         }
     }
 </script>
@@ -89,7 +107,7 @@
             margin: 0 10upx;
             padding: 0 20upx;
             .title{
-                font-size: $uni-font-size-lg;
+                font-size: $uni-font-size-base;
                 color: #1A1A1A;
             }
             .sub-title{

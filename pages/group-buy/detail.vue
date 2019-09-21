@@ -64,8 +64,8 @@
 						<view class="info-time">仅剩 {{item.timeStr}}</view>
 					</view>
 					<view class="btns">
-						<view class="btn" @click="open(item.id)" v-if="item.member_id !== userInfo.id">一键成团</view>
-						<view class="btn" v-else>查看详情</view>
+						<view class="btn" @click="buyGroup(item.id)" v-if="item.member_id !== userInfo.id">一键成团</view>
+						<view class="btn" @click="_goPage('group_buy_group')" v-else>查看详情</view>
 					</view>
 				</view>
 			</view>
@@ -88,8 +88,8 @@
 								</view>
 							</view>
 							<view class="right">
-								<view class="btn" @click="open(item.id)" v-if="item.member_id !== userInfo.id">一键成团</view>
-								<view class="btn" v-else>查看详情</view>
+								<view class="btn" @click="buyGroup(item.id)" v-if="item.member_id !== userInfo.id">一键成团</view>
+								<view class="btn" @click="_goPage('group_buy_group')" v-else>查看详情</view>
 							</view>
 						</view>
 					</view>
@@ -138,6 +138,22 @@
 				<view class="btn" @click="closeService">确定</view>
 			</view>
 		</uni-popup>
+
+		<!--商品信息  -->
+		<view class="info-box goods-info2">
+			<view class="item">
+				<view class="one">
+					<view class="title">数量</view>
+					<view class="comtent">
+						<uni-number-box v-if="goodsInfo.buy_num <= goodsInfo.remaining_stock" :min="1" :max="goodsInfo.buy_num" :value="1" :step="1" @change="changeNum"></uni-number-box>
+						<uni-number-box v-else :min="1" :max="goodsInfo.remaining_stock" :value="1" :step="1" @change="changeNum"></uni-number-box>
+					</view>
+				</view>
+				<view class="two">
+					<text class="iconfont icon-ddx-shop-content_arrows"></text>
+				</view>
+			</view>
+		</view>
 
 		<!-- 评价 -->
 		<view class="info-box comments" id="comments">
@@ -362,8 +378,7 @@
 				uni.navigateBack();
 			},
 			//打开选择规格弹框
-			open(assemble_list_id = 0){
-				this.choosesGoodsInfo.assemble_list_id = assemble_list_id
+			open(){
 				this.$refs.selectSpecification.open()
 			},
 			close(){
@@ -412,9 +427,6 @@
 			 */
 			buyNow(type = 1){
 				this.close()
-				if (this.choosesGoodsInfo.assemble_list_id) {
-					type =3
-				}
 				console.log("商品信息: ",this.goodsInfo, ', 购买参数：', this.choosesGoodsInfo)
 				let price = 0.0
 				switch (type) {
@@ -470,6 +482,12 @@
 					assemble_list_id: this.choosesGoodsInfo.assemble_list_id,    //拼团组的id，非必传，不传表示自己开团，否则表示与别人成团
 				})
 			},
+
+			// 一键成团
+			buyGroup(assemble_list_id = 0){
+				this.choosesGoodsInfo.assemble_list_id = assemble_list_id
+				this.buyNow(3)
+			}
 		},
 		async onLoad() {
 			console.log("带过来的参数",this.$parseURL())

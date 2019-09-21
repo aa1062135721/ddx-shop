@@ -211,8 +211,15 @@
                             })
                         })
                         console.log('购物车下单', requestData)
+                        await this.$minApi.createOrder(requestData).then(res => {
+                            if (res.code === 200) {
+                                this._goPage('order_pay', res.data)
+                            }
+                        }).catch(err => {
+                            console.log(err)
+                        })
                         break
-                    case 'buy_now': // 直接下单
+                    case 'buy_now':
                         this.myResponseData.forEach((item1, index1) => {
                             let obj =  {
                                 id:0,        //商品id
@@ -227,21 +234,35 @@
                             })
                         })
                         console.log('直接下单', requestData)
+                        await this.$minApi.createOrder(requestData).then(res => {
+                            if (res.code === 200) {
+                                this._goPage('order_pay', res.data)
+                            }
+                        }).catch(err => {
+                            console.log(err)
+                        })
                         break
                     case 'group':
-
-                        console.log('拼团下单')
+                        console.log('拼团下单提交了')
+                        let groupRequestData = {
+                            address_id: this.address.id,
+                            assemble_id: this.$parseURL().assemble_id,     //拼团活动id
+                            num: this.$parseURL().num,//购买数量
+                            update: this.$parseURL().update,          //版本，拼团组详情的id
+                            assemble_list_id: this.$parseURL().assemble_list_id,    //拼团组的id，非必传，不传表示自己开团，否则表示与别人成团
+                        }
+                        await this.$minApi.createOrderByGroup(groupRequestData).then(res => {
+                            if (res.code === 200) {
+                                this._goPage('order_pay', res.data)
+                            }
+                        }).catch(err => {
+                            console.log(err)
+                        })
                         break
                     case 'miaosha':
-
-                        console.log('秒杀下单')
+                        console.log('秒杀下单提交了')
                         break
                 }
-                await this.$minApi.createOrder(requestData).then(res => {
-                    if (res.code === 200) {
-                        this._goPage('order_pay', res.data)
-                    }
-                })
             }
         },
         components: {

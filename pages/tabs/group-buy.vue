@@ -39,7 +39,7 @@
          </view>
 
       </view>
-      <uni-load-more :status="tabList[TabCur].requestData.moreStatus" :show-icon="true"></uni-load-more>
+      <uni-load-more :status="moreStatus" :show-icon="true"></uni-load-more>
    </view>
 </template>
 
@@ -56,15 +56,15 @@
                 limit: 10,
              },
              groupBuyList: [
-                {
-                   id: 8,    //拼团活动id
-                   pic: "http://picture.ddxm661.com/6dae4201909051617308036.jpg",    //图片
-                   title: "奶粉罐装",    //标题
-                   old_price: "90.00",   //原价
-                   price: "80.00",       //拼团价
-                   assemble_num: 0,       //已成功拼团人数
-                   people_num: 50,   //开团人数
-               }
+               //  {
+               //     id: 8,    //拼团活动id
+               //     pic: "http://picture.ddxm661.com/6dae4201909051617308036.jpg",    //图片
+               //     title: "奶粉罐装",    //标题
+               //     old_price: "90.00",   //原价
+               //     price: "80.00",       //拼团价
+               //     assemble_num: 0,       //已成功拼团人数
+               //     people_num: 50,   //开团人数
+               // }
              ],
           }
         },

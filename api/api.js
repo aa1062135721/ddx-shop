@@ -261,6 +261,13 @@ export default {
     },
 
     /**
+     * 拼团下单
+     */
+    createOrderByGroup(data) {
+      return minRequest.post('/order/assemble_doPost', data)
+    },
+
+    /**
      * 验证身份信息
      */
     checkingIdCard(data){

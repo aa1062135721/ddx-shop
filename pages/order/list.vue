@@ -56,7 +56,7 @@
 
                                         <button v-if="item.status === 5 || item.status === 6" >删除</button>
 
-                                        <button v-if="item.order_distinguish === 1" class="active">查看拼团</button>
+                                        <button v-if="item.order_distinguish === 1" class="active" @click.stop="goPage('group_buy_group')">查看拼团</button>
 
                                     </form>
                             </view>

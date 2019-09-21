@@ -31,7 +31,7 @@
 					<text class="two-title2">￥{{goodsInfo.old_price}}</text>
 				</view>
 				<view>
-					<text>已团6万</text>
+					<text>已团{{goodsInfo.all_people}}</text>
 				</view>
 			</view>
 		</view>
@@ -64,9 +64,8 @@
 						<view class="info-time">仅剩 {{item.timeStr}}</view>
 					</view>
 					<view class="btns">
-						<view class="btn">
-							一键成团
-						</view>
+						<view class="btn" @click="open(item.id)" v-if="item.member_id !== userInfo.id">一键成团</view>
+						<view class="btn" v-else>查看详情</view>
 					</view>
 				</view>
 			</view>
@@ -89,7 +88,8 @@
 								</view>
 							</view>
 							<view class="right">
-								<view class="btn">一键成团</view>
+								<view class="btn" @click="open(item.id)" v-if="item.member_id !== userInfo.id">一键成团</view>
+								<view class="btn" v-else>查看详情</view>
 							</view>
 						</view>
 					</view>
@@ -168,7 +168,7 @@
 		<view class="description">
 			<separator title="图文详情" bgColor="#fff"></separator>
 			<view class="content">
-				<image v-for="(img, index) in goodsInfo.content" :src="img" :key="index" style="width: 100%;"></image>
+				<image v-for="(img, index) in goodsInfo.content" :src="img" :key="index" style="width: 100%;" :lazy-load="true" mode="widthFix"></image>
 			</view>
 		</view>
 
@@ -264,12 +264,39 @@
 	import uniNumberBox from "@/components/uni-number-box/uni-number-box.vue"
 	import separator from "@/components/separator.vue"
 	import uniPopup from '@/components/uni-popup/uni-popup.vue'
+	import { mapGetters } from 'vuex'
+
 	var myTimer = null //用来关闭定时器
 
 	export default {
 		data() {
 			return {
-				goodsInfo: {},
+				goodsInfo: {
+					id: 0,//拼团活动id
+					update: 0,    //版本
+					pics: [],
+					mold_id: 0,
+					content: [],
+					title: "",   //名称
+					item_id: 0,  //商品id
+					item_name: "",
+					old_price: "",    //原价
+					price: "",        //拼团价
+					commander_price: "",
+					people_num: 0,    //拼团一个需要多少人
+					buy_num: 0,   //每人限购数量
+					all_stock: 2,
+					remaining_stock: 2,       //剩余可拼团购买的数量
+					retail: 0,
+					begin_time: 0,
+					end_time: 0,
+					hot: 0,
+					postage_id: 0,
+					count: 0,     //一共有多少人拼团。如果为0的话下面的  assemble_list为 [];
+					assemble_list: [],
+					mold: "",
+					all_people: 0     //已成功拼团人数
+				},
 
 				//控制渐变标题栏的参数
 				beforeHeaderzIndex: 11,//层级
@@ -283,6 +310,7 @@
 				//当前已经选择了的商品，数量
 				choosesGoodsInfo:{
 					num:1,//选择购物数量
+					assemble_list_id: 0,//拼团组的id，非必传，不传表示自己开团，否则表示与别人成团
 				},
 			}
 		},
@@ -334,7 +362,8 @@
 				uni.navigateBack();
 			},
 			//打开选择规格弹框
-			open(){
+			open(assemble_list_id = 0){
+				this.choosesGoodsInfo.assemble_list_id = assemble_list_id
 				this.$refs.selectSpecification.open()
 			},
 			close(){
@@ -383,6 +412,9 @@
 			 */
 			buyNow(type = 1){
 				this.close()
+				if (this.choosesGoodsInfo.assemble_list_id) {
+					type =3
+				}
 				console.log("商品信息: ",this.goodsInfo, ', 购买参数：', this.choosesGoodsInfo)
 				let price = 0.0
 				switch (type) {
@@ -392,10 +424,14 @@
 					case 2:
 						price = this.goodsInfo.old_price // old_price 原价 单独购买
 						break
+					case 3:
+						price = this.goodsInfo.commander_price // 和别人组团 组团价
+						break
 				}
 
-				//件数，总量，总金额, 商品参数
+				//件数，订单类型，总量，总金额, 商品参数
 				let 	sumNum = 1,
+						createOrderType = ((type === 1 || type === 3) ? 'group' : 'buy_now'),
 						sumSum = this.choosesGoodsInfo.num,
 						sumMoney = parseFloat(this.choosesGoodsInfo.num) * parseFloat(price),
 						myResponseData = [
@@ -409,7 +445,7 @@
 					categoryArr: [],//["S", "通过热望各位梵蒂冈如果", "还惹我"],//当前选中的规格名组合成数组
 					id: 0,//购物车id,这里是直接够买不是购物车够买，所以这里的数据设置为0
 					is_checked: false,//购物车里被选中为结算商品,这里是直接够买不是购物车够买，所以这里的数据设置为false
-					item_id: this.goodsInfo.id, // 商品id
+					item_id: this.goodsInfo.item_id, // 商品id
 					key: "",//"10_15_17",//当前选中的规格id组合
 					key_name: "",// "S_通过热望各位梵蒂冈如果_还惹我", //当前选中的规格名组合
 					mold: myResponseData[0].name,//"第一.1类型",//
@@ -422,16 +458,16 @@
 					title: this.goodsInfo.title,// "测试2",//商品标题
 				}
 				myResponseData[0].data.push(goods)
-				console.log('拼团或者直接购买的数据：')
-				console.log("深拷贝出来的数据,二维数组，商品最里面的item_id是商品id，id就是购物车id，也是要传入结算页面的数据：",myResponseData)
-				console.log("sumNum,也是要传入结算页面的数据：",sumNum)
-				console.log("sumSum,也是要传入结算页面的数据：",sumSum)
-				console.log("sumMoney,也是要传入结算页面的数据：",sumMoney)
 				this._goPage('order_submit', {
 					myResponseData,//购买的商品数据
 					sumNum,//件数
+					createOrderType,//订单类型
 					sumSum,//总量
 					sumMoney,//总金额
+					assemble_id: this.goodsInfo.id,     //拼团活动id
+					num: this.choosesGoodsInfo.num,//购买数量
+					update: this.goodsInfo.update,          //版本，拼团组详情的id
+					assemble_list_id: this.choosesGoodsInfo.assemble_list_id,    //拼团组的id，非必传，不传表示自己开团，否则表示与别人成团
 				})
 			},
 		},
@@ -472,6 +508,9 @@
 			uniNumberBox,
 			separator,
 			uniPopup,
+		},
+		computed: {
+			...mapGetters(['userInfo'])
 		}
 	}
 </script>

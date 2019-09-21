@@ -15,7 +15,7 @@
 		<view class="swiper-box">
 			<swiper circular="true" autoplay="true" :indicator-dots="true" indicator-active-color="#FC8A8A">
 				<swiper-item v-for="(img_src,index) in goodsInfo.pics" :key="index">
-					<image :src="img_src" @click="previewImg(img_src, goodsInfo.pics)" :lazy-load="true" mode="aspectFit"></image>
+					<image :src="img_src" @click="previewImg(img_src, goodsInfo.pics)" :lazy-load="true"></image>
 				</swiper-item>
 			</swiper>
 		</view>

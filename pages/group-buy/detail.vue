@@ -209,7 +209,7 @@
 					<view class="joinCart my-vam" @click="open()">
 						<view class="inner">
 							￥{{goodsInfo.old_price}}<br />
-							单独够买
+							单独购买
 						</view>
 					</view>
 					<view class="buy my-vam" @click="open()">
@@ -260,7 +260,7 @@
 						<view class="btn my-vam" style="background:#FC8A8A;" @click="buyNow(2)">
 							<view class="inner">
 								￥{{goodsInfo.old_price}}<br />
-								单独够买
+								单独购买
 							</view>
 						</view>
 						<view class="btn my-vam" @click="buyNow(1)">

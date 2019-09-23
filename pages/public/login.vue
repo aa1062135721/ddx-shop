@@ -5,13 +5,13 @@
 		</view>
 		<view class="fixed">
 			<view class="btns">
-				<button class="btn1" type="primary" open-type="getUserInfo" withCredentials="true" lang="zh_CN" @getuserinfo="wxGetUserInfo" :disabled="!isAgreement" v-if="!responseData.openId">
+				<button class="btn1" type="primary" open-type="getUserInfo" withCredentials="true" lang="zh_CN" @getuserinfo="wxGetUserInfo" v-if="!responseData.openId">
 					<text class="iconfont icon-ddx-shop-wechat"></text>
 					授权微信昵称、头像
 				</button>
-				<button class="btn2" type="default" plain @click="_goPage('login-with-mobile', responseData)" :disabled="!isAgreement" v-if="responseData.openId">手机号登录</button>
+				<button class="btn2" type="primary"  @click="goLogin"  v-if="responseData.openId">手机号登录</button>
 			</view>
-			<view>
+			<view v-if="responseData.openId">
 				<checkbox-group  @change="checkboxChange">
 					<label  class="tip">
 						<checkbox  class="checkbox" :checked="isAgreement" color="#FC5A5A" />
@@ -49,6 +49,13 @@
 				} else {
 					this.isAgreement = false
 				}
+			},
+			goLogin(){
+				if (!this.isAgreement) {
+					this.msg('请阅读用户协议并勾选')
+					return
+				}
+				this._goPage('login-with-mobile', this.responseData)
 			},
 			async openPopup(val){
 				await this.$minApi.agreement({
@@ -142,10 +149,9 @@
 				}
 			}
 			.btn2{
-				background: #CCCCCC;
-				border: 1upx solid #CCCCCC;
+				background-color: #2BC345;
 				margin-bottom: 20upx;
-				color:$color-primary-plain;
+				color:#FFFFFF;
 			}
 		}
 		.tip{

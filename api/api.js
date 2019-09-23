@@ -358,5 +358,19 @@ export default {
       return minRequest.post('/order/seckill_doPost', data)
     },
 
+    /**
+     * 查询收益记录或提现记录
+     */
+    profitList(data){
+      return minRequest.get('/User/getProfitList', data)
+    },
+
+    /**
+     * 申请提现
+     */
+    applyMoney(data){
+      return minRequest.post('/User/applyOutMoney', data)
+    },
+
   }
 }

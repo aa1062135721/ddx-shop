@@ -131,7 +131,7 @@
     }
     .my-body{
         background: #ffffff;
-        margin-top: 100upx;
+        margin-top: 120upx;
         width: 100%;
         .box{
             width: 100%;

@@ -372,5 +372,13 @@ export default {
       return minRequest.post('/User/applyOutMoney', data)
     },
 
+    /**
+     * 我的粉丝
+     */
+    fansList(data){
+      return minRequest.get('/user/getFansList', data)
+    },
+
+
   }
 }

@@ -1,15 +1,15 @@
 <template>
     <view>
         <view class="section">
-            <view class="item">
+            <view class="item" v-for="(item, index) in fansData" :key="index">
                 <view class="head">
-                    <image class="img" src="../../static/images/goods.jpg"></image>
-                    <view class="tag">推荐人</view>
+                    <image class="img" :src="item.pic"></image>
+                    <view class="tag" v-if="item.istop">推荐人</view>
                 </view>
                 <view class="info">
-                    <view class="name">吴黎明大帅哥</view>
-                    <view class="other">手机：156****0845</view>
-                    <view class="other">2019-09-05 16:14:23</view>
+                    <view class="name">{{item.nickname}}</view>
+                    <view class="other">手机：{{item.phone}}</view>
+                    <view class="other">{{item.createtime}}</view>
                 </view>
             </view>
             <view class="item">
@@ -34,11 +34,49 @@
         name: "user_fans",
         data() {
             return {
-                moreStatus: 'noMore',
+                moreStatus: 'loading',
+                requestData: {
+                  page: 1,
+                  limit: 10,
+                },
+                fansData: []
             }
         },
+        onLoad(){
+          this.loadData()
+        },
         methods: {
+            async loadData(){
+                this.moreStatus = 'loading'
+                let data = {
+                    page: this.requestData.page,
+                    limit: this.requestData.limit,
 
+                }
+                this.$minApi.fansList(data).then(res => {
+                    console.log('粉丝列表：',res)
+                    if (res.code === 200) {
+                        if (data.page === 1) {
+                            this.fansData = res.data
+                        } else {
+                            this.fansData.push(...res.data)
+                        }
+                        if (res.data.length < data.limit){
+                            this.moreStatus = 'noMore'
+                        } else {
+                            this.moreStatus = 'more'
+                        }
+                    }
+                })
+            },
+
+        },
+        onReachBottom(){
+            if (this.moreStatus === 'noMore') {
+                return
+            }
+            this.requestData.page ++
+            this.loadData()
         },
         components: {
             uniLoadMore,

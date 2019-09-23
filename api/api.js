@@ -22,8 +22,8 @@ import Vue from 'vue'
 import MinRequest from './MinRequest'
 import store from '../store/index'
 
-// const baseUrl = `http://testmd.ddxm661.com/wxshop`
-const baseUrl = `https://ddxm661.com/wxshop`
+const baseUrl = `http://testmd.ddxm661.com/wxshop` //测试服务器
+// const baseUrl = `https://ddxm661.com/wxshop` //正式服务器
 const minRequest = new MinRequest()
 
 // 请求拦截器

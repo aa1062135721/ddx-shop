@@ -102,7 +102,7 @@
                     </view>
                 </view>
                 <view class="box">
-                    <view class="item" style="width: 25%;" v-if="isShareholder" @click="goPage('web_view', {url: `http://dd.ddxm661.com/dist/#/shareholder?mobile=${userInfo.mobile}`})">
+                    <view class="item" style="width: 25%;" v-if="userInfo.isShareholder" @click="goPage('web_view', {url: `http://dd.ddxm661.com/dist/#/shareholder?mobile=${userInfo.mobile}`})">
                         <view>
                             <image src="../../static/icon/business-data.png"></image>
                         </view>
@@ -110,7 +110,7 @@
                             <text>经营数据</text>
                         </view>
                     </view>
-                    <view class="item" style="width: 25%;" v-if="isShareholder" @click="goPage('web_view', {url: 'http://dd.ddxm661.com/dist/#/home/mall'})">
+                    <view class="item" style="width: 25%;" v-if="userInfo.isShareholder" @click="goPage('web_view', {url: 'http://dd.ddxm661.com/dist/#/home/mall'})">
                         <view>
                             <image src="../../static/icon/business-data.png"></image>
                         </view>
@@ -171,7 +171,7 @@
         name: "mine",
         data(){
             return {
-                isShareholder: false,
+
             }
         },
 

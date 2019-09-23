@@ -25,48 +25,48 @@
 						</swiper-item>
 					</swiper>
 				</view>
-				<view class="limited-time">
-					<view class="item">
-						<view>
-							<image src="../../static/icon/icon-pay-succeed.png"></image>
-						</view>
-						<view>
-							<text>限时抢购</text>
-						</view>
-					</view>
-					<view class="item">
-						<view>
-							<image src="../../static/icon/icon-pay-succeed.png"></image>
-						</view>
-						<view>
-							<text>限时抢购</text>
-						</view>
-					</view>
-					<view class="item">
-						<view>
-							<image src="../../static/icon/icon-pay-succeed.png"></image>
-						</view>
-						<view>
-							<text>限时抢购</text>
-						</view>
-					</view>
-					<view class="item">
-						<view>
-							<image src="../../static/icon/icon-pay-succeed.png"></image>
-						</view>
-						<view>
-							<text>限时抢购</text>
-						</view>
-					</view>
-					<view class="item">
-						<view>
-							<image src="../../static/icon/icon-pay-succeed.png"></image>
-						</view>
-						<view>
-							<text>限时抢购</text>
-						</view>
-					</view>
-				</view>
+<!--				<view class="limited-time">-->
+<!--					<view class="item">-->
+<!--						<view>-->
+<!--							<image src="../../static/icon/icon-pay-succeed.png"></image>-->
+<!--						</view>-->
+<!--						<view>-->
+<!--							<text>限时抢购</text>-->
+<!--						</view>-->
+<!--					</view>-->
+<!--					<view class="item">-->
+<!--						<view>-->
+<!--							<image src="../../static/icon/icon-pay-succeed.png"></image>-->
+<!--						</view>-->
+<!--						<view>-->
+<!--							<text>限时抢购</text>-->
+<!--						</view>-->
+<!--					</view>-->
+<!--					<view class="item">-->
+<!--						<view>-->
+<!--							<image src="../../static/icon/icon-pay-succeed.png"></image>-->
+<!--						</view>-->
+<!--						<view>-->
+<!--							<text>限时抢购</text>-->
+<!--						</view>-->
+<!--					</view>-->
+<!--					<view class="item">-->
+<!--						<view>-->
+<!--							<image src="../../static/icon/icon-pay-succeed.png"></image>-->
+<!--						</view>-->
+<!--						<view>-->
+<!--							<text>限时抢购</text>-->
+<!--						</view>-->
+<!--					</view>-->
+<!--					<view class="item">-->
+<!--						<view>-->
+<!--							<image src="../../static/icon/icon-pay-succeed.png"></image>-->
+<!--						</view>-->
+<!--						<view>-->
+<!--							<text>限时抢购</text>-->
+<!--						</view>-->
+<!--					</view>-->
+<!--				</view>-->
 
 				<!--秒杀-->
 				<view class="limited-time-kill" v-if="tabList2.length">

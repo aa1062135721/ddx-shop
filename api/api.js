@@ -22,7 +22,8 @@ import Vue from 'vue'
 import MinRequest from './MinRequest'
 import store from '../store/index'
 
-const baseUrl = `http://testmd.ddxm661.com/wxshop`
+// const baseUrl = `http://testmd.ddxm661.com/wxshop`
+const baseUrl = `https://ddxm661.com/wxshop`
 const minRequest = new MinRequest()
 
 // 请求拦截器
@@ -90,78 +91,105 @@ export default {
     agreement (data) {
       return minRequest.get('/index/getAgreement', data)
     },
+
     /**
      * 微信一键登录
      */
     loginWeChat (data) {
       return minRequest.post('/Login/weChat', data)
     },
+
     /**
      * 获取验证码
      */
     loginSendCode (data) {
       return minRequest.post('/login/sendCode', data)
     },
+
     /**
      * 手机号码快捷登录
      */
     mobileLogin (data) {
       return minRequest.post('/login/mobileLogin', data)
     },
+
     /**
      * 微信登陆-绑定手机号
      */
     wxLoginBMobile(data) {
       return minRequest.post('/Login/bd_mobile', data)
     },
+
     /**
      * 获取用户信息
      */
     getUserInfo (data) {
       return minRequest.get('/User/getUserInfo', data)
     },
+
+    /**
+     * 修改用户手机号码
+     */
+    modifyMobile (data) {
+      return minRequest.post('/user/edit_mobile', data)
+    },
+
+    /**
+     * 判断用户是否是股东，如果是返回该股东的门店列表
+     */
+    isShareholder (data) {
+      return minRequest.get('/Shareholder/isShareholder', data)
+    },
+
     /**
      * 获取城市
      */
     city(data) {
       return minRequest.get('/index/city', data)
     },
+
     /**
      * 获取用户地址列表
      */
     addressList(data) {
       return minRequest.get('/User/address_list', data)
     },
+
     /**
      * 新增、编辑用户地址
      */
     addressAddOrEdit(data) {
       return minRequest.post('/User/add_address', data)
     },
+
     /**
      * 删除用户地址
      */
     addressDel(data) {
       return minRequest.post('/User/address_del', data)
     },
+
     /**
      * 获取用户地址详情
      */
     addressInfo(data) {
       return minRequest.get('/User/address_info', data)
     },
+
     /**
      * 获取商品分类
      */
     category(data) {
       return minRequest.get('/Index/category', data)
     },
+
     /**
      * 获取banner
      */
     banner(data) {
       return minRequest.get('/Index/banner', data)
     },
+
     /**
      * 猜你喜欢商品
      */

@@ -4,7 +4,7 @@
             <view class="item">
                 <view class="left">
                     <view class="title">昵称</view>
-                    <view class="value">吴大帅哥</view>
+                    <view class="value">{{userInfo.nickname}}</view>
                 </view>
                 <view class="right">
                 </view>
@@ -12,22 +12,11 @@
             <view class="item">
                 <view class="left">
                     <view class="title">手机号码</view>
-                    <view class="value">15213710631</view>
+                    <view class="value">{{userInfo.mobile}}</view>
                 </view>
                 <view class="right">
-                    <view class="btn">
+                    <view class="btn" @click="_goPage('user_modify_mobile')">
                         修改
-                    </view>
-                </view>
-            </view>
-            <view class="item">
-                <view class="left">
-                    <view class="title">实名认证</view>
-                    <view class="value">未认证</view>
-                </view>
-                <view class="right">
-                    <view class="btn" @click="_goPage('id_card_authentication')">
-                        前往
                     </view>
                 </view>
             </view>
@@ -77,17 +66,6 @@
             </view>
             <view class="item">
                 <view class="left">
-                    <view class="title">提交退单</view>
-                    <view class="value">去退单</view>
-                </view>
-                <view class="right">
-                    <view class="btn" @click="_goPage('order_return_refund')">
-                        前往
-                    </view>
-                </view>
-            </view>
-            <view class="item">
-                <view class="left">
                     <view class="title">退单状态</view>
                     <view class="value">去查看</view>
                 </view>
@@ -102,7 +80,7 @@
 </template>
 
 <script>
-    import {mapMutations,mapActions} from 'vuex'
+    import {mapMutations,mapActions,mapGetters} from 'vuex'
 
     export default {
         name: "setting",
@@ -121,6 +99,9 @@
                 uni.navigateBack()
             },
             ...mapActions(['saveToken', 'saveUserInfo'])
+        },
+        computed:{
+            ...mapGetters(['userInfo'])
         }
     }
 </script>

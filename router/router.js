@@ -232,6 +232,12 @@ const router = new MinRouter({
 			name: 'order_return_status',
 			login: true
 		},
+		{
+			path: "pages/user/modify-mobile",
+			type: 'navigateTo',
+			name: 'user_modify_mobile',
+			login: true
+		},
 
 	]
 })

@@ -193,6 +193,12 @@
 			"style": {
 				"navigationBarTitleText": "申请退款"
 			}
+		},
+		{
+			"path": "pages/user/modify-mobile",
+			"style": {
+				"navigationBarTitleText": "修改手机号码"
+			}
 		}
 	],
 	"globalStyle": {

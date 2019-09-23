@@ -214,7 +214,7 @@
 					</view>
 					<view class="buy my-vam" @click="open()">
 						<view class="inner">
-							￥{{goodsInfo.price}}<br />
+							￥{{goodsInfo.commander_price}}<br />
 							一键开团
 						</view>
 					</view>
@@ -265,7 +265,7 @@
 						</view>
 						<view class="btn my-vam" @click="buyNow(1)">
 							<view class="inner">
-								￥{{goodsInfo.price}}<br />
+								￥{{goodsInfo.commander_price}}<br />
 								一键开团
 							</view>
 						</view>
@@ -431,13 +431,13 @@
 				let price = 0.0
 				switch (type) {
 					case 1:
-						price = this.goodsInfo.price // price 拼团价
+						price = this.goodsInfo.commander_price // price 拼团价
 						break
 					case 2:
 						price = this.goodsInfo.old_price // old_price 原价 单独购买
 						break
 					case 3:
-						price = this.goodsInfo.commander_price // 和别人组团 组团价
+						price = this.goodsInfo.price // 和别人组团 组团价
 						break
 				}
 

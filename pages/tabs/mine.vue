@@ -25,14 +25,14 @@
                         <view class="money" style="font-size: 48upx;">{{userInfo.money || '0.00'}}</view>
                     </view>
                     <view class="two">
-                        <view class="left my-flex-title-money"  @click="goPage('user_record')">
+                        <view class="left my-flex-title-money"  @click="goPage('user_record', {state: 1})">
                             <view class="title">
                                 <text>累计收益(元)</text>
                                 <text class="iconfont icon-ddx-shop-content_arrows"></text>
                             </view>
                             <view class="money">{{userInfo.accumulate_money || '0.00'}}</view>
                         </view>
-                        <view class="right my-flex-title-money"  @click="goPage('user_record')">
+                        <view class="right my-flex-title-money"  @click="goPage('user_record', {state: 1})">
                             <view class="title">
                                 <text>预计待收益(元)</text>
                                 <text class="iconfont icon-ddx-shop-content_arrows"></text>

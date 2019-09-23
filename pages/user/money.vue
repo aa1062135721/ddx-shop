@@ -7,7 +7,7 @@
         <view class="my-box">
             <view class="item">
                 <view>
-                    <text  class="name">
+                    <text class="name">
                         可提现金额(元)
                     </text>
                     <text>
@@ -15,7 +15,7 @@
                     </text>
                 </view>
                 <view class="tag">
-                    <view class="btn">申请提现</view>
+                    <view class="btn" @click="open">申请提现</view>
                 </view>
             </view>
             <view class="item" @click="_goPage('user_record')">
@@ -24,34 +24,74 @@
                     <i class="iconfont icon-ddx-shop-content_arrows"></i>
                 </view>
             </view>
-            <view class="item" @click="_goPage('user_record')">
+            <view class="item" @click="_goPage('user_record', {state: 1})">
                 <view class="name">收益明细</view>
                 <view class="tag">
                     <i class="iconfont icon-ddx-shop-content_arrows"></i>
                 </view>
             </view>
         </view>
+
+        <!-- 申请提现弹框 输入提现金额 -->
+        <uni-popup ref="getMoneyToWx" type="center" :custom="true">
+            <view class="get-money-to-wx">
+                <view class="box">
+                    <view class="input-box">
+                        <input type="number" class="input" focus placeholder="请输入提现金额"  v-model="money"/>
+                    </view>
+                    <view class="btn" @click="getMoney">
+                        提现
+                    </view>
+                </view>
+            </view>
+        </uni-popup>
     </view>
 </template>
 
 <script>
     import { mapGetters } from 'vuex'
+    import uniPopup from '@/components/uni-popup/uni-popup.vue'
 
     export default {
         name: "user_money",
         data(){
             return{
-
+                money: '',
             }
         },
         methods:{
             _goPage(url, query = {}){
                 this.$openPage({name:url, query})
             },
+            open(){
+                this.$refs.getMoneyToWx.open()
+            },
+            close(){
+                this.$refs.getMoneyToWx.close()
+            },
+            async getMoney(){
+                if (parseFloat(this.money) > parseFloat(this.userInfo.out_money)){
+                    this.msg('提现金额有误')
+                    return
+                }
+                let data  = {
+                    money: this.money
+                }
+                await this.$minApi.applyMoney(data).then(res => {
+                    if (res.code === 200) {
+                        this.msg('申请成功')
+                    }
+                })
+                this.close()
+            },
         },
         computed: {
             ...mapGetters(['userInfo'])
         },
+        components: {
+            uniPopup,
+
+        }
     }
 </script>
 
@@ -104,6 +144,35 @@
                     border: 1upx solid $color-primary;
                 }
             }
+        }
+    }
+    .get-money-to-wx{
+        position: relative;
+        width:650upx;
+        padding: $uni-spacing-col-base;
+        background: #ffffff;
+        border-radius:8px;
+        font-size: $uni-font-size-base;
+        .input-box{
+            margin: 50upx 0;
+            .input{
+                border: 1upx solid #ccc;
+                width: 100%;
+                height:98upx;
+                line-height: 98upx;
+                border-radius: 6upx;
+                padding-left: 8upx;
+            }
+        }
+        .btn{
+           margin: 50upx 0;
+            width: 100%;
+            height:98upx;
+            line-height: 98upx;
+            border-radius: 8upx;
+            text-align: center;
+            background: $color-primary;
+            color: #ffffff;
         }
     }
 </style>

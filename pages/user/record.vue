@@ -3,107 +3,29 @@
         <wuc-tab :tab-list="tabList" :textFlex="true" :tabCur.sync="TabCur" tab-class="tabs"  select-class="tab-select" @change="tabChange"></wuc-tab>
         <view class="my-body">
             <view class="box">
-                <view class="item">
+                <view class="item" v-if="TabCur === 0" v-for="(item, index) in tabList[0].list" :key="index">
                     <view>
-                        <view class="title">订单收益</view>
-                        <view class="sub-title">2019-08-12 8:20</view>
+                        <view class="title">{{item.title}}</view>
+                        <view class="sub-title">{{item.time}}</view>
                     </view>
                     <view>
-                        <view class="price">100.81</view>
-                        <view class="sub-price">未到账</view>
-                    </view>
-                </view>
-                <view class="item">
-                    <view>
-                        <view class="title">订单收益</view>
-                        <view class="sub-title">2019-08-12 8:20</view>
-                    </view>
-                    <view>
-                        <view class="price">100.81</view>
-                        <view class="sub-price">已到账</view>
+                        <view class="price">{{item.money}}</view>
+                        <view class="sub-price">{{item.state}}</view>
                     </view>
                 </view>
-                <view class="item">
+                <view class="item"  v-if="TabCur === 1"  v-for="(item, index) in tabList[1].list" :key="index">
                     <view>
-                        <view class="title">订单收益</view>
-                        <view class="sub-title">2019-08-12 8:20</view>
+                        <view class="title">{{item.title}}</view>
+                        <view class="sub-title">{{item.time}}</view>
                     </view>
                     <view>
-                        <view class="price">100.81</view>
-                    </view>
-                </view>
-                <view class="item">
-                    <view>
-                        <view class="title">申请提现</view>
-                        <view class="sub-title">2019-08-12 8:20</view>
-                    </view>
-                    <view>
-                        <view class="price">100.81</view>
-                        <view class="sub-price on">已到账</view>
-                    </view>
-                </view>
-                <view class="item">
-                    <view>
-                        <view class="title">申请提现</view>
-                        <view class="sub-title">2019-08-12 8:20</view>
-                    </view>
-                    <view>
-                        <view class="price">100.81</view>
-                        <view class="sub-price">申请中</view>
-                    </view>
-                </view>
-                <view class="item">
-                    <view>
-                        <view class="title">申请提现</view>
-                        <view class="sub-title">2019-08-12 8:20</view>
-                    </view>
-                    <view>
-                        <view class="price">100.81</view>
-                        <view class="sub-price">申请中</view>
-                    </view>
-                </view>
-                <view class="item">
-                    <view>
-                        <view class="title">订单收益</view>
-                        <view class="sub-title">2019-08-12 8:20</view>
-                    </view>
-                    <view>
-                        <view class="price">100.81</view>
-                    </view>
-                </view>
-                <view class="item">
-                    <view>
-                        <view class="title">申请提现</view>
-                        <view class="sub-title">2019-08-12 8:20</view>
-                    </view>
-                    <view>
-                        <view class="price">100.81</view>
-                        <view class="sub-price on">已到账</view>
-                    </view>
-                </view>
-                <view class="item">
-                    <view>
-                        <view class="title">申请提现</view>
-                        <view class="sub-title">2019-08-12 8:20</view>
-                    </view>
-                    <view>
-                        <view class="price">100.81</view>
-                        <view class="sub-price">申请中</view>
-                    </view>
-                </view>
-                <view class="item">
-                    <view>
-                        <view class="title">申请提现</view>
-                        <view class="sub-title">2019-08-12 8:20</view>
-                    </view>
-                    <view>
-                        <view class="price">100.81</view>
-                        <view class="sub-price">申请中</view>
+                        <view class="price">{{item.money}}</view>
+                        <view class="sub-price">{{item.state}}</view>
                     </view>
                 </view>
             </view>
         </view>
-        <uni-load-more :status="moreStatus" :show-icon="true"></uni-load-more>
+        <uni-load-more :status="tabList[TabCur].requestData.moreStatus" :show-icon="true"></uni-load-more>
     </view>
 </template>
 
@@ -115,10 +37,10 @@
         name: "user_record",
         data(){
             return{
-                moreStatus: 'loading',
                 tabList:[
                     {
                         cname: '提现记录',
+                        state: 0,
                         requestData: {
                             page:1,
                             limit:10,
@@ -127,7 +49,8 @@
                         list:[],
                     },
                     {
-                        cname: '收益明细',
+                        cname: '收益记录',
+                        state: 1,
                         requestData: {
                             page:1,
                             limit:10,
@@ -139,10 +62,47 @@
                 TabCur:0,
             }
         },
+        onLoad(){
+            console.log("其他页面带过来的参数：",this.$parseURL())
+            if (this.$parseURL().state){
+                this.TabCur = this.$parseURL().state
+            }
+            this.loadData()
+        },
         methods:{
             async tabChange(index) {
                 this.TabCur = index
+                await this.loadData()
             },
+            async loadData(){
+                this.tabList[this.TabCur].requestData.moreStatus = 'loading'
+                let data ={
+                    state: this.tabList[this.TabCur].state,
+                    page: this.tabList[this.TabCur].requestData.page,
+                    limit: this.tabList[this.TabCur].requestData.limit,
+                }
+                this.$minApi.profitList(data).then(res => {
+                    if (res.code === 200) {
+                        if (data.page === 1) {
+                            this.tabList[this.TabCur].list = res.data
+                        } else {
+                            this.tabList[this.TabCur].list.push(...res.data)
+                        }
+                        if (res.data.length < data.limit){
+                            this.tabList[this.TabCur].requestData.moreStatus = 'noMore'
+                        } else {
+                            this.tabList[this.TabCur].requestData.moreStatus = 'more'
+                        }
+                    }
+                })
+            },
+        },
+        async onReachBottom(){
+            if (this.tabList[this.TabCur].requestData.moreStatus === 'noMore'){
+                return
+            }
+            this.tabList[this.TabCur].requestData.page ++
+            await this.loadData()
         },
         components:{
             uniLoadMore,

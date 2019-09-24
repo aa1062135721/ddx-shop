@@ -45,8 +45,7 @@
 						<block v-for="(serviceItem, serviceIndex) in goodsInfo.item_service_ids" :key="serviceIndex">
 							<!-- 标题只渲染 0,1,2-->
 							<block v-if="serviceIndex < 3">
-								<block v-if="serviceIndex !== 2">{{serviceItem.title + ' · '}}</block>
-								<block v-else>{{serviceItem.title}}</block>
+								{{serviceItem.title + '  '}}
 							</block>
 						</block>
 					</text>
@@ -150,9 +149,15 @@
 
 		<!-- 详情 -->
 		<view class="description">
-			<separator title="图文详情" bgColor="#fff"></separator>
-			<view class="content">
-				<image v-for="(img, index) in goodsInfo.content" :src="img" :key="index" style="width: 100%" :lazy-load="true" mode="widthFix"></image>
+			<view class="title">
+				<text :class="{'on': showTabWho === 'detail'}" @click="showTabWho = 'detail'">图文详情</text>
+				<text :class="{'on': showTabWho === 'know'}" @click="showTabWho = 'know'" v-if="buyYouKnow">购买须知</text>
+			</view>
+			<view class="content" v-if="showTabWho === 'detail'">
+				<image v-for="(img, index) in specsInfo.pic_info" :src="img" :key="index" style="width: 100%" :lazy-load="true" mode="widthFix"></image>
+			</view>
+			<view class="content-know" v-if="showTabWho === 'know'">
+				<rich-text :nodes="buyYouKnow"></rich-text>
 			</view>
 		</view>
 
@@ -190,7 +195,7 @@
 			<view class="select-specification">
 				<view class="goods-info">
 					<view class="main">
-						<view class="image">
+						<view class="image" @click="previewImg(specsInfo.pic, specsInfo.pic)">
 							<image class="img" :src='specsInfo.pic'></image>
 						</view>
 						<view class="info">
@@ -280,7 +285,6 @@
 
 <script>
 	import uniNumberBox from "@/components/uni-number-box/uni-number-box.vue"
-	import separator from "@/components/separator.vue"
 	import uniPopup from '@/components/uni-popup/uni-popup.vue'
 
 	export default {
@@ -325,7 +329,11 @@
 					price: 0.00,//金额
 					store: 0, //库存，注意：库存为-1表示无限库存，反正则为库存剩余数
 					pic: '', //对应规格的图片
+					pic_info:[],//图文详情，全是图片
 				},
+				//购买须知
+				buyYouKnow:'',
+				showTabWho:'detail',// detail 图文详情    know 购买须知
 
 				anchorlist:[],//导航条锚点
 				selectAnchor:0,//选中锚点
@@ -586,7 +594,7 @@
 				requestData.id = this.$parseURL().id
 			}
 			await this.$minApi.goodsDetail(requestData).then(res => {
-				console.log(res)
+				console.log("商品详情：", res)
 				if (res.code === 200){
 					if(!res.data.specs_list){
 						res.data.specs_list = []
@@ -613,9 +621,18 @@
 					specs_ids: '',
 				}
 				await this.$minApi.goodsDetailSpecs(data).then(res => {
-					console.log(res)
+					console.log("获取规格：", res)
 					if (res.code === 200) {
 						this.specsInfo = res.data
+					}
+				})
+			}
+			// 购买须知
+			if (this.goodsInfo.mold_id) {
+				await this.$minApi.buyYouKnow({id:this.goodsInfo.mold_id}).then(res => {
+					console.log("购买须知：",res)
+					if (res.code === 200) {
+						this.buyYouKnow = res.data.content
 					}
 				})
 			}
@@ -637,7 +654,6 @@
 		},
 		components: {
 			uniNumberBox,
-			separator,
 			uniPopup,
 		}
 	}

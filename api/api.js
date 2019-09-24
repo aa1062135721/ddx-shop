@@ -212,6 +212,13 @@ export default {
     },
 
     /**
+     * 购买须知
+     */
+    buyYouKnow(data){
+      return minRequest.get('/Index/getNeeds', data)
+    },
+
+    /**
      * 商品详情-获取规格对应的价格与金额
      */
     goodsDetailSpecs(data) {

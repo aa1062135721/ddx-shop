@@ -47,8 +47,10 @@
       flex-shrink: 0;
       display: flex;
       justify-content: flex-end;
-      font-size: 42upx;
-      color: #666;
+      .iconfont{
+        color: #6B6B6B;
+        font-size: $uni-font-size-base + $uni-font-size-sm;
+      }
     }
   }
 }
@@ -228,13 +230,24 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 26upx;
-    color: #999;
+    color: $color-primary-plain;
     background: #fff;
+    text{
+      font-size: $uni-font-size-lg;
+      padding: 0 20upx;
+      &.on{
+        color: $color-primary;
+      }
+    }
   }
   .content{
+    background: #ffffff;
     display: flex;
     flex-direction: column;
+  }
+  .content-know{
+    background: #ffffff;
+    padding: $uni-spacing-row-base;
   }
 }
 
@@ -479,6 +492,8 @@
     text-align: center;
   }
   .my-service-box {
+    overflow-y: scroll;
+    height: 550upx;
     background: #fff;
     padding: $uni-spacing-row-base;
     display: flex;
@@ -516,7 +531,7 @@
     }
   }
   .btn{
-    margin-top: 300upx;
+    margin-top: 50upx;
     width: 100%;
     height: 98upx;
     line-height: 98upx;

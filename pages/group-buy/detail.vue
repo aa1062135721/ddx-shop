@@ -108,8 +108,7 @@
 						<block v-for="(serviceItem, serviceIndex) in goodsInfo.item_service_ids" :key="serviceIndex">
 							<!-- 标题只渲染 0,1,2-->
 							<block v-if="serviceIndex < 3">
-								<block v-if="serviceIndex !== 2">{{serviceItem.title + ' · '}}</block>
-								<block v-else>{{serviceItem.title}}</block>
+								{{serviceItem.title + '  '}}
 							</block>
 						</block>
 					</text>
@@ -182,9 +181,15 @@
 
 		<!-- 详情 -->
 		<view class="description">
-			<separator title="图文详情" bgColor="#fff"></separator>
-			<view class="content">
+			<view class="title">
+				<text :class="{'on': showTabWho === 'detail'}" @click="showTabWho = 'detail'">图文详情</text>
+				<text :class="{'on': showTabWho === 'know'}" @click="showTabWho = 'know'" v-if="buyYouKnow">购买须知</text>
+			</view>
+			<view class="content"  v-if="showTabWho === 'detail'">
 				<image v-for="(img, index) in goodsInfo.content" :src="img" :key="index" style="width: 100%;" :lazy-load="true" mode="widthFix"></image>
+			</view>
+			<view class="content-know" v-if="showTabWho === 'know'">
+				<rich-text :nodes="buyYouKnow"></rich-text>
 			</view>
 		</view>
 
@@ -227,7 +232,7 @@
 			<view class="select-specification">
 				<view class="goods-info">
 					<view class="main">
-						<view class="image">
+						<view class="image" @click="previewImg(goodsInfo.pics[0], goodsInfo.pics)">
 							<image class="img" :src='goodsInfo.pics[0]'></image>
 						</view>
 						<view class="info">
@@ -278,7 +283,6 @@
 
 <script>
 	import uniNumberBox from "@/components/uni-number-box/uni-number-box.vue"
-	import separator from "@/components/separator.vue"
 	import uniPopup from '@/components/uni-popup/uni-popup.vue'
 	import { mapGetters } from 'vuex'
 
@@ -313,6 +317,9 @@
 					mold: "",
 					all_people: 0     //已成功拼团人数
 				},
+				//购买须知
+				buyYouKnow:'',
+				showTabWho:'detail',// detail 图文详情    know 购买须知
 
 				//控制渐变标题栏的参数
 				beforeHeaderzIndex: 11,//层级
@@ -489,9 +496,21 @@
 				this.buyNow(3)
 			}
 		},
-		async onLoad() {
-			console.log("带过来的参数",this.$parseURL())
-			await this.$minApi.assembleDetail({id: this.$parseURL().id}).then(res => {
+		async onLoad(param) {
+			let requestData = {
+				id:0,
+			}
+			console.log("带过来的参数1:", param)
+			if (param.id){
+				requestData.id = param.id
+			}
+
+			console.log("带过来的参数2",this.$parseURL())
+			if (this.$parseURL().id){
+				requestData.id = this.$parseURL().id
+			}
+
+			await this.$minApi.assembleDetail(requestData).then(res => {
 				console.log("拼团详情：",res)
 				if (res.code === 200){
 					if (res.data.assemble_list.length) {
@@ -503,6 +522,15 @@
 					this.goodsInfo = res.data
 				}
 			})
+			// 购买须知
+			if (this.goodsInfo.mold_id) {
+				await this.$minApi.buyYouKnow({id:this.goodsInfo.mold_id}).then(res => {
+					console.log("购买须知：",res)
+					if (res.code === 200) {
+						this.buyYouKnow = res.data.content
+					}
+				})
+			}
 		},
 		onReady(){
 			this.calcAnchor();//计算锚点高度，页面数据是ajax加载时，请把此行放在数据渲染完成事件中执行以保证高度计算正确
@@ -524,7 +552,6 @@
 		},
 		components: {
 			uniNumberBox,
-			separator,
 			uniPopup,
 		},
 		computed: {

@@ -119,7 +119,7 @@
 							<view v-for="(item, index) in groupBuyList" :key="index" @click="_goPage('group_buy_detail', {id: item.id})" class="time-content-goods-list-goods" style="width: 33.33333%;">
 								<view class="image width-210">
 									<image class="img-33" :src="item.pic"></image>
-									<view class="group-info">10人团</view>
+									<view class="group-info">{{item.people_num}}人团</view>
 								</view>
 								<view class="title width-210">
 									{{item.title}}

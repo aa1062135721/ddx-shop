@@ -6,7 +6,7 @@
 				<view class="middle">
 					<view v-for="(anchor,index) in anchorlist" :class="[selectAnchor==index ?'on':'']" :key="index" @tap="toAnchor(index)">{{anchor.name}}</view>
 				</view>
-				<view class="icon-btn">
+				<view class="icon-btn" @click="openShare">
 					<view class="icon iconfont icon-ddx-shop-share"></view>
 				</view>
 			</view>
@@ -245,6 +245,36 @@
 				</view>
 			</view>
 		</uni-popup>
+
+		<!-- 分享转发功能 -->
+		<uni-popup ref="share" type="center" :custom="true">
+			<view class="share-goods">
+				<view class="share-title">
+					<view class="titles">
+						<view class="title">分享给好友</view>
+						<view class="sub-title">可获得佣金 最高 <span class="share-money">20元</span></view>
+					</view>
+					<view class="share-images">
+						<image src="../../static/images/share/share-red-envelope.png" class="img" mode="widthFix"></image>
+					</view>
+				</view>
+				<view class="goods-image">
+					<image src="../../static/images/goods.jpg" mode="widthFix" class="goods-img"></image>
+				</view>
+				<view class="share-btns">
+					<view class="content">
+						<button class="box" open-type="share">
+							<image src="../../static/images/share/share-wx.png" class="img"></image>
+							<view class="tag">微信好友</view>
+						</button>
+						<button class="box" @click="downLoadShareImage">
+							<image src="../../static/images/share/share-download.png" class="img"></image>
+							<view class="tag">保存图片</view>
+						</button>
+					</view>
+				</view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
@@ -418,7 +448,7 @@
 					})
 					let data = {
 						specs_ids: arr_ids.join('_'),
-						id: this.$parseURL().id,
+						id: this.goodsInfo.id,
 					}
 					await this.$minApi.goodsDetailSpecs(data).then(res => {
 						console.log(res)
@@ -437,7 +467,7 @@
 					arr.push(item.id)
 				})
 				let data = {
-					item_id: this.$parseURL().id,
+					item_id: this.goodsInfo.id,
 					specs_ids: arr.join('_'),
 					num: this.choosesGoodsInfo.num
 				}
@@ -508,10 +538,54 @@
 				})
 			},
 
+			//打开分享弹框
+			openShare(){
+				this.$refs.share.open()
+			},
+			closeShare(){
+				this.$refs.share.close()
+			},
+			//下载分享图片
+			downLoadShareImage(){
+				uni.downloadFile({
+					url: this.goodsInfo.pics[0], //仅为示例，并非真实的资源
+					success: (res) => {
+						if (res.statusCode === 200) {
+							uni.saveImageToPhotosAlbum({
+								filePath:res.tempFilePath,
+								success:()=>{
+									this.closeShare()
+								}
+							})
+						}
+					}
+				})
+			},
 		},
-		async onLoad() {
-			console.log("带过来的参数",this.$parseURL())
-			await this.$minApi.goodsDetail({id:this.$parseURL().id}).then(res => {
+		// 分享到朋友
+		onShareAppMessage(res) {
+			if (res.from === 'button') {// 来自页面内分享按钮
+				console.log(res.target)
+			}
+			return {
+				title: `${this.goodsInfo.title}`,
+				path: `/pages/goods/detail?user_id=123&id=${this.goodsInfo.id}`
+			}
+		},
+		async onLoad(param) {
+			let requestData = {
+				id:0,
+			}
+			console.log("带过来的参数1:", param)
+			if (param.id){
+				requestData.id = param.id
+			}
+
+			console.log("带过来的参数2:",this.$parseURL())
+			if (this.$parseURL().id){
+				requestData.id = this.$parseURL().id
+			}
+			await this.$minApi.goodsDetail(requestData).then(res => {
 				console.log(res)
 				if (res.code === 200){
 					if(!res.data.specs_list){
@@ -535,7 +609,7 @@
 			} else {
 				// 单规格获取 商品库存，价格，图片
 				let data = {
-					id: this.$parseURL().id,
+					id: requestData.id,
 					specs_ids: '',
 				}
 				await this.$minApi.goodsDetailSpecs(data).then(res => {

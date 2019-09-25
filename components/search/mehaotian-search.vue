@@ -96,7 +96,7 @@ export default {
 		value(val) {
 			console.log("子组件",val)
 			this.inputVal = val;
-			this.isFocus = true;
+			// this.isFocus = true;
 		},
 	}
 };

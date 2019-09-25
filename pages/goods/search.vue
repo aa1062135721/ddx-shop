@@ -31,14 +31,18 @@
 					{{item.title}}<text class="iconfont icon-ddx-shop-content_arrows"></text>
 				</view>
 			</view>
+			<view class="my-null-title-btns" :class="{'on' : clickMultipleChoiceMmenu.multipleChoiceMmenu}">
+				<view class="my-null" v-for="(item, index) in attr" :class="{'on' : clickMultipleChoiceMmenu.multipleChoiceMmenu && clickMultipleChoiceMmenu.key === index}" :key="index">
+				</view>
+			</view>
 			<view class="navbar-classification-body" :class="{'on' : clickMultipleChoiceMmenu.multipleChoiceMmenu}">
 				<view class="my-body">
 					<view class="item" v-for="(sItem, sIndex) in attr[clickMultipleChoiceMmenu.key].child" :key="sIndex"  @click="clickSNavBar(sIndex)" >
 						<text v-if="clickMultipleChoiceMmenu.sKey === sIndex" :class="{'on': clickMultipleChoiceMmenu.sKey === sIndex}">
-							<text class="iconfont icon-ddx-shop-content_arrows"></text>{{sItem.title}}
+							<text class="iconfont icon-ddx-shop-check"></text>{{sItem.title}}
 						</text>
 						<text v-else>
-							{{sItem.title}}
+							<text class="iconfont icon-ddx-shop-circle"></text>{{sItem.title}}
 						</text>
 					</view>
 				</view>
@@ -47,7 +51,7 @@
 						<view class="btn" @click="clickMultipleChoiceMmenu.multipleChoiceMmenu = false">
 							取消
 						</view>
-						<view class="btn on" @click="">
+						<view class="btn on" @click="goSearch">
 							确定
 						</view>
 					</block>
@@ -88,6 +92,7 @@
 					page: 1,
 					limit:10,
 					searchVal: '',//要搜索的内容
+					attr_ids: 0,//属性id
 				},
 			}
         },
@@ -96,7 +101,7 @@
 				this.$openPage({name:url, query})
 			},
 			//筛选点击
-			tabClick(index){
+			async tabClick(index){
 				if(this.filterIndex === index && index !== 2 && index !== 1){
 					return;
 				}
@@ -111,10 +116,9 @@
 				}else{
 					this.currentOrder = 0;
 				}
-				uni.pageScrollTo({
-					duration: 300,
-					scrollTop: 0
-				})
+				console.log('点击了筛选,排序')
+				this.requestData.page = 1
+				await this.search()
 			},
 			searchValue(val){
 				console.log(val)
@@ -132,6 +136,11 @@
 				if (this.$parseURL().id && this.requestData.searchVal === this.$parseURL().title) {
 					data.type = this.$parseURL().id
 					delete data.title
+				}
+				if (this.attr.length){
+					data.attr_ids = this.requestData.attr_ids
+				} else {
+					this.requestData.attr_ids = 0
 				}
 				switch (this.filterIndex) {
 					case 0:
@@ -163,13 +172,21 @@
 			clickNavBar(key){
 				this.clickMultipleChoiceMmenu.multipleChoiceMmenu = !this.clickMultipleChoiceMmenu.multipleChoiceMmenu
 				this.clickMultipleChoiceMmenu.key = key
+				console.log('点击了筛选标题：',this.attr[key])
 			},
 			clickSNavBar(key) {
+				console.log('点击了筛选标题下面的儿子:',this.attr[this.clickMultipleChoiceMmenu.key].child[key])
 				if (key !== this.clickMultipleChoiceMmenu.sKey) {
 					this.clickMultipleChoiceMmenu.sKey = key
+					this.requestData.attr_ids = this.attr[this.clickMultipleChoiceMmenu.key].child[key].id
 				} else {
 					this.clickMultipleChoiceMmenu.sKey = -1
 				}
+			},
+			async goSearch(){
+				this.requestData.page = 1
+				await this.search()
+				this.clickMultipleChoiceMmenu.multipleChoiceMmenu = false
 			}
         },
         onLoad() {
@@ -291,7 +308,7 @@
 		color: $color-primary-plain;
 		font-size: $uni-font-size-base;
 		.title-btns{
-			padding: $uni-spacing-row-base;
+			padding: $uni-spacing-row-base $uni-spacing-row-base  0 $uni-spacing-row-base;
 			&.on{
 				padding-bottom: 0;
 				view{
@@ -329,6 +346,33 @@
 				}
 			}
 		}
+		.my-null-title-btns{
+			padding: 0 $uni-spacing-row-base  0 $uni-spacing-row-base;
+			width: 100%;
+			background: #ffffff;
+			&.on{
+				padding-bottom: 0;
+				view{
+					border-bottom-right-radius: 0;
+					border-bottom-left-radius: 0;
+				}
+			}
+			display: flex;
+			justify-content: space-between;
+			flex-direction: row;
+			flex-wrap: nowrap;
+			view{
+				width:148upx;
+				height: $uni-spacing-row-base;
+				background: #ffffff;
+				display: flex;
+				&.on{
+					color: $color-primary;
+					background: #F2F2F2;
+				}
+			}
+		}
+
 		.navbar-classification-body{
 			transition: all 0.3s;
 			opacity: 0;
@@ -350,12 +394,18 @@
 				.item{
 					padding: $uni-spacing-row-base;
 					color: $color-primary-plain;
-					font-size:$uni-font-size-sm ;
+					font-size:$uni-font-size-sm;
+					display: flex;
+					justify-content: center;
+					.iconfont{
+						color: $color-primary-plain;
+						font-size: $uni-font-size-sm;
+						margin-right: 4upx;
+					}
 					.on{
 						color: $color-primary;
 						.iconfont{
 							color: $color-primary;
-							font-size: $uni-font-size-sm;
 						}
 					}
 				}

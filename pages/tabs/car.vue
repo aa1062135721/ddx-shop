@@ -49,7 +49,7 @@
                 </text>
             </view>
         </view>
-        <view class="fixed">
+        <view class="fixed" v-if="myResponseData.length !== 0">
             <view class="chooses-all" @click="choosesAllGoods()">
                 <i class="iconfont icon-ddx-shop-xuanze icon-color" v-if="isCheckedAll"></i>
                 <i class="iconfont icon-ddx-shop-circle" v-else></i>
@@ -405,6 +405,7 @@
                     background: $color-primary;
                     text-align: center;
                     padding: $uni-spacing-col-lg $uni-spacing-row-lg;
+                    border-radius: 4upx;
                 }
 
             }

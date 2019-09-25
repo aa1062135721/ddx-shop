@@ -213,13 +213,13 @@
 				<block v-else>
 					<view class="joinCart my-vam" @click="open()">
 						<view class="inner">
-							￥{{goodsInfo.old_price}}<br />
+							￥{{ (parseFloat(goodsInfo.old_price) * parseFloat(choosesGoodsInfo.num)) | moneyToFixed }}<br />
 							单独购买
 						</view>
 					</view>
 					<view class="buy my-vam" @click="open()">
 						<view class="inner">
-							￥{{goodsInfo.commander_price}}<br />
+							￥{{ (parseFloat(goodsInfo.commander_price) * parseFloat(choosesGoodsInfo.num)) | moneyToFixed }}<br />
 							一键开团
 						</view>
 					</view>
@@ -264,13 +264,13 @@
 					<block v-else>
 						<view class="btn my-vam" style="background:#FC8A8A;" @click="buyNow(2)">
 							<view class="inner">
-								￥{{goodsInfo.old_price}}<br />
+								￥{{ (parseFloat(goodsInfo.old_price) * parseFloat(choosesGoodsInfo.num)) | moneyToFixed }}<br />
 								单独购买
 							</view>
 						</view>
 						<view class="btn my-vam" @click="buyNow(1)">
 							<view class="inner">
-								￥{{goodsInfo.commander_price}}<br />
+								￥{{ (parseFloat(goodsInfo.commander_price) * parseFloat(choosesGoodsInfo.num)) | moneyToFixed }}<br />
 								一键开团
 							</view>
 						</view>

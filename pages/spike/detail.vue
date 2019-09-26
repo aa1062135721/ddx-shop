@@ -513,6 +513,16 @@
             uniNumberBox,
             uniPopup,
         },
+        // 分享到朋友
+        onShareAppMessage(res) {
+            if (res.from === 'button') {// 来自页面内分享按钮
+                console.log(res.target)
+            }
+            return {
+                title: `${this.goodsInfo.title}`,
+                path: `pages/spike/detail?user_id=${this.userInfo.id}&id=${this.goodsInfo.id}`
+            }
+        },
         async onLoad(param){
             let requestData = {
                 id:0,

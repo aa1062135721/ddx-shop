@@ -613,7 +613,7 @@
 			}
 			return {
 				title: `${this.goodsInfo.title}`,
-				path: `pages/goods/detail?user_id=${this.userInfo.id || 0}&id=${this.goodsInfo.id}`
+				path: `pages/goods/detail?user_id=${this.userInfo.id}&id=${this.goodsInfo.id}`
 			}
 		},
 		async onLoad(param) {

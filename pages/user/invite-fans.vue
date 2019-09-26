@@ -27,13 +27,13 @@
             }
             return {
                 title: `分享好友得福利哦`,
-                path: `pages/tabs/home?user_id=${this.userInfo.id || 0}`
+                path: `pages/tabs/home?user_id=${this.userInfo.id}`
             }
         },
         onLoad(){
             if (!this.shareData.pic){
                 let requestData = {
-                    scene: `user_id=${this.userInfo.id || 0}`,
+                    scene: `user_id=${this.userInfo.id}`,
                     page: 'pages/tabs/home',
                 }
                 this.$minApi.shareFriend(requestData).then(res => {

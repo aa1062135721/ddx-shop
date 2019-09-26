@@ -12,16 +12,16 @@
                     <view class="other">{{item.createtime}}</view>
                 </view>
             </view>
-            <view class="item">
-                <view class="head">
-                    <image class="img" src="../../static/images/goods.jpg"></image>
-                </view>
-                <view class="info">
-                    <view class="name">吴黎明大帅哥</view>
-                    <view class="other">手机：156****0845</view>
-                    <view class="other">2019-09-05 16:14:23</view>
-                </view>
-            </view>
+<!--            <view class="item">-->
+<!--                <view class="head">-->
+<!--                    <image class="img" src="../../static/images/goods.jpg"></image>-->
+<!--                </view>-->
+<!--                <view class="info">-->
+<!--                    <view class="name">吴黎明大帅哥</view>-->
+<!--                    <view class="other">手机：156****0845</view>-->
+<!--                    <view class="other">2019-09-05 16:14:23</view>-->
+<!--                </view>-->
+<!--            </view>-->
         </view>
         <uni-load-more :status="moreStatus" :show-icon="true"></uni-load-more>
     </view>

@@ -393,5 +393,12 @@ export default {
       return minRequest.get('/user/shareGoods', data)
     },
 
+    /**
+     * 邀请好友
+     */
+    shareFriend(data){
+      return minRequest.get('/user/shareFriend', data)
+    },
+
   }
 }

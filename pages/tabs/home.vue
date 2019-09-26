@@ -172,6 +172,7 @@
 	import WlmTab from '@/components/wlm-tab/wlm-tab.vue'
 	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue' //可选值：more（loading前）、loading（loading中）、noMore（没有更多了）
 	import uniNavBar from "@/components/uni-nav-bar/uni-nav-bar.vue"
+	import {mapActions} from 'vuex'
 
 	export default {
 		data() {
@@ -209,7 +210,10 @@
 
 			}
 		},
-		async onLoad() {
+		async onLoad(param) {
+			if (param.user_id){
+				this.saveShareID(param.user_id)
+			}
 			await this._getCategory()
 			await this._getBanner()
 			await this._assembleList()
@@ -228,6 +232,7 @@
 			}
 		},
 		methods: {
+			...mapActions(['saveShareID']),
 			_goPage(url, query = {}){
 				this.$openPage({name:url, query})
 			},

@@ -238,7 +238,12 @@ const router = new MinRouter({
 			name: 'user_modify_mobile',
 			login: true
 		},
-
+		{
+			path: "pages/user/invite-fans",
+			type: 'navigateTo',
+			name: 'user_invite_fans',
+			login: true
+		},
 	]
 })
 

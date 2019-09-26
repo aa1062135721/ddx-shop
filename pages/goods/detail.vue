@@ -257,14 +257,14 @@
 				<view class="share-title">
 					<view class="titles">
 						<view class="title">分享给好友</view>
-						<view class="sub-title">可获得佣金 最高 <span class="share-money">20元</span></view>
+						<view class="sub-title" v-if="shareData.price">可获得佣金 最高 <span class="share-money">{{ shareData.price | moneyToFixed }}元</span></view>
 					</view>
 					<view class="share-images">
 						<image src="../../static/images/share/share-red-envelope.png" class="img" mode="widthFix"></image>
 					</view>
 				</view>
 				<view class="goods-image">
-					<image src="../../static/images/goods.jpg" mode="widthFix" class="goods-img"></image>
+					<image :src="shareData.pic" mode="widthFix" class="goods-img"></image>
 				</view>
 				<view class="share-btns">
 					<view class="content">
@@ -286,6 +286,8 @@
 <script>
 	import uniNumberBox from "@/components/uni-number-box/uni-number-box.vue"
 	import uniPopup from '@/components/uni-popup/uni-popup.vue'
+	import { mapGetters } from 'vuex'
+	import {mapActions} from 'vuex'
 
 	export default {
 		data() {
@@ -334,6 +336,11 @@
 				//购买须知
 				buyYouKnow:'',
 				showTabWho:'detail',// detail 图文详情    know 购买须知
+				//分享数据
+				shareData:{
+					price:0,
+					pic:'',
+				},
 
 				anchorlist:[],//导航条锚点
 				selectAnchor:0,//选中锚点
@@ -346,6 +353,7 @@
 			}
 		},
 		methods:{
+			...mapActions(['saveShareID']),
 			_goPage(url, query = {}){
 				this.$openPage({name:url, query})
 			},
@@ -547,8 +555,35 @@
 			},
 
 			//打开分享弹框
-			openShare(){
-				this.$refs.share.open()
+			async openShare(){
+				if (!this.shareData.pic){
+					uni.showLoading({
+						title: '加载中…',
+						mask:true,
+					})
+					let requestData = {
+						scene: `user_id=${this.userInfo.id}&id=${this.goodsInfo.id}`,
+						page: 'pages/goods/detail',
+						pic: this.goodsInfo.pics[0],
+						title: this.goodsInfo.title,
+						price: `￥${this.goodsInfo.price}`,
+						goods_id: this.goodsInfo.id,
+					}
+					await this.$minApi.shareGoods(requestData).then(res => {
+						console.log("获取分享数据：", res)
+						if (res.code === 200) {
+							this.shareData = res.data
+							this.$refs.share.open()
+							uni.hideLoading()
+						} else {
+							uni.hideLoading()
+						}
+					}).catch(err => {
+						uni.hideLoading()
+					})
+				} else {
+					this.$refs.share.open()
+				}
 			},
 			closeShare(){
 				this.$refs.share.close()
@@ -556,13 +591,14 @@
 			//下载分享图片
 			downLoadShareImage(){
 				uni.downloadFile({
-					url: this.goodsInfo.pics[0], //仅为示例，并非真实的资源
+					url: this.shareData.pic,
 					success: (res) => {
 						if (res.statusCode === 200) {
 							uni.saveImageToPhotosAlbum({
 								filePath:res.tempFilePath,
 								success:()=>{
 									this.closeShare()
+									this.msg('下载成功')
 								}
 							})
 						}
@@ -577,7 +613,7 @@
 			}
 			return {
 				title: `${this.goodsInfo.title}`,
-				path: `/pages/goods/detail?user_id=123&id=${this.goodsInfo.id}`
+				path: `pages/goods/detail?user_id=${this.userInfo.id || 0}&id=${this.goodsInfo.id}`
 			}
 		},
 		async onLoad(param) {
@@ -587,6 +623,9 @@
 			console.log("带过来的参数1:", param)
 			if (param.id){
 				requestData.id = param.id
+			}
+			if (param.user_id){
+				this.saveShareID(param.user_id)
 			}
 
 			console.log("带过来的参数2:",this.$parseURL())
@@ -655,7 +694,10 @@
 		components: {
 			uniNumberBox,
 			uniPopup,
-		}
+		},
+		computed: {
+			...mapGetters(['userInfo'])
+		},
 	}
 </script>
 

@@ -6,7 +6,7 @@
                 <view class="middle">
                     <view v-for="(anchor,index) in anchorlist" :class="[selectAnchor==index ?'on':'']" :key="index" @tap="toAnchor(index)">{{anchor.name}}</view>
                 </view>
-                <view class="icon-btn">
+                <view class="icon-btn" @click="openShare">
                     <view class="icon iconfont icon-ddx-shop-share"></view>
                 </view>
             </view>
@@ -231,6 +231,36 @@
                 </view>
             </view>
         </uni-popup>
+
+        <!-- 分享转发功能 -->
+        <uni-popup ref="share" type="center" :custom="true">
+            <view class="share-goods">
+                <view class="share-title">
+                    <view class="titles">
+                        <view class="title">分享给好友</view>
+                        <view class="sub-title" v-if="shareData.price">可获得佣金 最高 <span class="share-money">{{ shareData.price | moneyToFixed }}元</span></view>
+                    </view>
+                    <view class="share-images">
+                        <image src="../../static/images/share/share-red-envelope.png" class="img" mode="widthFix"></image>
+                    </view>
+                </view>
+                <view class="goods-image">
+                    <image :src="shareData.pic" mode="widthFix" class="goods-img"></image>
+                </view>
+                <view class="share-btns">
+                    <view class="content">
+                        <button class="box" open-type="share">
+                            <image src="../../static/images/share/share-wx.png" class="img"></image>
+                            <view class="tag">微信好友</view>
+                        </button>
+                        <button class="box" @click="downLoadShareImage">
+                            <image src="../../static/images/share/share-download.png" class="img"></image>
+                            <view class="tag">保存图片</view>
+                        </button>
+                    </view>
+                </view>
+            </view>
+        </uni-popup>
     </view>
 </template>
 
@@ -239,6 +269,8 @@
 
     import uniNumberBox from "@/components/uni-number-box/uni-number-box.vue"
     import uniPopup from '@/components/uni-popup/uni-popup.vue'
+    import { mapGetters } from 'vuex'
+    import {mapActions} from 'vuex'
 
     export default {
         name: "detail",
@@ -271,6 +303,11 @@
                 //购买须知
                 buyYouKnow:'',
                 showTabWho:'detail',// detail 图文详情    know 购买须知
+                //分享数据
+                shareData:{
+                    price:0,
+                    pic:'',
+                },
 
                 //控制渐变标题栏的参数
                 beforeHeaderzIndex: 11,//层级
@@ -288,6 +325,7 @@
             }
         },
         methods: {
+            ...mapActions(['saveShareID']),
             _goPage(url, query = {}) {
                 this.$openPage({name: url, query})
             },
@@ -418,6 +456,58 @@
                     seckill_id: this.goodsInfo.id,//秒杀商品id
                 })
             },
+
+            //打开分享弹框
+            async openShare(){
+                if (!this.shareData.pic){
+                    uni.showLoading({
+                        title: '加载中…',
+                        mask:true,
+                    })
+                    let requestData = {
+                        scene: `user_id=${this.userInfo.id}&id=${this.goodsInfo.id}`,
+                        page: 'pages/spike/detail',
+                        pic: this.goodsInfo.pics[0],
+                        title: this.goodsInfo.title,
+                        price: `￥${this.goodsInfo.price}`,
+                        goods_id: this.goodsInfo.item_id,
+                    }
+                    await this.$minApi.shareGoods(requestData).then(res => {
+                        console.log("获取分享数据：", res)
+                        if (res.code === 200) {
+                            this.shareData = res.data
+                            this.$refs.share.open()
+                            uni.hideLoading()
+                        } else {
+                            uni.hideLoading()
+                        }
+                    }).catch(err => {
+                        uni.hideLoading()
+                    })
+                } else {
+                    this.$refs.share.open()
+                }
+            },
+            closeShare(){
+                this.$refs.share.close()
+            },
+            //下载分享图片
+            downLoadShareImage(){
+                uni.downloadFile({
+                    url: this.shareData.pic,
+                    success: (res) => {
+                        if (res.statusCode === 200) {
+                            uni.saveImageToPhotosAlbum({
+                                filePath:res.tempFilePath,
+                                success:()=>{
+                                    this.closeShare()
+                                    this.msg('下载成功')
+                                }
+                            })
+                        }
+                    }
+                })
+            },
         },
         components: {
             uniNumberBox,
@@ -430,6 +520,9 @@
             console.log("带过来的参数1:", param)
             if (param.id){
                 requestData.id = param.id
+            }
+            if (param.user_id){
+                this.saveShareID(param.user_id)
             }
 
             if (this.$parseURL().id){
@@ -474,6 +567,9 @@
             //切换层级
             this.beforeHeaderzIndex = e.scrollTop > 0 ? 10 : 11;
             this.afterHeaderzIndex = e.scrollTop > 0 ? 11 : 10;
+        },
+        computed: {
+            ...mapGetters(['userInfo'])
         },
     }
 </script>

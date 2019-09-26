@@ -547,7 +547,7 @@
 /* 分享 */
 .share-goods{
   .share-title{
-    width:564upx;
+    width:680upx;
     height:100upx;
     background:linear-gradient(99deg,rgba(242,66,67,1) 0%,rgba(240,75,58,1) 100%);
     border-radius:50upx;
@@ -574,13 +574,13 @@
     }
   }
   .goods-image{
-    margin: 16upx 0 26upx 0;
+    margin: 20upx 0 30upx 0;
     width: 100%;
     display: flex;
     justify-content: center;
     border-radius:10upx;
     .goods-img{
-      width: 474upx;
+      width: 580upx;
       border-radius:10upx;
     }
   }

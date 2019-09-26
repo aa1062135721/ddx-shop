@@ -386,6 +386,12 @@ export default {
       return minRequest.get('/user/getFansList', data)
     },
 
+    /**
+     * 分享商品
+     */
+    shareGoods(data){
+      return minRequest.get('/user/shareGoods', data)
+    },
 
   }
 }

@@ -15,6 +15,8 @@
 
 <script>
     import {mapActions} from 'vuex'
+    const shareID = uni.getStorageSync('shareID')
+
     export default {
         name: "login-with-mobile",
         data(){
@@ -51,6 +53,7 @@
                         openid: this.$parseURL().openId,
                         avatarUrl: this.$parseURL().avatarUrl,
                         nickName: this.$parseURL().nickName,
+                        user_id: shareID || 0,
                     }).then(res => {
                         this.saveToken(res.data.token)
                         this.$minApi.getUserInfo().then(userInfo => {

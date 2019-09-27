@@ -414,5 +414,20 @@ export default {
       return minRequest.post('/comment/add', data)
     },
 
+    /**
+     * 取消订单操作
+     */
+    cancelOrder(data){
+      return minRequest.post('/order/cancel_order', data)
+    },
+
+    /**
+     * 确认收货
+     */
+    overOrder(data){
+      return minRequest.post('/order/confirm_order', data)
+    },
+
+
   }
 }

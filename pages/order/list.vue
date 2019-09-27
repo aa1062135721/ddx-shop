@@ -18,12 +18,12 @@
                 >
                     <!-- 订单列表 -->
                     <view class="car-list">
-                        <view class="section" v-for="(item, key) in tabItem.orderList" :key="key" @click="goPage('order_detail',{id:item.id})">
-                            <view class="shop-name">
+                        <view class="section" v-for="(item, key) in tabItem.orderList" :key="key">
+                            <view class="shop-name" @click="goPage('order_detail',{id:item.id})">
                                 <view>{{item.sn}}</view>
                                 <view>{{item.status | orderStatusToString}}</view>
                             </view>
-                            <view class="goods" v-for="(goods, goods_key) in item.item_list" :key="goods_key">
+                            <view class="goods" v-for="(goods, goods_key) in item.item_list" :key="goods_key" @click="goPage('order_detail',{id:item.id})">
                                 <view class="goods-img">
                                     <image class="img"  :src="goods.pic"></image>
                                 </view>
@@ -45,20 +45,22 @@
                             <view class="goods-operating">
                                 <view class="title">共计 {{item.number}}件商品 合计￥<text class="money">{{item.amount}}</text></view>
                                     <!-- 1待付款，2待发货，3待收货，4待评价，5已完成，6已经取消订单 -->
-                                    <form class="btns" @submit="formSubmit" :report-submit="true">
-
+                                    <view class="btns">
                                         <button class="active" v-if="item.status === 1" @click.stop="payNow(key)">支付</button>
-                                        <button form-type="submit" v-if="item.status === 1">取消</button>
 
-                                        <button  v-if="item.status === 3" >确认收货</button>
+                                        <form @submit="cancelFormSubmit" :report-submit="true" v-if="item.status === 1">
+                                            <input type="hidden" name="orderId" :value="item.id" style="display: none;">
+                                            <button form-type="submit">取消</button>
+                                        </form>
+
+                                        <button  v-if="item.status === 3" @click="overOrder(item.id)">确认收货</button>
 
                                         <button class="active" v-if="item.status === 4" @click="goPage('order_evaluate', {data:item})">评价</button>
 
                                         <button v-if="item.status === 5 || item.status === 6" >删除</button>
 
                                         <button v-if="item.order_distinguish === 1" class="active" @click.stop="goPage('group_buy_group')">查看拼团</button>
-
-                                    </form>
+                                </view>
                             </view>
                         </view>
                     </view>
@@ -220,77 +222,37 @@
             },
 
             //订单操作
-            async formSubmit(e) {
+            async cancelFormSubmit(e) {
                 console.log('form发生了submit事件，携带数据为：',e)
-                return
                 // 推送模板消息所需的数据
                 let sendTemplateMessageData = {
                     form_id: e.detail.formId,//模板id
-                    page: `pages/order/detail?order_id=${this.orderData.order_id}`,//模板消息推送后可以跳转的页面
-                    oid: `${this.orderData.order_id}`,//订单id
-                    state: 0,//订单状态，0 未支付 1：支付成功；2：订单取消
+                    page: `pages/order/detail?order_id=${e.detail.value.orderId}`,//模板消息推送后可以跳转的页面
+                    oid: `${e.detail.value.orderId}`,//订单id
+                    state: 2,//订单状态，0 未支付 1：支付成功；2：订单取消
                 }
-
-                let data ={
-                    order_id: this.orderData.order_id,
-                    pay_way: this.payWay,
-                }
-                /**
-                 * 请求接口，传订单id，和支付方式
-                 * 如果支付方式为 微信和钱包支付
-                 */
-                await this.$minApi.payWay(data).then(async res => {
+                await this.$minApi.cancelOrder({order_id: e.detail.value.orderId}).then(res => {
                     console.log(res)
                     if (res.code === 200) {
-                        if (this.payWay === '3'){ //钱包支付
-                            res.data.result = true
-                            sendTemplateMessageData.state = 1
-                            await this.$minApi.sendTemplateMessage(sendTemplateMessageData).then(res=>{
-                                console.log(res)
-                            })
-                            await this._goPage('order_result', res.data)
-                        }
-                        if (this.payWay === '1') { // 微信支付
-                            await uni.requestPayment({
-                                provider: 'wxpay',
-                                timeStamp: res.data.timeStamp,
-                                nonceStr: res.data.nonceStr,
-                                package: res.data.package,
-                                signType: res.data.signType,
-                                paySign: res.data.paySign,
-                                success: async (payRes) => {
-                                    res.data.result = true
-                                    sendTemplateMessageData.state = 1
-                                    await this.$minApi.sendTemplateMessage(sendTemplateMessageData).then(res=>{
-                                        console.log(res)
-                                    })
-                                    await this._goPage('order_result', res.data)
-                                },
-                                fail: async (payErr) =>{
-                                    res.data.result = false
-                                    sendTemplateMessageData.state = 0
-                                    await this.$minApi.sendTemplateMessage(sendTemplateMessageData).then(res=>{
-                                        console.log(res)
-                                    })
-                                    await this._goPage('order_result', res.data)
-                                }
-                            })
-                        }
-                    } else {
-                        res.data.result = false
-                        sendTemplateMessageData.state = 0
-                        await this.$minApi.sendTemplateMessage(sendTemplateMessageData).then(res=>{
+                        this.msg('取消成功')
+                        this.navList[this.tabCurrentIndex].requestData.page = 1
+                        this.loadData()
+                        this.$minApi.sendTemplateMessage(sendTemplateMessageData).then(res=>{
                             console.log(res)
                         })
-                        await this._goPage('order_result', res.data)
                     }
-                }).catch(async err => {
-                    console.log(err)
-                    sendTemplateMessageData.state = 0
-                    await this.$minApi.sendTemplateMessage(sendTemplateMessageData).then(res=>{
-                        console.log(res)
-                    })
-                    await this._goPage('order_result', {result: false, sn: '', id: 0})
+                })
+
+
+            },
+            async overOrder(order_id){ //确认收货
+                console.log(order_id)
+                await this.$minApi.overOrder({order_id}).then(res => {
+                    if (res.code === 200) {
+                        this.msg('确认收货成功')
+                        this.navList[this.tabCurrentIndex].requestData.page = 1
+                        this.loadData()
+                    }
                 })
             },
 

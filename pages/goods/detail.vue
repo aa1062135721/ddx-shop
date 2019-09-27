@@ -125,24 +125,24 @@
 		<!-- 评价 -->
 		<view class="info-box comments" id="comments">
 			<view class="row">
-				<view class="text">商品评价(500)</view>
-				<view class="arrow" @click="this.$openPage('goods_evaluate')">
+				<view class="text">商品评价({{commentResponseData.count}})</view>
+				<view class="arrow" @click="this._goPage('goods_evaluate', {id: goodsInfo.id})">
 					<view class="show">
 						查看全部
 						<view class="iconfont icon-ddx-shop-content_arrows"></view>
 					</view>
 				</view>
 			</view>
-			<view class="comment">
+			<view class="comment" v-for="(item, index) in commentResponseData.data" :key="index">
 				<view class="user-info">
 					<view class="head-name">
-						<view class="face"><image src="../../static/images/goods.jpg"></image></view>
-						<view class="username">用户名</view>
+						<view class="face"><image :src="item.m_pic"></image></view>
+						<view class="username">{{item.nickname}}</view>
 					</view>
-					<view class="time">2019-11-11</view>
+					<view class="time">{{item.add_time}}</view>
 				</view>
 				<view class="content">
-					评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容
+					{{item.comment}}
 				</view>
 			</view>
 		</view>
@@ -340,6 +340,11 @@
 				shareData:{
 					price:0,
 					pic:'',
+				},
+                //商品评论
+				commentResponseData:{
+					count: 0,
+					data: [],
 				},
 
 				anchorlist:[],//导航条锚点
@@ -675,6 +680,15 @@
 					}
 				})
 			}
+
+			//商品评论
+			await this.$minApi.goodsComment({item_id: requestData.id}).then(res => {
+				console.log("获取商品评论：",res)
+				if (res.code === 200) {
+					this.commentResponseData.count = res.count
+					this.commentResponseData.data = res.data
+				}
+			})
 		},
 		onReady(){
 			this.calcAnchor();//计算锚点高度，页面数据是ajax加载时，请把此行放在数据渲染完成事件中执行以保证高度计算正确

@@ -1,119 +1,38 @@
 <template>
     <view>
-        <view class="goods">
+        <view class="goods" v-for="(item, index) in goodsList" :key="index">
             <view class="top">
                 <view class="goods-info">
                     <view class="goods-img">
-                        <image src="../../static/images/goods.jpg"></image>
+                        <image :src="item.pic"></image>
                     </view>
                     <view class="goods-title">
-                        衍生健康大师草本番茄膳面 12包装衍生健生健...
+                        {{item.subtitle}}
                     </view>
                 </view>
                 <view class="goods-comment">
                     <view class="name">商品评价</view>
                     <view>
-                        <uni-rate  disabled="true" max="5" size="18" :value="evaluate.rate" active-color="#FC5A5A" :is-fill="false"></uni-rate>
+                        <uni-rate  max="5" size="18" :value="item.requestData.level" active-color="#FC5A5A" :is-fill="true" @change="changeRate($event, index)"></uni-rate>
                     </view>
                 </view>
             </view>
             <view class="bottom">
-                <textarea class="text" :maxlength="-1" placeholder="亲,收到的宝贝满意吗？说说您对商品的使用心得" />
+                <textarea class="text" :maxlength="-1" placeholder="亲,收到的宝贝满意吗？说说您对商品的使用心得" v-model="item.requestData.comment"/>
                 <view class="imgs">
-                    <view class="up-img" @click="choosesImages(1)" >
-                        <i class="iconfont icon-ddx-shop-circle"></i>
+                    <view class="up-img" @click="choosesImages(index)" v-if="item.requestData.pics.length < 9">
+                        <i class="iconfont icon-ddx-shop-tubiaozhizuomoban"></i>
                         <view>添加图片</view>
                     </view>
-                    <view class="img-show">
-                        <image src="../../static/images/goods.jpg"></image>
-                        <view class="close iconfont icon-ddx-shop-close"></view>
-                    </view>
-                    <view class="img-show">
-                        <image src="../../static/images/goods.jpg"></image>
-                        <view class="close iconfont icon-ddx-shop-close"></view>
+                    <view class="img-show" v-for="(img, imgIndex) in item.requestData.pics" :key="imgIndex">
+                        <image :src="img" mode="widthFix" @click="previewImg(img, item.requestData.pics)"></image>
+                        <view class="close iconfont icon-ddx-shop-close" @click="delImg(index, imgIndex)"></view>
                     </view>
                 </view>
             </view>
         </view>
-        <view class="goods">
-            <view class="top">
-                <view class="goods-info">
-                    <view class="goods-img">
-                        <image src="../../static/images/goods.jpg"></image>
-                    </view>
-                    <view class="goods-title">
-                        衍生健康大师草本番茄膳面 12包装衍生健生健...
-                    </view>
-                </view>
-                <view class="goods-comment">
-                    <view class="name">商品评价</view>
-                    <view>
-                        <uni-rate  disabled="true" max="5" size="18" :value="evaluate.rate" active-color="#FC5A5A" :is-fill="false"></uni-rate>
-                    </view>
-                </view>
-            </view>
-            <view class="bottom">
-                <textarea class="text" :maxlength="-1" placeholder="亲,收到的宝贝满意吗？说说您对商品的使用心得" />
-                <view class="imgs">
-                    <view class="up-img" @click="choosesImages(1)" >
-                        <i class="iconfont icon-ddx-shop-circle"></i>
-                        <view>添加图片</view>
-                    </view>
-                    <view class="img-show">
-                        <image src="../../static/images/goods.jpg"></image>
-                        <view class="close iconfont icon-ddx-shop-close"></view>
-                    </view>
-                </view>
-            </view>
-        </view>
-        <view class="goods">
-            <view class="top">
-                <view class="goods-info">
-                    <view class="goods-img">
-                        <image src="../../static/images/goods.jpg"></image>
-                    </view>
-                    <view class="goods-title">
-                        衍生健康大师草本番茄膳面 12包装衍生健生健...
-                    </view>
-                </view>
-                <view class="goods-comment">
-                    <view class="name">商品评价</view>
-                    <view>
-                        <uni-rate  disabled="true" max="5" size="18" :value="evaluate.rate" active-color="#FC5A5A" :is-fill="false"></uni-rate>
-                    </view>
-                </view>
-            </view>
-            <view class="bottom">
-                <textarea class="text" :maxlength="-1" placeholder="亲,收到的宝贝满意吗？说说您对商品的使用心得" />
-                <view class="imgs">
-                    <view class="up-img" @click="choosesImages(1)" >
-                        <i class="iconfont icon-ddx-shop-circle"></i>
-                        <view>添加图片</view>
-                    </view>
-                    <view class="img-show">
-                        <image src="../../static/images/goods.jpg"></image>
-                        <view class="close iconfont icon-ddx-shop-close"></view>
-                    </view>
-                    <view class="img-show">
-                        <image src="../../static/images/goods.jpg"></image>
-                        <view class="close iconfont icon-ddx-shop-close"></view>
-                    </view>
-                    <view class="img-show">
-                        <image src="../../static/images/goods.jpg"></image>
-                        <view class="close iconfont icon-ddx-shop-close"></view>
-                    </view>
-                    <view class="img-show">
-                        <image src="../../static/images/goods.jpg"></image>
-                        <view class="close iconfont icon-ddx-shop-close"></view>
-                    </view>
-                    <view class="img-show">
-                        <image src="../../static/images/goods.jpg"></image>
-                        <view class="close iconfont icon-ddx-shop-close"></view>
-                    </view>
-                </view>
-            </view>
-        </view>
-        <view class="my-submit">
+
+        <view class="my-submit" @click="mySubmit">
             提交
         </view>
     </view>
@@ -126,53 +45,123 @@
         name: "order_evaluate",
         data(){
           return {
-            data: {
-
-            }
+              goodsList:[]
           }
         },
+        onLoad(){
+            console.log('其他页面带过来的参数：', this.$parseURL())
+            let myData = []
+            this.$parseURL().data.item_list.map((goods, index) => {
+                let requestData = {
+                    level:0,//评分
+                    comment:'',//评论内容
+                    pics:[],//商品被评论的图片地址
+                    goods_id: goods.id,//商品明细id
+                    specs: goods.attr_name,//规格参数
+                }
+                goods.requestData = requestData
+                myData.push(goods)
+            })
+            this.goodsList = myData
+            console.log("组合成自己想要的格式：",this.goodsList)
+        },
         methods: {
-            pay(){
-                uni.request({
-                    url: 'http://testmd.ddxm661.com/wxshop/test/pay', //仅为示例，并非真实接口地址。
-                    data: {
-                        // text: 'uni.request'
-                    },
-                    header: {
-                        // 'custom-header': 'hello' //自定义请求头信息
-                    },
-                    success: (res) => {
-                        console.log(res.data);
-                        this.data = res.data;
-                    }
-                });
-
+            //图片放大预览
+            previewImg(src,urls){
+                uni.previewImage({
+                    indicator:'number',
+                    current:src,
+                    urls
+                })
             },
-            pay2(){
-                uni.requestPayment({
-                    provider: 'wxpay',
-                    timeStamp: this.data.timeStamp,
-                    nonceStr: this.data.nonceStr,
-                    package: this.data.package,
-                    signType: this.data.signType,
-                    paySign: this.data.paySign,
-                    success: function (res) {
-                        console.log('success:' + JSON.stringify(res));
-                    },
-                    fail: function (err) {
-                        console.log('fail:' + JSON.stringify(err));
-                    }
-                });
-            },
-            choosesImages(index){
-                uni.chooseImage({
-                    count:9,
-                    success:function(res){
+            async choosesImages(index){
+                console.log("下标：",index)
+                let _that = this
+                await uni.chooseImage({
+                    count:9 - _that.goodsList[index].requestData.pics.length,
+                    success:async (res) =>{
                         console.log(res)
-                        // res.tempFilePaths[0];
+                        _that.upLoadFiles(index, res.tempFilePaths)
                     }
                 })
-            }
+            },
+            async upLoadFiles(index, data){
+                let _that = this
+                data.map(async (item) => {
+                    await uni.uploadFile({
+                        url: _that.$minApi.urls.upload,
+                        filePath: item,
+                        fileType: 'image',
+                        name: 'file',
+                        success: async (uploadFileRes1) => {
+                            if("string" === typeof uploadFileRes1.data){
+                                if (JSON.parse(uploadFileRes1.data).code === 200) {
+                                    _that.goodsList[index].requestData.pics.push(JSON.parse(uploadFileRes1.data).data.url)
+                                }
+                            }else{
+                                if (uploadFileRes1.data.code === 200) {
+                                    _that.goodsList[index].requestData.pics.push(uploadFileRes1.data.data.url)
+                                }
+                            }
+                        },
+                        fail: function (err) {
+                        }
+                    })
+                })
+            },
+            delImg(index, sIndex){
+                console.log("下标：",index,sIndex)
+                this.goodsList[index].requestData.pics.splice(sIndex,1)
+            },
+            //评分
+            changeRate(e,index){
+                console.log(e, index)
+                this.goodsList[index].requestData.level = e.value
+            },
+            mySubmit(){
+                console.log(this.goodsList)
+                let requestData = []
+                this.goodsList.map((item) => {
+                    let oRequest = {
+                        level:0,//评分
+                        comment:'',//评论内容
+                        goods_id: item.requestData.goods_id,//商品id
+                        specs: item.requestData.specs,//规格参数
+                        pic:'',//图片地址，用逗号相隔
+                    }
+
+                    if (!item.requestData.level) {
+                        this.msg(`【${item.subtitle}】商品没有评分`)
+                    }
+                    oRequest.level = item.requestData.level
+
+                    if (!item.requestData.comment) {
+                        this.msg(`请输入【${item.subtitle}】商品的评论`)
+                        return
+                    }
+                    oRequest.comment = item.requestData.comment
+
+                    if (item.requestData.pics.length) {
+                        oRequest.pic = item.requestData.pics.join(",")
+                    }
+
+                    requestData.push(oRequest)
+                })
+
+                if (requestData.length === this.goodsList.length){
+                    console.log("要提交的数据",requestData)
+                    requestData.map((item, index)=> {
+                        this.$minApi.addGoodsComment(item).then(res => {
+                            console.log(res)
+                            if (index === requestData.length){
+                                uni.navigateBack()
+                            }
+                        })
+                    })
+                } else {
+                    console.log("请完善数据后在提交")
+                }
+            },
         },
         components: {
             uniRate,
@@ -261,7 +250,7 @@
                         border-radius:4upx;
                     }
                     .close{
-                       color: black;
+                        color: $color-primary;
                         position: absolute;
                         top: -30upx;
                         right: -30upx;

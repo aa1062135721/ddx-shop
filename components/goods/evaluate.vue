@@ -2,22 +2,22 @@
 	<view class="evaluateBox">
 			<view class="item">
 				<view class="head">
-					<image :src="evaluate.header_img" mode="widthFix" style="width:100%" />
+					<image :lazy-load="true" :src="evaluate.m_pic" mode="widthFix" style="width:100%" />
 				</view>
 				<view class="info">
 					<view class="name-stars">
-						<text class="name">{{ evaluate.user_name }}</text>
-						<uni-rate  disabled="true" max="5" size="18" :value="evaluate.rate" active-color="#FC5A5A" :is-fill="false"></uni-rate>
+						<text class="name">{{ evaluate.nickname }}</text>
+						<uni-rate  disabled="true" max="5" size="18" :value="evaluate.level" active-color="#FC5A5A" :is-fill="false"></uni-rate>
 					</view>
 					<view class="time-size">
 						<text class="time">{{ evaluate.create_time }}</text>
-						<text class="size">{{ evaluate.specification }}</text>
+						<text class="size">{{ evaluate.specs }}</text>
 					</view>
 					<view class="evaluate-content">
-						<text>{{ evaluate.content || '用户暂未评价' }}</text>
-						<view class="imgs" v-if="evaluate.imgs.length">
-							<block v-for="(imgurl, index) in evaluate.imgs" :key="index">
-								<view class="imgs-box"><image :src="imgurl" mode="widthFix" style="width: 100%;" @click="previewImg(imgurl, evaluate.imgs)"></image></view>
+						<text>{{ evaluate.comment || '用户暂未评价' }}</text>
+						<view class="imgs" v-if="evaluate.pic.length">
+							<block v-for="(imgurl, index) in evaluate.pic" :key="index">
+								<view class="imgs-box"><image :lazy-load="true" :src="imgurl" mode="widthFix" style="width: 100%;" @click="previewImg(imgurl, evaluate.pic)"></image></view>
 							</block>
 						</view>
 					</view>

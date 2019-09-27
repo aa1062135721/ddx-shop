@@ -52,7 +52,7 @@
 
                                         <button  v-if="item.status === 3" >确认收货</button>
 
-                                        <button class="active" v-if="item.status === 4" >评价</button>
+                                        <button class="active" v-if="item.status === 4" @click="goPage('order_evaluate', {data:item})">评价</button>
 
                                         <button v-if="item.status === 5 || item.status === 6" >删除</button>
 

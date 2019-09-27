@@ -400,5 +400,19 @@ export default {
       return minRequest.get('/user/shareFriend', data)
     },
 
+    /**
+     * 商品评论列表
+     */
+    goodsComment(data) {
+      return minRequest.post('/comment/comment_list', data)
+    },
+
+    /**
+     * 评论订单/商品
+     */
+    addGoodsComment(data) {
+      return minRequest.post('/comment/add', data)
+    },
+
   }
 }

@@ -236,7 +236,7 @@
 							<image class="img" :src='goodsInfo.pics[0]'></image>
 						</view>
 						<view class="info">
-							<view class="price">￥{{goodsInfo.price}}</view>
+							<view class="price">￥{{goodsInfo.commander_price}}</view>
 							<view class="stock">库存:{{goodsInfo.all_stock}}</view>
 							<view class="stock">限购:{{goodsInfo.buy_num}}</view>
 							<view class="chooses"></view>

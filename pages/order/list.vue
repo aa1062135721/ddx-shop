@@ -19,11 +19,11 @@
                     <!-- 订单列表 -->
                     <view class="car-list">
                         <view class="section" v-for="(item, key) in tabItem.orderList" :key="key">
-                            <view class="shop-name" @click="goPage('order_detail',{id:item.id})">
+                            <view class="shop-name" @click="goPage('order_detail',{order_id:item.id})">
                                 <view>{{item.sn}}</view>
                                 <view>{{item.status | orderStatusToString}}</view>
                             </view>
-                            <view class="goods" v-for="(goods, goods_key) in item.item_list" :key="goods_key" @click="goPage('order_detail',{id:item.id})">
+                            <view class="goods" v-for="(goods, goods_key) in item.item_list" :key="goods_key" @click="goPage('order_detail',{order_id:item.id})">
                                 <view class="goods-img">
                                     <image class="img"  :src="goods.pic"></image>
                                 </view>
@@ -57,9 +57,9 @@
 
                                         <button class="active" v-if="item.status === 4" @click="goPage('order_evaluate', {data:item})">评价</button>
 
-                                        <button v-if="item.status === 5 || item.status === 6" >删除</button>
+                                        <button v-if="item.status === 5 || item.status === 6" @click="delOrder(item.id)">删除</button>
 
-                                        <button v-if="item.order_distinguish === 1" class="active" @click.stop="goPage('group_buy_group')">查看拼团</button>
+                                        <button v-if="item.order_distinguish === 1" class="active" @click.stop="goPage('group_buy_group', {id: item.id})">查看拼团</button>
                                 </view>
                             </view>
                         </view>
@@ -250,6 +250,16 @@
                 await this.$minApi.overOrder({order_id}).then(res => {
                     if (res.code === 200) {
                         this.msg('确认收货成功')
+                        this.navList[this.tabCurrentIndex].requestData.page = 1
+                        this.loadData()
+                    }
+                })
+            },
+            async delOrder(order_id){ // 删除订单
+                console.log(order_id)
+                await this.$minApi.delOrder({order_id}).then(res => {
+                    if (res.code === 200) {
+                        this.msg('删除成功')
                         this.navList[this.tabCurrentIndex].requestData.page = 1
                         this.loadData()
                     }

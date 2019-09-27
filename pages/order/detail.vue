@@ -1,28 +1,28 @@
 <template>
     <view class="container">
         <view class="title">剩余12天20时自动确认</view>
-        <view class="info">
-            <view  class="express-delivery">
-                <view>
-                    <i class="iconfont icon-ddx-shop-location"></i>
-                </view>
-                <view class="text">
-                    <view class="two-info">[快递发货]北部新区快递员 小猪11211345634 正在为您派件，请您保持电话畅通正在为您派件...</view>
-                    <view class="time">2019-02-12 12:24:35</view>
-                </view>
-                <view>
-                    <i class="iconfont icon-ddx-shop-content_arrows"></i>
-                </view>
-            </view>
-        </view>
+<!--        <view class="info">-->
+<!--            <view  class="express-delivery">-->
+<!--                <view>-->
+<!--                    <i class="iconfont icon-ddx-shop-location"></i>-->
+<!--                </view>-->
+<!--                <view class="text">-->
+<!--                    <view class="two-info">[快递发货]北部新区快递员 小猪11211345634 正在为您派件，请您保持电话畅通正在为您派件...</view>-->
+<!--                    <view class="time">2019-02-12 12:24:35</view>-->
+<!--                </view>-->
+<!--                <view>-->
+<!--                    <i class="iconfont icon-ddx-shop-content_arrows"></i>-->
+<!--                </view>-->
+<!--            </view>-->
+<!--        </view>-->
         <view class="info">
             <view  class="address">
                 <view>
                     <i class="iconfont icon-ddx-shop-location"></i>
                 </view>
                 <view class="text">
-                    <view>{{address.name}}<span class="mobile">{{address.mobile}}</span></view>
-                    <view class="address-detail">{{address.detail}}</view>
+                    <view>{{responseData.realname}}<span class="mobile">{{responseData.mobile}}</span></view>
+                    <view class="address-detail">{{responseData.detail_address}}</view>
                 </view>
                 <view style="opacity: 0;">
                     <i class="iconfont icon-ddx-shop-content_arrows"></i>
@@ -31,29 +31,37 @@
         </view>
         <!-- 订单列表 -->
         <view class="car-list">
-            <view class="section" v-for="(item, key) in orderList" :key="key">
+            <view class="section" v-for="(item, key) in responseData.goods" :key="key">
                 <view class="shop-name">
-                    <view>{{item.shop_name}}</view>
-                    <view>共{{item.goods.length}}件</view>
+                    <view>{{item.mold}}</view>
+                    <view style="color: #FC5A5A;">
+                       {{item.deliver}}
+                    </view>
                 </view>
-                <view class="goods" v-for="(goods, goods_key) in item.goods" :key="goods_key">
+                <view class="goods">
                     <view class="goods-img">
-                        <image class="img"  :src="goods.img"></image>
+                        <image class="img"  src="../../static/images/goods.jpg"></image>
                     </view>
                     <view class="other">
                         <view class="goods-info">
-                            <view class="goods-info-title">{{goods.title}}</view>
-                            <view class="goods-info-specification">规格: <span v-for="(category, category_key) in goods.specification" :key="category_key">{{category}}</span></view>
+                            <view class="goods-info-title">{{item.subtitle}}</view>
+                            <view class="goods-info-specification" v-if="item.attr_name">
+                                规格:{{item.attr_name}}
+                            </view>
                         </view>
                         <view class="money">
                             <view class="money">
-                                ￥{{goods.price}}
+                                ￥{{item.real_price}}
                             </view>
                             <view class="num">
-                                X{{goods.in_stock}}
+                                X{{item.num}}
                             </view>
                         </view>
                     </view>
+                </view>
+                <view class="btns">
+                    <button>查看物流</button>
+                    <button class="active">申请售后</button>
                 </view>
             </view>
         </view>
@@ -61,25 +69,28 @@
         <view class="sum-section">
             <view class="item">
                 <view>商品金额</view>
-                <view style="color: #dd524d;">￥3000</view>
+                <view style="color: #dd524d;">￥{{responseData.amount}}</view>
             </view>
             <view class="item">
                 <view>运费</view>
-                <view>￥10</view>
+                <view>￥{{responseData.postage}}</view>
+            </view>
+            <view class="item" v-if="responseData.discount">
+                <view>优惠券</view>
+                <view>￥{{responseData.discount}}</view>
             </view>
         </view>
         <!--   订单号，时间等订单信息     -->
         <view class="order-info">
-            <view>订单编号：13215614561fasdf1ad</view>
-            <view>下单时间：2019-02-03 13:15:25</view>
-            <view>订单编号：13215614561fasdf1ad</view>
-            <view>付款时间：2019-02-03 13:15:25</view>
+            <view>订单编号：{{responseData.sn}}</view>
+            <view>下单时间：{{responseData.add_time}}</view>
+            <view v-if="responseData.paytime !== '待支付'">付款时间：{{responseData.paytime}}</view>
+            <view v-if="responseData.sendtime !== '待发货'">发货时间：{{responseData.sendtime}}</view>
         </view>
         <!--操作按钮-->
         <view class="fixed-btns">
             <button class="active">付款</button>
-            <button>查看物流</button>
-            <button @click="_goPage('group_buy_group')">查看拼团</button>
+            <button @click="call">联系客服</button>
         </view>
     </view>
 </template>
@@ -89,10 +100,7 @@
         name: "detail",
         data(){
           return {
-              address: {
-                  name: '小可爱',
-                  mobile: '15213710631',
-                  detail: '重庆 重庆市 渝北区 汽博中心 重庆市渝北区汽博中心线外城市花园4栋22楼捣蛋熊猫'
+              responseData:{
               },
               orderList: [
                   {
@@ -120,10 +128,31 @@
             _goPage(url, query = {}){
                 this.$openPage({name:url, query})
             },
+            // 联系客服
+            call(){
+                uni.makePhoneCall({
+                    phoneNumber: '17384094352' //仅为示例
+                })
+            },
         },
-        onLoad(data) {
-            console.log("参数1",data)
+        onLoad(param) {
+            console.log("参数1",param)
             console.log("参数2", this.$parseURL())
+            let requestData = {
+                order_id: 0,
+            }
+            if (param.order_id){
+                requestData.order_id = param.order_id
+            }
+            if (this.$parseURL().order_id){
+                requestData.order_id = this.$parseURL().order_id
+            }
+            this.$minApi.orderDetail(requestData).then(res => {
+                console.log("订单详情：",res)
+                if (res.code === 200) {
+                    this.responseData = res.data
+                }
+            })
         }
     }
 </script>
@@ -204,7 +233,6 @@
                     font-size: $uni-font-size-lg;
                 }
                 .goods{
-                    @extend %border-color-solid-botton;
                     &:last-child{
                         border-bottom:none ;
                     }
@@ -259,6 +287,35 @@
                             display: flex;
                             flex-direction: column;
                             align-items: flex-end;
+                        }
+                    }
+                }
+                .btns{
+                    width: 100%;
+                    display: flex;
+                    justify-content: flex-end;
+                    text-align: right;
+                    padding: $uni-spacing-col-lg 0;
+                    button{
+                        height: 54upx;
+                        line-height: 54upx;
+                        border-radius:4upx;
+                        color: $color-primary-plain;
+                        font-size: $uni-font-size-base;
+                        background: #ffffff;
+                        margin: 0 12upx;
+                        &:last-child{
+                            margin-right: $uni-spacing-row-base;
+                        }
+                        &:after{
+                            border-color: #D2D2D2;
+                            border-radius:0;
+                        }
+                        &.active{
+                            color: $color-primary;
+                            &:after{
+                                border-color: $color-primary;
+                            }
                         }
                     }
                 }

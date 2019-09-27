@@ -428,6 +428,27 @@ export default {
       return minRequest.post('/order/confirm_order', data)
     },
 
+    /**
+     * 订单详情
+     * @param data
+     * @returns {*}
+     */
+    orderDetail(data) {
+        return minRequest.post('/order/order_details', data)
+    },
 
+    /**
+     * 删除订单
+     */
+    delOrder(data) {
+      return minRequest.post('/order/del_order', data)
+    },
+
+    /**
+     * 拼团订单详情
+     */
+    groupBuyDetail(data) {
+      return minRequest.get('/Orderinfo/assembleorderInfo', data)
+    },
   }
 }

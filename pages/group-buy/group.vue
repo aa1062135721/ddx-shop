@@ -64,11 +64,35 @@
     export default {
         data() {
             return {
+                responseData: {
 
+                }
             }
         },
         methods: {
 
+        },
+        onLoad(param){
+            console.log("第一个参数", param)
+
+            console.log("其他页面带过来的参数：", this.$parseURL())
+
+            let requestData = {
+                id: 0
+            }
+            if (param.id)   {
+                requestData.id = param.id
+            }
+            if (this.$parseURL().id){
+                requestData.id = this.$parseURL().id
+            }
+
+            this.$minApi.groupBuyDetail(requestData).then(res => {
+                console.log(res)
+                if (res.code === 200){
+                    this.responseData = res.data
+                }
+            })
         },
         components: {
         }

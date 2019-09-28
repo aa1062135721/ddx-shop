@@ -25,48 +25,16 @@
 						</swiper-item>
 					</swiper>
 				</view>
-<!--				<view class="limited-time">-->
-<!--					<view class="item">-->
-<!--						<view>-->
-<!--							<image src="../../static/icon/icon-pay-succeed.png"></image>-->
-<!--						</view>-->
-<!--						<view>-->
-<!--							<text>限时抢购</text>-->
-<!--						</view>-->
-<!--					</view>-->
-<!--					<view class="item">-->
-<!--						<view>-->
-<!--							<image src="../../static/icon/icon-pay-succeed.png"></image>-->
-<!--						</view>-->
-<!--						<view>-->
-<!--							<text>限时抢购</text>-->
-<!--						</view>-->
-<!--					</view>-->
-<!--					<view class="item">-->
-<!--						<view>-->
-<!--							<image src="../../static/icon/icon-pay-succeed.png"></image>-->
-<!--						</view>-->
-<!--						<view>-->
-<!--							<text>限时抢购</text>-->
-<!--						</view>-->
-<!--					</view>-->
-<!--					<view class="item">-->
-<!--						<view>-->
-<!--							<image src="../../static/icon/icon-pay-succeed.png"></image>-->
-<!--						</view>-->
-<!--						<view>-->
-<!--							<text>限时抢购</text>-->
-<!--						</view>-->
-<!--					</view>-->
-<!--					<view class="item">-->
-<!--						<view>-->
-<!--							<image src="../../static/icon/icon-pay-succeed.png"></image>-->
-<!--						</view>-->
-<!--						<view>-->
-<!--							<text>限时抢购</text>-->
-<!--						</view>-->
-<!--					</view>-->
-<!--				</view>-->
+				<view class="limited-time" v-if="iconArr.length">
+					<view class="item" v-for="(item, index) in iconArr" :key="index" @click="_clickIcon(item)">
+						<view>
+							<image :src="item.thumb" :lazy-load="true"></image>
+						</view>
+						<view>
+							<text>{{item.title}}</text>
+						</view>
+					</view>
+				</view>
 
 				<!--秒杀-->
 				<view class="limited-time-kill" v-if="tabList2.length">
@@ -207,6 +175,8 @@
 				tabList2: [],
 				//精品团购
 				groupBuyList: [],
+				//图标
+				iconArr:[],
 
 			}
 		},
@@ -219,6 +189,7 @@
 			await this._assembleList()
 			await this._getSeckillTime()
 			await this._getGuessYouLike()
+			await this._getIcon()
 		},
 		async onReachBottom() {
 			if (this.tabList[this.TabCur].requestData.moreStatus === 'noMore') {
@@ -357,6 +328,38 @@
 					}
 				})
 			},
+
+			//推荐页面的图标
+			async _getIcon(){
+				await this.$minApi.getHomeIcon().then(res => {
+					console.log("获取推荐选项卡里的图标数据：",res)
+					if (res.code === 200){
+						this.iconArr = res.data
+					}
+				})
+			},
+			// 推荐页面的图标单击操作
+			_clickIcon(item){
+                // "type":"1",     //跳转类型：1:不跳；2：跳网站；3：商品详情；4：拼团列表；5：抢购列表；6：新人专区
+				console.log("单击了推荐页选项卡里的图标：",item)
+                switch (item.type) {
+                    case 1:
+                        break
+                    case 2:
+                        this._goPage('web_view',{url: item.value})
+                        break
+                    case 3:
+                        this._goPage('goods_detail',{id: item.value})
+                        break
+					case 4:
+						this._goPage('group-buy')
+						break
+					case 5:
+						break
+					case 6:
+						break
+                }
+			}
 		},
 		components: {
 			WucTab,

@@ -170,7 +170,7 @@ const router = new MinRouter({
 			path: "pages/user/feedback",
 			type: 'navigateTo',
 			name: 'feedback',
-			login: true
+			login: false
 		},
 		{
 			path: "pages/spike/detail",

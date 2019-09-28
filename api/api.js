@@ -471,6 +471,20 @@ export default {
       return minRequest.get('/cart/cart_num', data)
     },
 
+    /**
+     * 首页的图标
+     */
+    getHomeIcon(data){
+      return minRequest.get('/Index/icon', data)
+    },
+
+    /**
+     * 意见反馈
+     */
+    postFeedback(data){
+      return minRequest.post('/Index/feedback', data)
+    },
+
 
   }
 }

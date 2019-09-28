@@ -7,7 +7,7 @@
             <input type="text" style="width: 100%;" placeholder="留下联系方式便于我们联系您" v-model="mobile">
         </view>
         <view class="btns">
-            <view class="btn">提交</view>
+            <view class="btn" @click="goFeedback">提交</view>
         </view>
     </view>
 </template>
@@ -22,7 +22,27 @@
             }
         },
         methods: {
+            goFeedback(){
+                if (!this.mobile){
+                    this.msg('请输入电话号码')
+                    return
+                }
+                if (!this.text){
+                    this.msg('请输入反馈内容')
+                    return
+                }
+                let requestData = {
+                    content: this.text,
+                    mobile: this.mobile,
+                }
+                this.$minApi.postFeedback(requestData).then(res => {
+                    if (res.code === 200){
+                        this.msg("反馈成功")
+                        setTimeout(()=>{ uni.navigateBack() }, 1000)
+                    }
+                })
 
+            },
         }
     }
 </script>

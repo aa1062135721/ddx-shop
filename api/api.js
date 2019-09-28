@@ -461,7 +461,7 @@ export default {
      * 拼团订单详情
      */
     groupBuyDetail(data) {
-      return minRequest.get('/Orderinfo/assembleorderInfo', data)
+      return minRequest.get('/Index/assembleorderInfo', data)
     },
 
     /**

@@ -1,6 +1,6 @@
 <template>
     <view class="container">
-        <view class="title">剩余12天20时自动确认</view>
+<!--        <view class="title">剩余12天20时自动确认</view>-->
 <!--        <view class="info">-->
 <!--            <view  class="express-delivery">-->
 <!--                <view>-->
@@ -40,7 +40,7 @@
                 </view>
                 <view class="goods">
                     <view class="goods-img">
-                        <image class="img"  src="../../static/images/goods.jpg"></image>
+                        <image class="img" :src="item.pic"></image>
                     </view>
                     <view class="other">
                         <view class="goods-info">
@@ -60,8 +60,9 @@
                     </view>
                 </view>
                 <view class="btns">
-                    <button>查看物流</button>
-                    <button class="active">申请售后</button>
+                    <!--订单状态 1待付款 2待发货 3待收货  4 待评论 5已完成 -1已取消-->
+                    <button class="active" v-if="item.deliver_status === 1">查看物流</button>
+                    <button v-if="[2,3,4,5].indexOf(responseData.status) !== -1">申请售后</button>
                 </view>
             </view>
         </view>
@@ -75,21 +76,29 @@
                 <view>运费</view>
                 <view>￥{{responseData.postage}}</view>
             </view>
-            <view class="item" v-if="responseData.discount">
-                <view>优惠券</view>
-                <view>￥{{responseData.discount}}</view>
-            </view>
+<!--            <view class="item" v-if="responseData.discount">-->
+<!--                <view>优惠券</view>-->
+<!--                <view>￥{{responseData.discount}}</view>-->
+<!--            </view>-->
         </view>
         <!--   订单号，时间等订单信息     -->
         <view class="order-info">
+            <view>订单状态：{{responseData.status_attr}}</view>
             <view>订单编号：{{responseData.sn}}</view>
             <view>下单时间：{{responseData.add_time}}</view>
-            <view v-if="responseData.paytime !== '待支付'">付款时间：{{responseData.paytime}}</view>
-            <view v-if="responseData.sendtime !== '待发货'">发货时间：{{responseData.sendtime}}</view>
+            <!--订单状态 1待付款 2待发货 3待收货  4 待评论 5已完成 -1已取消-->
+            <view v-if="responseData.status !== 1 && responseData.status !== -1">付款时间：{{responseData.paytime}}</view>
+            <view v-if="responseData.status === 3 || responseData.status === 4 ||  responseData.status === 5">发货时间：{{responseData.sendtime}}</view>
         </view>
         <!--操作按钮-->
         <view class="fixed-btns">
-            <button class="active">付款</button>
+            <button class="active" v-if="responseData.status === 1" @click="payNow">去付款</button>
+            <form @submit="cancelFormSubmit" :report-submit="true" v-if="responseData.status === 1">
+                <button form-type="submit">取消</button>
+            </form>
+            <button v-if="responseData.status === 3" @click="overOrder">确认收货</button>
+            <button v-if="responseData.status === 4" @click="evaluate">评价</button>
+            <button v-if="responseData.status === 5 || responseData.status === -1" @click="delOrder">删除</button>
             <button @click="call">联系客服</button>
         </view>
     </view>
@@ -102,26 +111,6 @@
           return {
               responseData:{
               },
-              orderList: [
-                  {
-                      id:100,
-                      shop_name:'江与城店',
-                      shop_id:1,
-                      goods:[
-                          {title: '我是商品1法第三方的的方法第三方',img:'../../static/images/goods.jpg',stock:8,price:10.88,in_stock:1,specification:['8*23','个'],is_checked:false},
-                          {title: '我是商品1法第三方的的方法第三方',img:'../../static/images/goods.jpg',stock:8,price:90.98,in_stock:2,specification:['8*23','个'],is_checked:true},
-                          {title: '我是商品1法第三方的的方法第三方',img:'../../static/images/goods.jpg',stock:8,price:50.28,in_stock:3,specification:['8*23','个'],is_checked:false},
-                      ]
-                  },
-                  {
-                      id:100,
-                      shop_name:'爱情海店',
-                      shop_id:1,
-                      goods:[
-                          {title: '我是爱情海店的商品',img:'../../static/images/goods.jpg',stock:8,price:80.08,in_stock:4,specification:['8*23','个'],is_checked:true},
-                      ]
-                  },
-              ]
           }
         },
         methods: {
@@ -134,26 +123,109 @@
                     phoneNumber: '17384094352' //仅为示例
                 })
             },
+
+            //支付
+            async payNow(){
+                let  orderData = {
+                    amount: this.responseData.amount,      //总金额
+                    order_id: this.responseData.id      //订单id
+                }
+                await this._goPage('order_pay_navigate', orderData)
+            },
+
+            //取消订单
+            async cancelFormSubmit(e) {
+                // 推送模板消息所需的数据
+                let sendTemplateMessageData = {
+                    form_id: e.detail.formId,//模板id
+                    page: `pages/order/detail?order_id=${this.responseData.id}`,//模板消息推送后可以跳转的页面
+                    oid: `${this.responseData.id}`,//订单id
+                    state: 2,//订单状态，0 未支付 1：支付成功；2：订单取消
+                }
+
+                let requestData = {
+                    order_id: this.responseData.id
+                }
+                await this.$minApi.cancelOrder(requestData).then(res => {
+                    if (res.code === 200) {
+                        this.msg('取消成功')
+                        this.loadData()
+                        this.$minApi.sendTemplateMessage(sendTemplateMessageData).then()
+                    }
+                })
+            },
+
+            //确认收货
+            async overOrder(){
+                let requestData = {
+                    order_id: this.responseData.id
+                }
+                await this.$minApi.overOrder(requestData).then(res => {
+                    if (res.code === 200) {
+                        this.msg('确认收货成功')
+                        this.loadData()
+                    }
+                })
+            },
+
+            // 删除订单
+            async delOrder(){
+                let requestData = {
+                    order_id: this.responseData.id
+                }
+                await this.$minApi.delOrder(requestData).then(res => {
+                    if (res.code === 200) {
+                        this.msg('删除成功')
+                        uni.navigateBack({})
+                    }
+                })
+            },
+
+            //获取订单详情
+            async loadData(){
+                await this.$minApi.orderDetail({order_id: this.responseData.id}).then(res => {
+                    console.log("订单详情：",res)
+                    if (res.code === 200) {
+                        this.responseData = res.data
+                    }
+                })
+            },
+
+            //评价
+            evaluate(){
+                console.log("评价数据",this.responseData.goods)
+                let data = []
+                this.responseData.goods.map(item => {
+                    let oGoods = {
+                        attr_name: item.attr_name,
+                        id: 0,//TODO
+                        item_id: item.item_id, //商品id
+                        mold: item.mold, //区分
+                        mold_id: item.mold_id, //区分
+                        num: item.num, //购买数量
+                        pic: item.pic, //商品图片
+                        real_price: item.real_price,//商品价格
+                        subtitle: item.subtitle,//商品价格
+                    }
+                    data.push(oGoods)
+                })
+                console.log('组合成自己想要的数据：',{item_list: data})
+                this._goPage('order_evaluate', {data: {item_list: data}})
+            },
         },
         onLoad(param) {
             console.log("参数1",param)
             console.log("参数2", this.$parseURL())
-            let requestData = {
-                order_id: 0,
-            }
             if (param.order_id){
-                requestData.order_id = param.order_id
+                this.responseData.id = param.order_id
             }
             if (this.$parseURL().order_id){
-                requestData.order_id = this.$parseURL().order_id
+                this.responseData.id = this.$parseURL().order_id
             }
-            this.$minApi.orderDetail(requestData).then(res => {
-                console.log("订单详情：",res)
-                if (res.code === 200) {
-                    this.responseData = res.data
-                }
-            })
-        }
+        },
+        onShow(){
+            this.loadData()
+        },
     }
 </script>
 

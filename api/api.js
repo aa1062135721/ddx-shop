@@ -450,5 +450,14 @@ export default {
     groupBuyDetail(data) {
       return minRequest.get('/Orderinfo/assembleorderInfo', data)
     },
+
+    /**
+     * 购物车数量
+     */
+    getCarNum(data){
+      return minRequest.get('/cart/cart_num', data)
+    },
+
+
   }
 }

@@ -203,7 +203,7 @@
 				<view class="box" @click="_goPage('car')">
 					<view class="iconfont icon-ddx-shop-shopping-cart-o"></view>
 					<view class="text">购物车</view>
-					<view class="number">11</view>
+					<view class="number" v-if="carNum">{{carNum}}</view>
 				</view>
 			</view>
 			<view class="btn">
@@ -361,6 +361,8 @@
 					count: 0,
 					data: [],
 				},
+				//购物车数量
+				carNum:0,
 
 				//控制渐变标题栏的参数
 				beforeHeaderzIndex: 11,//层级
@@ -647,6 +649,17 @@
 					this.commentResponseData.data = res.data
 				}
 			})
+		},
+		async onShow() {
+			if (this.userInfo.id){
+				//购物车数量
+				this.$minApi.getCarNum().then(res => {
+					console.log("购物车数量：", res)
+					if(res.code === 200){
+						this.carNum = res.data
+					}
+				})
+			}
 		},
 		onReady(){
 			this.calcAnchor();//计算锚点高度，页面数据是ajax加载时，请把此行放在数据渲染完成事件中执行以保证高度计算正确

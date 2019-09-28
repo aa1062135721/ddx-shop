@@ -55,11 +55,24 @@ const codeMessage = {
 
 // 响应拦截器
 minRequest.interceptors.response((response) => {
-  if (response.data.code === "-1") {
+  /**
+   * 未登录
+   */
+  if (response.data.code === -1) {
     uni.navigateTo({
       url: `/pages/public/login`
     })
   }
+
+  /**
+   * 登录过期或者token错误
+   * 清除用户token和用户信息
+   */
+  if (response.data.code === -2) {
+    store.commit('setToken')
+    store.commit('setUserInfo')
+  }
+
   if (response.statusCode !== 200){
     Vue.prototype.msg(codeMessage[response.statusCode])
   }

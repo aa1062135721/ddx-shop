@@ -5,12 +5,14 @@
 			<view class="mask" v-if="goodsInfo.status !== 1"></view>
 			<view class="tips" v-if="goodsInfo.status !== 1">已下架</view>
 		</view>
-		<view class="title">
-			{{goodsInfo.title}}
-		</view>
-		<view class="price">
-			<text class="one">¥{{goodsInfo.min_price}}</text>
-			<text class="two">已售{{goodsInfo.sales}}件</text>
+		<view class="info">
+			<view class="title">
+				{{goodsInfo.title}}
+			</view>
+			<view class="price">
+				<text class="one">¥{{goodsInfo.min_price}}</text>
+				<text class="two">已售{{goodsInfo.sales}}件</text>
+			</view>
 		</view>
 	</view>
 </template>
@@ -33,7 +35,7 @@
 					min_price: "0.00",
 					initial_sales: 0,
 					reality_sales: 0,
-					pic: "http://picture.ddxm661.com/12183201909060954457548.jpg",
+					pic: "",
 					sales: 0
 				}
 			}
@@ -46,21 +48,22 @@
 	background: #FFFFFF;
 	border-radius:8upx;
 	display:flex;
+	justify-content: space-between;
 	flex-direction:column;
-	width:343upx;
-	height:500upx;
+	width:344upx;
+	height:518upx;
 	overflow: hidden;
 	margin-bottom:20upx;
 	.image{
-		width:343upx;
-		height:343upx;
+		width:344upx;
+		height:344upx;
 		position: relative;
 		.mask{
 			position: absolute;
 			top: 0;
 			left: 0;
-			width:343upx;
-			height:343upx;
+			width:344upx;
+			height:344upx;
 			background: #FFFFFF;
 			opacity: 0.5;
 		}
@@ -81,29 +84,37 @@
 			transform:rotate(-50deg);
 		}
 		image{
-			width:343upx;
-			height:343upx;
+			width:344upx;
+			height:344upx;
 			border-radius:8upx 8upx 0upx 0upx;
 		}
 	}
-	.title{
-		@extend %overflow-2-line;
-		padding: $uni-spacing-row-sm $uni-spacing-row-sm 0 $uni-spacing-row-sm;
-		font-size: $uni-font-size-base;
-		height: auto;
-		width: 100%;
-		overflow: hidden;
-	}
-	.price{
-		padding: 0 $uni-spacing-row-sm;
-		.one{
+	.info{
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		width:344upx;
+		height: 174upx;
+		padding-bottom: 30upx;
+		.title{
+			@extend %overflow-2-line;
+			padding: $uni-spacing-row-sm $uni-spacing-row-sm 0 $uni-spacing-row-sm;
 			font-size: $uni-font-size-base;
-			color: $color-primary;
-			margin-right: 10upx;
+			height: auto;
+			width: 100%;
+			overflow: hidden;
 		}
-		.two{
-			font-size: $uni-font-size-sm;
-			padding-bottom: 10upx;
+		.price{
+			padding: 0 $uni-spacing-row-sm;
+			.one{
+				font-size: $uni-font-size-base;
+				color: $color-primary;
+				margin-right: 10upx;
+			}
+			.two{
+				font-size: $uni-font-size-sm;
+				padding-bottom: 10upx;
+			}
 		}
 	}
 }

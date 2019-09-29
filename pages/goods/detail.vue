@@ -117,7 +117,7 @@
 					</view>
 				</view>
 				<view class="two">
-					<text class="iconfont icon-ddx-shop-content_arrows"></text>
+<!--					<text class="iconfont icon-ddx-shop-content_arrows"></text>-->
 				</view>
 			</view>
 		</view>

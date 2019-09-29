@@ -199,7 +199,7 @@
 			if (this.TabCur === 0) {
 				await this._getGuessYouLike()
 			} else {
-				await this._getGoodsList(this.tabList[this.TabCur].id)
+				await this._getGoodsList()
 			}
 		},
 		methods: {
@@ -224,10 +224,10 @@
 				}
 
 			},
-			async _getGoodsList(type){
+			async _getGoodsList(){
 				this.tabList[this.TabCur].requestData.moreStatus = 'loading'
 				let data = {
-					type:this.tabList[type].id,
+					type:this.tabList[this.TabCur].id,
 					page:this.tabList[this.TabCur].requestData.page,
 					limit:this.tabList[this.TabCur].requestData.limit,
 				}

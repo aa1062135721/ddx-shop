@@ -26,6 +26,15 @@
 		},
 		onShow: function() {
 			console.log('App Show')
+            let _that = this
+            uni.getNetworkType({
+                success: function (res) {
+                    console.log(res.networkType)
+                    if (res.networkType === 'none') {
+                        _that.msg('请检查您的网络状态')
+                    }
+                }
+            });
 		},
 		onHide: function() {
 			console.log('App Hide')

@@ -64,8 +64,8 @@
 						<view class="info-time">仅剩 {{item.timeStr}}</view>
 					</view>
 					<view class="btns">
-						<view class="btn" @click="buyGroup(item.id)" v-if="item.member_id !== userInfo.id">一键成团</view>
-						<view class="btn" @click="_goPage('group_buy_group')" v-else>查看详情</view>
+						<view class="btn" @click="_goPage('group_buy_group', {id: item.order_id})"  v-if="item.order_id">查看详情</view>
+						<view class="btn" @click="buyGroup(item.id)" v-else>一键成团</view>
 					</view>
 				</view>
 			</view>
@@ -88,8 +88,8 @@
 								</view>
 							</view>
 							<view class="right">
-								<view class="btn" @click="buyGroup(item.id)" v-if="item.member_id !== userInfo.id">一键成团</view>
-								<view class="btn" @click="_goPage('group_buy_group')" v-else>查看详情</view>
+								<view class="btn" @click="_goPage('group_buy_group', {id: item.order_id})" v-if="item.order_id">查看详情</view>
+								<view class="btn" @click="buyGroup(item.id)" v-else>一键成团</view>
 							</view>
 						</view>
 					</view>
@@ -149,7 +149,7 @@
 					</view>
 				</view>
 				<view class="two">
-					<text class="iconfont icon-ddx-shop-content_arrows"></text>
+<!--					<text class="iconfont icon-ddx-shop-content_arrows"></text>-->
 				</view>
 			</view>
 		</view>

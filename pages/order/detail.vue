@@ -48,6 +48,9 @@
                             <view class="goods-info-specification" v-if="item.attr_name">
                                 规格:{{item.attr_name}}
                             </view>
+                            <view class="goods-info-specification">
+                                <text v-if="item.status === 2" style="color: #FC5A5A;">退货成功</text>
+                            </view>
                         </view>
                         <view class="money">
                             <view class="money">
@@ -70,7 +73,7 @@
         <view class="sum-section">
             <view class="item">
                 <view>商品金额</view>
-                <view style="color: #dd524d;">￥{{responseData.amount}}</view>
+                <view>￥{{(parseFloat(responseData.amount) - parseFloat(responseData.postage)) | moneyToFixed}}</view>
             </view>
             <view class="item">
                 <view>运费</view>
@@ -80,10 +83,14 @@
 <!--                <view>优惠券</view>-->
 <!--                <view>￥{{responseData.discount}}</view>-->
 <!--            </view>-->
+            <view class="item">
+                <view>付款总金额</view>
+                <view style="color: #dd524d;">￥{{responseData.amount | moneyToFixed}}</view>
+            </view>
         </view>
         <!--   订单号，时间等订单信息     -->
         <view class="order-info">
-            <view>订单状态：{{responseData.status_attr}}</view>
+            <view v-if="responseData.status_attr">订单状态：{{responseData.status_attr}}</view>
             <view>订单编号：{{responseData.sn}}</view>
             <view>下单时间：{{responseData.add_time}}</view>
             <!--订单状态 1待付款 2待发货 3待收货  4 待评论 5已完成 -1已取消-->
@@ -92,14 +99,14 @@
         </view>
         <!--操作按钮-->
         <view class="fixed-btns">
-            <button class="active" v-if="responseData.status === 1" @click="payNow">去付款</button>
+            <button @click="call">联系客服</button>
             <form @submit="cancelFormSubmit" :report-submit="true" v-if="responseData.status === 1">
                 <button form-type="submit">取消</button>
             </form>
-            <button v-if="responseData.status === 3" @click="overOrder">确认收货</button>
-            <button v-if="responseData.status === 4" @click="evaluate">评价</button>
+            <button class="active" v-if="responseData.status === 1" @click="payNow">去付款</button>
+            <button class="active" v-if="responseData.status === 3" @click="overOrder">确认收货</button>
+            <button class="active" v-if="responseData.status === 4" @click="evaluate">评价</button>
             <button v-if="responseData.status === 5 || responseData.status === -1" @click="delOrder">删除</button>
-            <button @click="call">联系客服</button>
         </view>
     </view>
 </template>
@@ -110,6 +117,35 @@
         data(){
           return {
               responseData:{
+                   id: 0,
+                   sn: "",
+                   realname: "",
+                   detail_address: "",
+                   mobile: "",
+                   amount: 0.00,
+                   postage: 0.00,
+                   discount: 0,
+                   add_time: "",
+                   paytime: "",
+                   sendtime: "",
+                   status: 0,
+                   status_attr: "",
+                   goods: [
+                      {
+                          subtitle: "",
+                          item_id: 0,
+                          real_price: 0,
+                          deliver_status: 0,
+                          deliver: "",
+                          num: 10,
+                          status: 1,
+                          attr_name: null,
+                          mold_id: 0,
+                          mold: "",
+                          pic: "",
+                          express_id: 0
+                      },
+                  ]
               },
           }
         },

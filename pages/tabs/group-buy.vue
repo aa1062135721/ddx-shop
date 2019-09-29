@@ -1,5 +1,8 @@
 <template>
    <view class="container">
+      <view class="banner">
+         <image src="../../static/images/tab-group.jpg" mode="widthFix" style="width: 100%;"></image>
+      </view>
       <view class="group-buy">
 
          <view class="item" v-for="(item, index) in groupBuyList" :key="index" @click="_goPage('group_buy_detail', {id: item.id})">

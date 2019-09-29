@@ -32,7 +32,7 @@
             <view class="text">
                 <!-- status  //1 拼团中 2拼团成功 3拼团失败' -->
                 <text v-if="responseData.status === 1">
-                    <text v-if="responseData.r_num">紧剩<text class="num">{{responseData.r_num}}</text>个名额，</text>
+                    <text v-if="responseData.r_num">仅剩<text class="num">{{responseData.r_num}}</text>个名额，</text>
                     <text class="time">{{timer.h + ":" + timer.m + ":" + timer.s }}</text>后结束
                 </text>
                 <text v-if="responseData.status === 2">拼团成功</text>

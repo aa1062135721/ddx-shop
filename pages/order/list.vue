@@ -32,12 +32,15 @@
                                         <view class="title">{{goods.subtitle}}</view>
                                         <view class="specification" v-if="goods.attr_name">规格: {{goods.attr_name}}</view>
                                     </view>
-                                    <view class="money">
+                                    <view class="money-num">
                                         <view class="money">
                                             ￥{{goods.real_price}}
                                         </view>
                                         <view class="num">
                                             X{{goods.num}}
+                                        </view>
+                                        <view class="num" v-if="goods.refund_status">
+                                           {{goods.refund_status | refundStatusToText}}
                                         </view>
                                     </view>
                                 </view>
@@ -74,7 +77,7 @@
 </template>
 
 <script>
-    import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
+    import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue'
 
     export default {
         components: {
@@ -160,7 +163,6 @@
             }
         },
         onShow(){
-            console.log("每次页面打开就要从新请求数据")
             this.loadData()
         },
 
@@ -178,6 +180,7 @@
                     limit: this.navList[this.tabCurrentIndex].requestData.limit,
                 }
                 await this.$minApi.orderList(requestData).then(res => {
+                    console.log("每次页面打开就要从新请求数据",res)
                     if (res.code === 200) {
 
                         if (this.navList[this.tabCurrentIndex].requestData.page === 1){
@@ -276,6 +279,31 @@
                 await this.goPage('order_pay_navigate', orderData)
             }
         },
+
+        filters:{
+            /**
+             *  退单状态	0:正常	1退款中	2 退款成功 3 退款关闭 4 待寄件
+             * @param status
+             */
+            refundStatusToText(status){
+                let text = ''
+                switch (status) {
+                    case 0:
+                      text = '正常'
+                      break
+                    case 1:
+                        text = '退款中'
+                        break
+                    case 3:
+                        text = '退款关闭'
+                        break
+                    case 4:
+                        text = '待寄件'
+                        break
+                }
+                return text
+            },
+        }
     }
 </script>
 
@@ -378,7 +406,7 @@
                             font-size: $uni-font-size-sm;
                         }
                     }
-                    .money{
+                    .money-num{
                         width: 30%;
                         color: #808080;
                         .money{

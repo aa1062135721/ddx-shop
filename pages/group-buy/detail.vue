@@ -393,12 +393,6 @@
 					urls
 				})
 			},
-			//商品评论
-			toRatings(){
-				uni.navigateTo({
-					url:'ratings/ratings'
-				})
-			},
 			//跳转锚点
 			toAnchor(index){
 				this.selectAnchor = index;
@@ -642,7 +636,7 @@
 			}
 
 			//商品评论
-			await this.$minApi.goodsComment({item_id: this.goodsInfo.item_id}).then(res => {
+			await this.$minApi.goodsDetailComment({item_id: this.goodsInfo.item_id}).then(res => {
 				console.log("获取商品评论：",res)
 				if (res.code === 200) {
 					this.commentResponseData.count = res.count

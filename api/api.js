@@ -22,8 +22,8 @@ import Vue from 'vue'
 import MinRequest from './MinRequest'
 import store from '../store/index'
 
-const baseUrl = `http://testmd.ddxm661.com/wxshop` //测试服务器
-// const baseUrl = `https://ddxm661.com/wxshop` //正式服务器
+// const baseUrl = `http://testmd.ddxm661.com/wxshop` //测试服务器
+const baseUrl = `https://ddxm661.com/wxshop` //正式服务器
 const minRequest = new MinRequest()
 
 // 请求拦截器
@@ -411,6 +411,13 @@ export default {
      */
     shareFriend(data){
       return minRequest.get('/user/shareFriend', data)
+    },
+
+    /**
+     * 商品详情页的3个评论
+     */
+    goodsDetailComment(data) {
+      return minRequest.post('/comment/item_comment_list', data)
     },
 
     /**

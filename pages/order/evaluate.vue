@@ -124,6 +124,7 @@
                 this.goodsList.map((item) => {
                     let oRequest = {
                         level:0,//评分
+                        order_id: this.$parseURL().data.id,//订单id
                         comment:'',//评论内容
                         goods_id: item.requestData.goods_id,//商品id
                         specs: item.requestData.specs,//规格参数
@@ -153,8 +154,9 @@
                     requestData.map((item, index)=> {
                         this.$minApi.addGoodsComment(item).then(res => {
                             console.log(res)
-                            if (index === requestData.length){
-                                uni.navigateBack()
+                            if (index + 1 === requestData.length){
+                                this.msg("您的评论等待审核中，审核通过后会展示出来")
+                                setTimeout(()=>{ uni.navigateBack() }, 1000)
                             }
                         })
                     })

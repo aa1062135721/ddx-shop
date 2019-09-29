@@ -28,7 +28,7 @@ export const moneyToFixed = (money = 0) => {
  * 1待付款，2待发货，3待收货，4待评价
  */
 export const orderStatusToString = (status) => {
-  let sStatus = '订单状态'
+  let sStatus = ''
   switch (status) {
     case 1:
       sStatus = '待付款'
@@ -41,6 +41,12 @@ export const orderStatusToString = (status) => {
       break
     case 4:
       sStatus = '待评价'
+      break
+    case 5:
+      sStatus = '已完成'
+      break
+    case 6:
+      sStatus = '已取消'
       break
   }
   return sStatus

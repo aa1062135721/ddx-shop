@@ -336,7 +336,11 @@
 							})
 						})
 						this.tabList2 = res.data
-						myTimer = setInterval(this.getRTime, 1000) //设置定时器 每一秒执行一次
+						if (res.data.length) {
+							myTimer = setInterval(this.getRTime, 1000) //设置定时器 每一秒执行一次
+						} else {
+							console.log('当前页面没有抢购/秒杀，不执行定时器')
+						}
 					}
 				})
 			},
@@ -344,6 +348,7 @@
 			getRTime(){
 				//1：正在抢购，2即将开始，3已结束
 				console.log('首页计时器功能')
+				let sum = 0
 				for(let i = 0; i < this.tabList2.length; i++){
 					if (this.tabList2[i].start_time  > this.tabList2[0].now_time) {
 						this.tabList2[i].begin = 2
@@ -355,9 +360,14 @@
 
 					if (this.tabList2[i].end_time  < this.tabList2[0].now_time) {
 						this.tabList2[i].begin = 3
+						sum ++
 					}
 
 					this.tabList2[0].now_time ++
+				}
+				if (sum === this.tabList2.length) {
+					console.log('首页的抢购/秒杀活动全部结束，清空计时器功能')
+					clearInterval(myTimer)
 				}
 			},
 
@@ -413,7 +423,7 @@
 			},
 		},
 		onUnload(){
-			clearInterval(myTimer);
+			clearInterval(myTimer)
 		},
 	}
 </script>

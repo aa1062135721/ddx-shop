@@ -22,56 +22,12 @@
             </view>
             <view class="item">
                 <view class="left">
-                    <view class="title">查看物流</view>
-                    <view class="value"></view>
-                </view>
-                <view class="right">
-                    <view class="btn" @click="_goPage('logistics_view')">
-                        前往
-                    </view>
-                </view>
-            </view>
-            <view class="item">
-                <view class="left">
                     <view class="title">退出登录</view>
                     <view class="value">注销登录</view>
                 </view>
                 <view class="right">
                     <view class="btn" @click="loginOut">
                         注销
-                    </view>
-                </view>
-            </view>
-            <view class="item">
-                <view class="left">
-                    <view class="title">评价订单</view>
-                    <view class="value">购买商品心得，去评价</view>
-                </view>
-                <view class="right">
-                    <view class="btn" @click="_goPage('order_evaluate')">
-                        评价
-                    </view>
-                </view>
-            </view>
-            <view class="item">
-                <view class="left">
-                    <view class="title">拼团详情</view>
-                    <view class="value">去拼团详情</view>
-                </view>
-                <view class="right">
-                    <view class="btn" @click="_goPage('group_buy_group')">
-                        前往
-                    </view>
-                </view>
-            </view>
-            <view class="item">
-                <view class="left">
-                    <view class="title">退单状态</view>
-                    <view class="value">去查看</view>
-                </view>
-                <view class="right">
-                    <view class="btn" @click="_goPage('order_return_status')">
-                        前往
                     </view>
                 </view>
             </view>

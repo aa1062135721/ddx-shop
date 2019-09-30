@@ -1,5 +1,10 @@
 <template>
-    <view class="invite-fans" :style="{backgroundImage:`url(${shareData.pic})`}">
+    <view class="invite-fans">
+        <image src="../../static/images/share-fans.png" style="width: 100%;" mode="widthFix"></image>
+        <view class="share-image-box">
+            <image class="img" :src="shareData.pic"></image>
+            <view class="text">长按识别二维码</view>
+        </view>
         <button class="btn" open-type="share">分享好友</button>
     </view>
 </template>
@@ -55,8 +60,37 @@
     position: relative;
     width: 100vm;
     height: 100vh;
-    background-size: cover;
-    background-repeat: no-repeat;
+    overflow: hidden;
+    background:linear-gradient(14deg,rgba(255,90,58,1) 0%,rgba(253,65,28,1) 100%);
+    .share-image-box{
+        background: #ffffff;
+        width:436upx;
+        height:568upx;
+        border-radius:10upx;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin-left: -218upx;
+        margin-top: -284upx;
+        display: flex;
+        padding-top: 114upx;
+        padding-bottom: 70upx;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        overflow: hidden;
+        .img{
+            width:304upx;
+            height:304upx;
+            border:1upx solid rgba(238,238,238,1);
+        }
+        .text{
+            font-size: $uni-font-size-base;
+            text-align: center;
+            width: 100%;
+            color: #808080;
+        }
+    }
     .btn{
         position: absolute;
         bottom: 60upx;
@@ -69,6 +103,7 @@
         box-shadow:0 8upx 34upx 0 #8E210B;
         border-radius:44upx;
         text-align: center;
+        color: #ffffff;
     }
 }
 </style>

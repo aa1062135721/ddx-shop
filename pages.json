@@ -185,11 +185,17 @@
 		{
 			"path": "pages/order_return/refund",
 			"style": {
-				"navigationBarTitleText": "申请退款"
+				"navigationBarTitleText": "填写退款信息"
 			}
 		},
 		{
 			"path": "pages/order_return/status",
+			"style": {
+				"navigationBarTitleText": "退款详情"
+			}
+		},
+		{
+			"path": "pages/order_return/apply",
 			"style": {
 				"navigationBarTitleText": "申请退款"
 			}

@@ -1,11 +1,11 @@
 <template>
 	<view class="container">
         <view class="tags">
-            <text :class="{'on': who === 1}" @click="clickBtn(1)">全部（{{responseData.count}}）</text>
-            <text :class="{'on': who === 2}" @click="clickBtn(2)">有图（{{responseData.count_tu}}）</text>
-            <text :class="{'on': who === 3}" @click="clickBtn(3)">好评（{{responseData.count_hp}}）</text>
-            <text :class="{'on': who === 4}" @click="clickBtn(4)">中评（{{responseData.count_zp}}）</text>
-            <text :class="{'on': who === 5}" @click="clickBtn(5)">差评（{{responseData.count_cp}}）</text>
+            <text :class="{'on': requestData.state === 1}" @click="clickBtn(1)">全部（{{responseData.count}}）</text>
+            <text :class="{'on': requestData.state === 2}" @click="clickBtn(2)">有图（{{responseData.count_tu}}）</text>
+            <text :class="{'on': requestData.state === 3}" @click="clickBtn(3)">好评（{{responseData.count_hp}}）</text>
+            <text :class="{'on': requestData.state === 4}" @click="clickBtn(4)">中评（{{responseData.count_zp}}）</text>
+            <text :class="{'on': requestData.state === 5}" @click="clickBtn(5)">差评（{{responseData.count_cp}}）</text>
         </view>
         <block v-for="(txt, index) in responseData.list" :key="index">
 		    <evaluate :evaluate="txt"></evaluate>

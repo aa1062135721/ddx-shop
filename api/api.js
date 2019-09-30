@@ -492,6 +492,14 @@ export default {
       return minRequest.post('/Index/feedback', data)
     },
 
+    /**
+     * 订单退单（单商品），申请
+     * @param data
+     * @returns {*}
+     */
+    returnOrderGoodsApply(data){
+      return minRequest.post('/refund/apply', data)
+    },
 
   }
 }

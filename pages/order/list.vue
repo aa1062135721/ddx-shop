@@ -300,6 +300,12 @@
                     case 4:
                         text = '待寄件'
                         break
+                    case 5:
+                        text = '退款失败'
+                        break
+                    case 6:
+                        text = '寄件中'
+                        break
                 }
                 return text
             },

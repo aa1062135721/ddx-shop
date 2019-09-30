@@ -233,6 +233,12 @@ const router = new MinRouter({
 			login: true
 		},
 		{
+			path: "pages/order_return/apply",
+			type: 'navigateTo',
+			name: 'order_return_apply',
+			login: true
+		},
+		{
 			path: "pages/user/modify-mobile",
 			type: 'navigateTo',
 			name: 'user_modify_mobile',

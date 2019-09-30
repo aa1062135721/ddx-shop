@@ -166,6 +166,7 @@
 
 <script>
     import { mapGetters } from 'vuex'
+    import {mapActions} from 'vuex'
 
     export default {
         name: "mine",
@@ -174,8 +175,20 @@
 
             }
         },
-
+        onShow(){
+            if (this.userInfo.id){
+                this.$minApi.getUserInfo().then(userInfo => {
+                    if (userInfo.code === 200) {
+                        console.log('每次页面都会去请求用户数据。',userInfo)
+                        this.saveUserInfo(userInfo.data)
+                    }
+                }).catch(err => {
+                    console.log(err)
+                })
+            }
+        },
 		methods: {
+            ...mapActions(['saveUserInfo']),
             goPage(url,query = {}){
                 this.$openPage({name: url, query: query})
             },

@@ -118,7 +118,7 @@
                 <view class="arrow" @click="this._goPage('goods_evaluate', {id: goodsInfo.id})">
                     <view class="show">
                         查看全部
-                        <view class="iconfont icon-ddx-shop-content_arrows"></view>
+                        <text class="iconfont icon-ddx-shop-content_arrows"></text>
                     </view>
                 </view>
             </view>

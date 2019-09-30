@@ -67,8 +67,12 @@
                 await this.$minApi.goodsComment(this.requestData).then(res => {
                     console.log("获取商品评论：",res)
                     if (res.code === 200) {
-                        this.responseData = res.data
-                        if (res.data.length < this.requestData.limit){
+                        if (this.requestData.page === 1){
+                            this.responseData = res.data
+                        } else {
+                            this.responseData.push(...res.data)
+                        }
+                        if (res.data.list.length < this.requestData.limit){
                             this.moreStatus = 'noMore'
                         } else {
                             this.moreStatus = 'more'

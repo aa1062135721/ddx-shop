@@ -25,7 +25,7 @@
                         <view>添加图片</view>
                     </view>
                     <view class="img-show" v-for="(img, imgIndex) in item.requestData.pics" :key="imgIndex">
-                        <image :src="img" mode="widthFix" @click="previewImg(img, item.requestData.pics)"></image>
+                        <image :src="img" mode="aspectFill" @click="previewImg(img, item.requestData.pics)"></image>
                         <view class="close iconfont icon-ddx-shop-close" @click="delImg(index, imgIndex)"></view>
                     </view>
                 </view>

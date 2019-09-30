@@ -391,16 +391,35 @@
 
             //秒杀倒计时
             getRTime(){
-                // js获取的时间戳是13位的，精确到毫秒，而php获取的时间戳用strtotime是10位的，
-                let t =(this.goodsInfo.end_time * 1000) - (this.goodsInfo.now_time * 1000)
-                if (t<=0){
-                    this.timer = { h:`00`, m: `00`, s: `00`}
+                console.log("秒杀详情里的定时器功能")
+                //1：正在抢购，2即将开始，3已结束
+                if (this.goodsInfo.start_time  > this.goodsInfo.now_time) {
+                    this.goodsInfo.begin = 2
+                    console.log("秒杀活动还未开始呢")
                     clearInterval(myTimer)
-                    return
                 }
-                let h=Math.floor(t/1000/60%24) //时
-                let m=Math.floor(t/1000/60%60) //分
-                let s=Math.floor(t/1000%60) //秒
+
+                if ( this.goodsInfo.start_time  <= this.goodsInfo.now_time && this.goodsInfo.now_time <=  this.goodsInfo.end_time) {
+                    this.goodsInfo.begin = 1
+                }
+
+                if (this.goodsInfo.end_time  < this.goodsInfo.now_time) {
+                    this.goodsInfo.begin = 3
+                    console.log("秒杀活动已经结束啦")
+                    clearInterval(myTimer)
+                }
+
+                let t = this.goodsInfo.end_time - this.goodsInfo.now_time
+
+                t = t % (86400 * 365)
+                t = t % (86400 * 30)
+                t = t % 86400;
+                let h=Math.floor(t/3600) //时
+                t = t % 3600
+                let m=Math.floor(t/60) //分
+                t = t % 60
+                let s = t  //秒
+
                 if(parseInt(h)<10){
                     h="0"+h
                 }
@@ -545,10 +564,7 @@
                 if (res.code === 200) {
                     this.goodsInfo = res.data
                     //1：正在抢购，2即将开始，3已结束
-                    if (res.data.begin === 1){
-                        myTimer = setInterval(this.getRTime, 1000);//设置定时器 每一秒执行一次
-                    }
-
+                    myTimer = setInterval(this.getRTime, 1000) //设置定时器 每一秒执行一次
                 }
             })
             // 购买须知

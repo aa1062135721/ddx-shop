@@ -61,21 +61,21 @@ const router = new MinRouter({
 			login: false
 		},
 
-		//address
+		//address pages2
 		{
-			path: 'pages/address/list',
+			path: 'pages2/address/list',
 			type: 'navigateTo',
 			name: 'address_list',
 			login: true
 		},
 		{
-			path: 'pages/address/add',
+			path: 'pages2/address/add',
 			type: 'navigateTo',
 			name: 'address_add',
 			login: true
 		},
 
-		//order
+		//order pages
 		{
 			path: "pages/order/submit",
 			type: 'navigateTo',
@@ -125,7 +125,7 @@ const router = new MinRouter({
 			login: true
 		},
 
-		//goods
+		//goods pages
 		{
 			path: "pages/goods/search",
 			type: 'navigateTo',
@@ -157,7 +157,7 @@ const router = new MinRouter({
 			login: false
 		},
 
-		//web-view
+		//web-view pages
 		{
 			path: "pages/web-view/web-view",
 			type: 'navigateTo',
@@ -171,7 +171,7 @@ const router = new MinRouter({
 			login: false
 		},
 
-		//group-buy
+		//group-buy pages
 		{
 			path: "pages/group-buy/detail",
 			type: 'navigateTo',
@@ -185,15 +185,15 @@ const router = new MinRouter({
 			login: false
 		},
 
-		//user
+		//user pages & pages2
 		{
-			path: "pages/user/setting",
+			path: "pages2/user/setting",
 			type: 'navigateTo',
 			name: 'setting',
 			login: true
 		},
 		{
-			path: "pages/user/id-card-authentication",
+			path: "pages2/user/id-card-authentication",
 			type: 'navigateTo',
 			name: 'id_card_authentication',
 			login: true
@@ -205,31 +205,31 @@ const router = new MinRouter({
 			login: false
 		},
 		{
-			path: "pages/user/fans",
+			path: "pages2/user/fans",
 			type: 'navigateTo',
 			name: 'user_fans',
 			login: true
 		},
 		{
-			path: "pages/user/money",
+			path: "pages2/user/money",
 			type: 'navigateTo',
 			name: 'user_money',
 			login: true
 		},
 		{
-			path: "pages/user/record",
+			path: "pages2/user/record",
 			type: 'navigateTo',
 			name: 'user_record',
 			login: true
 		},
 		{
-			path: "pages/user/modify-mobile",
+			path: "pages2/user/modify-mobile",
 			type: 'navigateTo',
 			name: 'user_modify_mobile',
 			login: true
 		},
 		{
-			path: "pages/user/invite-fans",
+			path: "pages2/user/invite-fans",
 			type: 'navigateTo',
 			name: 'user_invite_fans',
 			login: true
@@ -243,29 +243,29 @@ const router = new MinRouter({
 			login: false
 		},
 
-		//logistics 查看物流
+		//logistics 查看物流 pages2
 		{
-			path: "pages/logistics/view",
+			path: "pages2/logistics/view",
 			type: 'navigateTo',
 			name: 'logistics_view',
 			login: true
 		},
 
-		//order_return
+		//order_return pages2
 		{
-			path: "pages/order_return/refund",
+			path: "pages2/order_return/refund",
 			type: 'navigateTo',
 			name: 'order_return_refund',
 			login: true
 		},
 		{
-			path: "pages/order_return/status",
+			path: "pages2/order_return/status",
 			type: 'navigateTo',
 			name: 'order_return_status',
 			login: true
 		},
 		{
-			path: "pages/order_return/apply",
+			path: "pages2/order_return/apply",
 			type: 'navigateTo',
 			name: 'order_return_apply',
 			login: true

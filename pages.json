@@ -27,48 +27,6 @@
 		},
 
 		{
-			"path": "pages/user/money",
-			"style": {
-				"navigationBarTitleText": "我的钱包"
-			}
-		},
-		{
-			"path": "pages/user/record",
-			"style": {
-				"navigationBarTitleText": "我的明细"
-			}
-		},
-		{
-			"path": "pages/user/modify-mobile",
-			"style": {
-				"navigationBarTitleText": "修改手机号码"
-			}
-		},
-		{
-			"path": "pages/user/invite-fans",
-			"style": {
-				"navigationBarTitleText": "邀请好友"
-			}
-		},
-		{
-			"path": "pages/user/fans",
-			"style": {
-				"navigationBarTitleText": "我的粉丝"
-			}
-		},
-		{
-			"path": "pages/user/setting",
-			"style": {
-				"navigationBarTitleText": "设置"
-			}
-		},
-		{
-			"path": "pages/user/id-card-authentication",
-			"style": {
-				"navigationBarTitleText": "实名认证"
-			}
-		},
-		{
 			"path": "pages/user/feedback",
 			"style": {
 				"navigationBarTitleText": "意见反馈"
@@ -91,19 +49,6 @@
 			"path": "pages/public/search-with-hot-history",
 			"style": {
 				"navigationBarTitleText": "搜索"
-			}
-		},
-
-		{
-			"path": "pages/address/list",
-			"style": {
-				"navigationBarTitleText": "我的收货地址"
-			}
-		},
-		{
-			"path": "pages/address/add",
-			"style": {
-				"navigationBarTitleText": "新增收货地址"
 			}
 		},
 
@@ -163,7 +108,6 @@
 			}
 		},
 
-
 		{
 			"path": "pages/web-view/web-view",
 			"style": {
@@ -195,35 +139,155 @@
 			"style": {
 				"navigationBarTitleText": "抢购详情"
 			}
+		}
+	],
+    "subPackages": [
+		{
+			"root": "pages2",
+			"pages": [
+				{
+					"path": "user/fans",
+					"style": {
+					  "navigationBarTitleText": "我的粉丝"
+					}
+				},
+				{
+					"path": "user/id-card-authentication",
+					"style": {
+					  "navigationBarTitleText": "实名认证"
+					}
+			  	},
+				{
+					"path": "user/setting",
+					"style": {
+					  "navigationBarTitleText": "设置"
+					}
+				},
+				{
+					"path": "user/money",
+					"style": {
+					  "navigationBarTitleText": "我的钱包"
+					}
+				},
+				{
+					"path": "user/record",
+					"style": {
+					  "navigationBarTitleText": "我的明细"
+					}
+				},
+				{
+					"path": "user/modify-mobile",
+					"style": {
+					  "navigationBarTitleText": "修改手机号码"
+					}
+				},
+				{
+					"path": "user/invite-fans",
+					"style": {
+					  "navigationBarTitleText": "邀请好友"
+					}
+				},
+
+				{
+					"path": "logistics/view",
+					"style": {
+						"navigationBarTitleText": "查看物流"
+					}
+				},
+
+				{
+					"path": "order_return/refund",
+					"style": {
+						"navigationBarTitleText": "填写退款信息"
+					}
+				},
+				{
+					"path": "order_return/status",
+					"style": {
+						"navigationBarTitleText": "退款详情"
+					}
+				},
+				{
+					"path": "order_return/apply",
+					"style": {
+						"navigationBarTitleText": "申请退款"
+					}
+				},
+
+				{
+					"path": "address/list",
+					"style": {
+						"navigationBarTitleText": "我的收货地址"
+					}
+				},
+				{
+					"path": "address/add",
+					"style": {
+						"navigationBarTitleText": "新增收货地址"
+					}
+				}
+
+			]
+		}
+    ],
+    "preloadRule": {
+		"pages2/user/fans": {
+        "network": "all",
+        "packages": ["__APP__"]
+      },
+		"pages2/user/id-card-authentication": {
+        "network": "all",
+        "packages": ["__APP__"]
+      },
+		"pages2/user/setting": {
+        "network": "all",
+        "packages": ["__APP__"]
+      },
+		"pages2/user/money": {
+        "network": "all",
+        "packages": ["__APP__"]
+      },
+		"pages2/user/record": {
+        "network": "all",
+        "packages": ["__APP__"]
+      },
+		"pages2/user/modify-mobile": {
+        "network": "all",
+        "packages": ["__APP__"]
+      },
+		"pages2/user/invite-fans": {
+        "network": "all",
+        "packages": ["__APP__"]
+      },
+
+		"pages2/logistics/view": {
+			"network": "all",
+			"packages": ["__APP__"]
 		},
 
-		{
-			"path": "pages/logistics/view",
-			"style": {
-				"navigationBarTitleText": "查看物流"
-			}
+		"pages2/order_return/refund": {
+			"network": "all",
+			"packages": ["__APP__"]
+		},
+		"pages2/order_return/status": {
+			"network": "all",
+			"packages": ["__APP__"]
+		},
+		"pages2/order_return/apply": {
+			"network": "all",
+			"packages": ["__APP__"]
 		},
 
-		{
-			"path": "pages/order_return/refund",
-			"style": {
-				"navigationBarTitleText": "填写退款信息"
-			}
+		"pages2/address/list": {
+			"network": "all",
+			"packages": ["__APP__"]
 		},
-		{
-			"path": "pages/order_return/status",
-			"style": {
-				"navigationBarTitleText": "退款详情"
-			}
-		},
-		{
-			"path": "pages/order_return/apply",
-			"style": {
-				"navigationBarTitleText": "申请退款"
-			}
+		"pages2/address/add": {
+			"network": "all",
+			"packages": ["__APP__"]
 		}
 
-	],
+	},
 	"globalStyle": {
 		"backgroundTextStyle": "light",
 		"navigationBarTextStyle": "black",

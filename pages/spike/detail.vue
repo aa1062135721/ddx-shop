@@ -396,7 +396,6 @@
                 if (this.goodsInfo.start_time  > this.goodsInfo.now_time) {
                     this.goodsInfo.begin = 2
                     console.log("秒杀活动还未开始呢")
-                    clearInterval(myTimer)
                 }
 
                 if ( this.goodsInfo.start_time  <= this.goodsInfo.now_time && this.goodsInfo.now_time <=  this.goodsInfo.end_time) {

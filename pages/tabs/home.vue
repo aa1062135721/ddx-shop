@@ -336,11 +336,11 @@
 							})
 						})
 						this.tabList2 = res.data
-						if (res.data.length) {
-							myTimer = setInterval(this.getRTime, 1000) //设置定时器 每一秒执行一次
-						} else {
-							console.log('当前页面没有抢购/秒杀，不执行定时器')
-						}
+						// if (res.data.length) {
+						// 	myTimer = setInterval(this.getRTime, 1000) //设置定时器 每一秒执行一次
+						// } else {
+						// 	console.log('当前页面没有抢购/秒杀，不执行定时器')
+						// }
 					}
 				})
 			},
@@ -421,6 +421,19 @@
 				return ''
 				//#endif
 			},
+		},
+		onShow(){
+			console.log('每次页面打开都会执行onshow，用于解决秒杀')
+			if (this.tabList2.length){
+				this.$minApi.seckillTime().then(res => {
+					console.log(res)
+					if (res.code === 200){
+						this.tabList2.map((item, index) => {
+							item.begin = res.data[index].begin
+						})
+					}
+				})
+			}
 		},
 		onUnload(){
 			clearInterval(myTimer)

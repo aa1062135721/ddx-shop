@@ -23,8 +23,8 @@ import MinRequest from './MinRequest'
 import store from '../store/index'
 
 // const baseUrl = `http://testmd.ddxm661.com/wxshop` //测试服务器
-// const baseUrl = `https://www.ddxm661.com/wxshop` //正式服务器
-const baseUrl = `http://localhost/wxshop` //本地服务器
+const baseUrl = `https://www.ddxm661.com/wxshop` //正式服务器
+// const baseUrl = `http://localhost/wxshop` //本地服务器
 const minRequest = new MinRequest()
 
 // 请求拦截器

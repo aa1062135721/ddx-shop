@@ -9,10 +9,17 @@ import MinRouter from './MinRouter'
  */
 const router = new MinRouter({
 	routes: [
+		//tabs
 		{
 			path: 'pages/tabs/home',
 			type: 'switchTab',
 			name: 'home',
+			login: false
+		},
+		{
+			path: "pages/tabs/group-buy",
+			type: 'switchTab',
+			name: 'group_buy_list',
 			login: false
 		},
 		{
@@ -34,6 +41,7 @@ const router = new MinRouter({
 			login: false
 		},
 
+		//public
 		{
 			path: 'pages/public/login',
 			type: 'navigateTo',
@@ -47,6 +55,14 @@ const router = new MinRouter({
 			login: false
 		},
 		{
+			path: "pages/public/search-with-hot-history",
+			type: 'navigateTo',
+			name: 'search_with_hot_history',
+			login: false
+		},
+
+		//address
+		{
 			path: 'pages/address/list',
 			type: 'navigateTo',
 			name: 'address_list',
@@ -58,6 +74,8 @@ const router = new MinRouter({
 			name: 'address_add',
 			login: true
 		},
+
+		//order
 		{
 			path: "pages/order/submit",
 			type: 'navigateTo',
@@ -70,6 +88,44 @@ const router = new MinRouter({
 			name: 'order_result',
 			login: true
 		},
+		{
+			path: "pages/order/list",
+			type: 'navigateTo',
+			name: 'order_list',
+			login: true
+		},
+		{
+			path: "pages/order/detail",
+			type: 'navigateTo',
+			name: 'order_detail',
+			login: true
+		},
+		{
+			path: "pages/order/detail",
+			type: 'redirectTo',
+			name: 'order_detail_redirect',
+			login: true
+		},
+		{
+			path: "pages/order/evaluate",
+			type: 'navigateTo',
+			name: 'order_evaluate',
+			login: true
+		},
+		{
+			path: "pages/order/pay",
+			type: 'redirectTo',
+			name: 'order_pay',
+			login: true
+		},
+		{
+			path: "pages/order/pay",
+			type: 'navigateTo',
+			name: 'order_pay_navigate',
+			login: true
+		},
+
+		//goods
 		{
 			path: "pages/goods/search",
 			type: 'navigateTo',
@@ -100,30 +156,8 @@ const router = new MinRouter({
 			name: 'goods_evaluate',
 			login: false
 		},
-		{
-			path: "pages/public/search-with-hot-history",
-			type: 'navigateTo',
-			name: 'search_with_hot_history',
-			login: false
-		},
-		{
-			path: "pages/order/list",
-			type: 'navigateTo',
-			name: 'order_list',
-			login: true
-		},
-		{
-			path: "pages/order/detail",
-			type: 'navigateTo',
-			name: 'order_detail',
-			login: true
-		},
-		{
-			path: "pages/order/detail",
-			type: 'redirectTo',
-			name: 'order_detail_redirect',
-			login: true
-		},
+
+		//web-view
 		{
 			path: "pages/web-view/web-view",
 			type: 'navigateTo',
@@ -136,12 +170,8 @@ const router = new MinRouter({
 			name: 'rich_text',
 			login: false
 		},
-		{
-			path: "pages/tabs/group-buy",
-			type: 'switchTab',
-			name: 'group_buy_list',
-			login: false
-		},
+
+		//group-buy
 		{
 			path: "pages/group-buy/detail",
 			type: 'navigateTo',
@@ -154,6 +184,8 @@ const router = new MinRouter({
 			name: 'group_buy_group',
 			login: false
 		},
+
+		//user
 		{
 			path: "pages/user/setting",
 			type: 'navigateTo',
@@ -173,39 +205,9 @@ const router = new MinRouter({
 			login: false
 		},
 		{
-			path: "pages/spike/detail",
-			type: 'navigateTo',
-			name: 'spike_detail',
-			login: false
-		},
-		{
-			path: "pages/logistics/view",
-			type: 'navigateTo',
-			name: 'logistics_view',
-			login: true
-		},
-		{
 			path: "pages/user/fans",
 			type: 'navigateTo',
 			name: 'user_fans',
-			login: true
-		},
-		{
-			path: "pages/order/evaluate",
-			type: 'navigateTo',
-			name: 'order_evaluate',
-			login: true
-		},
-		{
-			path: "pages/order/pay",
-			type: 'redirectTo',
-			name: 'order_pay',
-			login: true
-		},
-		{
-			path: "pages/order/pay",
-			type: 'navigateTo',
-			name: 'order_pay_navigate',
 			login: true
 		},
 		{
@@ -220,6 +222,36 @@ const router = new MinRouter({
 			name: 'user_record',
 			login: true
 		},
+		{
+			path: "pages/user/modify-mobile",
+			type: 'navigateTo',
+			name: 'user_modify_mobile',
+			login: true
+		},
+		{
+			path: "pages/user/invite-fans",
+			type: 'navigateTo',
+			name: 'user_invite_fans',
+			login: true
+		},
+
+		//spike 秒杀详情
+		{
+			path: "pages/spike/detail",
+			type: 'navigateTo',
+			name: 'spike_detail',
+			login: false
+		},
+
+		//logistics 查看物流
+		{
+			path: "pages/logistics/view",
+			type: 'navigateTo',
+			name: 'logistics_view',
+			login: true
+		},
+
+		//order_return
 		{
 			path: "pages/order_return/refund",
 			type: 'navigateTo',
@@ -238,18 +270,7 @@ const router = new MinRouter({
 			name: 'order_return_apply',
 			login: true
 		},
-		{
-			path: "pages/user/modify-mobile",
-			type: 'navigateTo',
-			name: 'user_modify_mobile',
-			login: true
-		},
-		{
-			path: "pages/user/invite-fans",
-			type: 'navigateTo',
-			name: 'user_invite_fans',
-			login: true
-		},
+
 	]
 })
 

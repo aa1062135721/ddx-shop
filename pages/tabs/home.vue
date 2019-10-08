@@ -336,11 +336,14 @@
 							})
 						})
 						this.tabList2 = res.data
-						// if (res.data.length) {
-						// 	myTimer = setInterval(this.getRTime, 1000) //设置定时器 每一秒执行一次
-						// } else {
-						// 	console.log('当前页面没有抢购/秒杀，不执行定时器')
-						// }
+						if (res.data.length) {
+							myTimer = setInterval(()=>{
+								this.$set(this.tabList2[0], 'now_time', this.tabList2[0].now_time + 1);
+								this.getRTime();
+								}, 1000) //设置定时器 每一秒执行一次
+						} else {
+							console.log('当前页面没有抢购/秒杀，不执行定时器')
+						}
 					}
 				})
 			},
@@ -351,19 +354,17 @@
 				let sum = 0
 				for(let i = 0; i < this.tabList2.length; i++){
 					if (this.tabList2[i].start_time  > this.tabList2[0].now_time) {
-						this.tabList2[i].begin = 2
+						this.$set(this.tabList2[i], 'begin', 2)
 					}
 
 					if ( this.tabList2[i].start_time  <= this.tabList2[0].now_time && this.tabList2[0].now_time <=  this.tabList2[i].end_time) {
-						this.tabList2[i].begin = 1
+						this.$set(this.tabList2[i], 'begin', 1)
 					}
 
 					if (this.tabList2[i].end_time  < this.tabList2[0].now_time) {
-						this.tabList2[i].begin = 3
+						this.$set(this.tabList2[i], 'begin', 3)
 						sum ++
 					}
-
-					this.tabList2[0].now_time ++
 				}
 				if (sum === this.tabList2.length) {
 					console.log('首页的抢购/秒杀活动全部结束，清空计时器功能')
@@ -421,19 +422,6 @@
 				return ''
 				//#endif
 			},
-		},
-		onShow(){
-			console.log('每次页面打开都会执行onshow，用于解决秒杀')
-			if (this.tabList2.length){
-				this.$minApi.seckillTime().then(res => {
-					console.log(res)
-					if (res.code === 200){
-						this.tabList2.map((item, index) => {
-							item.begin = res.data[index].begin
-						})
-					}
-				})
-			}
 		},
 		onUnload(){
 			clearInterval(myTimer)

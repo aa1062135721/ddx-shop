@@ -460,9 +460,9 @@
 			 * 倒计时
 			 */
 			timeStrChange(){
+				this.$set(this.goodsInfo.assemble_list[0], 'now_time', this.goodsInfo.assemble_list[0].now_time + 1)
 				this.goodsInfo.assemble_list.map(item => {
 					item.timeStr =  this.getRTime(this.goodsInfo.assemble_list[0].now_time, item.end_time)
-					this.goodsInfo.assemble_list[0].now_time += 1
 				})
 			},
 

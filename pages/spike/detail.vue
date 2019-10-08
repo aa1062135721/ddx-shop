@@ -394,16 +394,16 @@
                 console.log("秒杀详情里的定时器功能")
                 //1：正在抢购，2即将开始，3已结束
                 if (this.goodsInfo.start_time  > this.goodsInfo.now_time) {
-                    this.goodsInfo.begin = 2
+                    this.$set(this.goodsInfo, 'begin', 2)
                     console.log("秒杀活动还未开始呢")
                 }
 
                 if ( this.goodsInfo.start_time  <= this.goodsInfo.now_time && this.goodsInfo.now_time <=  this.goodsInfo.end_time) {
-                    this.goodsInfo.begin = 1
+                    this.$set(this.goodsInfo, 'begin', 1)
                 }
 
                 if (this.goodsInfo.end_time  < this.goodsInfo.now_time) {
-                    this.goodsInfo.begin = 3
+                    this.$set(this.goodsInfo, 'begin', 3)
                     console.log("秒杀活动已经结束啦")
                     clearInterval(myTimer)
                 }

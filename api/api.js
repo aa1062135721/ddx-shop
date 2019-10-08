@@ -502,5 +502,14 @@ export default {
       return minRequest.post('/refund/apply', data)
     },
 
+    /**
+     * 查看物流, 快递
+     * @param data
+     * @returns {*}
+     */
+    express(data){
+      return minRequest.get('/order/getexpress', data)
+    },
+
   }
 }

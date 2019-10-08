@@ -2,16 +2,16 @@
     <view>
         <view class="section">
             <view class="left">
-                <image class="img" src="../../static/images/goods.jpg"></image>
+                <image class="img" :src="goods.pic"></image>
             </view>
             <view class="right">
-                <view>快递公司：中通快递</view>
-                <view>物流单号：16154561325135615</view>
+                <view>快递公司：{{responseData.title}}</view>
+                <view>物流单号：{{responseData.sn}}</view>
             </view>
         </view>
 
         <view class="step">
-            <uni-steps :options="list2" :active="active" direction="column" activeColor="#FC5A5A"  activeTextColor="#1A1A1A"/>
+            <uni-steps :options="responseData.list" :active="active" direction="column" activeColor="#FC5A5A"  activeTextColor="#1A1A1A"/>
         </view>
     </view>
 </template>
@@ -26,20 +26,32 @@
         },
         data() {
             return {
-                active: 1,
-                list2: [{
-                    title: '买家下单',
-                    desc: '<div style="text-align: left;">[重庆市]渝北区汽博中心公司已签收签收人：前台感谢使用圆通快递，期待再次为您服务。<br><span style="color:#808080;">2018-11-12</span></div>'
-                }, {
-                    title: '卖家发货',
-                    desc: '<div style="text-align: left;">[重庆市]渝北区汽博中心公司小猪<span style="color: #F68452;">15213710631</span>正在派件。<br><span style="color:#808080;">2018-11-12</span></div>'
-                }, {
-                    title: '买家签收',
-                    desc: '2018-11-13'
-                }, {
-                    title: '交易完成',
-                    desc: '2018-11-14'
-                }]
+                goods: {
+                  pic: '',
+                },
+                active: 0,
+                responseData: {
+                    sn: "",//运单号
+                    title: "",//快递公司
+                    list:[],//物流信息
+                },
+            }
+        },
+        onLoad(){
+            console.log("其他页面带过来的参数：", this.$parseURL())
+            this.goods = this.$parseURL().goods
+            if (this.$parseURL().order_id){
+                this.$minApi.express({
+                    order_id: this.$parseURL().order_id,
+                    orderGoodsId: this.$parseURL().goods.id
+                }).then(res => {
+                    console.log(res)
+                    if (res.code === 200) {
+                        this.responseData = res.data
+                        this.active = res.data.list.length
+                        this.$forceUpdate()
+                    }
+                })
             }
         },
         methods: {

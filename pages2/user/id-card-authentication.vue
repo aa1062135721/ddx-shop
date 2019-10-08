@@ -5,11 +5,11 @@
         </view>
         <view class="grace-idcard-items">
             <view class="grace-idcard-uper-btn" @tap="selectImg1">
-                <view class="img"><image src="../../static/images/camera.png" mode="widthFix" /></view>
+                <view class="img"><image src="../../static/images/camera.png" mode="widthFix"></image></view>
                 <view class="text">拍摄或选择照片</view>
             </view>
             <view class="grace-idcard-preview">
-                <image :src="idCard1"  @tap="previewImg1" mode="widthFix"></image>
+                <image :src="idCard1"  @tap="previewImg1"></image>
             </view>
         </view>
         <view class="grace-idcard-text">
@@ -17,11 +17,11 @@
         </view>
         <view class="grace-idcard-items">
             <view class="grace-idcard-uper-btn" @tap="selectImg2">
-                <view class="img"><image src="../../static/images/camera.png" mode="widthFix" /></view>
+                <view class="img"><image src="../../static/images/camera.png" mode="widthFix"></image></view>
                 <view class="text">拍摄或选择照片</view>
             </view>
             <view class="grace-idcard-preview">
-                <image :src="idCard2" @tap="previewImg2" mode="widthFix" />
+                <image :src="idCard2" @tap="previewImg2"></image>
             </view>
         </view>
         <view style="margin-top:38upx;">
@@ -175,5 +175,5 @@
     .grace-idcard-uper-btn .img image{width:100upx; height:100upx;}
     .grace-idcard-uper-btn .text{width:100%; margin-top:10upx; text-align:center; line-height:2em;}
     .grace-idcard-preview{width:50%; margin:0 30upx;}
-    .grace-idcard-preview image{width:100%;}
+    .grace-idcard-preview image{width:100%;height: 170upx;}
 </style>

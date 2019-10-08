@@ -3,8 +3,8 @@
 		<view :class="'uni-steps-' + direction" class="uni-steps-items">
 			<view v-for="(item,index) in options" :key="index" :class="{'uni-steps-process':index === active,'uni-steps-finish':index < active}" class="uni-steps-item">
 				<view :style="{color:index === active ? activeTextColor : ''}" class="uni-steps-item-title-container">
-					<view class="uni-steps-item-title">{{ item.title }}</view>
-					<rich-text :nodes="item.desc" style="text-align: left;"></rich-text>
+					<view class="uni-steps-item-title">{{ item.AcceptName }}</view>
+					<rich-text :nodes="'<br />' + item.AcceptStation + '<br />' + item.AcceptTime" style="text-align: left;"></rich-text>
 				</view>
 				<view class="uni-steps-item-circle-container">
 					<view v-if="index !== active" :style="{backgroundColor:index < active ? activeColor : ''}" class="uni-steps-item-circle" />

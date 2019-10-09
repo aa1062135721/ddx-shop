@@ -5,7 +5,8 @@
             <view class="section" v-for="(item, key) in myResponseData" :key="key">
                 <view class="shop-name">
                     <view class="name" @click="choosesCatgrayGoods(key)">
-                        <view class="iconfont icon-ddx-shop-circle"></view>
+                        <view class="iconfont icon-ddx-shop-xuanze icon-color" v-if="item.is_checked"></view>
+                        <view class="iconfont icon-ddx-shop-circle" v-else></view>
                         {{item.name}}
                     </view>
                     <view @click="deleteShop(key)"><i class="iconfont icon-ddx-shop-del"></i></view>
@@ -51,7 +52,7 @@
         </view>
         <view class="fixed" v-if="myResponseData.length !== 0">
             <view class="chooses-all" @click="choosesAllGoods()">
-                <i class="iconfont icon-ddx-shop-xuanze icon-color" v-if="isCheckedAll"></i>
+                <i class="iconfont icon-ddx-shop-xuanze icon-color" v-if="mySum.is_checked"></i>
                 <i class="iconfont icon-ddx-shop-circle" v-else></i>
                 全选
             </view>
@@ -81,6 +82,7 @@
               moreStatus: 'noMore',
               //统计
               mySum:{
+                  is_checked:false,//是否全选
                   sum_money:0.00,
                   num:0
               }
@@ -89,6 +91,7 @@
         async onShow(){
           if (this.userInfo.id) {
               await this.loadData()
+              this.getSumData()
           }
         },
         async onReachBottom() {
@@ -185,6 +188,7 @@
             },
             //全选一个类型的商品
             choosesCatgrayGoods(key){
+                this.myResponseData[key].is_checked = true
                 console.log(key)
                 this.myResponseData[key].data.map((goods) => {
                     if (goods.status === 1){
@@ -200,18 +204,39 @@
                 if (this.myResponseData[key].data[goods_key].status === 1) {
                     this.myResponseData[key].data[goods_key].is_checked = !this.myResponseData[key].data[goods_key].is_checked
                 }
+
+                let count = 0 //当前分类 选中的商品个数
+                this.myResponseData[key].data.map((item) => {
+                    if (item.is_checked) {
+                        count ++
+                    }
+                })
+                if (count === this.myResponseData[key].data.length) {
+                    this.myResponseData[key].is_checked = true
+                } else {
+                    this.myResponseData[key].is_checked = false
+                }
+
                 this.$forceUpdate()
                 this.getSumData()
             },
             //全选商品
             choosesAllGoods(){
                 this.myResponseData.map((item) => {
+                    let count = 0 //每个分类下 选中的商品个数
                     item.data.map(goods => {
                         if (goods.status === 1){
                             goods.is_checked = true
+                            count ++
                         }
                     })
+                    if (item.data.length === count) {
+                        item.is_checked = true
+                    } else {
+                        item.is_checked = false
+                    }
                 })
+
                 this.$forceUpdate()
                 this.getSumData()
             },
@@ -240,6 +265,7 @@
                     ai.categoryArr = this.responseData[i].key_name.length ? this.responseData[i].key_name.split('_') : []
                     if(!map[ai.mold_id]){
                         dest.push({
+                            is_checked: false,//是否全选一个分类
                             mold_id: ai.mold_id,
                             name: ai.mold,
                             data: [ai]
@@ -260,34 +286,27 @@
             },
             //计算订单金额
             getSumData(){
-                let temp = {sum_money:0.00,num:0}
+                let temp = {sum_money:0.00,num:0, is_checked: false}, count = 0 //商品数量
                 this.myResponseData.forEach((item1, index1) => {
                     item1.data.forEach((item2, index2) => {
+                        count ++
                         if (item2.is_checked && item2.status === 1) {
                             temp.num ++
                             temp.sum_money += parseFloat(item2.price) * parseFloat(item2.num)
                         }
                     })
                 })
+                if (count === temp.num){
+                    temp.is_checked = true
+                } else {
+                    temp.is_checked = false
+                }
                 this.mySum = temp
                 this.$forceUpdate()
             },
         },
         computed:{
             ...mapGetters(['userInfo']),
-            //是否全选
-            isCheckedAll(){
-                let sum = 0, checked_num = 0
-                this.myResponseData.forEach((item1, index1) => {
-                    item1.data.forEach((item2, index2) => {
-                        sum ++
-                        if (item2.is_checked) {
-                            checked_num ++
-                        }
-                    })
-                })
-                return sum === checked_num ? sum !== 0 || false : false
-            },
         },
         components: {uniNumberBox,uniLoadMore,}
     }

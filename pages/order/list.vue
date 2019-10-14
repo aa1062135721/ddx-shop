@@ -25,7 +25,7 @@
                             </view>
                             <view class="goods" v-for="(goods, goods_key) in item.item_list" :key="goods_key" @click="goPage('order_detail',{order_id:item.id})">
                                 <view class="goods-img">
-                                    <image class="img"  :src="goods.pic"></image>
+                                    <image class="img"  :src="goods.pic" @click.stop="goPage('goods_detail',{id: goods.item_id})"></image>
                                 </view>
                                 <view class="other">
                                     <view class="info">

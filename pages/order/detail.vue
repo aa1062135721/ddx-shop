@@ -38,7 +38,7 @@
                        {{item.deliver}}
                     </view>
                 </view>
-                <view class="goods">
+                <view class="goods" @click="_goPage('goods_detail', {id: item.item_id})">
                     <view class="goods-img">
                         <image class="img" :src="item.pic"></image>
                     </view>

@@ -90,6 +90,8 @@
         },
         async onShow(){
           if (this.userInfo.id) {
+              this.responseData = []
+              this.requestData.page = 1
               await this.loadData()
               this.getSumData()
           }

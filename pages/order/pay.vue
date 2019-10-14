@@ -147,11 +147,7 @@
                     }
                 }).catch(async err => {
                     console.log(err)
-                    sendTemplateMessageData.state = 0
-                    await this.$minApi.sendTemplateMessage(sendTemplateMessageData).then(res=>{
-                        console.log(res)
-                    })
-                    await this._goPage('order_result', {result: false, sn: '', id: 0})
+                    this.msg('服务器发生错误')
                 })
             },
         },

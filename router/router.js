@@ -40,6 +40,12 @@ const router = new MinRouter({
 			name: 'mine',
 			login: false
 		},
+		{
+			path: 'pages/tabs/category',
+			type: 'switchTab',
+			name: 'category',
+			login: false
+		},
 
 		//public
 		{

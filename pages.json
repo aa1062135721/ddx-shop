@@ -25,6 +25,12 @@
 				"navigationBarTitleText": "我的"
 			}
 		},
+		{
+			"path": "pages/tabs/category",
+			"style": {
+				"navigationBarTitleText": "分类"
+			}
+		},
 
 		{
 			"path": "pages/user/feedback",
@@ -311,6 +317,12 @@
 				"iconPath": "static/tab/tab-person-all.png",
 				"selectedIconPath": "static/tab/tab-person-all-current.png",
 				"text": "拼团"
+			},
+			{
+				"pagePath": "pages/tabs/category",
+				"iconPath": "static/tab/tab-classification.png",
+				"selectedIconPath": "static/tab/tab-classification-current.png",
+				"text": "分类"
 			},
 			{
 				"pagePath": "pages/tabs/car",

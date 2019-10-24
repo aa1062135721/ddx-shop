@@ -149,6 +149,72 @@
 					</view>
 				</view>
 
+				<!-- HOT SALE-->
+				<view class="hot-sale">
+					<view class="hot-sale-banner">
+						<image class="img" src="../../static/images/home-hot-sale-banner.png" mode="widthFix"></image>
+					</view>
+					<view class="hot-sale-box">
+						<view class="goods">
+                            <view class="goods-header">
+								<view  class="goods-tag">热销第一</view>
+								<image class="img" src="../../static/images/goods.jpg"></image>
+                            </view>
+							<view class="goods-title">
+								露安适妈咪紧致按摩眼 霜 15g 1支装
+							</view>
+							<view class="goods-price">¥ 98.8</view>
+                        </view>
+						<view class="goods">
+							<view class="goods-header">
+								<view class="goods-tag">好评第一</view>
+								<image class="img" src="../../static/images/goods.jpg"></image>
+							</view>
+							<view class="goods-title">
+								露安适妈咪紧致按摩眼 霜 15g 1支装
+							</view>
+							<view class="goods-price">¥ 98.8</view>
+						</view>
+						<view class="goods">
+							<view class="goods-header">
+								<view  class="goods-tag">热门推荐</view>
+								<image class="img" src="../../static/images/goods.jpg"></image>
+							</view>
+							<view class="goods-title">
+								露安适妈咪紧致按摩眼 霜 15g 1支装
+							</view>
+							<view class="goods-price">¥ 98.8</view>
+						</view>
+						<view class="goods">
+							<view class="goods-header">
+								<image class="img" src="../../static/images/goods.jpg"></image>
+							</view>
+							<view class="goods-title">
+								露安适妈咪紧致按摩眼 霜 15g 1支装
+							</view>
+							<view class="goods-price">¥ 98.8</view>
+						</view>
+						<view class="goods">
+							<view class="goods-header">
+								<image class="img" src="../../static/images/goods.jpg"></image>
+							</view>
+							<view class="goods-title">
+								露安适妈咪紧致按摩眼 霜 15g 1支装
+							</view>
+							<view class="goods-price">¥ 98.8</view>
+						</view>
+						<view class="goods">
+							<view class="goods-header">
+								<image class="img" src="../../static/images/goods.jpg"></image>
+							</view>
+							<view class="goods-title">
+								露安适妈咪紧致按摩眼 霜 15g 1支装
+							</view>
+							<view class="goods-price">¥ 98.8</view>
+						</view>
+					</view>
+				</view>
+
 			</view>
 			<view class="content" v-if="TabCur !== 0">
 				<view class="my-block"></view>
@@ -493,8 +559,8 @@
 						width: 50%;
 						height: 50%;
 						box-sizing: border-box;
-						border-left: 1upx solid #F2F2F2;
-						border-bottom: 1upx solid #F2F2F2;
+						border-left: 1px solid #F2F2F2;
+						border-bottom: 1px solid #F2F2F2;
 						padding: 30upx 20upx 26upx 20upx;
 						display: flex;
 						flex-direction: column;
@@ -504,7 +570,7 @@
 							.title{
 								font-size: $uni-font-size-base;
 								color: $color-primary-plain;
-								font-weight: bolder;
+								font-weight: 600;
 							}
 							.sub-title{
 								font-size: $uni-font-size-sm;
@@ -546,8 +612,81 @@
 				}
 			}
 
+			/*HOT SALE*/
+			.hot-sale{
+				margin: 28upx auto;
+				padding: 0 $uni-spacing-row-sm;
+				.hot-sale-banner{
+					border-radius:8upx 8upx 0 0;
+					width: 100%;
+					background-color: #C1ADFA;
+					.img{
+						width: 100%;
+					}
+				}
+				.hot-sale-box{
+					width: 100%;
+					background: #C1ADFA;
+					padding: 10upx;
+					padding-top: 0;
+					border-radius:0 0 8upx 8upx;
 
+					display: flex;
+					flex-wrap: wrap;
+					justify-content: space-between;
 
+					.goods{
+						box-sizing: border-box;
+						border: 1upx solid #D5C7FD;
+						background: #A384FA;
+						width: 224upx;
+						height: 330upx;
+						margin-bottom: 8upx;
+						border-radius: 4upx;
+						padding: 10upx;
+						display: flex;
+						flex-direction: column;
+						justify-content: space-between;
+
+						.goods-header{
+                            background: #FFFFFF;
+							width: 204upx;
+							height: 204upx;
+							position: relative;
+							.goods-tag{
+								position: absolute;
+								top: 10upx;
+								left: 0;
+								background: $color-primary;
+								color: #FFFFFF;
+								font-size: 18upx;
+								width:102upx;
+								height:34upx;
+								line-height:34upx;
+								text-align: center;
+								border-radius:0 17upx 17upx 0;
+							}
+							.img{
+								width: 204upx;
+								height: 204upx;
+							}
+						}
+						.goods-title{
+							width: 100%;
+							@extend %overflow-2-line;
+							color: #FFFFFF;
+							font-size: 22upx;
+						}
+						.goods-price{
+							width: 100%;
+							color: #FFFFFF;
+							font-size: $uni-font-size-sm;
+							text-align: center;
+						}
+
+					}
+				}
+			}
 
 			/*猜你喜欢 或者 其他页面的商品列表*/
 			.guess-you-like{

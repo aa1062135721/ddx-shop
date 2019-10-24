@@ -160,59 +160,131 @@
 								<view  class="goods-tag">热销第一</view>
 								<image class="img" src="../../static/images/goods.jpg"></image>
                             </view>
-							<view class="goods-title">
-								露安适妈咪紧致按摩眼 霜 15g 1支装
+							<view class="goods-footer">
+								<view class="goods-title">
+									露安适妈咪紧致按摩眼 霜 15g 1支装
+								</view>
+								<view class="goods-price">¥ 98.8</view>
 							</view>
-							<view class="goods-price">¥ 98.8</view>
                         </view>
 						<view class="goods">
 							<view class="goods-header">
 								<view class="goods-tag">好评第一</view>
 								<image class="img" src="../../static/images/goods.jpg"></image>
 							</view>
-							<view class="goods-title">
-								露安适妈咪紧致按摩眼 霜 15g 1支装
+							<view class="goods-footer">
+								<view class="goods-title">
+									按摩眼
+								</view>
+								<view class="goods-price">¥ 98.8</view>
 							</view>
-							<view class="goods-price">¥ 98.8</view>
 						</view>
 						<view class="goods">
 							<view class="goods-header">
 								<view  class="goods-tag">热门推荐</view>
 								<image class="img" src="../../static/images/goods.jpg"></image>
 							</view>
-							<view class="goods-title">
-								露安适妈咪紧致按摩眼 霜 15g 1支装
+							<view class="goods-footer">
+								<view class="goods-title">
+									露安适妈咪紧致按摩眼 霜 15g 1支装
+								</view>
+								<view class="goods-price">¥ 98.8</view>
 							</view>
-							<view class="goods-price">¥ 98.8</view>
 						</view>
 						<view class="goods">
 							<view class="goods-header">
 								<image class="img" src="../../static/images/goods.jpg"></image>
 							</view>
-							<view class="goods-title">
-								露安适妈咪紧致按摩眼 霜 15g 1支装
+							<view class="goods-footer">
+								<view class="goods-title">
+									露安适妈咪紧致按摩眼 霜 15g 1支装
+								</view>
+								<view class="goods-price">¥ 98.8</view>
 							</view>
-							<view class="goods-price">¥ 98.8</view>
 						</view>
 						<view class="goods">
 							<view class="goods-header">
 								<image class="img" src="../../static/images/goods.jpg"></image>
 							</view>
-							<view class="goods-title">
-								露安适妈咪紧致按摩眼 霜 15g 1支装
+							<view class="goods-footer">
+								<view class="goods-title">
+									露安适妈咪紧致按摩眼 霜 15g 1支装
+								</view>
+								<view class="goods-price">¥ 98.8</view>
 							</view>
-							<view class="goods-price">¥ 98.8</view>
 						</view>
 						<view class="goods">
 							<view class="goods-header">
 								<image class="img" src="../../static/images/goods.jpg"></image>
 							</view>
-							<view class="goods-title">
-								露安适妈咪紧致按摩眼 霜 15g 1支装
+							<view class="goods-footer">
+								<view class="goods-title">
+									露安适妈咪紧致按摩眼 霜 15g 1支装
+								</view>
+								<view class="goods-price">¥ 98.8</view>
 							</view>
-							<view class="goods-price">¥ 98.8</view>
 						</view>
 					</view>
+				</view>
+
+
+				<!-- 六个分类，内容部分可以向左滑动-->
+				<view class="some-category">
+					<view class="some-category-banner">
+						<image class="img" src="../../static/images/home-six-banner.jpg" model="widthFix"></image>
+					</view>
+					<view class="some-category-box">
+						<scroll-view  scroll-x="true">
+							<view class="all-goods">
+								<view class="goods">
+									<view class="goods-header">
+										<image class="img" src="../../static/images/goods.jpg"></image>
+									</view>
+									<view class="goods-footer">
+										<view class="goods-title">丹麦Arla阿拉婴儿 奶粉1段 1罐装</view>
+										<view class="goods-price">￥99.88</view>
+									</view>
+								</view>
+								<view class="goods">
+									<view class="goods-header">
+										<image class="img" src="../../static/images/goods.jpg"></image>
+									</view>
+									<view class="goods-footer">
+										<view class="goods-title">丹麦Arla阿拉婴儿 奶粉1段 1罐装</view>
+										<view class="goods-price">￥99.88</view>
+									</view>
+								</view>
+								<view class="goods">
+									<view class="goods-header">
+										<image class="img" src="../../static/images/goods.jpg"></image>
+									</view>
+									<view class="goods-footer">
+										<view class="goods-title">丹麦Arla阿拉婴儿 奶粉1段 1罐装</view>
+										<view class="goods-price">￥99.88</view>
+									</view>
+								</view>
+								<view class="goods">
+									<view class="goods-header">
+										<image class="img" src="../../static/images/goods.jpg"></image>
+									</view>
+									<view class="goods-footer">
+										<view class="goods-title">奶粉</view>
+										<view class="goods-price">￥99.88</view>
+									</view>
+								</view>
+								<view class="goods">
+									<view class="goods-header">
+										<image class="img" src="../../static/images/goods.jpg"></image>
+									</view>
+									<view class="goods-footer">
+										<view class="goods-title">丹麦Arla阿拉婴儿 奶粉1段 1罐装</view>
+										<view class="goods-price">￥99.88</view>
+									</view>
+								</view>
+							</view>
+						</scroll-view>
+					</view>
+
 				</view>
 
 			</view>
@@ -621,7 +693,8 @@
 					width: 100%;
 					background-color: #C1ADFA;
 					.img{
-						width: 100%;
+						width: 710upx;
+						height: 123upx;
 					}
 				}
 				.hot-sale-box{
@@ -671,19 +744,87 @@
 								height: 204upx;
 							}
 						}
-						.goods-title{
+						.goods-footer{
 							width: 100%;
-							@extend %overflow-2-line;
-							color: #FFFFFF;
-							font-size: 22upx;
+							height: 92upx;
+							display: flex;
+							flex-direction: column;
+							justify-content: space-between;
+							.goods-title{
+								width: 100%;
+								@extend %overflow-2-line;
+								color: #FFFFFF;
+								font-size: 22upx;
+							}
+							.goods-price{
+								width: 100%;
+								color: #FFFFFF;
+								font-size: $uni-font-size-sm;
+								text-align: center;
+							}
 						}
-						.goods-price{
-							width: 100%;
-							color: #FFFFFF;
-							font-size: $uni-font-size-sm;
-							text-align: center;
-						}
+					}
+				}
+			}
 
+		 	/*六个分类，内容部分可以向左滑动*/
+			.some-category{
+				padding: 0 $uni-spacing-row-sm;
+				.some-category-banner{
+					width: 100%;
+					border-radius:8upx 8upx 0 0;
+					background: #fff;
+					.img{
+						width: 710upx;
+						height: 268upx;
+					}
+				}
+				.some-category-box{
+					border-radius:0 0 8upx 8upx;
+					background: #FFFFFF;
+					width: 100%;
+					height: 320upx;
+					padding: 10upx;
+
+					.all-goods{
+						height: 100%;
+						width: 100%;
+						display: flex;
+						flex-wrap: nowrap;
+
+						.goods{
+							margin-right: 20upx;
+							width: 178upx;
+							height: 300upx;
+							display: flex;
+							flex-direction: column;
+							justify-content: space-between;
+							.goods-header{
+								height: 178upx;
+								width: 178upx;
+								.img{
+									height: 178upx;
+									width: 178upx;
+								}
+							}
+							.goods-footer{
+								width: 100%;
+								height: 100upx;
+								display: flex;
+								flex-direction: column;
+								justify-content: space-between;
+								.goods-title{
+									@extend %overflow-2-line;
+									color: $color-primary-plain;
+									font-size: 22upx;
+								}
+								.goods-price{
+									font-size: $uni-font-size-sm;
+									color: $color-primary;
+									text-align: center;
+								}
+							}
+						}
 					}
 				}
 			}

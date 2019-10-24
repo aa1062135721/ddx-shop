@@ -1,6 +1,12 @@
 {
 	"pages": [
 		{
+			"path": "pages/tabs/category",
+			"style": {
+				"navigationBarTitleText": "分类"
+			}
+		},
+		{
 			"path": "pages/tabs/home",
 			"style": {
 				"navigationBarTitleText": "首页",
@@ -25,12 +31,12 @@
 				"navigationBarTitleText": "我的"
 			}
 		},
-		{
-			"path": "pages/tabs/category",
-			"style": {
-				"navigationBarTitleText": "分类"
-			}
-		},
+//		{
+//			"path": "pages/tabs/category",
+//			"style": {
+//				"navigationBarTitleText": "分类"
+//			}
+//		},
 
 		{
 			"path": "pages/user/feedback",

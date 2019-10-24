@@ -23,8 +23,8 @@ import MinRequest from './MinRequest'
 import store from '../store/index'
 
 // const baseUrl = `http://testmd.ddxm661.com/wxshop` //测试服务器
-const baseUrl = `https://www.ddxm661.com/wxshop` //正式服务器
-// const baseUrl = `http://localhost/wxshop` //本地服务器
+// const baseUrl = `https://www.ddxm661.com/wxshop` //正式服务器
+const baseUrl = `http://192.168.25.207:82/wxshop` //小红本地服务器
 const minRequest = new MinRequest()
 
 // 请求拦截器
@@ -511,5 +511,18 @@ export default {
       return minRequest.get('/order/getexpress', data)
     },
 
+    /**
+     * tab栏 获取分类
+     */
+    getCategory(data){
+      return minRequest.get('/Index/getCategory', data)
+    },
+
+    /**
+     * tab栏 获取品牌
+     */
+    getBrand(data){
+      return minRequest.get('/Index/getBrand', data)
+    }
   }
 }

@@ -18,6 +18,7 @@
 			></wuc-tab>
 			<view class="content" v-if="TabCur === 0">
 				<view class="my-block"></view>
+				<!-- 推荐 -- banner-->
 				<view class="swiper-box" v-if="swiperList.length">
 					<swiper circular="true" autoplay="true" :indicator-dots="true" indicator-active-color="#FC8A8A" style="width: 710upx;height: 268upx;">
 						<swiper-item class="swiper-item" v-for="(item, index) in swiperList" :key="index">
@@ -25,6 +26,7 @@
 						</swiper-item>
 					</swiper>
 				</view>
+				<!-- 推荐 -- 小图标-->
 				<view class="limited-time" v-if="iconArr.length">
 					<view class="item" v-for="(item, index) in iconArr" :key="index" @click="_clickIcon(item)">
 						<view>
@@ -36,80 +38,7 @@
 					</view>
 				</view>
 
-				<!--秒杀-->
-				<view class="limited-time-kill" v-if="tabList2.length">
-					<view class="title-bar">
-						<view class="left">
-							<view class="title-block" style="background: #F79058;">限时秒杀</view>
-						</view>
-<!--						<view class="right">-->
-<!--							<text>更多秒杀</text>-->
-<!--							<text class="iconfont icon-ddx-shop-content_arrows"></text>-->
-<!--						</view>-->
-					</view>
-					<view class="time-content">
-						<wlm-tab :tab-list="tabList2" :tabCur.sync="TabCur2"  @change="tabChange2" tabStyle="background:#F2F2F2;"
-								 selectTitleStyle="color:#fff;background:#FC5A5A;border-radius:16px;padding:0 4px;"></wlm-tab>
-						<view class="goods-list">
-							<view class="time-content-goods-list-goods" v-for="(item, index) in tabList2[TabCur2].goodsList" :key="index" @click="_goPage('spike_detail',{id:item.id})">
-								<view class="image">
-									<image class="img-25" :lazy-load="true" :src="item.pic"></image>
-								</view>
-								<view class="title">
-									{{item.item_name}}
-								</view>
-								<view class="price">
-									<text class="one">¥{{item.price}}</text>
-								</view>
-								<view class="status">
-									<text class="one">已抢{{item.already_num}}件</text>
-								</view>
-							</view>
-						</view>
-					</view>
 
-				</view>
-
-				<!--团购-->
-				<view class="limited-time-kill" v-if="groupBuyList.length">
-					<view class="title-bar">
-						<view class="left">
-							<view class="title-block">精品团</view>
-							<text class="title-text">海量商品放心拼团</text>
-						</view>
-						<view class="right" @click="_goPage('group_buy_list')">
-							<text>更多拼团</text>
-							<text class="iconfont icon-ddx-shop-content_arrows"></text>
-						</view>
-					</view>
-					<view class="time-content">
-						<view class="goods-list">
-							<view v-for="(item, index) in groupBuyList" :key="index" @click="_goPage('group_buy_detail', {id: item.id})" class="time-content-goods-list-goods" style="width: 33.33333%;">
-								<view class="image width-210">
-									<image class="img-33" :src="item.pic"></image>
-									<view class="group-info">{{item.people_num}}人团</view>
-								</view>
-								<view class="title width-210">
-									{{item.title}}
-								</view>
-								<view class="price width-210">
-									<text class="one">¥{{item.price}}</text>
-									<text class="two">¥{{item.old_price}}</text>
-								</view>
-								<view class="status width-210">
-									<text class="one">已拼{{item.assemble_num}}件</text>
-								</view>
-							</view>
-						</view>
-					</view>
-				</view>
-
-				<view class="guess-you-like">
-					<separator title="猜你喜欢"></separator>
-					<view class="goods-list">
-						<mGoods v-for="(item, index) in tabList[TabCur].goodsList" :key="index" :goodsInfo="item" @click.native="_goPage('goods_detail', {id:item.id})"></mGoods>
-					</view>
-				</view>
 			</view>
 			<view class="content" v-if="TabCur !== 0">
 				<view class="my-block"></view>
@@ -171,21 +100,6 @@
 				/**
 				 * 推荐里的数据
 				 */
-				//限时秒杀
-				TabCur2: 0,
-				tabList2: [
-					// {
-					// 	begin:,//1：正在抢购，2即将开始，3已结束
-					// 	end_time:,
-					// 	goodsList: ,
-					// 	id: ,
-					// 	now_time: ,
-					// 	start: ,
-					// 	start_time:,
-					// }
-				],
-				//精品团购
-				groupBuyList: [],
 				//图标
 				iconArr:[],
 
@@ -197,9 +111,6 @@
 			}
 			await this._getCategory()
 			await this._getBanner()
-			await this._assembleList()
-			await this._getSeckillTime()
-			await this._getGuessYouLike()
 			await this._getIcon()
 		},
 		async onReachBottom() {
@@ -208,7 +119,7 @@
 			}
 			this.tabList[this.TabCur].requestData.page ++
 			if (this.TabCur === 0) {
-				await this._getGuessYouLike()
+
 			} else {
 				await this._getGoodsList()
 			}
@@ -291,85 +202,9 @@
 						break
 				}
 			},
-			_getGuessYouLike() {
-				this.tabList[this.TabCur].requestData.moreStatus = 'loading'
-				let data = {
-					page:this.tabList[this.TabCur].requestData.page,
-					limit:this.tabList[this.TabCur].requestData.limit,
-				}
-				this.$minApi.guessYouLike(data).then(res => {
-					if (res.code === 200){
-						this.tabList[this.TabCur].goodsList.push(...res.data)
-						if (res.data.length <  this.tabList[this.TabCur].requestData.limit) {
-							this.tabList[this.TabCur].requestData.moreStatus = 'noMore'
-						} else {
-							this.tabList[this.TabCur].requestData.moreStatus = 'more'
-						}
-					}
-				})
-			},
 			_clickSubTab(item){
 				console.log(item)
 				this._goPage('goods_search', {id: item.id, title: item.cname})
-			},
-			// 拼团
-			async _assembleList(){
-				await this.$minApi.assembleList({hot:1}).then(res => {
-					console.log("拼团商品列表",res)
-					if (res.code === 200) {
-						this.groupBuyList = res.data
-					}
-				})
-			},
-			//推荐-秒杀
-			async _getSeckillTime(){
-				await this.$minApi.seckillTime().then(async res => {
-					console.log("秒杀时间段",res)
-					if (res.code === 200) {
-						res.data.map(async (item, index) => {
-							item.goodsList = []
-							await this.$minApi.seckillGoodsList({start_time: res.data[index].start_time}).then(sub_res => {
-								console.log(`第${index}秒杀时间段的商品`, sub_res)
-								if (sub_res.code === 200) {
-									item.goodsList = sub_res.data
-								}
-							})
-						})
-						this.tabList2 = res.data
-						if (res.data.length) {
-							myTimer = setInterval(()=>{
-								this.$set(this.tabList2[0], 'now_time', this.tabList2[0].now_time + 1);
-								this.getRTime();
-								}, 1000) //设置定时器 每一秒执行一次
-						} else {
-							console.log('当前页面没有抢购/秒杀，不执行定时器')
-						}
-					}
-				})
-			},
-			//秒杀倒计时
-			getRTime(){
-				//1：正在抢购，2即将开始，3已结束
-				console.log('首页计时器功能')
-				let sum = 0
-				for(let i = 0; i < this.tabList2.length; i++){
-					if (this.tabList2[i].start_time  > this.tabList2[0].now_time) {
-						this.$set(this.tabList2[i], 'begin', 2)
-					}
-
-					if ( this.tabList2[i].start_time  <= this.tabList2[0].now_time && this.tabList2[0].now_time <=  this.tabList2[i].end_time) {
-						this.$set(this.tabList2[i], 'begin', 1)
-					}
-
-					if (this.tabList2[i].end_time  < this.tabList2[0].now_time) {
-						this.$set(this.tabList2[i], 'begin', 3)
-						sum ++
-					}
-				}
-				if (sum === this.tabList2.length) {
-					console.log('首页的抢购/秒杀活动全部结束，清空计时器功能')
-					clearInterval(myTimer)
-				}
 			},
 
 			//推荐页面的图标
@@ -497,7 +332,7 @@
 					}
 				}
 			}
-			/*限时抢购*/
+			/*推荐页面的小图标*/
 			.limited-time{
 				width: 100%;
 				background: #ffffff;
@@ -526,131 +361,12 @@
 					}
 				}
 			}
-			/*限时秒杀  精品团*/
-			.limited-time-kill{
-				background: #ffffff;
-				margin-top: 20upx;
-				.title-bar{
-					/*border: 1px solid red;*/
-					display:flex;
-					flex-direction:row;
-					flex-wrap: nowrap;
-					align-items: center;
-					justify-content: space-between;
-					font-size: $uni-font-size-base;
-					color: $color-primary-plain;
-					padding: 20upx $uni-spacing-row-base 20upx 0;
-					.left{
-						display: flex;
-						flex-direction: row;
-						justify-content: flex-start;
-						align-items: center;
-						.title-block{
-							color: #ffffff;
-							background: #BA6BE7;
-							text-align: center;
-							height: 48upx;
-							line-height: 48upx;
-							padding: 0 34upx;
-							border-radius:0 24upx 24upx 0;
-							margin-right: 30upx;
-						}
-						.title-text{
-							font-size: $uni-font-size-sm;
-						}
-					}
-					.right{
-						color: $color-primary;
-						.iconfont{
-							margin-left: 6upx;
-							font-size: $uni-font-size-base;
-						}
-					}
 
-				}
 
-				.time-content{
-					.goods-list{
-						background: #ffffff;
-						width: 100%;
-						display: flex;
-						padding: $uni-spacing-row-base;
-						.time-content-goods-list-goods{
-							display:flex;
-							flex-direction:column;
-							width:25%;
-							margin-right:10upx;
-							&:last-child{
-								margin-right: 0;
-							}
-							overflow: hidden;
-							.image{
-								width: 160upx;
-								text-align: center;
-								position: relative;
-								.img-25{
-									width: 160upx;
-									height: 160upx;
-									border-radius:8upx 8upx 0upx 0upx;
-								}
-								.img-33{
-									width: 210upx;
-									height: 210upx;
-									border-radius:8upx 8upx 0upx 0upx;
-								}
-								.group-info{
-									position: absolute;
-									left: 0;
-									bottom: 20upx;
-									width: 88upx;
-									height: 34upx;
-									line-height: 34upx;
-									text-align: center;
-									overflow: hidden;
-									font-size: $uni-font-size-sm;
-									color: $color-primary;
-									border: 1upx solid $color-primary;
-									border-radius: 8upx;
-									background: #fff;
-								}
-							}
-							.title{
-								@extend %overflow-2-line;
-								font-size: $uni-font-size-sm;
-								width: 160upx;
-								margin-bottom: 6upx;
-							}
-							.price{
-								@extend %overflow-1-line;
-								width: 160upx;
-								overflow: hidden;
-								margin-bottom: 6upx;
-								display: flex;
-								justify-content: flex-start;
-								.one{
-									font-size: $uni-font-size-base;
-									color: $color-primary;
-									margin-right: 6upx;
-								}
-								.two{
-									font-size: $uni-font-size-sm;
-									color: #808080;
-									text-decoration:line-through;
-								}
-							}
-							.status{
-								width: 160upx;
-								font-size: $uni-font-size-sm;
-								color: #808080;
-							}
-							.width-210{
-								width: 210upx;
-							}
-						}
-					}
-				}
-			}
-			/*猜你喜欢*/
+
+
+
+			/*猜你喜欢 或者 其他页面的商品列表*/
 			.guess-you-like{
 				.goods-list{
 					padding: 10upx $uni-spacing-row-sm 0 $uni-spacing-row-sm;

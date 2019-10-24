@@ -691,6 +691,8 @@
 				.hot-sale-banner{
 					border-radius:8upx 8upx 0 0;
 					width: 100%;
+					height: 123upx;
+					overflow: hidden;
 					background-color: #C1ADFA;
 					.img{
 						width: 710upx;
@@ -701,7 +703,6 @@
 					width: 100%;
 					background: #C1ADFA;
 					padding: 10upx;
-					padding-top: 0;
 					border-radius:0 0 8upx 8upx;
 
 					display: flex;
@@ -773,6 +774,8 @@
 				.some-category-banner{
 					width: 100%;
 					border-radius:8upx 8upx 0 0;
+					height: 268upx;
+					overflow: hidden;
 					background: #fff;
 					.img{
 						width: 710upx;

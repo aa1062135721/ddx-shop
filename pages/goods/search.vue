@@ -25,43 +25,9 @@
 				</view>
 			</view>
 		</view>
-		<view class="navbar-classification" v-if="attr.length">
-			<view class="title-btns" :class="{'on' : clickMultipleChoiceMmenu.multipleChoiceMmenu}">
-				<view v-for="(item, index) in attr" :class="{'on' : clickMultipleChoiceMmenu.multipleChoiceMmenu && clickMultipleChoiceMmenu.key === index}" @click="clickNavBar(index)"   :key="index">
-					{{item.title}}<text class="iconfont icon-ddx-shop-content_arrows"></text>
-				</view>
-			</view>
-			<view class="my-null-title-btns" :class="{'on' : clickMultipleChoiceMmenu.multipleChoiceMmenu}">
-				<view class="my-null" v-for="(item, index) in attr" :class="{'on' : clickMultipleChoiceMmenu.multipleChoiceMmenu && clickMultipleChoiceMmenu.key === index}" :key="index">
-				</view>
-			</view>
-			<view class="navbar-classification-body" :class="{'on' : clickMultipleChoiceMmenu.multipleChoiceMmenu}">
-				<view class="my-body">
-					<view class="item" v-for="(sItem, sIndex) in attr[clickMultipleChoiceMmenu.key].child" :key="sIndex"  @click="clickSNavBar(sIndex)" >
-						<text v-if="clickMultipleChoiceMmenu.sKey === sIndex" :class="{'on': clickMultipleChoiceMmenu.sKey === sIndex}">
-							<text class="iconfont icon-ddx-shop-check"></text>{{sItem.title}}
-						</text>
-						<text v-else>
-							<text class="iconfont icon-ddx-shop-circle"></text>{{sItem.title}}
-						</text>
-					</view>
-				</view>
-				<view class="btns">
-					<block>
-						<view class="btn" @click="clickMultipleChoiceMmenu.multipleChoiceMmenu = false">
-							取消
-						</view>
-						<view class="btn on" @click="goSearch">
-							确定
-						</view>
-					</block>
-				</view>
-			</view>
-		</view>
-
 
 		<view class="goods-list">
-			<mGoods v-for="(item, index) in productList" :key="index" :goodsInfo="item" @click.native="_goPage('goods_detail', {id:item.id})"></mGoods>
+			<mGoods v-for="(item, index) in productList" :key="index" :goodsInfo="item" @click.native="goGoodsDetails(item)"></mGoods>
 		</view>
 		<view>
 			<uni-load-more :status="moreStatus" :show-icon="true"></uni-load-more>
@@ -81,18 +47,11 @@
 				priceOrder: 0, //1 价格从低到高 2价格从高到低
 				currentOrder: 0, //1 销量从低到高 2销量从高到低
                 productList: [],//服务器返回的数据
-				attr:[],//服务器返回的数据
-				clickMultipleChoiceMmenu:{
-					key:0,//当前选中的attr中的下标
-					sKey: -1,//当前选中的attr.child中的下标
-					multipleChoiceMmenu: false,
-				},
 				moreStatus: 'more',
 				requestData:{
 					page: 1,
 					limit:10,
 					searchVal: '',//要搜索的内容
-					attr_ids: 0,//属性id
 				},
 			}
         },
@@ -100,6 +59,27 @@
 			_goPage(url, query = {}){
 				this.$openPage({name:url, query})
 			},
+			/**
+			 * 去到商品详情页面，先后级 分别是 秒杀商品，拼团商品，普通商品
+			 * @param goods
+			 */
+			goGoodsDetails(goods){
+				console.log('商品信息：', goods)
+
+				//秒杀活动id，如果有此参数则表示此商品参与此秒杀活动
+				if (goods.seckill_id) {
+					this._goPage('spike_detail', {id: goods.seckill_id})
+					return
+				}
+				//拼团活动id，如果有此参数则表示此商品参与此拼团活动
+				if (goods.assemble_id) {
+					this._goPage('group_buy_detail', {id: goods.assemble_id})
+					return
+				}
+
+				this._goPage('goods_detail', {id: goods.id})
+			},
+
 			//筛选点击
 			async tabClick(index){
 				if(this.filterIndex === index && index !== 2 && index !== 1){
@@ -137,11 +117,7 @@
 					data.type = this.$parseURL().id
 					delete data.title
 				}
-				if (this.attr.length){
-					data.attr_ids = this.requestData.attr_ids
-				} else {
-					this.requestData.attr_ids = 0
-				}
+
 				switch (this.filterIndex) {
 					case 0:
 						break
@@ -155,7 +131,6 @@
 				await this.$minApi.searchGoods(data).then(res => {
 					console.log("请求结果",res)
 					if (res.code === 200){
-						this.attr = res.attr
 						if (data.page === 1) {
 							this.productList = res.data
 						} else {
@@ -169,24 +144,9 @@
 					}
 				})
 			},
-			clickNavBar(key){
-				this.clickMultipleChoiceMmenu.multipleChoiceMmenu = !this.clickMultipleChoiceMmenu.multipleChoiceMmenu
-				this.clickMultipleChoiceMmenu.key = key
-				console.log('点击了筛选标题：',this.attr[key])
-			},
-			clickSNavBar(key) {
-				console.log('点击了筛选标题下面的儿子:',this.attr[this.clickMultipleChoiceMmenu.key].child[key])
-				if (key !== this.clickMultipleChoiceMmenu.sKey) {
-					this.clickMultipleChoiceMmenu.sKey = key
-					this.requestData.attr_ids = this.attr[this.clickMultipleChoiceMmenu.key].child[key].id
-				} else {
-					this.clickMultipleChoiceMmenu.sKey = -1
-				}
-			},
 			async goSearch(){
 				this.requestData.page = 1
 				await this.search()
-				this.clickMultipleChoiceMmenu.multipleChoiceMmenu = false
 			}
         },
         onLoad() {
@@ -294,141 +254,6 @@
 			}
 		}
 	}
-	}
-	.navbar-classification{
-		position: fixed;
-		left: 0;
-		top: 170upx;
-		/* #ifdef H5 */
-		top: calc(44px + 170upx);
-		/* #endif */
-		width: 100%;
-		z-index: 100;
-		background: #ffffff;
-		color: $color-primary-plain;
-		font-size: $uni-font-size-base;
-		.title-btns{
-			padding: $uni-spacing-row-base $uni-spacing-row-base  0 $uni-spacing-row-base;
-			&.on{
-				padding-bottom: 0;
-				view{
-					border-bottom-right-radius: 0;
-					border-bottom-left-radius: 0;
-				}
-			}
-			display: flex;
-			justify-content: space-between;
-			flex-direction: row;
-			flex-wrap: nowrap;
-			view{
-				width:148upx;
-				height: 48upx;
-				line-height: 48upx;
-				text-align: center;
-				border-radius:8upx;
-				background: #F2F2F2;
-				font-size: $uni-font-size-sm;
-				display: flex;
-				justify-content: center;
-				justify-items: center;
-				.iconfont{
-					margin-left: 4upx;
-					font-size: $uni-font-size-sm;
-					display: block;
-					transform:rotate(90deg);
-				}
-				&.on{
-					color: $color-primary;
-					.iconfont{
-						color: $color-primary;
-						transform:rotate(-90deg);
-					}
-				}
-			}
-		}
-		.my-null-title-btns{
-			padding: 0 $uni-spacing-row-base  0 $uni-spacing-row-base;
-			width: 100%;
-			background: #ffffff;
-			&.on{
-				padding-bottom: 0;
-				view{
-					border-bottom-right-radius: 0;
-					border-bottom-left-radius: 0;
-				}
-			}
-			display: flex;
-			justify-content: space-between;
-			flex-direction: row;
-			flex-wrap: nowrap;
-			view{
-				width:148upx;
-				height: $uni-spacing-row-base;
-				background: #ffffff;
-				display: flex;
-				&.on{
-					color: $color-primary;
-					background: #F2F2F2;
-				}
-			}
-		}
-
-		.navbar-classification-body{
-			transition: all 0.3s;
-			opacity: 0;
-			display: none;
-			background: #F2F2F2;
-			&.on{
-				transition: all 0.3s;
-				opacity: 1;
-				display: block;
-			}
-			.my-body{
-				padding: $uni-spacing-row-base;
-				height: 200upx;
-				overflow-y:auto;
-				display: flex;
-				flex-direction: row;
-				flex-wrap: wrap;
-				justify-content: flex-start;
-				.item{
-					padding: $uni-spacing-row-base;
-					color: $color-primary-plain;
-					font-size:$uni-font-size-sm;
-					display: flex;
-					justify-content: center;
-					.iconfont{
-						color: $color-primary-plain;
-						font-size: $uni-font-size-sm;
-						margin-right: 4upx;
-					}
-					.on{
-						color: $color-primary;
-						.iconfont{
-							color: $color-primary;
-						}
-					}
-				}
-			}
-			.btns{
-				width: 100%;
-				height: 80upx;
-				display: flex;
-				.btn{
-					line-height: 80upx;
-					height: 80upx;
-					width: 50%;
-					text-align: center;
-					font-size: $uni-font-size-lg;
-					color: $color-primary-plain;
-					background: #fff;
-					&.on{
-						background:$color-primary;
-						color: #ffffff;
-					}
-				}
-			}
-		}
 	}
 	.goods-list{
 		margin-top: 90upx;

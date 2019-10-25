@@ -10,8 +10,11 @@
 				{{goodsInfo.title}}
 			</view>
 			<view class="price">
-				<text class="one">¥{{goodsInfo.min_price}}</text>
-				<text class="two">已售{{goodsInfo.sales}}件</text>
+				<text class="all-price">
+					<text class="now-price">¥{{goodsInfo.min_price}}</text>
+					<text class="old-price">¥{{goodsInfo.max_price}}</text>
+				</text>
+				<text class="sales">已售{{goodsInfo.sales}}件</text>
 			</view>
 		</view>
 	</view>
@@ -33,6 +36,7 @@
 					title: '',
 					status:1,
 					min_price: "0.00",
+					max_price: "9.99",
 					initial_sales: 0,
 					reality_sales: 0,
 					pic: "",
@@ -106,14 +110,24 @@
 		}
 		.price{
 			padding: 0 $uni-spacing-row-sm;
-			.one{
-				font-size: $uni-font-size-base;
-				color: $color-primary;
-				margin-right: 10upx;
+			display: flex;
+			align-items: flex-end;
+			justify-content: space-between;
+			.all-price{
+				.now-price{
+					font-size: $uni-font-size-base;
+					color: $color-primary;
+					margin-right: 10upx;
+				}
+				.old-price{
+					font-size: 20upx;
+					color: #B2B2B2;
+					text-decoration: line-through;
+				}
 			}
-			.two{
-				font-size: $uni-font-size-sm;
-				padding-bottom: 10upx;
+			.sales{
+				font-size: 20upx;
+				color: #B2B2B2;
 			}
 		}
 	}

@@ -8,12 +8,6 @@
 			}
 		},
 		{
-			"path": "pages/tabs/group-buy",
-			"style": {
-				"navigationBarTitleText": "今日必团"
-			}
-		},
-		{
 			"path": "pages/tabs/car",
 			"style": {
 				"navigationBarTitleText": "购物车"
@@ -128,6 +122,12 @@
 		},
 
 		{
+			"path": "pages/group-buy/group-buy",
+			"style": {
+				"navigationBarTitleText": "今日必团"
+			}
+		},
+		{
 			"path": "pages/group-buy/detail",
 			"style": {
 				"navigationBarTitleText": "一起拼团"
@@ -140,6 +140,13 @@
 			}
 		},
 
+		{
+			"path": "pages/spike/list",
+			"style": {
+				"navigationBarTitleText": "捣蛋抢购",
+				"navigationBarBackgroundColor": "#52CBF4"
+			}
+		},
 		{
 			"path": "pages/spike/detail",
 			"style": {
@@ -311,12 +318,6 @@
 				"iconPath": "static/tab/tab-shop.png",
 				"selectedIconPath": "static/tab/tab-shop-current.png",
 				"text": "商城"
-			},
-			{
-				"pagePath": "pages/tabs/group-buy",
-				"iconPath": "static/tab/tab-person-all.png",
-				"selectedIconPath": "static/tab/tab-person-all-current.png",
-				"text": "拼团"
 			},
 			{
 				"pagePath": "pages/tabs/category",

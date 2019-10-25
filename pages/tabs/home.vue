@@ -47,7 +47,7 @@
 				<view class="goods-category">
 					<view class="all-goods">
 						<view class="item">
-							<view class="title-box">
+							<view class="title-box" @click="_goPage('group_buy')">
 								<view class="title">超级拼团</view>
 								<view class="sub-title">约惠好友 超值拼购</view>
 							</view>
@@ -73,7 +73,7 @@
 							</view>
 						</view>
 						<view class="item">
-							<view class="title-box">
+							<view class="title-box" @click="_goPage('spike_list')">
 								<view class="title">限时秒杀 15:08:24</view>
 								<view class="sub-title">爆品限时限量抢</view>
 							</view>

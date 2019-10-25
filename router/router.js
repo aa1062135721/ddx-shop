@@ -17,18 +17,6 @@ const router = new MinRouter({
 			login: false
 		},
 		{
-			path: "pages/tabs/group-buy",
-			type: 'switchTab',
-			name: 'group_buy_list',
-			login: false
-		},
-		{
-			path: 'pages/tabs/group-buy',
-			type: 'switchTab',
-			name: 'group-buy',
-			login: false
-		},
-		{
 			path: 'pages/tabs/car',
 			type: 'switchTab',
 			name: 'car',
@@ -179,6 +167,12 @@ const router = new MinRouter({
 
 		//group-buy pages
 		{
+			path: "pages/group-buy/group-buy",
+			type: 'navigateTo',
+			name: 'group_buy',
+			login: false
+		},
+		{
 			path: "pages/group-buy/detail",
 			type: 'navigateTo',
 			name: 'group_buy_detail',
@@ -242,6 +236,12 @@ const router = new MinRouter({
 		},
 
 		//spike 秒杀详情
+		{
+			path: "pages/spike/list",
+			type: 'navigateTo',
+			name: 'spike_list',
+			login: false
+		},
 		{
 			path: "pages/spike/detail",
 			type: 'navigateTo',

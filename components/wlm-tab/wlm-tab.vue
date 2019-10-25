@@ -108,11 +108,11 @@
             padding: 0 20upx;
             .title{
                 font-size: $uni-font-size-base;
-                color: #1A1A1A;
+                color: #C0E8FB;
             }
             .sub-title{
                 font-size: $uni-font-size-sm - 2upx;
-                color: #808080;
+                color: #C0E8FB;
             }
         }
     }

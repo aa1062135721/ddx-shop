@@ -169,7 +169,7 @@
                      flex-direction: row;
                      justify-content: flex-end;
                      .show-num{
-                        width:118upx;
+                        min-width:118upx;
                         text-align: center;
                         color: #808080;
                         font-size: 20upx;

@@ -22,10 +22,10 @@ import Vue from 'vue'
 import MinRequest from './MinRequest'
 import store from '../store/index'
 
-// const baseUrl = `http://testmd.ddxm661.com/wxshop` //测试服务器
+// const baseUrl = `https://ddxm661.com/wxshop` //测试服务器
 // const baseUrl = `https://www.ddxm661.com/wxshop` //正式服务器
-// const baseUrl = `http://192.168.25.207:82/wxshop` //小红本地服务器
-const baseUrl = `http://localhost/ddxmtest/ddxmtest/public/index.php/wxshop` //小红本地服务器
+const baseUrl = `http://192.168.25.207:82/wxshop` //小红本地 测试服务器
+// const baseUrl = `http://localhost/ddxmtest/ddxmtest/public/index.php/wxshop` // 本地测试服务器
 const minRequest = new MinRequest()
 
 // 请求拦截器
@@ -524,6 +524,15 @@ export default {
      */
     getBrand(data){
       return minRequest.get('/Index/getBrand', data)
-    }
+    },
+
+    /**
+     * 首页 推荐 分类商品
+     */
+    categoryGoods(data){
+      return minRequest.get('/Index/category_item', data)
+    },
+
+
   }
 }

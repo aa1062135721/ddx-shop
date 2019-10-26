@@ -1,5 +1,6 @@
 <template>
 	<view class="container">
+			<!-- 首页的搜索框 -->
 			<uni-nav-bar
 					shadow="false"
 					fixed="true"
@@ -12,10 +13,12 @@
 					</view>
 				</view>
 			</uni-nav-bar>
+			<!-- 一级tab栏 -->
 			<wuc-tab :tab-list="tabList" :textFlex="true" :tabCur.sync="TabCur" tab-class="tabs"  select-class="tab-select" @change="tabChange"
 					 style="position: fixed;left: 0;width: 100%;z-index: 999;"
 					 :style="style"
 			></wuc-tab>
+			<!-- 推荐tab栏里的数据 -->
 			<view class="content" v-if="TabCur === 0">
 				<view class="my-block"></view>
 				<!-- 推荐 -- banner-->
@@ -229,6 +232,26 @@
 
 
 				<!-- 六个分类，内容部分可以向左滑动-->
+				<view class="some-category" v-if="categoryGoodsList.length" v-for="(item, index) in categoryGoodsList" :key="index">
+					<view class="some-category-banner">
+						<image class="img" :src="item.thumb" model="widthFix" :lazy-load="true"></image>
+					</view>
+					<view class="some-category-box">
+						<scroll-view  scroll-x="true">
+							<view class="all-goods">
+								<view class="goods" v-for="(subItem, subIndex) in item.items" :key="subIndex" @click="_goPage('goods_detail', {id: subItem.id})">
+									<view class="goods-header">
+										<image class="img" :src="subItem.pic" :lazy-load="true"></image>
+									</view>
+									<view class="goods-footer">
+										<view class="goods-title">{{subItem.title}}</view>
+										<view class="goods-price">￥{{subItem.min_price}}</view>
+									</view>
+								</view>
+							</view>
+						</scroll-view>
+					</view>
+				</view>
 				<view class="some-category">
 					<view class="some-category-banner">
 						<image class="img" src="../../static/images/home-six-banner.jpg" model="widthFix"></image>
@@ -284,10 +307,10 @@
 							</view>
 						</scroll-view>
 					</view>
-
 				</view>
 
 			</view>
+			<!-- 其他tab栏里的数据 -->
 			<view class="content" v-if="TabCur !== 0">
 				<view class="my-block"></view>
 				<view class="limited-time">
@@ -340,18 +363,18 @@
 						goodsList:[],
 					},
 				],
-
-				subTab: [
-
-				],
-				//推荐tab中的轮播图
-				swiperList: [],
+				//首页 非推荐里的tab栏，二级tab
+				subTab: [],
 
 				/**
 				 * 推荐里的数据
 				 */
+				//推荐tab中的轮播图
+				swiperList: [],
 				//图标
 				iconArr:[],
+				//分类商品
+				categoryGoodsList:[]
 
 			}
 		},
@@ -362,6 +385,8 @@
 			await this._getCategory()
 			await this._getBanner()
 			await this._getIcon()
+
+			await this._getCategoryGoodsList()
 		},
 		async onReachBottom() {
 			if (this.tabList[this.TabCur].requestData.moreStatus === 'noMore') {
@@ -413,9 +438,6 @@
 						}
 					}
 				})
-			},
-			tabChange2(index) {
-				this.TabCur2 = index;
 			},
 			_getCategory(pid) {
 				this.$minApi.category({pid}).then(res => {
@@ -480,13 +502,25 @@
                         this._goPage('goods_detail',{id: item.value})
                         break
 					case 4:
-						this._goPage('group-buy')
+						this._goPage('group_buy')
 						break
 					case 5:
+						this._goPage('spike_list')
 						break
 					case 6:
 						break
                 }
+			},
+
+			// 推荐页面的六个板块数据
+			async _getCategoryGoodsList(){
+				await this.$minApi.categoryGoods().then(res => {
+					console.log("获取推荐tab中的六个板块数据：",res)
+					if (res.code === 200){
+						this.categoryGoodsList = res.data
+						this.tabList[0].requestData.moreStatus = 'noMore'
+					}
+				})
 			},
 
 			/**
@@ -793,6 +827,7 @@
 		 	/*六个分类，内容部分可以向左滑动*/
 			.some-category{
 				padding: 0 $uni-spacing-row-sm;
+				margin-bottom: 28upx;
 				.some-category-banner{
 					width: 100%;
 					border-radius:8upx 8upx 0 0;

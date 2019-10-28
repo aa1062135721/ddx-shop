@@ -286,6 +286,17 @@
     height: 98upx;
     width: 30%;
     .box {
+      /* 客服按钮去掉小程序默认按钮样式 */
+      border: none;
+      background-color: transparent;
+      padding-left: 0;
+      padding-right: 0;
+      line-height:inherit;
+      border-radius:0;
+      &::after {
+        border: none;
+      }
+
       position: relative;
       width: 98upx;
       height: 98upx;
@@ -682,6 +693,74 @@
           color: $color-primary-plain;
         }
       }
+    }
+  }
+}
+
+/*  拼团或者秒杀倒计时 */
+.miaosha{
+  background: #FC5A5A;
+  margin-bottom: 0;
+  color: #ffffff;
+  padding-top: $uni-spacing-col-base;
+  padding-bottom: $uni-spacing-col-base;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  .left{
+    .top{
+      font-size: $uni-font-size-base;
+      .price{
+        margin-right: 28upx;
+      }
+      .time-kill{
+
+      }
+    }
+    .bottom{
+      .old-price{
+        text-decoration: line-through;
+        color: #FBC7C7;
+        font-size: $uni-font-size-sm;
+      }
+    }
+  }
+  .right{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    .one{
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      margin-right: 18upx;
+      .title{
+        font-size: $uni-font-size-base;
+      }
+      .time{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        font-size: $uni-font-size-sm;
+        .tag{
+          background: #ffffff;
+          border-radius: 2upx;
+          padding: 0 4upx;
+          height: 28upx;
+          line-height: 28upx;
+          color: $color-primary;
+        }
+        .no-tag{
+          height: 28upx;
+          line-height: 28upx;
+          padding: 0 2upx;
+        }
+      }
+    }
+    .iconfont{
+      color: #ffffff;
+      font-size: $uni-font-size-base;
     }
   }
 }

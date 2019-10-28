@@ -13,13 +13,19 @@
         </view>
         <!-- 商品主图轮播 -->
         <view class="swiper-box">
-            <swiper circular="true" autoplay="true" :indicator-dots="true" indicator-active-color="#FC8A8A">
+            <swiper circular="true" :indicator-dots="true" indicator-active-color="#FC8A8A" @change="swiperHandle">
+                <swiper-item style="display: flex;flex-direction: column;justify-content: center;background: #000;" v-if="goodsInfo.video">
+                    <video id="myVideo" :src="goodsInfo.video"
+                           controls
+                           style="width: 100%;"
+                    ></video>
+                </swiper-item>
                 <swiper-item v-for="(img_src,index) in goodsInfo.pics" :key="index">
                     <image :src="img_src" @click="previewImg(img_src, goodsInfo.pics)" :lazy-load="true"></image>
                 </swiper-item>
             </swiper>
         </view>
-        <!-- 秒杀  -->
+        <!-- 秒杀倒计时  -->
         <view class="info-box miaosha">
             <view class="left">
                 <view class="top">
@@ -70,21 +76,51 @@
                 <text class="tag" v-if="goodsInfo.mold_id">{{goodsInfo.mold}}</text>
                 {{goodsInfo.title}}
             </view>
+            <!-- 子标题  承诺  -->
+            <view class="sub-title" v-if="goodsInfo.subtitle">
+                {{goodsInfo.subtitle}}
+            </view>
+            <view class="promise" v-if="goodsInfo.promise">
+                {{goodsInfo.promise}}
+            </view>
         </view>
 
         <!--服务说明-->
-        <view class="info-box goods-info2" v-if="goodsInfo.item_service_ids.length" @click="openService">
+        <view class="my-service-title-btn" @click="openService">
             <view class="item">
                 <view class="one">
-                    <text class="title">服务</text>
-                    <text class="comtent">
-                        <block v-for="(serviceItem, serviceIndex) in goodsInfo.item_service_ids" :key="serviceIndex">
-                            <!-- 标题只渲染 0,1,2-->
-                            <block v-if="serviceIndex < 3">
-                                {{serviceItem.title + '  '}}
-                            </block>
-                        </block>
-                    </text>
+                    <view class="title">说明</view>
+                    <view class="content" v-if="goodsInfo.mold_id !== 1">
+                        <view>
+                            <text class="iconfont icon-ddx-shop-tick"></text>捣蛋熊发货&售后
+                        </view>
+                        <view>
+                            <text class="iconfont icon-ddx-shop-tick"></text> 全国配送
+                        </view>
+                        <view>
+                            <text class="iconfont icon-ddx-shop-tick"></text> 极速达
+                        </view>
+                        <view>
+                            <text class="iconfont icon-ddx-shop-tick"></text>支持7天无理由退货
+                        </view>
+                        <view>
+                            <text class="iconfont icon-ddx-shop-tick"></text> 极速退款
+                        </view>
+                    </view>
+                    <view class="content" v-else>
+                        <view>
+                            <text class="iconfont icon-ddx-shop-tick"></text>捣蛋熊发货&售后
+                        </view>
+                        <view>
+                            <text class="iconfont icon-ddx-shop-tick"></text> 全国包邮
+                        </view>
+                        <view>
+                            <text class="iconfont icon-ddx-shop-tick"></text> 海关监管
+                        </view>
+                        <view>
+                            <text class="iconfont icon-ddx-shop-jinyong" style="color: #CCCCCC;"></text>不支持无理由退换货
+                        </view>
+                    </view>
                 </view>
                 <view class="two">
                     <text class="iconfont icon-ddx-shop-content_arrows"></text>
@@ -92,20 +128,104 @@
             </view>
         </view>
         <!-- 服务说明 -->
-        <uni-popup ref="myService" type="bottom" :custom="true" v-if="goodsInfo.item_service_ids.length">
+        <uni-popup ref="myService" type="bottom" :custom="true">
             <view class="my-service">
                 <view class="my-service-title">服务说明</view>
                 <view class="my-service-box">
-                    <view class="item" v-for="(item, index) in goodsInfo.item_service_ids" :key="index">
-                        <view class="title-and-point">
-                            <view class="point"></view>
-                            <view class="title">{{item.title}}</view>
+                    <block v-if="goodsInfo.mold_id !== 1">
+                        <view class="item">
+                            <view class="title-and-point">
+                                <view class="iconfont icon-ddx-shop-tick"></view>
+                                <view class="title">捣蛋熊发货&售后</view>
+                            </view>
+                            <view class="title-and-point">
+                                <view class="iconfont icon-ddx-shop-tick on"></view>
+                                <view class="title on">由捣蛋熊猫发货并提供售后服务</view>
+                            </view>
                         </view>
-                        <view class="title-and-point">
-                            <view class="point on"></view>
-                            <view class="title on">{{item.content}}</view>
+                        <view class="item">
+                            <view class="title-and-point">
+                                <view class="iconfont icon-ddx-shop-tick"></view>
+                                <view class="title">全国配送</view>
+                            </view>
+                            <view class="title-and-point">
+                                <view class="iconfont icon-ddx-shop-tick on"></view>
+                                <view class="title on">满足条件全国范围均可包邮发货 除西藏、新疆、青海、内蒙古以 及港澳台不包邮</view>
+                            </view>
                         </view>
-                    </view>
+                        <view class="item">
+                            <view class="title-and-point">
+                                <view class="iconfont icon-ddx-shop-tick"></view>
+                                <view class="title">极速达</view>
+                            </view>
+                            <view class="title-and-point">
+                                <view class="iconfont icon-ddx-shop-tick on"></view>
+                                <view class="title on">商城自营部分商品，重庆主城区3点前下单，当天送达，3点后下 单，次日达。（除了自然灾害、天气因素外）</view>
+                            </view>
+                        </view>
+                        <view class="item">
+                            <view class="title-and-point">
+                                <view class="iconfont icon-ddx-shop-tick"></view>
+                                <view class="title">支持7天无理由退货</view>
+                            </view>
+                            <view class="title-and-point">
+                                <view class="iconfont icon-ddx-shop-tick on"></view>
+                                <view class="title on">支持7天无理由退货</view>
+                            </view>
+                        </view>
+                        <view class="item">
+                            <view class="title-and-point">
+                                <view class="iconfont icon-ddx-shop-tick"></view>
+                                <view class="title">极速退款</view>
+                            </view>
+                            <view class="title-and-point">
+                                <view class="iconfont icon-ddx-shop-tick on"></view>
+                                <view class="title on">满足相应条件时，申请退款后，24小时内到账。</view>
+                            </view>
+                        </view>
+                    </block>
+                    <block v-else>
+                        <view class="item">
+                            <view class="title-and-point">
+                                <view class="iconfont icon-ddx-shop-tick"></view>
+                                <view class="title">捣蛋熊发货&售后</view>
+                            </view>
+                            <view class="title-and-point">
+                                <view class="iconfont icon-ddx-shop-tick on"></view>
+                                <view class="title on">由捣蛋熊猫发货并提供售后服务</view>
+                            </view>
+                        </view>
+                        <view class="item">
+                            <view class="title-and-point">
+                                <view class="iconfont icon-ddx-shop-tick"></view>
+                                <view class="title">全国包邮</view>
+                            </view>
+                            <view class="title-and-point">
+                                <view class="iconfont icon-ddx-shop-tick on"></view>
+                                <view class="title on">所有商品均可包邮发货，除西藏、新疆、青海、内蒙古以及港澳 台不包邮</view>
+                            </view>
+                        </view>
+                        <view class="item">
+                            <view class="title-and-point">
+                                <view class="iconfont icon-ddx-shop-tick"></view>
+                                <view class="title">海关监管</view>
+                            </view>
+                            <view class="title-and-point">
+                                <view class="iconfont icon-ddx-shop-tick on"></view>
+                                <view class="title on">订单均有海关监管，正品保障</view>
+                            </view>
+                        </view>
+                        <view class="item">
+                            <view class="title-and-point">
+                                <view class="iconfont icon-ddx-shop-jinyong" style="color: #CCCCCC;"></view>
+                                <view class="title">不支持无理由退换货</view>
+                            </view>
+                            <view class="title-and-point">
+                                <view class="iconfont icon-ddx-shop-jinyong on"></view>
+                                <view class="title on">因跨境订单的特殊性，不享受无理由退换货</view>
+                            </view>
+                        </view>
+                    </block>
                 </view>
                 <view class="btn" @click="closeService">确定</view>
             </view>
@@ -143,7 +263,8 @@
                 <text :class="{'on': showTabWho === 'know'}" @click="showTabWho = 'know'" v-if="buyYouKnow">购买须知</text>
             </view>
             <view class="content"  v-if="showTabWho === 'detail'">
-                <image v-for="(img, index) in goodsInfo.content" :src="img" :key="index" style="width: 100%;" :lazy-load="true" mode="widthFix"></image>
+<!--                <image v-for="(img, index) in goodsInfo.content" :src="img" :key="index" style="width: 100%;" :lazy-load="true" mode="widthFix"></image>-->
+                <rich-text :nodes="goodsInfo.content"></rich-text>
             </view>
             <view class="content-know" v-if="showTabWho === 'know'">
                 <rich-text :nodes="buyYouKnow"></rich-text>
@@ -162,6 +283,10 @@
                     <view class="text">购物车</view>
                     <view class="number" v-if="carNum">{{carNum}}</view>
                 </view>
+                <button class="box" open-type="contact" :session-from="userInfo">
+                    <view class="iconfont icon-ddx-shop-pingjia-"></view>
+                    <view class="text">客服</view>
+                </button>
             </view>
             <view class="btn">
                 <view class="joinCart" @click="_goPage('goods_detail_redirect', {id:goodsInfo.item_id})">
@@ -333,6 +458,12 @@
         },
         methods: {
             ...mapActions(['saveShareID']),
+            // 商品banner滑动到非视频页面时候停止视频的播放
+            swiperHandle(e){
+                if (this.goodsInfo.video && e.detail.current !== 0) {
+                    uni.createVideoContext('myVideo').pause()
+                }
+            },
             _goPage(url, query = {}) {
                 this.$openPage({name: url, query})
             },
@@ -560,7 +691,9 @@
             console.log("其他页面带过来的参数2：",this.$parseURL())
 
             await this.$minApi.seckillGoodsInfo(requestData).then(res => {
+                console.log('秒杀详情：', res.data)
                 if (res.code === 200) {
+                    res.data.content = this.formatRichText2(res.data.content)
                     this.goodsInfo = res.data
                     //1：正在抢购，2即将开始，3已结束
                     myTimer = setInterval(this.getRTime, 1000) //设置定时器 每一秒执行一次
@@ -622,71 +755,4 @@
 
 <style lang="scss">
     @import '../../static/css/goods_detail.scss';
-
-    .miaosha{
-        background: #FC5A5A;
-        margin-bottom: 0;
-        color: #ffffff;
-        padding-top: $uni-spacing-col-base;
-        padding-bottom: $uni-spacing-col-base;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        .left{
-            .top{
-                font-size: $uni-font-size-base;
-                .price{
-                    margin-right: 28upx;
-                }
-                .time-kill{
-
-                }
-            }
-            .bottom{
-                .old-price{
-                    text-decoration: line-through;
-                    color: #FBC7C7;
-                    font-size: $uni-font-size-sm;
-                }
-            }
-        }
-        .right{
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            .one{
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                margin-right: 18upx;
-                .title{
-                    font-size: $uni-font-size-base;
-                }
-                .time{
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: center;
-                    font-size: $uni-font-size-sm;
-                    .tag{
-                        background: #ffffff;
-                        border-radius: 2upx;
-                        padding: 0 4upx;
-                        height: 28upx;
-                        line-height: 28upx;
-                        color: $color-primary;
-                    }
-                    .no-tag{
-                        height: 28upx;
-                        line-height: 28upx;
-                        padding: 0 2upx;
-                    }
-                }
-            }
-            .iconfont{
-                color: #ffffff;
-                font-size: $uni-font-size-base;
-            }
-        }
-    }
 </style>

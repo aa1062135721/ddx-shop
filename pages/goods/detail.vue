@@ -13,7 +13,13 @@
 		</view>
 		<!-- 商品主图轮播 -->
 		<view class="swiper-box">
-			<swiper circular="true" autoplay="true" :indicator-dots="true" indicator-active-color="#FC8A8A">
+			<swiper circular="true" :indicator-dots="true" indicator-active-color="#FC8A8A" @change="swiperHandle">
+				<swiper-item style="display: flex;flex-direction: column;justify-content: center;background: #000;" v-if="goodsInfo.video">
+					<video id="myVideo" :src="goodsInfo.video"
+						   controls
+						   style="width: 100%;"
+					></video>
+				</swiper-item>
 				<swiper-item v-for="(img_src,index) in goodsInfo.pics" :key="index">
 					<image :src="img_src" @click="previewImg(img_src, goodsInfo.pics)" :lazy-load="true"></image>
 				</swiper-item>
@@ -287,6 +293,10 @@
 					<view class="text">购物车</view>
 					<view class="number" v-if="carNum">{{carNum}}</view>
 				</view>
+				<button class="box" open-type="contact" :session-from="userInfo">
+					<view class="iconfont icon-ddx-shop-pingjia-"></view>
+					<view class="text">客服</view>
+				</button>
 			</view>
 			<view class="btn">
 				<block v-if="goodsInfo.status === 1">
@@ -475,6 +485,12 @@
 		},
 		methods:{
 			...mapActions(['saveShareID']),
+			// 商品banner滑动到非视频页面时候停止视频的播放
+			swiperHandle(e){
+				if (this.goodsInfo.video && e.detail.current !== 0) {
+					uni.createVideoContext('myVideo').pause()
+				}
+			},
 			_goPage(url, query = {}){
 				this.$openPage({name:url, query})
 			},

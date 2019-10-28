@@ -13,32 +13,77 @@
 		</view>
 		<!-- 商品主图轮播 -->
 		<view class="swiper-box">
-			<swiper circular="true" autoplay="true" :indicator-dots="true" indicator-active-color="#FC8A8A">
+			<swiper circular="true" :indicator-dots="true" indicator-active-color="#FC8A8A" @change="swiperHandle">
+				<swiper-item style="display: flex;flex-direction: column;justify-content: center;background: #000;" v-if="goodsInfo.video">
+					<video id="myVideo" :src="goodsInfo.video"
+						   controls
+						   style="width: 100%;"
+					></video>
+				</swiper-item>
 				<swiper-item v-for="(img_src,index) in goodsInfo.pics" :key="index">
 					<image :src="img_src" @click="previewImg(img_src, goodsInfo.pics)"></image>
 				</swiper-item>
 			</swiper>
 		</view>
-		<!-- 标题 价格 -->
-		<view class="info-box pintuan" style="background: #FC5A5A;margin-bottom: 0;">
-			<view class="one">
-				<text class="one-title">拼团价</text>
-				<text class="one-box">{{goodsInfo.people_num}}人拼团</text>
+		<!-- 倒计时  -->
+		<view class="info-box miaosha">
+			<view class="left">
+				<view class="top">
+					<text class="price">
+						￥{{goodsInfo.commander_price}}
+					</text>
+					<text class="time-kill">
+						{{goodsInfo.people_num}}人拼团
+					</text>
+				</view>
+				<view class="bottom">
+					<text class="old-price">
+						￥{{goodsInfo.old_price}}
+					</text>
+				</view>
 			</view>
-			<view class="two">
-				<view>
-					<text class="two-title">￥{{goodsInfo.commander_price}}</text>
-					<text class="two-title2">￥{{goodsInfo.old_price}}</text>
+			<view class="right">
+				<view class="one" v-if="goodsInfo.begin === 1">
+					<view class="title">距离结束还剩</view>
+					<view class="time">
+						<text class="tag">{{timer.h + '天'}}</text>
+						<text class="no-tag"></text>
+						<text class="tag">{{timer.h}}</text>
+						<text class="no-tag">:</text>
+						<text class="tag">{{timer.m}}</text>
+						<text class="no-tag">:</text>
+						<text class="tag">{{timer.s}}</text>
+					</view>
+				</view>
+				<view class="one" v-if="goodsInfo.begin === 3">
+					<view class="title">拼团状态</view>
+					<view class="time">
+						<text class="tag">已经结束</text>
+					</view>
+				</view>
+				<view class="one" v-if="goodsInfo.begin === 2">
+					<view class="title">拼团状态</view>
+					<view class="time">
+						<text class="tag">即将开始</text>
+					</view>
 				</view>
 				<view>
-					<text>已团{{goodsInfo.all_people}}</text>
+					<i class="iconfont icon-ddx-shop-content_arrows"></i>
 				</view>
 			</view>
 		</view>
+		<!-- 标题 -->
 		<view class="info-box goods-info">
 			<view class="title">
 				<text class="tag" v-if="goodsInfo.mold_id">{{goodsInfo.mold}}</text>
 				{{goodsInfo.title}}
+			</view>
+			<!-- 子标题  承诺  -->
+			<view class="sub-title" v-if="goodsInfo.subtitle">
+				{{goodsInfo.subtitle}}
+			</view>
+			<view class="promise" v-if="goodsInfo.promise">
+				{{goodsInfo.promise}}
 			</view>
 		</view>
 
@@ -99,19 +144,75 @@
 			</view>
 		</uni-popup>
 
+		<!-- 拼团规则 -->
+		<view class="group-buy-rule">
+			<view class="title">
+				<view class="one">拼团玩法</view>
+				<view class="two">
+					规则详情<text style="margin-left: 6upx;" class="iconfont icon-ddx-shop-content_arrows"></text>
+				</view>
+			</view>
+			<view class="content">
+				<view class="item">
+					<image src="../../static/icon/group-step1.png"></image>
+					<view class="step-title">
+						<view>下单</view>
+						<view>开团或参团</view>
+					</view>
+				</view>
+				<view class="item">
+					<image src="../../static/icon/group-step2.png"></image>
+					<view class="step-title">
+						<view>邀请</view>
+						<view>好友参团</view>
+					</view>
+				</view>
+				<view class="item">
+					<image src="../../static/icon/group-step3.png"></image>
+					<view class="step-title">
+						<view>成团</view>
+						<view>购买成功</view>
+					</view>
+				</view>
+			</view>
+		</view>
+
 		<!--服务说明-->
-		<view class="info-box goods-info2" v-if="goodsInfo.item_service_ids.length" @click="openService">
+		<view class="my-service-title-btn" @click="openService">
 			<view class="item">
 				<view class="one">
-					<text class="title">服务</text>
-					<text class="comtent">
-						<block v-for="(serviceItem, serviceIndex) in goodsInfo.item_service_ids" :key="serviceIndex">
-							<!-- 标题只渲染 0,1,2-->
-							<block v-if="serviceIndex < 3">
-								{{serviceItem.title + '  '}}
-							</block>
-						</block>
-					</text>
+					<view class="title">说明</view>
+					<view class="content" v-if="goodsInfo.mold_id !== 1">
+						<view>
+							<text class="iconfont icon-ddx-shop-tick"></text>捣蛋熊发货&售后
+						</view>
+						<view>
+							<text class="iconfont icon-ddx-shop-tick"></text> 全国配送
+						</view>
+						<view>
+							<text class="iconfont icon-ddx-shop-tick"></text> 极速达
+						</view>
+						<view>
+							<text class="iconfont icon-ddx-shop-tick"></text>支持7天无理由退货
+						</view>
+						<view>
+							<text class="iconfont icon-ddx-shop-tick"></text> 极速退款
+						</view>
+					</view>
+					<view class="content" v-else>
+						<view>
+							<text class="iconfont icon-ddx-shop-tick"></text>捣蛋熊发货&售后
+						</view>
+						<view>
+							<text class="iconfont icon-ddx-shop-tick"></text> 全国包邮
+						</view>
+						<view>
+							<text class="iconfont icon-ddx-shop-tick"></text> 海关监管
+						</view>
+						<view>
+							<text class="iconfont icon-ddx-shop-jinyong" style="color: #CCCCCC;"></text>不支持无理由退换货
+						</view>
+					</view>
 				</view>
 				<view class="two">
 					<text class="iconfont icon-ddx-shop-content_arrows"></text>
@@ -119,20 +220,104 @@
 			</view>
 		</view>
 		<!-- 服务说明 -->
-		<uni-popup ref="myService" type="bottom" :custom="true" v-if="goodsInfo.item_service_ids.length">
+		<uni-popup ref="myService" type="bottom" :custom="true">
 			<view class="my-service">
 				<view class="my-service-title">服务说明</view>
 				<view class="my-service-box">
-					<view class="item" v-for="(item, index) in goodsInfo.item_service_ids" :key="index">
-						<view class="title-and-point">
-							<view class="point"></view>
-							<view class="title">{{item.title}}</view>
+					<block v-if="goodsInfo.mold_id !== 1">
+						<view class="item">
+							<view class="title-and-point">
+								<view class="iconfont icon-ddx-shop-tick"></view>
+								<view class="title">捣蛋熊发货&售后</view>
+							</view>
+							<view class="title-and-point">
+								<view class="iconfont icon-ddx-shop-tick on"></view>
+								<view class="title on">由捣蛋熊猫发货并提供售后服务</view>
+							</view>
 						</view>
-						<view class="title-and-point">
-							<view class="point on"></view>
-							<view class="title on">{{item.content}}</view>
+						<view class="item">
+							<view class="title-and-point">
+								<view class="iconfont icon-ddx-shop-tick"></view>
+								<view class="title">全国配送</view>
+							</view>
+							<view class="title-and-point">
+								<view class="iconfont icon-ddx-shop-tick on"></view>
+								<view class="title on">满足条件全国范围均可包邮发货 除西藏、新疆、青海、内蒙古以 及港澳台不包邮</view>
+							</view>
 						</view>
-					</view>
+						<view class="item">
+							<view class="title-and-point">
+								<view class="iconfont icon-ddx-shop-tick"></view>
+								<view class="title">极速达</view>
+							</view>
+							<view class="title-and-point">
+								<view class="iconfont icon-ddx-shop-tick on"></view>
+								<view class="title on">商城自营部分商品，重庆主城区3点前下单，当天送达，3点后下 单，次日达。（除了自然灾害、天气因素外）</view>
+							</view>
+						</view>
+						<view class="item">
+							<view class="title-and-point">
+								<view class="iconfont icon-ddx-shop-tick"></view>
+								<view class="title">支持7天无理由退货</view>
+							</view>
+							<view class="title-and-point">
+								<view class="iconfont icon-ddx-shop-tick on"></view>
+								<view class="title on">支持7天无理由退货</view>
+							</view>
+						</view>
+						<view class="item">
+							<view class="title-and-point">
+								<view class="iconfont icon-ddx-shop-tick"></view>
+								<view class="title">极速退款</view>
+							</view>
+							<view class="title-and-point">
+								<view class="iconfont icon-ddx-shop-tick on"></view>
+								<view class="title on">满足相应条件时，申请退款后，24小时内到账。</view>
+							</view>
+						</view>
+					</block>
+					<block v-else>
+						<view class="item">
+							<view class="title-and-point">
+								<view class="iconfont icon-ddx-shop-tick"></view>
+								<view class="title">捣蛋熊发货&售后</view>
+							</view>
+							<view class="title-and-point">
+								<view class="iconfont icon-ddx-shop-tick on"></view>
+								<view class="title on">由捣蛋熊猫发货并提供售后服务</view>
+							</view>
+						</view>
+						<view class="item">
+							<view class="title-and-point">
+								<view class="iconfont icon-ddx-shop-tick"></view>
+								<view class="title">全国包邮</view>
+							</view>
+							<view class="title-and-point">
+								<view class="iconfont icon-ddx-shop-tick on"></view>
+								<view class="title on">所有商品均可包邮发货，除西藏、新疆、青海、内蒙古以及港澳 台不包邮</view>
+							</view>
+						</view>
+						<view class="item">
+							<view class="title-and-point">
+								<view class="iconfont icon-ddx-shop-tick"></view>
+								<view class="title">海关监管</view>
+							</view>
+							<view class="title-and-point">
+								<view class="iconfont icon-ddx-shop-tick on"></view>
+								<view class="title on">订单均有海关监管，正品保障</view>
+							</view>
+						</view>
+						<view class="item">
+							<view class="title-and-point">
+								<view class="iconfont icon-ddx-shop-jinyong" style="color: #CCCCCC;"></view>
+								<view class="title">不支持无理由退换货</view>
+							</view>
+							<view class="title-and-point">
+								<view class="iconfont icon-ddx-shop-jinyong on"></view>
+								<view class="title on">因跨境订单的特殊性，不享受无理由退换货</view>
+							</view>
+						</view>
+					</block>
 				</view>
 				<view class="btn" @click="closeService">确定</view>
 			</view>
@@ -186,7 +371,8 @@
 				<text :class="{'on': showTabWho === 'know'}" @click="showTabWho = 'know'" v-if="buyYouKnow">购买须知</text>
 			</view>
 			<view class="content"  v-if="showTabWho === 'detail'">
-				<image v-for="(img, index) in goodsInfo.content" :src="img" :key="index" style="width: 100%;" :lazy-load="true" mode="widthFix"></image>
+				<rich-text :nodes="goodsInfo.content"></rich-text>
+<!--				<image v-for="(img, index) in goodsInfo.content" :src="img" :key="index" style="width: 100%;" :lazy-load="true" mode="widthFix"></image>-->
 			</view>
 			<view class="content-know" v-if="showTabWho === 'know'">
 				<rich-text :nodes="buyYouKnow"></rich-text>
@@ -205,6 +391,10 @@
 					<view class="text">购物车</view>
 					<view class="number" v-if="carNum">{{carNum}}</view>
 				</view>
+				<button class="box" open-type="contact" :session-from="userInfo">
+					<view class="iconfont icon-ddx-shop-pingjia-"></view>
+					<view class="text">客服</view>
+				</button>
 			</view>
 			<view class="btn">
 				<block v-if="goodsInfo.remaining_stock === 0">
@@ -322,6 +512,12 @@
 	export default {
 		data() {
 			return {
+				timer: {
+					h:`00`,
+					m:`00`,
+					s:`00`
+				},
+
 				goodsInfo: {
 					id: 0,//拼团活动id
 					update: 0,    //版本
@@ -382,6 +578,12 @@
 		},
 		methods:{
 			...mapActions(['saveShareID']),
+			// 商品banner滑动到非视频页面时候停止视频的播放
+			swiperHandle(e){
+				if (this.goodsInfo.video && e.detail.current !== 0) {
+					uni.createVideoContext('myVideo').pause()
+				}
+			},
 			_goPage(url, query = {}){
 				this.$openPage({name:url, query})
 			},
@@ -616,6 +818,7 @@
 			await this.$minApi.assembleDetail(requestData).then(res => {
 				console.log("拼团详情：",res)
 				if (res.code === 200){
+					res.data.content = this.formatRichText2(res.data.content)
 					if (res.data.assemble_list.length) {
 						res.data.assemble_list.map((item, index) => {
 							item.timeStr = ''
@@ -686,53 +889,6 @@
 <style lang="scss">
 	.container{
 		@import '../../static/css/goods_detail.scss';
-		/* 拼团展示 */
-		.pintuan{
-			color:#ffffff;
-			padding-top: $uni-spacing-col-base;
-			padding-bottom: $uni-spacing-col-base;
-			display: flex;
-			flex-direction: column;
-			justify-content: space-between;
-			.one{
-				padding:6upx 0;
-				display: flex;
-				flex-direction: row;
-				align-items: center;
-				justify-content: flex-start;
-				font-size: $uni-font-size-base;
-				.one-title{
-					margin-right: 10upx;
-				}
-				.one-box{
-					font-size: 20upx;
-					padding: 0 6upx;
-					height:34upx;
-					line-height: 34upx;
-					text-align: center;
-					border:1upx solid #fff;
-					border-radius:4upx;
-				}
-			}
-			.two{
-				padding:6upx 0;
-				display: flex;
-				align-items: center;
-				flex-direction: row;
-				justify-content: space-between;
-				font-size: $uni-font-size-base;
-				.two-title{
-					margin-right: 10upx;
-					font-size: $uni-font-size-lg;
-				}
-				.two-title2{
-					font-size: $uni-font-size-sm;
-					text-decoration: line-through;
-					color: #FBC7C7;
-				}
-			}
-
-		}
 
 		/*	其他人正在拼团*/
 		.many-group-buy{
@@ -893,6 +1049,54 @@
 				right: -40upx;
 				top: -40upx;
 				z-index: 2;
+			}
+		}
+
+		/* 拼团规则 */
+		.group-buy-rule{
+			padding: 20upx 0;
+			margin-bottom: 20upx;
+			border-top: 1px solid #F2F2F2;
+			background: #fff;
+			.title{
+				padding: 0 $uni-spacing-row-sm;
+				display: flex;
+				justify-content: space-between;
+				.one{
+					color: $color-primary-plain;
+					font-size: $uni-font-size-base;
+				}
+				.two{
+					color:  #808080;
+					font-size: $uni-font-size-sm;
+					text{
+						font-size: $uni-font-size-sm;
+					}
+				}
+			}
+			.content{
+				padding: $uni-spacing-row-sm;
+				display: flex;
+				justify-content: space-between;
+				.item{
+					display: flex;
+					font-size: $uni-font-size-base;
+					color: $color-primary-plain;
+					align-items: center;
+					image{
+						width: 30upx;
+						height: 44upx;
+						margin-right: 10upx;
+					}
+					.step-title{
+						display: flex;
+						flex-direction: column;
+						justify-content: space-between;
+						view:last-child{
+							color: #808080;
+						}
+					}
+				}
 			}
 		}
 	}

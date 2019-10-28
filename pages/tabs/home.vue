@@ -42,7 +42,7 @@
 				</view>
 
 				<!-- 通知栏 -->
-				<view class="global-notice">
+				<view class="global-notice" v-if="notice.length">
 					<uni-notice-bar color="#1A1A1A" background-color=""	 scrollable="true" show-icon="true"	single="true" :text="notice[0].title"></uni-notice-bar>
 				</view>
 
@@ -211,7 +211,6 @@
 	import uniNoticeBar from '@/components/uni-notice-bar/uni-notice-bar.vue'
 
 	import {mapActions} from 'vuex'
-	var myTimer = null
 
 	export default {
 		data() {

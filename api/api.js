@@ -554,5 +554,13 @@ export default {
       return minRequest.get('/Index/combination', data)
     },
 
+    /**
+     * 拼团详情页面，获取拼团规则
+     */
+    assembleRuleInfo(data){
+      return minRequest.get('/Index/assemble_rule_info', data)
+    },
+
+
   }
 }

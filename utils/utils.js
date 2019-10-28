@@ -68,6 +68,7 @@ exports.install = function (Vue, options) {
      * @param EndTime
      * @constructor
      */
+    /*
     Vue.prototype.getRTime = (NowTime, EndTime) => {
         // js获取的时间戳是13位的，精确到毫秒，而php获取的时间戳用strtotime是10位的，
         let t =(EndTime * 1000) -(NowTime * 1000)
@@ -96,6 +97,7 @@ exports.install = function (Vue, options) {
             return `${d}天${h}:${m}:${s}`
         }
     }
+     */
 
     /**
      * 如果富文本框里只有图片，并且图片没有设置style和宽度/高度

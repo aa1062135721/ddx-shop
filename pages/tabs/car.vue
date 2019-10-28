@@ -197,6 +197,7 @@
                         goods.is_checked = true
                     }
                 })
+                this.choosesGoodsType(key)
                 this.$forceUpdate()
                 this.getSumData()
             },
@@ -218,7 +219,7 @@
                 } else {
                     this.myResponseData[key].is_checked = false
                 }
-
+                this.choosesGoodsType(key)
                 this.$forceUpdate()
                 this.getSumData()
             },
@@ -235,6 +236,15 @@
                     if (item.data.length === count) {
                         item.is_checked = true
                     } else {
+                        item.is_checked = false
+                    }
+                    // 取消选择跨境商品
+                    if (item.mold_id === 1 && this.myResponseData.length !== 1) {
+                        item.data.map(goods => {
+                            if (goods.status === 1){
+                                goods.is_checked = false
+                            }
+                        })
                         item.is_checked = false
                     }
                 })
@@ -305,6 +315,36 @@
                 }
                 this.mySum = temp
                 this.$forceUpdate()
+            },
+
+            /**
+             * 选择一个类型商品，如果这个商品为跨境商品，其他商品如果也选择了，取消选择其他商品
+             * @param key
+             */
+            choosesGoodsType(key = 0){
+                if (this.myResponseData[key].mold_id === 1){
+                    this.myResponseData.map((item, index) => {
+                        if (key !== index){
+                            item.data.map(goods => {
+                                if (goods.status === 1){
+                                    goods.is_checked = false
+                                }
+                            })
+                            item.is_checked = false
+                        }
+                    })
+                } else {
+                    this.myResponseData.map((item) => {
+                        if (item.mold_id === 1){
+                            item.data.map(goods => {
+                                if (goods.status === 1){
+                                    goods.is_checked = false
+                                }
+                            })
+                            item.is_checked = false
+                        }
+                    })
+                }
             },
         },
         computed:{

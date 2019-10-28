@@ -148,7 +148,7 @@
 		<view class="group-buy-rule">
 			<view class="title">
 				<view class="one">拼团玩法</view>
-				<view class="two">
+				<view class="two" @click="goRulePage">
 					规则详情<text style="margin-left: 6upx;" class="iconfont icon-ddx-shop-content_arrows"></text>
 				</view>
 			</view>
@@ -507,12 +507,13 @@
 	import { mapGetters } from 'vuex'
 	import {mapActions} from 'vuex'
 
-	var myTimer = null //用来关闭定时器
+	let myTimer = null, myTimer1 = null //用来关闭定时器 用于10组拼团信息    用来关闭定时器 用于拼团商品倒计时
 
 	export default {
 		data() {
 			return {
 				timer: {
+					d:`0`,
 					h:`00`,
 					m:`00`,
 					s:`00`
@@ -620,10 +621,7 @@
 
 				}).exec();
 			},
-			//返回上一页
-			back() {
-				uni.navigateBack();
-			},
+
 			//打开选择规格弹框
 			open(){
 				this.$refs.selectSpecification.open()
@@ -661,6 +659,47 @@
 			/**
 			 * 倒计时
 			 */
+			// 整个拼团商品的 倒计时
+			getRTime(){
+				//1：正在抢购，2即将开始，3已结束
+				if (this.goodsInfo.start_time  > this.goodsInfo.now_time) {
+					this.$set(this.goodsInfo, 'begin', 2)
+					console.log("拼团活动还未开始呢")
+				}
+
+				if ( this.goodsInfo.start_time  <= this.goodsInfo.now_time && this.goodsInfo.now_time <=  this.goodsInfo.end_time) {
+					this.$set(this.goodsInfo, 'begin', 1)
+				}
+
+				if (this.goodsInfo.end_time  < this.goodsInfo.now_time) {
+					this.$set(this.goodsInfo, 'begin', 3)
+					console.log("拼团活动已经结束啦")
+					clearInterval(myTimer1)
+				}
+				let t = this.goodsInfo.end_time - this.goodsInfo.now_time
+				let d =parseInt(t/(60*60*24))//转换为天
+				t = t % (86400 * 365)
+				t = t % (86400 * 30)
+				t = t % 86400;
+				let h=Math.floor(t/3600) //时
+				t = t % 3600
+				let m=Math.floor(t/60) //分
+				t = t % 60
+				let s = t  //秒
+
+				if(parseInt(h)<10){
+					h="0"+h
+				}
+				if(parseInt(m)<10){
+					m="0"+m
+				}
+				if(parseInt(s)<10){
+					s="0"+s
+				}
+				this.goodsInfo.now_time ++
+				this.timer = {d, h, m, s,}
+			},
+			// 倒计时 (10组拼团人的倒计时)
 			timeStrChange(){
 				this.$set(this.goodsInfo.assemble_list[0], 'now_time', this.goodsInfo.assemble_list[0].now_time + 1)
 				this.goodsInfo.assemble_list.map(item => {
@@ -787,6 +826,18 @@
 					}
 				})
 			},
+
+			/**
+			 * 拼团规则详情
+			 */
+			async goRulePage(){
+				await this.$minApi.assembleRuleInfo().then(res => {
+					console.log("获取拼团规则，并跳转页面",res)
+					if (res.code === 200) {
+						this._goPage('rich_text', {content: this.formatRichText2(res.data.content)})
+					}
+				})
+			},
 		},
 		// 分享到朋友
 		onShareAppMessage(res) {
@@ -826,6 +877,9 @@
 						myTimer = setInterval(this.timeStrChange, 1000);//设置定时器 每一秒执行一次
 					}
 					this.goodsInfo = res.data
+
+					//1：正在抢购，2即将开始，3已结束
+					myTimer1 = setInterval(this.getRTime, 1000) //设置定时器 每一秒执行一次
 				}
 			})
 			// 购买须知
@@ -874,7 +928,10 @@
 			this.afterHeaderzIndex = e.scrollTop > 0 ? 11 : 10;
 		},
 		onUnload(){
-			clearInterval(myTimer);
+			clearInterval(myTimer)
+			clearInterval(myTimer1)
+			myTimer = null
+			myTimer1 = null
 		},
 		components: {
 			uniNumberBox,

@@ -179,7 +179,6 @@ export default {
 	padding: 12upx 24upx;
 	font-size: $uni-font-size-sm;
 	line-height: 1.5;
-	margin-bottom: 20upx;
 	@include flex-row-center;
 	justify-content: left;
 

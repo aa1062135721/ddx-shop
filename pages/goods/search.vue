@@ -113,8 +113,14 @@
 					limit: this.requestData.limit,
 					title: this.requestData.searchVal,
 				}
+				//按分类id搜索商品 ，  type
 				if (this.$parseURL().id && this.requestData.searchVal === this.$parseURL().title) {
 					data.type = this.$parseURL().id
+					delete data.title
+				}
+				// 按品牌id搜索商品，brand
+				if (this.$parseURL().brand && this.requestData.searchVal === this.$parseURL().title){
+					data.brand = this.$parseURL().brand
 					delete data.title
 				}
 

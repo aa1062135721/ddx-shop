@@ -750,6 +750,7 @@
 			await this.$minApi.goodsDetail(requestData).then(res => {
 				console.log("商品详情：", res)
 				if (res.code === 200){
+					res.data.content = this.formatRichText2(res.data.content)
 					if(!res.data.specs_list){
 						res.data.specs_list = []
 					}

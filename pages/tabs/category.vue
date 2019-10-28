@@ -6,7 +6,7 @@
                 <view class="item" :class="{'active' : chooseWho === 2}" @click="clickChangeWho(2)">品牌</view>
             </view>
             <view v-if="chooseWho === 1">
-                <mSearch  :show="false"></mSearch>
+                <mSearch  :show="false" v-model="searchVal" @search="goSearch"></mSearch>
             </view>
         </view>
 
@@ -33,7 +33,7 @@
                                                 <view class="hr"></view>
                                             </view>
                                             <view class="category-content">
-                                                <view class="product-item" v-for="(threeItem,threeIndex) in twoItem.child" :key="threeIndex">
+                                                <view class="product-item" v-for="(threeItem,threeIndex) in twoItem.child" :key="threeIndex"  @click="clickItem(threeItem)">
                                                     <image class="product-img" :src="threeItem.thumb"></image>
                                                     <text class="product-title">{{threeItem.cname}}</text>
                                                 </view>
@@ -41,7 +41,7 @@
                                         </block>
                                         <block v-else>
                                             <view class="category-content">
-                                                <view class="product-item">
+                                                <view class="product-item" @click="clickItem(twoItem)">
                                                     <image class="product-img" :src="twoItem.thumb"></image>
                                                     <text class="product-title">{{twoItem.cname}}</text>
                                                 </view>
@@ -61,7 +61,7 @@
                 <view class="hot-brand" id="city-letter-hot" v-if="brandArr[0].name === 'hot' && brandArr[0].data.length">
                     <view class="title">热门品牌</view>
                     <view class="box">
-                        <view class="item" v-for="(item, index) in brandArr[0].data" :key="index">
+                        <view class="item" v-for="(item, index) in brandArr[0].data" :key="index" @click="clickBrand(item)">
                             <image :src="item.thumb"></image>
                             <text>{{item.title}}</text>
                         </view>
@@ -71,7 +71,7 @@
                     <view v-for="(item, index) in brandArr" :key="index">
                         <block v-if="item.name !== 'hot' && item.data.length">
                             <view class="citys-item-letter" :id="'city-letter-'+item.name">{{item.name}}</view>
-                            <view class="citys-item" v-for="(ite, inx) in item.data" :key="inx">
+                            <view class="citys-item" v-for="(ite, inx) in item.data" :key="inx"  @click="clickBrand(ite)">
                                 <image :src="ite.thumb"></image><text>{{ite.title}}</text>
                             </view>
                         </block>
@@ -100,267 +100,270 @@
             return {
                 chooseWho:1,// 1=分类，2=品牌
 
+                searchVal: '',//搜索的内容
 
                 // 分类
-                catrgoryList: [
-                    {
-                        id: 195,  //一级分类id
-                        cname: "爸爸首选",    //一级标题
-                        thumb: "",
-                        cate_id: 0,
-                        child: [  //一级分类下的二级分类合集
-                            {
-                                id: 197,  //二级分类id
-                                cname: "爸爸第二选",  //二级分类标题
-                                thumb: "http://picture.ddxm661.com/80fdc201910231109423799.jpg",  //二级分类的图标 ，必有
-                                cate_id: 0,
-                                child: []     //三级分类，有可能有三级分类，三级分类下的图标也必有
-                            }
-                        ]
-                    },
-                    {
-                        id: 193,
-                        cname: "妈妈一选",
-                        thumb: "",
-                        cate_id: 0,
-                        child: [
-                            {
-                                id: 196,
-                                cname: "妈妈二选2",
-                                thumb: "http://picture.ddxm661.com/30cb5201910231010121190.jpg",
-                                cate_id: 0,
-                                child: []
-                            },
-                            {
-                                id: 196,
-                                cname: "妈妈二选2",
-                                thumb: "http://picture.ddxm661.com/30cb5201910231010121190.jpg",
-                                cate_id: 0,
-                                child: [
-                                    {
-                                        id: 196,
-                                        cname: "妈妈二选2",
-                                        thumb: "http://picture.ddxm661.com/30cb5201910231010121190.jpg",
-                                        cate_id: 0,
-                                        child: []
-                                    },                            {
-                                        id: 196,
-                                        cname: "妈妈二选2",
-                                        thumb: "http://picture.ddxm661.com/30cb5201910231010121190.jpg",
-                                        cate_id: 0,
-                                        child: []
-                                    },
-                                    {
-                                        id: 196,
-                                        cname: "妈妈二选2",
-                                        thumb: "http://picture.ddxm661.com/30cb5201910231010121190.jpg",
-                                        cate_id: 0,
-                                        child: []
-                                    },
-                                ]
-                            },
-                            {
-                                id: 196,
-                                cname: "妈妈二选2",
-                                thumb: "http://picture.ddxm661.com/30cb5201910231010121190.jpg",
-                                cate_id: 0,
-                                child: []
-                            },
-                            {
-                                id: 196,
-                                cname: "妈妈二选2",
-                                thumb: "http://picture.ddxm661.com/30cb5201910231010121190.jpg",
-                                cate_id: 0,
-                                child: []
-                            },
-                            {
-                                id: 196,
-                                cname: "妈妈二选2",
-                                thumb: "http://picture.ddxm661.com/30cb5201910231010121190.jpg",
-                                cate_id: 0,
-                                child: []
-                            },
-                            {
-                                id: 194,
-                                cname: "妈妈二选",
-                                thumb: "http://picture.ddxm661.com/9bb26201910231008408671.jpg",
-                                cate_id: 0,
-                                child: [
-                                    {
-                                        id: 198,
-                                        cname: "妈妈三选",
-                                        thumb: "http://picture.ddxm661.com/11fdd201910231110383458.jpg",
-                                        cate_id: 0,
-                                        child: []
-                                    },
-                                    {
-                                        id: 198,
-                                        cname: "妈妈三选",
-                                        thumb: "http://picture.ddxm661.com/11fdd201910231110383458.jpg",
-                                        cate_id: 0,
-                                        child: []
-                                    },
-                                    {
-                                        id: 198,
-                                        cname: "妈妈三选",
-                                        thumb: "http://picture.ddxm661.com/11fdd201910231110383458.jpg",
-                                        cate_id: 0,
-                                        child: []
-                                    },
-                                    {
-                                        id: 198,
-                                        cname: "妈妈三选",
-                                        thumb: "http://picture.ddxm661.com/11fdd201910231110383458.jpg",
-                                        cate_id: 0,
-                                        child: []
-                                    },
-                                    {
-                                        id: 198,
-                                        cname: "妈妈三选",
-                                        thumb: "http://picture.ddxm661.com/11fdd201910231110383458.jpg",
-                                        cate_id: 0,
-                                        child: []
-                                    },
-                                    {
-                                        id: 198,
-                                        cname: "妈妈三选",
-                                        thumb: "http://picture.ddxm661.com/11fdd201910231110383458.jpg",
-                                        cate_id: 0,
-                                        child: []
-                                    },
-                                    {
-                                        id: 198,
-                                        cname: "妈妈三选",
-                                        thumb: "http://picture.ddxm661.com/11fdd201910231110383458.jpg",
-                                        cate_id: 0,
-                                        child: []
-                                    },
-                                    {
-                                        id: 198,
-                                        cname: "妈妈三选",
-                                        thumb: "http://picture.ddxm661.com/11fdd201910231110383458.jpg",
-                                        cate_id: 0,
-                                        child: []
-                                    },
-                                ]
-                            }
-                        ]
-                    }
-                ],
+                catrgoryList: [],
+                // catrgoryList: [
+                //     {
+                //         id: 195,  //一级分类id
+                //         cname: "爸爸首选",    //一级标题
+                //         thumb: "",
+                //         cate_id: 0,
+                //         child: [  //一级分类下的二级分类合集
+                //             {
+                //                 id: 197,  //二级分类id
+                //                 cname: "爸爸第二选",  //二级分类标题
+                //                 thumb: "http://picture.ddxm661.com/80fdc201910231109423799.jpg",  //二级分类的图标 ，必有
+                //                 cate_id: 0,
+                //                 child: []     //三级分类，有可能有三级分类，三级分类下的图标也必有
+                //             }
+                //         ]
+                //     },
+                //     {
+                //         id: 193,
+                //         cname: "妈妈一选",
+                //         thumb: "",
+                //         cate_id: 0,
+                //         child: [
+                //             {
+                //                 id: 196,
+                //                 cname: "妈妈二选2",
+                //                 thumb: "http://picture.ddxm661.com/30cb5201910231010121190.jpg",
+                //                 cate_id: 0,
+                //                 child: []
+                //             },
+                //             {
+                //                 id: 196,
+                //                 cname: "妈妈二选2",
+                //                 thumb: "http://picture.ddxm661.com/30cb5201910231010121190.jpg",
+                //                 cate_id: 0,
+                //                 child: [
+                //                     {
+                //                         id: 196,
+                //                         cname: "妈妈二选2",
+                //                         thumb: "http://picture.ddxm661.com/30cb5201910231010121190.jpg",
+                //                         cate_id: 0,
+                //                         child: []
+                //                     },                            {
+                //                         id: 196,
+                //                         cname: "妈妈二选2",
+                //                         thumb: "http://picture.ddxm661.com/30cb5201910231010121190.jpg",
+                //                         cate_id: 0,
+                //                         child: []
+                //                     },
+                //                     {
+                //                         id: 196,
+                //                         cname: "妈妈二选2",
+                //                         thumb: "http://picture.ddxm661.com/30cb5201910231010121190.jpg",
+                //                         cate_id: 0,
+                //                         child: []
+                //                     },
+                //                 ]
+                //             },
+                //             {
+                //                 id: 196,
+                //                 cname: "妈妈二选2",
+                //                 thumb: "http://picture.ddxm661.com/30cb5201910231010121190.jpg",
+                //                 cate_id: 0,
+                //                 child: []
+                //             },
+                //             {
+                //                 id: 196,
+                //                 cname: "妈妈二选2",
+                //                 thumb: "http://picture.ddxm661.com/30cb5201910231010121190.jpg",
+                //                 cate_id: 0,
+                //                 child: []
+                //             },
+                //             {
+                //                 id: 196,
+                //                 cname: "妈妈二选2",
+                //                 thumb: "http://picture.ddxm661.com/30cb5201910231010121190.jpg",
+                //                 cate_id: 0,
+                //                 child: []
+                //             },
+                //             {
+                //                 id: 194,
+                //                 cname: "妈妈二选",
+                //                 thumb: "http://picture.ddxm661.com/9bb26201910231008408671.jpg",
+                //                 cate_id: 0,
+                //                 child: [
+                //                     {
+                //                         id: 198,
+                //                         cname: "妈妈三选",
+                //                         thumb: "http://picture.ddxm661.com/11fdd201910231110383458.jpg",
+                //                         cate_id: 0,
+                //                         child: []
+                //                     },
+                //                     {
+                //                         id: 198,
+                //                         cname: "妈妈三选",
+                //                         thumb: "http://picture.ddxm661.com/11fdd201910231110383458.jpg",
+                //                         cate_id: 0,
+                //                         child: []
+                //                     },
+                //                     {
+                //                         id: 198,
+                //                         cname: "妈妈三选",
+                //                         thumb: "http://picture.ddxm661.com/11fdd201910231110383458.jpg",
+                //                         cate_id: 0,
+                //                         child: []
+                //                     },
+                //                     {
+                //                         id: 198,
+                //                         cname: "妈妈三选",
+                //                         thumb: "http://picture.ddxm661.com/11fdd201910231110383458.jpg",
+                //                         cate_id: 0,
+                //                         child: []
+                //                     },
+                //                     {
+                //                         id: 198,
+                //                         cname: "妈妈三选",
+                //                         thumb: "http://picture.ddxm661.com/11fdd201910231110383458.jpg",
+                //                         cate_id: 0,
+                //                         child: []
+                //                     },
+                //                     {
+                //                         id: 198,
+                //                         cname: "妈妈三选",
+                //                         thumb: "http://picture.ddxm661.com/11fdd201910231110383458.jpg",
+                //                         cate_id: 0,
+                //                         child: []
+                //                     },
+                //                     {
+                //                         id: 198,
+                //                         cname: "妈妈三选",
+                //                         thumb: "http://picture.ddxm661.com/11fdd201910231110383458.jpg",
+                //                         cate_id: 0,
+                //                         child: []
+                //                     },
+                //                     {
+                //                         id: 198,
+                //                         cname: "妈妈三选",
+                //                         thumb: "http://picture.ddxm661.com/11fdd201910231110383458.jpg",
+                //                         cate_id: 0,
+                //                         child: []
+                //                     },
+                //                 ]
+                //             }
+                //         ]
+                //     }
+                // ],
                 select_index: 0,// 选中当前分类的下标
 
 
                 // 品牌
-                brandArr: [
-                    {
-                        name: "hot",
-                        data: [
-                            {
-                                id: 3,
-                                title: "啊啊啊啊啊啊啊啊",
-                                tag: "A",
-                                is_hot: 1,
-                                thumb: "http://picture.ddxm661.com/0e5f5201910231336273784.jpg"
-                            },
-                            {
-                                id: 6,
-                                title: "次",
-                                tag: "C",
-                                is_hot: 1,
-                                thumb: "http://picture.ddxm661.com/edcc020191023133725850.jpg"
-                            },
-                            {
-                                id: 3,
-                                title: "啊啊",
-                                tag: "A",
-                                is_hot: 1,
-                                thumb: "http://picture.ddxm661.com/0e5f5201910231336273784.jpg"
-                            },
-                            {
-                                id: 6,
-                                title: "次",
-                                tag: "C",
-                                is_hot: 1,
-                                thumb: "http://picture.ddxm661.com/edcc020191023133725850.jpg"
-                            },
-                            {
-                                id: 3,
-                                title: "啊啊",
-                                tag: "A",
-                                is_hot: 1,
-                                thumb: "http://picture.ddxm661.com/0e5f5201910231336273784.jpg"
-                            },
-                            {
-                                id: 6,
-                                title: "次",
-                                tag: "C",
-                                is_hot: 1,
-                                thumb: "http://picture.ddxm661.com/edcc020191023133725850.jpg"
-                            }
-                        ]
-                    },
-                    {
-                        name: "A",
-                        data: [
-                            {
-                                id: 2,
-                                title: "阿迪",
-                                tag: "A",
-                                is_hot: 0,
-                                thumb: "http://picture.ddxm661.com/d77ba201910231335515970.jpg"
-                            },
-                            {
-                                id: 3,
-                                title: "啊啊",
-                                tag: "A",
-                                is_hot: 1,
-                                thumb: "http://picture.ddxm661.com/0e5f5201910231336273784.jpg"
-                            }
-                        ]
-                    },
-                    {
-                        name: "B",
-                        data: [
-                            {
-                                id: 1,
-                                title: "布谷鸟",
-                                tag: "B",
-                                is_hot: 0,
-                                thumb: "http://picture.ddxm661.com/ae642201910231336048958.jpg"
-                            },
-                            {
-                                id: 4,
-                                title: "布尔",
-                                tag: "B",
-                                is_hot: 0,
-                                thumb: "http://picture.ddxm661.com/b3a7f20191023133645838.jpg"
-                            }
-                        ]
-                    },
-                    {
-                        name: "C",
-                        data: [
-                            {
-                                id: 5,
-                                title: "册",
-                                tag: "C",
-                                is_hot: 0,
-                                thumb: "http://picture.ddxm661.com/3e1e4201910231337121369.jpg"
-                            },
-                            {
-                                id: 6,
-                                title: "次",
-                                tag: "C",
-                                is_hot: 1,
-                                thumb: "http://picture.ddxm661.com/edcc020191023133725850.jpg"
-                            }
-                        ]
-                    },
-                    {
-                        name: "D",
-                        data: []
-                    }
-                ],
+                brandArr: [],
+                // brandArr: [
+                //     {
+                //         name: "hot",
+                //         data: [
+                //             {
+                //                 id: 3,
+                //                 title: "啊啊啊啊啊啊啊啊",
+                //                 tag: "A",
+                //                 is_hot: 1,
+                //                 thumb: "http://picture.ddxm661.com/0e5f5201910231336273784.jpg"
+                //             },
+                //             {
+                //                 id: 6,
+                //                 title: "次",
+                //                 tag: "C",
+                //                 is_hot: 1,
+                //                 thumb: "http://picture.ddxm661.com/edcc020191023133725850.jpg"
+                //             },
+                //             {
+                //                 id: 3,
+                //                 title: "啊啊",
+                //                 tag: "A",
+                //                 is_hot: 1,
+                //                 thumb: "http://picture.ddxm661.com/0e5f5201910231336273784.jpg"
+                //             },
+                //             {
+                //                 id: 6,
+                //                 title: "次",
+                //                 tag: "C",
+                //                 is_hot: 1,
+                //                 thumb: "http://picture.ddxm661.com/edcc020191023133725850.jpg"
+                //             },
+                //             {
+                //                 id: 3,
+                //                 title: "啊啊",
+                //                 tag: "A",
+                //                 is_hot: 1,
+                //                 thumb: "http://picture.ddxm661.com/0e5f5201910231336273784.jpg"
+                //             },
+                //             {
+                //                 id: 6,
+                //                 title: "次",
+                //                 tag: "C",
+                //                 is_hot: 1,
+                //                 thumb: "http://picture.ddxm661.com/edcc020191023133725850.jpg"
+                //             }
+                //         ]
+                //     },
+                //     {
+                //         name: "A",
+                //         data: [
+                //             {
+                //                 id: 2,
+                //                 title: "阿迪",
+                //                 tag: "A",
+                //                 is_hot: 0,
+                //                 thumb: "http://picture.ddxm661.com/d77ba201910231335515970.jpg"
+                //             },
+                //             {
+                //                 id: 3,
+                //                 title: "啊啊",
+                //                 tag: "A",
+                //                 is_hot: 1,
+                //                 thumb: "http://picture.ddxm661.com/0e5f5201910231336273784.jpg"
+                //             }
+                //         ]
+                //     },
+                //     {
+                //         name: "B",
+                //         data: [
+                //             {
+                //                 id: 1,
+                //                 title: "布谷鸟",
+                //                 tag: "B",
+                //                 is_hot: 0,
+                //                 thumb: "http://picture.ddxm661.com/ae642201910231336048958.jpg"
+                //             },
+                //             {
+                //                 id: 4,
+                //                 title: "布尔",
+                //                 tag: "B",
+                //                 is_hot: 0,
+                //                 thumb: "http://picture.ddxm661.com/b3a7f20191023133645838.jpg"
+                //             }
+                //         ]
+                //     },
+                //     {
+                //         name: "C",
+                //         data: [
+                //             {
+                //                 id: 5,
+                //                 title: "册",
+                //                 tag: "C",
+                //                 is_hot: 0,
+                //                 thumb: "http://picture.ddxm661.com/3e1e4201910231337121369.jpg"
+                //             },
+                //             {
+                //                 id: 6,
+                //                 title: "次",
+                //                 tag: "C",
+                //                 is_hot: 1,
+                //                 thumb: "http://picture.ddxm661.com/edcc020191023133725850.jpg"
+                //             }
+                //         ]
+                //     },
+                //     {
+                //         name: "D",
+                //         data: []
+                //     }
+                // ],
                 right_scroll: 0, //滑动值
             }
         },
@@ -386,6 +389,9 @@
             })
         },
         methods: {
+            _goPage(url, query = {}){
+                this.$openPage({name:url, query})
+            },
             // 分类 品牌之间的切换
             clickChangeWho(key) {
                 console.log(key)
@@ -396,6 +402,11 @@
             choose(index) {
                 console.log(index)
                 this.select_index = index;
+            },
+            // 单个分类被点击
+            clickItem(item){
+                console.log(item)
+                this._goPage('goods_search', {title: item.cname, id: item.id})
             },
 
             // 品牌 索引点击
@@ -412,6 +423,17 @@
                         that.right_scroll = data.top
                     }).exec();
                 }, 0);
+            },
+            //品牌被点击
+            clickBrand(item){
+                console.log(item)
+                this._goPage('goods_search', {brand: item.id, title: item.title})
+            },
+
+            //跳转到搜索商品页面
+            goSearch(val){
+                console.log(val)
+                this._goPage('goods_search',{title:val})
             },
         },
         components: {

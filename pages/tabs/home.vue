@@ -43,108 +43,74 @@
 
 				<!-- 通知栏 -->
 				<view class="global-notice">
-					<uni-notice-bar color="#1A1A1A" background-color=""	 scrollable="true" show-icon="true"	single="true" text="捣蛋熊快报：小程序正式上线啦!"></uni-notice-bar>
+					<uni-notice-bar color="#1A1A1A" background-color=""	 scrollable="true" show-icon="true"	single="true" :text="notice[0].title"></uni-notice-bar>
 				</view>
 
 				<!-- 超级拼团 限时秒杀 童装童鞋 境外购-->
-				<view class="goods-category">
+				<view class="goods-category" v-if="combination.assemble_list.length || combination.seckill_list.length || combination.tong_list.data.length || combination.kua_list.data.length">
 					<view class="all-goods">
-						<view class="item">
+						<view class="item" v-if="combination.assemble_list.length">
 							<view class="title-box" @click="_goPage('group_buy')">
 								<view class="title">超级拼团</view>
 								<view class="sub-title">约惠好友 超值拼购</view>
 							</view>
 							<view class="goods-info">
-								<view class="goods">
+								<view class="goods" v-for="(item, index) in combination.assemble_list" :key="index" @click="_goPage('group_buy_detail', {id: item.id})">
 									<view class="goods-img">
-										<image class="img" src="../../static/images/goods.jpg"></image>
+										<image class="img" :src="item.pic" :lazy-load="true"></image>
 									</view>
 									<view class="price">
-										<text class="now-price">￥88.86</text>
-										<text class="old-price">￥88.86</text>
-									</view>
-								</view>
-								<view class="goods">
-									<view class="goods-img">
-										<image class="img" src="../../static/images/goods.jpg"></image>
-									</view>
-									<view class="price">
-										<text class="now-price">￥88.86</text>
-										<text class="old-price">￥88.86</text>
+										<text class="now-price">￥{{item.min_price}}</text>
+										<text class="old-price">￥{{item.max_price}}</text>
 									</view>
 								</view>
 							</view>
 						</view>
-						<view class="item">
+						<view class="item" v-if="combination.seckill_list.length">
 							<view class="title-box" @click="_goPage('spike_list')">
-								<view class="title">限时秒杀 15:08:24</view>
+								<view class="title">限时秒杀</view>
 								<view class="sub-title">爆品限时限量抢</view>
 							</view>
 							<view class="goods-info">
-								<view class="goods">
+								<view class="goods" v-for="(item, index) in combination.seckill_list" :key="index"  @click="_goPage('spike_detail', {id: item.id})">
 									<view class="goods-img">
-										<image class="img" src="../../static/images/goods.jpg"></image>
+										<image class="img" :src="item.pic" :lazy-load="true"></image>
 									</view>
 									<view class="price">
-										<text class="now-price">￥88.86</text>
-										<text class="old-price">￥88.86</text>
-									</view>
-								</view>
-								<view class="goods">
-									<view class="goods-img">
-										<image class="img" src="../../static/images/goods.jpg"></image>
-									</view>
-									<view class="price">
-										<text class="now-price">￥88.86</text>
-										<text class="old-price">￥88.86</text>
+										<text class="now-price">￥{{item.min_price}}</text>
+										<text class="old-price">￥{{item.max_price}}</text>
 									</view>
 								</view>
 							</view>
 						</view>
-						<view class="item">
-							<view class="title-box">
+						<view class="item" v-if="combination.tong_list.data.length">
+							<view class="title-box" @click="_goPage('goods_search', {title: combination.tong_list.name, id: combination.tong_list.id})">
 								<view class="title">童装童鞋</view>
 								<view class="sub-title">天使般温柔呵护</view>
 							</view>
 							<view class="goods-info">
-								<view class="goods">
+								<view class="goods" v-for="(item, index) in combination.tong_list.data" :key="index" @click="_goPage('goods_detail', {id: item.item_id})">
 									<view class="goods-img">
-										<image class="img" src="../../static/images/goods.jpg"></image>
+										<image class="img" :src="item.pic" :lazy-load="true"></image>
 									</view>
 									<view class="price">
-										<text class="now-price">￥88.86</text>
-									</view>
-								</view>
-								<view class="goods">
-									<view class="goods-img">
-										<image class="img" src="../../static/images/goods.jpg"></image>
-									</view>
-									<view class="price">
-										<text class="now-price">￥88.86</text>
+										<text class="now-price">￥{{item.min_price}}</text>
 									</view>
 								</view>
 							</view>
 						</view>
-						<view class="item">
-							<view class="title-box">
+						<view class="item" v-if="combination.kua_list.data.length">
+							<view class="title-box" @click="_goPage('goods_search', {title: combination.kua_list.name, id: combination.kua_list.id})">
 								<view class="title">跨境购</view>
 								<view class="sub-title">正品保障 跨境直邮</view>
 							</view>
 							<view class="goods-info">
-								<view class="goods">
+								<view class="goods" v-for="(item, index) in combination.kua_list.data" :key="index" @click="_goPage('goods_detail', {id: item.item_id})">
 									<view class="goods-img">
-										<image class="img" src="../../static/images/goods.jpg"></image>
+										<image class="img" :src="item.pic" :lazy-load="true"></image>
 									</view>
 									<view class="price">
-										<text class="now-price">立省￥88.86</text>
-									</view>
-								</view>
-								<view class="goods">
-									<view class="goods-img">
-										<image class="img" src="../../static/images/goods.jpg"></image>
-									</view>
-									<view class="price">
-										<text class="now-price">立省￥88.86</text>
+										<text class="now-price">￥{{item.min_price}}</text>
 									</view>
 								</view>
 							</view>
@@ -153,80 +119,38 @@
 				</view>
 
 				<!-- HOT SALE-->
-				<view class="hot-sale">
+				<view class="hot-sale" v-if="explosion.length">
 					<view class="hot-sale-banner">
 						<image class="img" src="../../static/images/home-hot-sale-banner.png" mode="widthFix"></image>
 					</view>
 					<view class="hot-sale-box">
-						<view class="goods">
-                            <view class="goods-header">
-								<view  class="goods-tag">热销第一</view>
-								<image class="img" src="../../static/images/goods.jpg"></image>
-                            </view>
-							<view class="goods-footer">
-								<view class="goods-title">
-									露安适妈咪紧致按摩眼 霜 15g 1支装
+						<block  v-for="(item, index) in explosion" :key="index">
+							<view class="goods" v-if="item.type !== 1" @click="_goPage('goods_detail', {id: item.item.id})">
+								<view class="goods-header">
+									<view  class="goods-tag" v-if="item.type === 3">热销第一</view>
+									<view  class="goods-tag" v-if="item.type === 4">好评第一</view>
+									<view  class="goods-tag" v-if="item.type === 5">热门推荐</view>
+									<image class="img" :src="item.item.pic" :lazy-load="true"></image>
 								</view>
-								<view class="goods-price">¥ 98.8</view>
-							</view>
-                        </view>
-						<view class="goods">
-							<view class="goods-header">
-								<view class="goods-tag">好评第一</view>
-								<image class="img" src="../../static/images/goods.jpg"></image>
-							</view>
-							<view class="goods-footer">
-								<view class="goods-title">
-									按摩眼
+								<view class="goods-footer">
+									<view class="goods-title">
+										{{item.item.title}}
+									</view>
+									<view class="goods-price">¥{{item.item.min_price}}</view>
 								</view>
-								<view class="goods-price">¥ 98.8</view>
-							</view>
-						</view>
-						<view class="goods">
-							<view class="goods-header">
-								<view  class="goods-tag">热门推荐</view>
-								<image class="img" src="../../static/images/goods.jpg"></image>
-							</view>
-							<view class="goods-footer">
-								<view class="goods-title">
-									露安适妈咪紧致按摩眼 霜 15g 1支装
+                        	</view>
+							<view class="goods" v-if="item.type === 1 && item.item.length" v-for="(oItem, oIndex) in item.item" :key="oIndex" @click="_goPage('goods_detail', {id: oItem.id})">
+								<view class="goods-header">
+									<image class="img" :src="oItem.pic" :lazy-load="true"></image>
 								</view>
-								<view class="goods-price">¥ 98.8</view>
-							</view>
-						</view>
-						<view class="goods">
-							<view class="goods-header">
-								<image class="img" src="../../static/images/goods.jpg"></image>
-							</view>
-							<view class="goods-footer">
-								<view class="goods-title">
-									露安适妈咪紧致按摩眼 霜 15g 1支装
+								<view class="goods-footer">
+									<view class="goods-title">
+										{{oItem.title}}
+									</view>
+									<view class="goods-price">¥{{oItem.min_price}}</view>
 								</view>
-								<view class="goods-price">¥ 98.8</view>
 							</view>
-						</view>
-						<view class="goods">
-							<view class="goods-header">
-								<image class="img" src="../../static/images/goods.jpg"></image>
-							</view>
-							<view class="goods-footer">
-								<view class="goods-title">
-									露安适妈咪紧致按摩眼 霜 15g 1支装
-								</view>
-								<view class="goods-price">¥ 98.8</view>
-							</view>
-						</view>
-						<view class="goods">
-							<view class="goods-header">
-								<image class="img" src="../../static/images/goods.jpg"></image>
-							</view>
-							<view class="goods-footer">
-								<view class="goods-title">
-									露安适妈咪紧致按摩眼 霜 15g 1支装
-								</view>
-								<view class="goods-price">¥ 98.8</view>
-							</view>
-						</view>
+						</block>
 					</view>
 				</view>
 
@@ -246,62 +170,6 @@
 									<view class="goods-footer">
 										<view class="goods-title">{{subItem.title}}</view>
 										<view class="goods-price">￥{{subItem.min_price}}</view>
-									</view>
-								</view>
-							</view>
-						</scroll-view>
-					</view>
-				</view>
-				<view class="some-category">
-					<view class="some-category-banner">
-						<image class="img" src="../../static/images/home-six-banner.jpg" model="widthFix"></image>
-					</view>
-					<view class="some-category-box">
-						<scroll-view  scroll-x="true">
-							<view class="all-goods">
-								<view class="goods">
-									<view class="goods-header">
-										<image class="img" src="../../static/images/goods.jpg"></image>
-									</view>
-									<view class="goods-footer">
-										<view class="goods-title">丹麦Arla阿拉婴儿 奶粉1段 1罐装</view>
-										<view class="goods-price">￥99.88</view>
-									</view>
-								</view>
-								<view class="goods">
-									<view class="goods-header">
-										<image class="img" src="../../static/images/goods.jpg"></image>
-									</view>
-									<view class="goods-footer">
-										<view class="goods-title">丹麦Arla阿拉婴儿 奶粉1段 1罐装</view>
-										<view class="goods-price">￥99.88</view>
-									</view>
-								</view>
-								<view class="goods">
-									<view class="goods-header">
-										<image class="img" src="../../static/images/goods.jpg"></image>
-									</view>
-									<view class="goods-footer">
-										<view class="goods-title">丹麦Arla阿拉婴儿 奶粉1段 1罐装</view>
-										<view class="goods-price">￥99.88</view>
-									</view>
-								</view>
-								<view class="goods">
-									<view class="goods-header">
-										<image class="img" src="../../static/images/goods.jpg"></image>
-									</view>
-									<view class="goods-footer">
-										<view class="goods-title">奶粉</view>
-										<view class="goods-price">￥99.88</view>
-									</view>
-								</view>
-								<view class="goods">
-									<view class="goods-header">
-										<image class="img" src="../../static/images/goods.jpg"></image>
-									</view>
-									<view class="goods-footer">
-										<view class="goods-title">丹麦Arla阿拉婴儿 奶粉1段 1罐装</view>
-										<view class="goods-price">￥99.88</view>
 									</view>
 								</view>
 							</view>
@@ -374,8 +242,20 @@
 				//图标
 				iconArr:[],
 				//分类商品
-				categoryGoodsList:[]
-
+				categoryGoodsList:[],
+				// hot sale 人气爆款
+				explosion: [],
+				//公告 notice
+				notice:[],
+				// 超级拼团 限时秒杀 童装童鞋 境外购
+				// 参数说明：assemble_list：拼团，seckill_list秒杀，tong_list童装童鞋，kua_list跨境购
+				// 注意：拼团点击跳转拼团详情，秒杀点击跳转秒杀详情，童装童鞋与跨境购 跳转到商品搜索
+				combination:{
+					assemble_list: [],
+					seckill_list: [],
+					tong_list: {},
+					kua_list:{},
+				},
 			}
 		},
 		async onLoad(param) {
@@ -386,6 +266,9 @@
 			await this._getBanner()
 			await this._getIcon()
 
+			await this._getNotice()
+			await this._getCombination()
+			await this._getExplosion()
 			await this._getCategoryGoodsList()
 		},
 		async onReachBottom() {
@@ -518,6 +401,36 @@
 					console.log("获取推荐tab中的六个板块数据：",res)
 					if (res.code === 200){
 						this.categoryGoodsList = res.data
+						this.tabList[0].requestData.moreStatus = 'noMore'
+					}
+				})
+			},
+			//公告
+			async _getNotice(){
+				await this.$minApi.notice().then(res => {
+					console.log("获取推荐tab中的公告：",res)
+					if (res.code === 200){
+						this.notice = res.data
+						this.tabList[0].requestData.moreStatus = 'noMore'
+					}
+				})
+			},
+			// 超级拼团 限时秒杀 童装童鞋 境外购
+			async _getCombination(){
+				await this.$minApi.combination().then(res => {
+					console.log("获取推荐tab中的 超级拼团 限时秒杀 童装童鞋 境外购：",res)
+					if (res.code === 200){
+						this.combination = res.data
+						this.tabList[0].requestData.moreStatus = 'noMore'
+					}
+				})
+			},
+			//hot sale 人气爆款
+			async _getExplosion(){
+				await this.$minApi.explosion().then(res => {
+					console.log("hot sale 人气爆款数据：",res)
+					if (res.code === 200){
+						this.explosion = res.data
 						this.tabList[0].requestData.moreStatus = 'noMore'
 					}
 				})
@@ -687,8 +600,8 @@
 						width: 50%;
 						height: 50%;
 						box-sizing: border-box;
-						border-left: 1px solid #F2F2F2;
-						border-bottom: 1px solid #F2F2F2;
+						/*border-left: 1px solid #F2F2F2;*/
+						/*border-bottom: 1px solid #F2F2F2;*/
 						padding: 30upx 20upx 26upx 20upx;
 						display: flex;
 						flex-direction: column;

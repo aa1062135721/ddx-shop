@@ -533,6 +533,26 @@ export default {
       return minRequest.get('/Index/category_item', data)
     },
 
+    /**
+     * 首页 推荐 hot sale 人气爆款
+     */
+    explosion(data){
+      return minRequest.get('/Index/explosion', data)
+    },
+
+    /**
+     * 首页 推荐 获取公告
+     */
+    notice(data){
+      return minRequest.get('/Index/notice', data)
+    },
+
+    /**
+     * 首页 推荐 超级拼团，秒杀 童装 跨境购等
+     */
+    combination(data){
+      return minRequest.get('/Index/combination', data)
+    },
 
   }
 }

@@ -9,9 +9,18 @@
                 <view class="spike-status-info-box-title">
                     <view class="title-info">
                         <text class="iconfont icon-ddx-shop-time"></text>
-                        <!-- 秒杀中   疯狂抢购-->
-                        <text>即将开始</text>
-                        <text>请耐心等候</text>
+                        <block v-if="tabList[select_index].begin === 1">
+                            <text>秒杀中</text>
+                            <text>请疯狂抢购</text>
+                        </block>
+                        <block v-if="tabList[select_index].begin === 2">
+                            <text>即将开始</text>
+                            <text>请耐心等候</text>
+                        </block>
+                        <block v-if="tabList[select_index].begin === 3">
+                            <text>抢购结束</text>
+                            <text>请参加下一次秒杀</text>
+                        </block>
                     </view>
                     <view  class="title-time-info">
                         <text class="text">距离结束</text>
@@ -27,32 +36,32 @@
             </view>
         </view>
 
-        <view class="spike-list-content">
-            <view class="spike-list-content-box">
+        <view class="spike-list-content"  v-for="(item, index) in tabList" :key="index" v-show="select_index === index">
+            <view class="spike-list-content-box" v-for="(subItem, subIndex) in item.goodsList" :key="subIndex" @click="_goPage('spike_detail', {id: subItem.id})">
                 <view class="left">
-                    <image src="../../static/images/goods.jpg" class="img"></image>
+                    <image :src="subItem.pic" class="img" :lazy-load="true"></image>
                 </view>
                 <view class="right">
                     <view class="top">
                         <view class="title">
-                            我是商品标题我是商品标题我是商品标题我是商品标题我是商品标题我是商品标题我是商品标题我是商品标题
+                            {{subItem.item_name}}
                         </view>
                         <view class="specifications">
-                             规格：X 红色 20包
+<!--                             规格：X 红色 20包-->
                         </view>
                     </view>
                     <view class="bottom">
                         <view class="num">
                             <view>
                                 <view class="show-num">
-                                    已抢999999件
+                                    已抢{{subItem.already_num}}件
                                 </view>
                             </view>
                         </view>
                         <view class="money-btn">
                             <view class="money">
-                                <view class="new-money">￥99.88</view>
-                                <view class="old-money">￥199.99</view>
+                                <view class="new-money">￥{{subItem.price}}</view>
+                                <view class="old-money">￥{{subItem.old_price}}</view>
                             </view>
                             <view>
                                 <view class="btn">
@@ -63,86 +72,52 @@
                     </view>
                 </view>
             </view>
-            <view class="spike-list-content-box">
-                <view class="left">
-                    <image src="../../static/images/goods.jpg" class="img"></image>
-                </view>
-                <view class="right">
-                    <view class="top">
-                        <view class="title">
-                            我是商品标
-                        </view>
-                        <view class="specifications">
-                            尺寸：X 颜色：红
-                        </view>
-                    </view>
-                    <view class="bottom">
-                        <view class="num">
-                            <view>
-                                <view class="show-num">
-                                    已抢99件
-                                </view>
-                            </view>
-                        </view>
-                        <view class="money-btn">
-                            <view class="money">
-                                <view class="new-money">￥99.88</view>
-                                <view class="old-money">￥199.99</view>
-                            </view>
-                            <view>
-                                <view class="btn">
-                                    马上抢
-                                </view>
-                            </view>
-                        </view>
-                    </view>
-                </view>
-            </view>
-            <view class="spike-list-content-box">
-                <view class="left">
-                    <image src="../../static/images/goods.jpg" class="img"></image>
-                </view>
-                <view class="right">
-                    <view class="top">
-                        <view class="title">
-                            我是商品标
-                        </view>
-                        <view class="specifications">
-                            尺寸：X 颜色：红
-                        </view>
-                    </view>
-                    <view class="bottom">
-                        <view class="num">
-                            <view>
-                                <view class="show-num">
-                                    已抢99件
-                                </view>
-                            </view>
-                        </view>
-                        <view class="money-btn">
-                            <view class="money">
-                                <view class="new-money">￥99.88</view>
-                                <view class="old-money">￥199.99</view>
-                            </view>
-                            <view>
-                                <view class="btn">
-                                    马上抢
-                                </view>
-                            </view>
-                        </view>
-                    </view>
-                </view>
-            </view>
+
+<!--            <view class="spike-list-content-box">-->
+<!--                <view class="left">-->
+<!--                    <image src="../../static/images/goods.jpg" class="img"></image>-->
+<!--                </view>-->
+<!--                <view class="right">-->
+<!--                    <view class="top">-->
+<!--                        <view class="title">-->
+<!--                            我是商品标-->
+<!--                        </view>-->
+<!--                        <view class="specifications">-->
+<!--                            尺寸：X 颜色：红-->
+<!--                        </view>-->
+<!--                    </view>-->
+<!--                    <view class="bottom">-->
+<!--                        <view class="num">-->
+<!--                            <view>-->
+<!--                                <view class="show-num">-->
+<!--                                    已抢99件-->
+<!--                                </view>-->
+<!--                            </view>-->
+<!--                        </view>-->
+<!--                        <view class="money-btn">-->
+<!--                            <view class="money">-->
+<!--                                <view class="new-money">￥99.88</view>-->
+<!--                                <view class="old-money">￥199.99</view>-->
+<!--                            </view>-->
+<!--                            <view>-->
+<!--                                <view class="btn">-->
+<!--                                    马上抢-->
+<!--                                </view>-->
+<!--                            </view>-->
+<!--                        </view>-->
+<!--                    </view>-->
+<!--                </view>-->
+<!--            </view>-->
         </view>
 
-        <uni-load-more :status="moreStatus" :show-icon="true"></uni-load-more>
+        <uni-load-more :status="tabList[select_index].requestData.moreStatus" :show-icon="true"></uni-load-more>
     </view>
 </template>
 
 <script>
     import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue' //可选值：more（loading前）、loading（loading中）、noMore（没有更多了）
     import WlmTab from '@/components/wlm-tab/wlm-tab.vue'
-
+    let myTimer = null  //计时器，控制开关
 
     export default {
         name: "list",
@@ -150,61 +125,174 @@
           return {
               select_index: 0,
               tabList: [
-                  {
-                      begin:1,//1：正在抢购，2即将开始，3已结束
-                      goodsList:[],
-                      id: 1,
-                      end_time: 1571967717,
-                      now_time: 1571967717,
-                      start: '10:00',
-                      start_time: 1571967717,
-                  },
-                  {
-                      begin:2,//1：正在抢购，2即将开始，3已结束
-                      goodsList:[],
-                      id: 2,
-                      end_time: 1571967717,
-                      now_time: 1571967717,
-                      start: '12:00',
-                      start_time: 1571967717,
-                  },
-                  {
-                      begin:3,//1：正在抢购，2即将开始，3已结束
-                      goodsList:[],
-                      id: 3,
-                      end_time: 1571967717,
-                      now_time: 1571967717,
-                      start: '14:00',
-                      start_time: 1571967717,
-                  },
-                  {
-                      begin:2,//1：正在抢购，2即将开始，3已结束
-                      goodsList:[],
-                      id: 4,
-                      end_time: 1571967717,
-                      now_time: 1571967717,
-                      start: '16:00',
-                      start_time: 1571967717,
-                  },
+                  // {
+                  //     begin:1,//1：正在抢购，2即将开始，3已结束
+                  //     goodsList:[],
+                  //     id: 1,
+                  //     end_time: 1571967717,
+                  //     now_time: 1571967717,
+                  //     start: '10:00',
+                  //     start_time: 1571967717,
+                  //     requestData: {
+                  //         page: 1,
+                  //         limit: 10,
+                  //         moreStatus: "loading",
+                  //     },
+                  //    time:{
+                  //        h: 0,
+                  //        m: 0,
+                  //        s: 0
+                  //    }
+                  // },
               ],
-              moreStatus: "more",
-              requestData: {
-                  page: 1,
-                  limit: 10,
-              }
           }
         },
+        onLoad(){
+            this.spikeTimeList()
+        },
+
         methods: {
+            _goPage(url, query = {}){
+                this.$openPage({name:url, query})
+            },
             tabChange(index) {
                 this.select_index = index;
+                if (this.tabList[index].requestData.page === 1 && this.tabList[index].requestData.moreStatus !== 'noMore'){
+                    this.$nextTick(()=>{
+                        this.getGoodsList()
+                    })
+                }
+            },
+            /**
+             * 获取秒杀时间段
+             * @returns {Promise<void>}
+             */
+            async spikeTimeList(){
+                await this.$minApi.seckillTime().then(res => {
+                    if (res.code === 200) {
+                        for (let i = 0; i < res.data.length; i++){
+                               res.data[i].goodsList = []
+                               res.data[i].requestData = {
+                                   page: 1,
+                                   limit: 4,
+                                   moreStatus: "more",
+                               }
+                               res.data[i].timer = {
+                                   h:`00`,
+                                   m:`00`,
+                                   s:`00`
+                               }
+                        }
+                        this.tabList = res.data
+                        console.log('获取秒杀时间段,并组合成自己要的数据', this.tabList )
+                        this.$nextTick(()=>{
+                            myTimer = setInterval(()=>{
+                                this.$set(this.tabList[0], 'now_time', this.tabList[0].now_time + 1);
+                                this.getRTime()
+                            }, 1000) //设置定时器 每一秒执行一次
+                            this.getGoodsList()
+                        })
+                    }
+                })
+            },
+            /**
+             * 根据秒杀时间的开始时间去获取该时间段的秒杀商品
+             */
+            async getGoodsList(){
+                this.tabList[this.select_index].requestData.moreStatus = 'loading'
+                let requestData = {
+                    page: this.tabList[this.select_index].requestData.page,
+                    limit: this.tabList[this.select_index].requestData.limit,
+                    start_time: this.tabList[this.select_index].start_time,
+                }
+                await this.$minApi.seckillGoodsList(requestData).then(res => {
+                    console.log('请求这个时间段的商品数据：', res)
+                    if (res.code === 200) {
+                        this.tabList[this.select_index].goodsList.push(...res.data)
+                        if (res.data.length <  this.tabList[this.select_index].requestData.limit) {
+                            this.tabList[this.select_index].requestData.moreStatus = 'noMore'
+                        } else {
+                            this.tabList[this.select_index].requestData.moreStatus = 'more'
+                        }
+                    }
+                })
+            },
+
+            //秒杀倒计时
+            getRTime(){
+                console.log('秒杀倒计时功能')
+                //1：正在抢购，2即将开始，3已结束
+                let sum = 0
+                for(let i = 0; i < this.tabList.length; i++){
+                    if (this.tabList[i].start_time  > this.tabList[0].now_time) {
+                        this.$set(this.tabList[i], 'begin', 2)
+
+
+                        let t = this.tabList[i].start_time - this.tabList[0].now_time
+                        t = t % (86400 * 365)
+                        t = t % (86400 * 30)
+                        t = t % 86400;
+                        let h=Math.floor(t/3600) //时
+                        t = t % 3600
+                        let m=Math.floor(t/60) //分
+                        t = t % 60
+                        let s = t  //秒
+                        if(parseInt(h)<10){
+                            h="0"+h
+                        }
+                        if(parseInt(m)<10){
+                            m="0"+m
+                        }
+                        if(parseInt(s)<10){
+                            s="0"+s
+                        }
+                        this.tabList[i].timer = {h, m, s,}
+                    }
+
+                    if ( this.tabList[i].start_time  <= this.tabList[0].now_time && this.tabList[0].now_time <=  this.tabList[i].end_time) {
+                        this.$set(this.tabList[i], 'begin', 1)
+
+                        let t = this.tabList[i].end_time - this.tabList[0].now_time
+                        t = t % (86400 * 365)
+                        t = t % (86400 * 30)
+                        t = t % 86400;
+                        let h=Math.floor(t/3600) //时
+                        t = t % 3600
+                        let m=Math.floor(t/60) //分
+                        t = t % 60
+                        let s = t  //秒
+                        if(parseInt(h)<10){
+                            h="0"+h
+                        }
+                        if(parseInt(m)<10){
+                            m="0"+m
+                        }
+                        if(parseInt(s)<10){
+                            s="0"+s
+                        }
+                        this.tabList[i].timer = {h, m, s,}
+                    }
+
+                    if (this.tabList[i].end_time  < this.tabList[0].now_time) {
+                        this.$set(this.tabList[i], 'begin', 3)
+                        sum ++
+                    }
+                }
+                if (sum === this.tabList.length) {
+                    console.log('秒杀活动全部结束，清空计时器功能')
+                    clearInterval(myTimer)
+                }
             },
         },
         async onReachBottom() {
-            if (this.moreStatus === 'noMore') {
+            if (this.tabList[this.select_index].requestData.moreStatus === 'noMore') {
                 return
             }
-            this.moreStatus = 'loading'
-            this.requestData.page ++
+            this.tabList[this.select_index].requestData.page ++
+            await this.getGoodsList()
+        },
+        onUnload(){
+            clearInterval(myTimer)
         },
         components:{
             uniLoadMore,

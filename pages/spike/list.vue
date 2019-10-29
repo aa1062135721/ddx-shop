@@ -1,10 +1,10 @@
 <template>
     <view class="spike-list-container">
         <wlm-tab :tab-list="tabList" :tabCur.sync="select_index"  @change="tabChange" tabStyle="background:#52CBF4;"
-                 selectTitleStyle="color:#fff;" selectSubTitleStyle="color:#fff;">
+                 selectTitleStyle="color:#fff;" selectSubTitleStyle="color:#fff;"  v-if="tabList.length">
         </wlm-tab>
 
-        <view class="spike-status-info">
+        <view class="spike-status-info" v-if="tabList.length">
             <view class="spike-status-info-box">
                 <view class="spike-status-info-box-title">
                     <view class="title-info">

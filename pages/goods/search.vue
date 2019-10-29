@@ -262,8 +262,7 @@
 	}
 	}
 	.goods-list{
-		margin-top: 90upx;
-		padding: 190upx $uni-spacing-row-base;
+		padding: 190upx $uni-spacing-row-base 0 $uni-spacing-row-base;
 		display:flex;
 		flex-direction:row;
 		flex-wrap: wrap;

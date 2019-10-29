@@ -803,6 +803,7 @@
 
 			/*猜你喜欢 或者 其他页面的商品列表*/
 			.guess-you-like{
+				margin-top: 10upx;
 				.goods-list{
 					padding: 10upx $uni-spacing-row-sm 0 $uni-spacing-row-sm;
 					display:flex;

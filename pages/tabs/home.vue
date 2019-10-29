@@ -157,7 +157,7 @@
 
 				<!-- 六个分类，内容部分可以向左滑动-->
 				<view class="some-category" v-if="categoryGoodsList.length" v-for="(item, index) in categoryGoodsList" :key="index">
-					<view class="some-category-banner">
+					<view class="some-category-banner" @click="_goPage('goods_search', {title: item.cname, id: item.category_id})">
 						<image class="img" :src="item.thumb" model="widthFix" :lazy-load="true"></image>
 					</view>
 					<view class="some-category-box">

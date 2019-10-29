@@ -23,14 +23,34 @@
                         </block>
                     </view>
                     <view  class="title-time-info">
-                        <text class="text">距离结束</text>
-                        <text class="text">
-                            <text class="hour">15</text>
-                            <text>:</text>
-                            <text class="minute">08</text>
-                            <text>:</text>
-                            <text class="second">24</text>
-                        </text>
+                        <block v-if="tabList[select_index].begin === 1">
+                            <text class="text">距离结束</text>
+                            <text class="text">
+                                <text class="hour">{{tabList[select_index].timer.h}}</text>
+                                <text>:</text>
+                                <text class="minute">{{tabList[select_index].timer.m}}</text>
+                                <text>:</text>
+                                <text class="second">{{tabList[select_index].timer.s}}</text>
+                            </text>
+                        </block>
+                        <block v-if="tabList[select_index].begin === 2">
+                            <text class="text">距开始</text>
+                            <text class="text">
+                                <text class="hour">{{tabList[select_index].timer.h}}</text>
+                                <text>:</text>
+                                <text class="minute">{{tabList[select_index].timer.m}}</text>
+                                <text>:</text>
+                                <text class="second">{{tabList[select_index].timer.s}}</text>
+                            </text>
+                        </block>
+                        <block v-if="tabList[select_index].begin === 3">
+                            <text class="text">秒杀状态</text>
+                            <text class="text">
+                                <text class="hour">已</text>
+                                <text class="minute">结</text>
+                                <text class="second">束</text>
+                            </text>
+                        </block>
                     </view>
                 </view>
             </view>
@@ -53,7 +73,7 @@
                     <view class="bottom">
                         <view class="num">
                             <view>
-                                <view class="show-num">
+                                <view class="show-num" v-show="item.begin === 1">
                                     已抢{{subItem.already_num}}件
                                 </view>
                             </view>
@@ -64,7 +84,7 @@
                                 <view class="old-money">￥{{subItem.old_price}}</view>
                             </view>
                             <view>
-                                <view class="btn">
+                                <view class="btn" v-show="item.begin === 1">
                                     马上抢
                                 </view>
                             </view>
@@ -138,7 +158,7 @@
                   //         limit: 10,
                   //         moreStatus: "loading",
                   //     },
-                  //    time:{
+                  //    timer:{
                   //        h: 0,
                   //        m: 0,
                   //        s: 0
@@ -186,6 +206,9 @@
                         this.tabList = res.data
                         console.log('获取秒杀时间段,并组合成自己要的数据', this.tabList )
                         this.$nextTick(()=>{
+                            if(this.tabList.length === 0){
+                                return
+                            }
                             myTimer = setInterval(()=>{
                                 this.$set(this.tabList[0], 'now_time', this.tabList[0].now_time + 1);
                                 this.getRTime()

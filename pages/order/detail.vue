@@ -67,11 +67,11 @@
                 </view>
                 <view class="btns">
                     <!--订单状态 1待付款 2待发货 3待收货  4 待评论 5已完成 -1已取消-->
-                    <!-- 退单状态	0:正常	1退款中	2 退款成功 3 退款关闭 4 待寄件 5退款失败 6寄件中-->
+                    <!--  退单状态 0:正常    1退款中 2 退款成功 3 退款关闭 4 待寄件 5 退款拒绝 6 退款取消（用户手动取消退款）7 退货寄件中-->
                     <button class="active" v-if="item.deliver_status === 1" @click="_goPage('logistics_view', {order_id: responseData.id,goods: item})">查看物流</button>
                     <button @click="_goPage('order_return_apply', {order_id: responseData.id, goods: item})" v-if="[2,3,4,5].indexOf(responseData.status) !== -1 && (item.refund_status === 0 || item.refund_status === 3 || item.refund_status === 5)">申请售后</button>
                     <button class="active" v-if="item.refund_status === 4" @click="_goPage('order_return_refund',  {order_id: responseData.id, goods: item})">去寄件</button>
-                    <button class="active" v-if="[1,2,3,5,6].indexOf(item.refund_status) !== -1" @click="_goPage('order_return_status', {order_id:responseData.id, goods_id: item.id})">退款详情</button>
+                    <button class="active" v-if="[1,2,3,5,6,7].indexOf(item.refund_status) !== -1" @click="_goPage('order_return_status', {order_id:responseData.id, goods_id: item.id})">退款详情</button>
                 </view>
             </view>
         </view>
@@ -270,7 +270,7 @@
         },
         filters:{
             /**
-             *  退单状态	0:正常	1退款中	2 退款成功 3 退款关闭 4 待寄件 5退款失败
+             * 退单状态 0:正常    1退款中 2 退款成功 3 退款关闭 4 待寄件 5 退款拒绝 6 退款取消（用户手动取消退款）7 退货寄件中
              * @param status
              */
             refundStatusToText(status){
@@ -282,6 +282,9 @@
                     case 1:
                         text = '退款中'
                         break
+                    case 2:
+                        text = '退款成功'
+                        break
                     case 3:
                         text = '退款关闭'
                         break
@@ -289,10 +292,13 @@
                         text = '待寄件'
                         break
                     case 5:
-                        text = '退款失败'
+                        text = '退款拒绝'
                         break
                     case 6:
-                        text = '寄件中'
+                        text = '退款取消'
+                        break
+                    case 7:
+                        text = '退货寄件中'
                         break
                 }
                 return text

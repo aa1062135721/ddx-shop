@@ -74,7 +74,7 @@
         <view class="fixed">
             <view class="other">
                 <view class="num">共{{sumNum}}件，</view>
-                <view class="money">合计：<span class="money-num">￥{{sumMoney + freight}}</span></view>
+                <view class="money">合计：<span class="money-num">￥{{(parseFloat(sumMoney) + parseFloat(freight)) | moneyToFixed}}</span></view>
                 <view class="btn" @click="submitOrder">提交订单</view>
             </view>
         </view>

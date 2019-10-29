@@ -111,7 +111,7 @@
     @extend %overflow-2-line;
     text-align: justify;
     color: $color-primary-plain;
-    font-size: $uni-font-size-base;
+    font-size: $uni-font-size-lg;
     .tag{
       background: $color-primary;
       color: #ffffff;
@@ -124,14 +124,14 @@
   .sub-title{
     margin: 16upx 0;
     text-align: justify;
-    font-size: $uni-font-size-sm;
+    font-size: $uni-font-size-base;
     color: #1A1A1A;
   }
   /* 承诺 */
   .promise{
     text-align: justify;
-    font-size: $uni-font-size-base;
-    color: #808080;
+    font-size: $uni-font-size-sm;
+    color: $color-primary;
   }
 }
 .goods-info2{

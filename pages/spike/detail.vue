@@ -65,9 +65,6 @@
                         <text class="tag">即将开始</text>
                     </view>
                 </view>
-                <view>
-                    <i class="iconfont icon-ddx-shop-content_arrows"></i>
-                </view>
             </view>
         </view>
         <!-- 标题 -->

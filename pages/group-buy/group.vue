@@ -297,7 +297,7 @@
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .container {
         .goods-info{
             padding: $uni-spacing-row-base;
@@ -424,15 +424,12 @@
                     height: 88upx;
                     border-radius:44upx;
                     font-size: $uni-font-size-base;
-                    border: 1upx solid $color-primary;
                     margin-bottom: 40upx;
                     &.active{
-                        border: 1upx solid $color-primary;
                         background: $color-primary;
                         color: #fff;
                     }
                     &.plain{
-                        border: 1upx solid $color-primary;
                         background: #fff;
                         color: $color-primary;
                     }

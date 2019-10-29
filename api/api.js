@@ -25,6 +25,7 @@ import store from '../store/index'
 const baseUrl = `https://ddxm661.com/wxshop` //测试服务器
 // const baseUrl = `https://www.ddxm661.com/wxshop` //正式服务器
 // const baseUrl = `http://192.168.25.207:82/wxshop` //小红本地 测试服务器
+// const baseUrl = `http://192.168.25.126:8080/wxshop` //老大本地 测试服务器
 // const baseUrl = `http://localhost/ddxmtest/ddxmtest/public/index.php/wxshop` // 本地测试服务器
 const minRequest = new MinRequest()
 

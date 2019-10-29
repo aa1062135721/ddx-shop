@@ -33,14 +33,16 @@
                                         <view class="specification" v-if="goods.attr_name">规格: {{goods.attr_name}}</view>
                                     </view>
                                     <view class="money-num">
-                                        <view class="money">
-                                            ￥{{goods.real_price}}
+                                        <view class="goos-info">
+                                            <view class="money">
+                                                ￥{{goods.real_price}}
+                                            </view>
+                                            <view class="num">
+                                                X{{goods.num}}
+                                            </view>
                                         </view>
-                                        <view class="num">
-                                            X{{goods.num}}
-                                        </view>
-                                        <view class="num" v-if="goods.refund_status">
-                                           {{goods.refund_status | refundStatusToText}}
+                                        <view class="goods-return-status" v-if="goods.refund_status">
+                                            {{goods.refund_status | refundStatusToText}}
                                         </view>
                                     </view>
                                 </view>
@@ -282,7 +284,7 @@
 
         filters:{
             /**
-             *  退单状态	0:正常	1退款中	2 退款成功 3 退款关闭 4 待寄件
+             * 退单状态 0:正常    1退款中 2 退款成功 3 退款关闭 4 待寄件 5 退款拒绝 6 退款取消（用户手动取消退款）7 退货寄件中
              * @param status
              */
             refundStatusToText(status){
@@ -294,6 +296,9 @@
                     case 1:
                         text = '退款中'
                         break
+                    case 2:
+                        text = '退款成功'
+                        break
                     case 3:
                         text = '退款关闭'
                         break
@@ -301,10 +306,13 @@
                         text = '待寄件'
                         break
                     case 5:
-                        text = '退款失败'
+                        text = '退款拒绝'
                         break
                     case 6:
-                        text = '寄件中'
+                        text = '退款取消'
+                        break
+                    case 7:
+                        text = '退货寄件中'
                         break
                 }
                 return text
@@ -415,16 +423,27 @@
                     .money-num{
                         width: 30%;
                         color: #808080;
-                        .money{
-                            color: #1A1A1A;
-                            font-size:$uni-font-size-base;
+                        .goos-info{
+                            display: flex;
+                            flex-direction: column;
+                            align-items: flex-end;
+                            .money{
+                                color: #1A1A1A;
+                                font-size:$uni-font-size-base;
+                            }
+                            .num{
+                                font-size: $uni-font-size-sm;
+                            }
                         }
-                        .num{
+                        .goods-return-status{
                             font-size: $uni-font-size-sm;
+                            color: $color-primary;
+                            display: flex;
+                            justify-content: flex-end;
                         }
                         display: flex;
                         flex-direction: column;
-                        align-items: flex-end;
+                        justify-content: space-between;
                     }
                 }
             }

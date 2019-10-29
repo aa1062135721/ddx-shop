@@ -29,8 +29,8 @@
 		<view class="info-box goods-info">
 			<view class="price">
 				<view>
-					<text class="one">￥{{goodsInfo.price}}</text>
-<!--					<text class="two">￥680</text>-->
+					<text class="one">￥{{goodsInfo.min_price}}</text>
+					<text class="two" style="text-decoration: line-through;">￥{{goodsInfo.max_price}}</text>
 				</view>
 				<view>
 					<text class="two">月销 {{goodsInfo.sales}}</text>
@@ -65,10 +65,13 @@
 							<text class="iconfont icon-ddx-shop-tick"></text> 极速达
 						</view>
 						<view>
+							<text class="iconfont icon-ddx-shop-tick"></text> 极速退款
+						</view>
+						<view>
 							<text class="iconfont icon-ddx-shop-tick"></text>支持7天无理由退货
 						</view>
 						<view>
-							<text class="iconfont icon-ddx-shop-tick"></text> 极速退款
+							<text class="iconfont icon-ddx-shop-tick"></text> 满99元包邮
 						</view>
 					</view>
 					<view class="content" v-else>
@@ -80,6 +83,9 @@
 						</view>
 						<view>
 							<text class="iconfont icon-ddx-shop-tick"></text> 海关监管
+						</view>
+						<view>
+							<text class="iconfont icon-ddx-shop-tick"></text> 满99元包邮
 						</view>
 						<view>
 							<text class="iconfont icon-ddx-shop-jinyong" style="color: #CCCCCC;"></text>不支持无理由退换货
@@ -110,11 +116,21 @@
 						<view class="item">
 							<view class="title-and-point">
 								<view class="iconfont icon-ddx-shop-tick"></view>
+								<view class="title">满99元包邮</view>
+							</view>
+							<view class="title-and-point">
+								<view class="iconfont icon-ddx-shop-tick on"></view>
+								<view class="title on">满足条件99元均可包邮发货 除西藏、新疆、青海、内蒙古以及港澳台不包邮</view>
+							</view>
+						</view>
+						<view class="item">
+							<view class="title-and-point">
+								<view class="iconfont icon-ddx-shop-tick"></view>
 								<view class="title">全国配送</view>
 							</view>
 							<view class="title-and-point">
 								<view class="iconfont icon-ddx-shop-tick on"></view>
-								<view class="title on">满足条件全国范围均可包邮发货 除西藏、新疆、青海、内蒙古以 及港澳台不包邮</view>
+								<view class="title on">满足条件全国范围均可包邮发货 除西藏、新疆、青海、内蒙古以及港澳台不包邮</view>
 							</view>
 						</view>
 						<view class="item">
@@ -124,7 +140,7 @@
 							</view>
 							<view class="title-and-point">
 								<view class="iconfont icon-ddx-shop-tick on"></view>
-								<view class="title on">商城自营部分商品，重庆主城区3点前下单，当天送达，3点后下 单，次日达。（除了自然灾害、天气因素外）</view>
+								<view class="title on">商城自营部分商品，重庆主城区3点前下单，当天送达，3点后下单，次日达。（除了自然灾害、天气因素外）</view>
 							</view>
 						</view>
 						<view class="item">
@@ -162,11 +178,21 @@
 						<view class="item">
 							<view class="title-and-point">
 								<view class="iconfont icon-ddx-shop-tick"></view>
+								<view class="title">满99元包邮</view>
+							</view>
+							<view class="title-and-point">
+								<view class="iconfont icon-ddx-shop-tick on"></view>
+								<view class="title on">满足条件99元均可包邮发货 除西藏、新疆、青海、内蒙古以及港澳台不包邮</view>
+							</view>
+						</view>
+						<view class="item">
+							<view class="title-and-point">
+								<view class="iconfont icon-ddx-shop-tick"></view>
 								<view class="title">全国包邮</view>
 							</view>
 							<view class="title-and-point">
 								<view class="iconfont icon-ddx-shop-tick on"></view>
-								<view class="title on">所有商品均可包邮发货，除西藏、新疆、青海、内蒙古以及港澳 台不包邮</view>
+								<view class="title on">所有商品均可包邮发货，除西藏、新疆、青海、内蒙古以及港澳台不包邮</view>
 							</view>
 						</view>
 						<view class="item">
@@ -288,15 +314,15 @@
 					<view class="iconfont icon-ddx-shop-shopping"></view>
 					<view class="text">商城</view>
 				</view>
+				<button class="box" open-type="contact" :session-from="userInfo">
+					<view class="iconfont icon-ddx-shop-pingjia-"></view>
+					<view class="text">客服</view>
+				</button>
 				<view class="box" @click="this.$openPage('car')">
 					<view class="iconfont icon-ddx-shop-shopping-cart-o"></view>
 					<view class="text">购物车</view>
 					<view class="number" v-if="carNum">{{carNum}}</view>
 				</view>
-				<button class="box" open-type="contact" :session-from="userInfo">
-					<view class="iconfont icon-ddx-shop-pingjia-"></view>
-					<view class="text">客服</view>
-				</button>
 			</view>
 			<view class="btn">
 				<block v-if="goodsInfo.status === 1">

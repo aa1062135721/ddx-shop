@@ -60,6 +60,7 @@
             <view class="spike-list-content-box" v-for="(subItem, subIndex) in item.goodsList" :key="subIndex" @click="_goPage('spike_detail', {id: subItem.id})">
                 <view class="left">
                     <image :src="subItem.pic" class="img" :lazy-load="true"></image>
+                    <view class="tips"  v-if="subItem.num_type === 2">抢光啦</view>
                 </view>
                 <view class="right">
                     <view class="top">
@@ -91,6 +92,7 @@
                         </view>
                     </view>
                 </view>
+                <view class="mask" v-if="subItem.num_type === 2"></view>
             </view>
 
 <!--            <view class="spike-list-content-box">-->
@@ -396,6 +398,24 @@
                         width:188upx;
                         height: 188upx;
                     }
+
+                    /* 被抢光啦 */
+                    position: relative;
+                    .tips{
+                        width: 150upx;
+                        height: 150upx;
+                        line-height: 150upx;
+                        text-align: center;
+                        border-radius: 50%;
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        margin-top: -75upx;
+                        margin-left: -75upx;
+                        background: rgba(0,0,0,0.5);
+                        color: #FFFFFF;
+                        font-size: $uni-font-size-base;
+                    }
                 }
                 .right{
                     width: calc(100% - 218upx);
@@ -467,6 +487,17 @@
 
                 }
 
+                /* 被抢光啦 */
+                position: relative;
+                .mask{
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width:100%;
+                    height:228upx;
+                    background: #FFFFFF;
+                    opacity: 0.5;
+                }
             }
         }
     }

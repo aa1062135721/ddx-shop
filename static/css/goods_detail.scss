@@ -152,11 +152,10 @@
       justify-content: flex-start;
       align-items: center;
       .title{
-        width: 10%;
         margin-right: $uni-spacing-row-base;
       }
       .comtent{
-        width: 75%;
+        //width: 75%;
         //@extend %overflow-1-line;
       }
     }
@@ -284,7 +283,7 @@
     display: flex;
     justify-content: center;
     height: 98upx;
-    width: 30%;
+    width: 35%;
     .box {
       /* 客服按钮去掉小程序默认按钮样式 */
       border: none;
@@ -330,8 +329,8 @@
     }
   }
   .btn {
+    width: 65%;
     height: 98upx;
-    width: 70%;
     overflow: hidden;
     display: flex;
     justify-content: flex-end;
@@ -516,20 +515,21 @@
     width: 100%;
     font-size: $uni-font-size-base;
     .one{
-      width: 85%;
       display: flex;
       justify-content: flex-start;
-      align-items: center;
       .title{
-        width: 10%;
+        width: 20%;
         margin-right: $uni-spacing-row-base;
       }
       .content{
-        width: 85%;
         display: flex;
         flex-wrap: wrap;
         view{
-          margin-right: 12upx;
+          margin-right: 18upx;
+          margin-bottom: 10upx;
+          &:last-child{
+            margin: 0;
+          }
           font-size: $uni-font-size-sm;
           .iconfont{
             color: $color-primary;

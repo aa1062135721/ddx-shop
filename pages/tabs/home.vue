@@ -47,9 +47,9 @@
 				</view>
 
 				<!-- 超级拼团 限时秒杀 童装童鞋 境外购-->
-				<view class="goods-category" v-if="combination.assemble_list.length || combination.seckill_list.length || combination.tong_list.data.length || combination.kua_list.data.length">
+				<view class="goods-category">
 					<view class="all-goods">
-						<view class="item" v-if="combination.assemble_list.length">
+						<view class="item">
 							<view class="title-box" @click="_goPage('group_buy')">
 								<view class="title">超级拼团</view>
 								<view class="sub-title">约惠好友 超值拼购</view>
@@ -66,7 +66,7 @@
 								</view>
 							</view>
 						</view>
-						<view class="item" v-if="combination.seckill_list.length">
+						<view class="item">
 							<view class="title-box" @click="_goPage('spike_list')">
 								<view class="title">限时秒杀</view>
 								<view class="sub-title">爆品限时限量抢</view>
@@ -83,7 +83,7 @@
 								</view>
 							</view>
 						</view>
-						<view class="item" v-if="combination.tong_list.data.length">
+						<view class="item">
 							<view class="title-box" @click="_goPage('goods_search', {title: combination.tong_list.name, id: combination.tong_list.id})">
 								<view class="title">童装童鞋</view>
 								<view class="sub-title">天使般温柔呵护</view>
@@ -99,7 +99,7 @@
 								</view>
 							</view>
 						</view>
-						<view class="item" v-if="combination.kua_list.data.length">
+						<view class="item">
 							<view class="title-box" @click="_goPage('goods_search', {title: combination.kua_list.name, id: combination.kua_list.id})">
 								<view class="title">跨境购</view>
 								<view class="sub-title">正品保障 跨境直邮</view>
@@ -310,7 +310,7 @@
 					page:this.tabList[this.TabCur].requestData.page,
 					limit:this.tabList[this.TabCur].requestData.limit,
 				}
-				await this.$minApi.goodsByCategoryId(data).then(res => {
+				await this.$minApi.searchGoods(data).then(res => {
 					if (res.code === 200){
 						this.tabList[this.TabCur].goodsList.push(...res.data)
 						if (res.data.length <  this.tabList[this.TabCur].requestData.limit) {

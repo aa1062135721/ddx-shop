@@ -48,6 +48,8 @@ export const orderStatusToString = (status) => {
     case 6:
       sStatus = '已取消'
       break
+    case 7:
+      sStatus = '拼团已退款'
   }
   return sStatus
 }

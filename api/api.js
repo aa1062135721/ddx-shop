@@ -505,6 +505,14 @@ export default {
     },
 
     /**
+     * 退单详情
+     * @param data
+     */
+    returnOrderStatus(data){
+      return minRequest.post('/refund/applyDetails', data)
+    },
+
+    /**
      * 查看物流, 快递
      * @param data
      * @returns {*}

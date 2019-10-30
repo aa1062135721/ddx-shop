@@ -53,13 +53,15 @@
                             </view>
                         </view>
                         <view class="money">
-                            <view class="money">
-                                ￥{{item.real_price}}
+                            <view class="goods-info">
+                                <view class="money">
+                                    ￥{{item.real_price}}
+                                </view>
+                                <view class="num">
+                                    X{{item.num}}
+                                </view>
                             </view>
-                            <view class="num">
-                                X{{item.num}}
-                            </view>
-                            <view class="num" v-if="item.refund_status">
+                            <view class="goods-return-status" v-if="item.refund_status">
                                 {{item.refund_status | refundStatusToText}}
                             </view>
                         </view>
@@ -69,9 +71,9 @@
                     <!--订单状态 1待付款 2待发货 3待收货  4 待评论 5已完成 -1已取消-->
                     <!--  退单状态 0:正常    1退款中 2 退款成功 3 退款关闭 4 待寄件 5 退款拒绝 6 退款取消（用户手动取消退款）7 退货寄件中-->
                     <button class="active" v-if="item.deliver_status === 1" @click="_goPage('logistics_view', {order_id: responseData.id,goods: item})">查看物流</button>
-                    <button @click="_goPage('order_return_apply', {order_id: responseData.id, goods: item})" v-if="[2,3,4,5].indexOf(responseData.status) !== -1 && (item.refund_status === 0 || item.refund_status === 3 || item.refund_status === 5)">申请售后</button>
+                    <button @click="_goPage('order_return_apply', {order_id: responseData.id, goods: item})" v-if="[2,3,4,5].indexOf(responseData.status) !== -1 && (item.refund_status === 0)">申请售后</button>
                     <button class="active" v-if="item.refund_status === 4" @click="_goPage('order_return_refund',  {order_id: responseData.id, goods: item})">去寄件</button>
-                    <button class="active" v-if="[1,2,3,5,6,7].indexOf(item.refund_status) !== -1" @click="_goPage('order_return_status', {order_id:responseData.id, goods_id: item.id})">退款详情</button>
+                    <button class="active" v-if="[1,2,3,5,6,7].indexOf(item.refund_status) !== -1" @click="_goPage('order_return_status', {order_id:responseData.id, goods_id: item.id, title: item.subtitle, spec: item.attr_name, pic: item.pic, item_id: item.item_id})">退款详情</button>
                 </view>
             </view>
         </view>
@@ -307,7 +309,7 @@
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .container{
         font-size: $uni-font-size-base;
         color: $color-primary-plain;
@@ -427,16 +429,27 @@
                         .money{
                             width: 30%;
                             color: #808080;
-                            .money{
-                                color: #1A1A1A;
-                                font-size:$uni-font-size-base;
+                            .goods-info{
+                                display: flex;
+                                flex-direction: column;
+                                align-items: flex-end;
+                                .money{
+                                    color: #1A1A1A;
+                                    font-size:$uni-font-size-base;
+                                }
+                                .num{
+                                    font-size: $uni-font-size-sm;
+                                }
                             }
-                            .num{
+                            .goods-return-status{
                                 font-size: $uni-font-size-sm;
+                                color: $color-primary;
+                                display: flex;
+                                justify-content: flex-end;
                             }
                             display: flex;
                             flex-direction: column;
-                            align-items: flex-end;
+                            justify-content: space-between;
                         }
                     }
                 }

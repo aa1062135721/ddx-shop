@@ -103,9 +103,10 @@
 				<view class="two">
 					<view class="info">
 						<view class="info-title">还差{{item.r_num}}人成团</view>
-						<view class="info-time">仅剩 {{item.timeStr}}</view>
+						<view class="info-time" v-if="item.begin === 1">仅剩 {{item.timeStr}}</view>
+						<view class="info-time" v-if="item.begin === 0">组团已结束</view>
 					</view>
-					<view class="btns">
+					<view class="btns" v-if="item.begin === 1">
 						<view class="btn" @click="_goPage('group_buy_group', {id: item.order_id})"  v-if="item.order_id">查看详情</view>
 						<view class="btn" @click="buyGroup(item.id)" v-else>去参团</view>
 					</view>
@@ -726,6 +727,9 @@
 			timeStrChange(){
 				this.goodsInfo.assemble_list.map(item => {
 					let time_distance = item.end_time * 1000 - this.goodsInfo.assemble_list[0].now_time * 1000; // 结束时间减去当前时间
+					if (time_distance < 0) {
+						item.begin = 0
+					}
 					let int_day,int_hour,int_minute,int_second
 					// 天时分秒换算
 					int_day = Math.floor(time_distance/86400000)
@@ -917,6 +921,9 @@
 					res.data.content = this.formatRichText2(res.data.content)
 					if (res.data.assemble_list.length) {
 						res.data.assemble_list.map((item) => {
+							// 是否可以参加拼团 //1为可以，参加，0为不可以
+							item.begin = 1
+							// 还剩多少时间可以参加拼团
 							item.timeStr = ''
 						})
 					}

@@ -43,7 +43,7 @@
 
 				<!-- 通知栏 -->
 				<view class="global-notice" v-if="notice.length">
-					<uni-notice-bar color="#1A1A1A" background-color=""	 scrollable="true" show-icon="true"	single="true" :text="notice[0].title"></uni-notice-bar>
+					<uni-notice-bar color="#1A1A1A" background-color=""	 show-icon="true"	single="true" :text="notice[0].title"></uni-notice-bar>
 				</view>
 
 				<!-- 超级拼团 限时秒杀 童装童鞋 境外购-->
@@ -714,7 +714,6 @@
 						}
 						.goods-footer{
 							width: 100%;
-							height: 92upx;
 							display: flex;
 							flex-direction: column;
 							justify-content: space-between;
@@ -723,7 +722,6 @@
 								@extend %overflow-2-line;
 								color: #FFFFFF;
 								font-size: 22upx;
-								height: 88upx;
 							}
 							.goods-price{
 								width: 100%;

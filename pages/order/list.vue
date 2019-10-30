@@ -33,7 +33,7 @@
                                         <view class="specification" v-if="goods.attr_name">规格: {{goods.attr_name}}</view>
                                     </view>
                                     <view class="money-num">
-                                        <view class="goos-info">
+                                        <view class="goods-info">
                                             <view class="money">
                                                 ￥{{goods.real_price}}
                                             </view>
@@ -423,7 +423,7 @@
                     .money-num{
                         width: 30%;
                         color: #808080;
-                        .goos-info{
+                        .goods-info{
                             display: flex;
                             flex-direction: column;
                             align-items: flex-end;

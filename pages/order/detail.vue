@@ -52,7 +52,7 @@
                                 <text v-if="item.status === 2" style="color: #FC5A5A;">退货成功</text>
                             </view>
                         </view>
-                        <view class="money">
+                        <view class="goods-info-money">
                             <view class="goods-info">
                                 <view class="money">
                                     ￥{{item.real_price}}
@@ -426,10 +426,14 @@
                                 font-size: $uni-font-size-sm;
                             }
                         }
-                        .money{
+                        .goods-info-money{
                             width: 30%;
                             color: #808080;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: space-between;
                             .goods-info{
+                                width: 100%;
                                 display: flex;
                                 flex-direction: column;
                                 align-items: flex-end;
@@ -447,9 +451,6 @@
                                 display: flex;
                                 justify-content: flex-end;
                             }
-                            display: flex;
-                            flex-direction: column;
-                            justify-content: space-between;
                         }
                     }
                 }

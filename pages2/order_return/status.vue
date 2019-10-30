@@ -109,7 +109,7 @@
                       str = '申请中'
                       break
                   case 2:
-                      str = '同意'
+                      str = '已退单'
                       break
                   case 3:
                       str = '拒绝'

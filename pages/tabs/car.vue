@@ -43,7 +43,10 @@
             <uni-load-more :status="moreStatus" v-if="myResponseData.length !== 0"></uni-load-more>
         </view>
         <view class="no-car-list" v-if="myResponseData.length === 0">
-            <view>购物车没有商品哦</view>
+            <view>
+                <image src="../../static/images/car_empty.png" class="img"></image>
+            </view>
+            <view>您的购物车空空如也!</view>
             <view class="btn">
                 <text @click="_goPage('home')">
                     去逛逛
@@ -459,13 +462,17 @@
             font-size: $uni-font-size-base;
             color: #AFAFAF;
             text-align: center;
+            .img{
+                width: 369upx;
+                height: 316upx;
+            }
             .btn{
-                margin-top: 100upx;
+                margin-top: 50upx;
                 text{
                     color: #fff;
                     background: $color-primary;
                     text-align: center;
-                    padding: $uni-spacing-col-lg $uni-spacing-row-lg;
+                    padding: $uni-spacing-col-base $uni-spacing-row-lg;
                     border-radius: 4upx;
                 }
 

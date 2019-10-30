@@ -358,7 +358,7 @@
                     transform: translateX(-50%);
                     width: 44px;
                     height: 0;
-                    border-bottom: 2px solid $color-primary;
+                    border-bottom: 1px solid $color-primary;
                 }
             }
         }

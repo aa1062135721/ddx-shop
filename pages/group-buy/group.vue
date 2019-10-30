@@ -519,7 +519,7 @@
                     width: 100%;
                     display: flex;
                     flex-direction: row;
-                    border-bottom: 1px solid #FFF2F2F2 ;
+                    border-bottom: 1px solid #F2F2F2;
                     .info-item-title{
                         width: 20%;
                         color: $color-primary-plain;

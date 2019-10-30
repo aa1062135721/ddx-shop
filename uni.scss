@@ -34,7 +34,7 @@ $uni-bg-color-hover:#f1f1f1;//点击状态颜色
 $uni-bg-color-mask:rgba(0, 0, 0, 0.4);//遮罩颜色
 
 /* 边框颜色 */
-$uni-border-color:#c8c7cc;
+$uni-border-color:#f2f2f2;
 
 /* 尺寸变量 */
 
@@ -80,16 +80,16 @@ $background-color: #F2F2F2;
 
 /* 边线相关 */
 %border-color-solid-top{
-  border-top:1upx #E4E4E4 solid;
+  border-top:1px #F2F2F2 solid;
 };
 %border-color-solid-left{
-  border-left:1upx #E4E4E4 solid;
+  border-left:1px #F2F2F2 solid;
 };
 %border-color-solid-right{
-  border-right:1upx #E4E4E4 solid;
+  border-right:1px #F2F2F2 solid;
 };
 %border-color-solid-botton{
-  border-bottom:1upx #E4E4E4 solid;
+  border-bottom:1px #F2F2F2 solid;
 };
 
 /* 主要颜色 */

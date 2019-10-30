@@ -35,8 +35,8 @@
         name: 'id-card-authentication',
         data() {
             return {
-                idCard1 : '../../static/images/idcard1.png',
-                idCard2 : '../../static/images/idcard2.png'
+                idCard1 : '../static/idcard1.png',
+                idCard2 : '../static/idcard2.png'
             }
         },
         onLoad:function(){
@@ -60,21 +60,21 @@
                 })
             },
             previewImg1 : function(){
-                if ( this.idCard1 !== '../../static/images/idcard1.png' ){
+                if ( this.idCard1 !== '../static/idcard1.png' ){
                     uni.previewImage({
                         urls:[_self.idCard1]
                     });
                 }
             },
             previewImg2 : function(){
-                if (this.idCard2 !== '../../static/images/idcard2.png'){
+                if (this.idCard2 !== '../static/idcard2.png'){
                     uni.previewImage({
                         urls:[_self.idCard2]
                     });
                 }
             },
             uploadCards : function(){
-                if(this.idCard1 === '../../static/images/idcard1.png' || this.idCard2 === '../../static/images/idcard2.png'){
+                if(this.idCard1 === '../static/idcard1.png' || this.idCard2 === '../static/idcard2.png'){
                     uni.showToast({title:"请选择身份证照片", icon:"none"});
                     return;
                 }

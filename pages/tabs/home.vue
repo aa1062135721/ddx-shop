@@ -492,7 +492,7 @@
 			height: 100%;
 			width: 100%;
 			.my-search-input{
-				border: 1upx solid #DCDCDC;
+				border: 1upx solid #efefef;
 				color: #DCDCDC;
 				font-size: $uni-font-size-base;
 				background: #fff;
@@ -598,8 +598,8 @@
 						width: 50%;
 						height: 50%;
 						box-sizing: border-box;
-						/*border-left: 1px solid #F2F2F2;*/
-						/*border-bottom: 1px solid #F2F2F2;*/
+						/*border-left: 1px solid #efefef;*/
+						/*border-bottom: 1px solid #efefef;*/
 						padding: 30upx 20upx 26upx 20upx;
 						display: flex;
 						flex-direction: column;

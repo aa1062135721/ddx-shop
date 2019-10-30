@@ -305,7 +305,7 @@
             margin: 20upx auto;
             width:100%;
             background: #ffffff;
-            border:1upx solid #fff;
+            border:1px solid #fff;
             border-radius:10upx;
             .title-bar{
                 display:flex;
@@ -316,7 +316,7 @@
                 font-size: $uni-font-size-base;
                 color: $color-primary-plain;
                 padding: 20upx $uni-spacing-row-base;
-                border-bottom: 1px solid #CCCCCC;
+                border-bottom: 1px solid #F2F2F2;
                 .left{
                     display: flex;
                     flex-direction: row;

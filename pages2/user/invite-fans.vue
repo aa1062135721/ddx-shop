@@ -1,6 +1,6 @@
 <template>
     <view class="invite-fans">
-        <image src="../../static/images/share-fans.png" style="width: 100%;" mode="widthFix"></image>
+        <image src="../static/share-fans.png" style="width: 100%;" mode="widthFix"></image>
         <view class="share-image-box">
             <image class="img" :src="shareData.pic"></image>
             <view class="text">长按识别二维码</view>

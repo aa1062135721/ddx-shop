@@ -538,9 +538,9 @@
                                 justify-content: center;
                                 align-items: center;
                                 .hr{
-                                    height: 2upx;
+                                    height: 1px;
                                     width: 40upx;
-                                    border-radius: 1upx;
+                                    border-radius: 1px;
                                     background: #E4E4E4;
                                     margin: 0 10upx;
                                 }
@@ -621,7 +621,7 @@
                     flex-wrap: wrap;
                     .item{
                         box-sizing: border-box;
-                        border: 1upx solid #F2F2F2;
+                        border: 1px solid #F2F2F2;
                         margin: 1%;
                         width: 23%;
                         height: 164upx;

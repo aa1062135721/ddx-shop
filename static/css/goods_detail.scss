@@ -104,7 +104,7 @@
     }
     .two{
       color: #808080;
-      font-size: $uni-font-size-base;
+      font-size: $uni-font-size-sm;
     }
   }
   .title {
@@ -709,9 +709,10 @@
   justify-content: space-between;
   .left{
     .top{
-      font-size: $uni-font-size-base;
+      font-size: $uni-font-size-lg;
       .price{
         margin-right: 28upx;
+        font-size: $uni-font-size-lg;
       }
       .time-kill{
 

@@ -723,6 +723,7 @@
 								@extend %overflow-2-line;
 								color: #FFFFFF;
 								font-size: 22upx;
+								height: 88upx;
 							}
 							.goods-price{
 								width: 100%;

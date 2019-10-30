@@ -162,11 +162,44 @@
                     address_id: this.address.id || '',
                     item: []
                 }
+
+                let order_distinguish = 0    //订单类型：0普通订单，1拼团订单，2秒杀订单
+                let commander =  0            //如果为拼团订单：则传入此参数：1表示团长，反正为团员
+                let activity_id = 0        //如果为拼团或秒杀订单：则此参数表示为拼团或者秒杀订单的id，必传
+
+                //根据当前订单类型 来获取运费，普通/拼团/秒杀订单
+                switch (this.$parseURL().createOrderType) {
+                    case "buy_now":
+                        order_distinguish = 0
+                        break
+                    case "car":
+                        order_distinguish = 0
+                        break
+                    case "group":
+                        order_distinguish = 1
+                        commander = this.$parseURL().commander // 团长开团，或者团员组团
+                        activity_id =this.$parseURL().assemble_id     //拼团活动id
+                        break
+                    case "spike":
+                        order_distinguish = 2
+                        activity_id =this.$parseURL().seckill_id     //秒杀活动id
+                        break
+                }
                 this.myResponseData.forEach((item1, index1) => {
                     let obj =  {
                             id:16,        //商品id
                             num:6,        //商品数量
-                            specs_ids:""  //规格的id组，注意：如果是统一规格，也必须传此字段，值为空字符串
+                            specs_ids:"",  //规格的id组，注意：如果是统一规格，也必须传此字段，值为空字符串
+                            order_distinguish: order_distinguish,
+                    }
+                    // 拼团订单
+                    if (this.$parseURL().createOrderType === 'group') {
+                        obj.commander = commander
+                        obj.activity_id = activity_id
+                    }
+                    // 秒杀订单
+                    if (this.$parseURL().createOrderType === 'spike') {
+                        obj.activity_id = activity_id
                     }
                     item1.data.forEach((item2, index2) => {
                         obj.id = item2.item_id

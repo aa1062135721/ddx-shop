@@ -806,6 +806,7 @@
 					createOrderType,//订单类型
 					sumSum,//总量
 					sumMoney,//总金额
+					commander: (type === 1 ? 1 : 0),// 如果为拼团订单，此参数拿去获取运费：1表示团长，2表示为团员
 					assemble_id: this.goodsInfo.id,     //拼团活动id
 					num: this.choosesGoodsInfo.num,//购买数量
 					update: this.goodsInfo.update,          //版本，拼团组详情的id

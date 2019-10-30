@@ -413,7 +413,7 @@
 </template>
 
 <script>
-    var myTimer = null
+    let myTimer = null
 
     import uniNumberBox from "@/components/uni-number-box/uni-number-box.vue"
     import uniPopup from '@/components/uni-popup/uni-popup.vue'
@@ -626,7 +626,7 @@
                     createOrderType,//订单类型
                     sumSum,//总量
                     sumMoney,//总金额
-                    seckill_id: this.goodsInfo.id,//秒杀商品id
+                    seckill_id: this.goodsInfo.id,//秒杀id
                 })
             },
 

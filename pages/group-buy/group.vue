@@ -49,8 +49,8 @@
                 </view>
             </view>
             <view class="btns">
-                <button class="btn active" v-if="responseData.status === 1 && responseData.r_num !== 0" @click="shareGroup" open-type="share">已参团，邀请好友参团</button>
-                <view class="btn plain" v-if="responseData.status === 2" @click="_goPage('group-buy')">再开一团</view>
+                <button class="btn active" v-if="responseData.status === 1 && responseData.r_num !== 0 && is_show_order" @click="shareGroup" open-type="share">已参团，邀请好友参团</button>
+                <view class="btn plain" v-if="responseData.status === 2" @click="_goPage('group_buy')">再开一团</view>
                 <view class="btn active" @click="open" v-if="user_ids.indexOf(userInfo.id) === -1">加入拼团</view>
             </view>
         </view>
@@ -106,7 +106,7 @@
                         <text class="iconfont icon-ddx-shop-content_arrows"></text>
                     </view>
                 </view>
-                <view class="info-item" v-if="userInfo.id" @click="goOderDetail">
+                <view class="info-item" v-if="is_show_order" @click="goOderDetail">
                     <view class="info-item-title">
                         我的订单
                     </view>
@@ -175,6 +175,9 @@
                 user_ids:[
 
                 ],
+
+                //其他人进入本页面，如果登录了的，且自己参加拼团了，则显示查看拼团详情
+                is_show_order: false
             }
         },
         methods: {
@@ -337,6 +340,16 @@
                             this.responseData.time ++
                             this.getRTime()
                         }, 1000)//设置定时器 每一秒执行一次
+
+                        let order_id = 0
+                        this.responseData.info.map((item) => {
+                            if(item.member_id === this.userInfo.id){
+                                order_id = item.order_id
+                            }
+                        })
+                        if (order_id && this.userInfo.id) {
+                            this.is_show_order = true
+                        }
                     })
                 }
             })
@@ -489,6 +502,7 @@
                     &.plain{
                         background: #fff;
                         color: $color-primary;
+                        border: 1px solid $color-primary;
                     }
                 }
             }

@@ -46,8 +46,8 @@
 				<view class="one" v-if="goodsInfo.begin === 1">
 					<view class="title">距离结束还剩</view>
 					<view class="time">
-						<text class="tag">{{timer.h + '天'}}</text>
-						<text class="no-tag"></text>
+						<text class="tag" v-if="timer.d">{{timer.d + '天'}}</text>
+						<text class="no-tag" v-if="timer.d"></text>
 						<text class="tag">{{timer.h}}</text>
 						<text class="no-tag">:</text>
 						<text class="tag">{{timer.m}}</text>
@@ -684,49 +684,70 @@
 			 */
 			// 整个拼团商品的 倒计时
 			getRTime(){
-				//1：正在抢购，2即将开始，3已结束
-				if (this.goodsInfo.start_time  > this.goodsInfo.now_time) {
-					this.$set(this.goodsInfo, 'begin', 2)
+				//1：正在拼团，2即将开始，3已结束
+				if (this.goodsInfo.begin_time  > this.goodsInfo.now_time) {
 					console.log("拼团活动还未开始呢")
+					this.$set(this.goodsInfo, 'begin', 2)
 				}
 
-				if ( this.goodsInfo.start_time  <= this.goodsInfo.now_time && this.goodsInfo.now_time <=  this.goodsInfo.end_time) {
+				if (this.goodsInfo.begin_time  <= this.goodsInfo.now_time &&
+						this.goodsInfo.now_time <=  this.goodsInfo.end_time
+				) {
+					console.log('拼团活动 running')
+					let time_distance = this.goodsInfo.end_time * 1000 - this.goodsInfo.now_time * 1000; // 结束时间减去当前时间
+					let int_day,int_hour,int_minute,int_second
+					// 天时分秒换算
+					int_day = Math.floor(time_distance/86400000)
+					time_distance -= int_day * 86400000;
+					int_hour = Math.floor(time_distance/3600000)
+					time_distance -= int_hour * 3600000;
+					int_minute = Math.floor(time_distance/60000)
+					time_distance -= int_minute * 60000;
+					int_second = Math.floor(time_distance/1000)
+
+					// 时分秒为单数时、前面加零站位
+					if(int_hour < 10)
+						int_hour = "0" + int_hour;
+					if(int_minute < 10)
+						int_minute = "0" + int_minute;
+					if(int_second < 10)
+						int_second = "0" + int_second;
+					this.timer = {d:int_day, h:int_hour, m:int_minute, s:int_second}
 					this.$set(this.goodsInfo, 'begin', 1)
 				}
 
 				if (this.goodsInfo.end_time  < this.goodsInfo.now_time) {
-					this.$set(this.goodsInfo, 'begin', 3)
 					console.log("拼团活动已经结束啦")
+					this.$set(this.goodsInfo, 'begin', 3)
 					clearInterval(myTimer1)
 				}
-				let t = this.goodsInfo.end_time - this.goodsInfo.now_time
-				let d =parseInt(t/(60*60*24))//转换为天
-				t = t % (86400 * 365)
-				t = t % (86400 * 30)
-				t = t % 86400;
-				let h=Math.floor(t/3600) //时
-				t = t % 3600
-				let m=Math.floor(t/60) //分
-				t = t % 60
-				let s = t  //秒
-
-				if(parseInt(h)<10){
-					h="0"+h
-				}
-				if(parseInt(m)<10){
-					m="0"+m
-				}
-				if(parseInt(s)<10){
-					s="0"+s
-				}
-				this.goodsInfo.now_time ++
-				this.timer = {d, h, m, s,}
 			},
 			// 倒计时 (10组拼团人的倒计时)
 			timeStrChange(){
-				this.$set(this.goodsInfo.assemble_list[0], 'now_time', this.goodsInfo.assemble_list[0].now_time + 1)
 				this.goodsInfo.assemble_list.map(item => {
-					item.timeStr =  this.getRTime(this.goodsInfo.assemble_list[0].now_time, item.end_time)
+					let time_distance = item.end_time * 1000 - this.goodsInfo.assemble_list[0].now_time * 1000; // 结束时间减去当前时间
+					let int_day,int_hour,int_minute,int_second
+					// 天时分秒换算
+					int_day = Math.floor(time_distance/86400000)
+					time_distance -= int_day * 86400000;
+					int_hour = Math.floor(time_distance/3600000)
+					time_distance -= int_hour * 3600000;
+					int_minute = Math.floor(time_distance/60000)
+					time_distance -= int_minute * 60000;
+					int_second = Math.floor(time_distance/1000)
+
+					// 时分秒为单数时、前面加零站位
+					if(int_hour < 10)
+						int_hour = "0" + int_hour;
+					if(int_minute < 10)
+						int_minute = "0" + int_minute;
+					if(int_second < 10)
+						int_second = "0" + int_second;
+					if (int_day > 0) {
+						item.timeStr =  `${int_day}天 ${int_hour}:${int_minute}:${int_second}`
+					} else {
+						item.timeStr =  `${int_hour}:${int_minute}:${int_second}`
+					}
 				})
 			},
 
@@ -894,15 +915,25 @@
 				if (res.code === 200){
 					res.data.content = this.formatRichText2(res.data.content)
 					if (res.data.assemble_list.length) {
-						res.data.assemble_list.map((item, index) => {
+						res.data.assemble_list.map((item) => {
 							item.timeStr = ''
 						})
-						myTimer = setInterval(this.timeStrChange, 1000);//设置定时器 每一秒执行一次
 					}
 					this.goodsInfo = res.data
-
-					//1：正在抢购，2即将开始，3已结束
-					myTimer1 = setInterval(this.getRTime, 1000) //设置定时器 每一秒执行一次
+					this.$nextTick(()=>{
+						if (this.goodsInfo.assemble_list.length){
+							// 10个人的组团倒计时
+							myTimer = setInterval(() => {
+								this.goodsInfo.assemble_list[0].now_time ++
+								this.timeStrChange()
+							}, 1000);//设置定时器 每一秒执行一次
+						}
+						//整个商品的拼团倒计时
+						myTimer1 = setInterval(() =>{
+							this.goodsInfo.now_time ++
+							this.getRTime()
+						}, 1000) //设置定时器 每一秒执行一次
+					})
 				}
 			})
 			// 购买须知

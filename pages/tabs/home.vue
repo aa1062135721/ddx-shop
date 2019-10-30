@@ -83,7 +83,7 @@
 								</view>
 							</view>
 						</view>
-						<view class="item">
+						<view class="item" v-if="combination.tong_list.data.length">
 							<view class="title-box" @click="_goPage('goods_search', {title: combination.tong_list.name, id: combination.tong_list.id})">
 								<view class="title">童装童鞋</view>
 								<view class="sub-title">天使般温柔呵护</view>
@@ -99,7 +99,7 @@
 								</view>
 							</view>
 						</view>
-						<view class="item">
+						<view class="item" v-if="combination.kua_list.data.length">
 							<view class="title-box" @click="_goPage('goods_search', {title: combination.kua_list.name, id: combination.kua_list.id})">
 								<view class="title">跨境购</view>
 								<view class="sub-title">正品保障 跨境直邮</view>
@@ -592,7 +592,6 @@
 					background: #FFFFFF;
 					border-radius:8upx;
 					width: 710upx;
-					height: 710upx;
 					display: flex;
 					flex-wrap: wrap;
 					.item{

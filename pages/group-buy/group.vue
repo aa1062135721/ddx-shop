@@ -33,7 +33,7 @@
                 <!-- status  //1 拼团中 2拼团成功 3拼团失败' -->
                 <text v-if="responseData.status === 1">
                     <text v-if="responseData.r_num">仅剩<text class="num">{{responseData.r_num}}</text>个名额，</text>
-                    <text class="time">{{timer.h + ":" + timer.m + ":" + timer.s }}</text>后结束
+                    <text class="time"><block v-if="timer.d">{{timer.d + "天 "}}</block>{{timer.h + ":" + timer.m + ":" + timer.s }}</text>后结束
                 </text>
                 <text v-if="responseData.status === 2">拼团成功</text>
                 <text v-if="responseData.status === 3">拼团失败，原因：{{responseData.reason}}</text>
@@ -93,11 +93,43 @@
                 </view>
             </view>
         </uni-popup>
+
+        <!-- 其他拼团信息 -->
+        <view class="other-group-info">
+            <view class="other-group-info-box">
+                <view class="info-item" @click="_goPage('goods_detail', {id: responseData.item_id})">
+                    <view class="info-item-title">
+                        商品名称
+                    </view>
+                    <view class="info-item-body">
+                        <text class="content">{{responseData.item_name}}</text>
+                        <text class="iconfont icon-ddx-shop-content_arrows"></text>
+                    </view>
+                </view>
+                <view class="info-item" v-if="userInfo.id" @click="goOderDetail">
+                    <view class="info-item-title">
+                        我的订单
+                    </view>
+                    <view class="info-item-body">
+                        <text class="content">查看订单详情</text>
+                        <text class="iconfont icon-ddx-shop-content_arrows"></text>
+                    </view>
+                </view>
+                <view class="info-item">
+                    <view class="info-item-title">
+                        拼团须知
+                    </view>
+                    <view class="info-item-body">
+                        <text class="content">好友拼团，人满成功，不满将退款</text>
+                    </view>
+                </view>
+            </view>
+        </view>
     </view>
 </template>
 
 <script>
-    var myTimer = null
+    let myTimer = null
     import uniNumberBox from "@/components/uni-number-box/uni-number-box.vue"
     import uniPopup from '@/components/uni-popup/uni-popup.vue'
     import { mapGetters } from 'vuex'
@@ -107,6 +139,7 @@
             return {
                 id:0,
                 timer: {
+                    d: 0,
                     h:`00`,
                     m:`00`,
                     s:`00`
@@ -159,27 +192,35 @@
 
             //倒计时
             getRTime(){
-                // js获取的时间戳是13位的，精确到毫秒，而php获取的时间戳用strtotime是10位的，
-                let t =(this.responseData.end_time * 1000) - (this.responseData.time * 1000)
-                if (t<=0){
-                    this.timer = { h:`00`, m: `00`, s: `00`}
+                let time_distance = this.responseData.end_time * 1000 - this.responseData.time * 1000 // 结束时间减去当前时间
+                if (time_distance <= 0){
+                    this.timer = { d: 0, h:`00`, m: `00`, s: `00`}
+                    this.responseData.status = 3
+                    this.responseData.reason = '在规定的时间内未完成拼团'
                     clearInterval(myTimer)
                     return
                 }
-                let h=Math.floor(t/1000/60%24) //时
-                let m=Math.floor(t/1000/60%60) //分
-                let s=Math.floor(t/1000%60) //秒
-                if(parseInt(h)<10){
-                    h="0"+h
+                let int_day, int_hour, int_minute, int_second
+                // 天时分秒换算
+                int_day = Math.floor(time_distance/86400000)
+                time_distance -= int_day * 86400000
+                int_hour = Math.floor(time_distance/3600000)
+                time_distance -= int_hour * 3600000
+                int_minute = Math.floor(time_distance/60000)
+                time_distance -= int_minute * 60000
+                int_second = Math.floor(time_distance/1000)
+
+                // 时分秒为单数时、前面加零站位
+                if(int_hour < 10){
+                    int_hour = "0" + int_hour
                 }
-                if(parseInt(m)<10){
-                    m="0"+m
+                if(int_minute < 10){
+                    int_minute = "0" + int_minute
                 }
-                if(parseInt(s)<10){
-                    s="0"+s
+                if(int_second < 10){
+                    int_second = "0" + int_second
                 }
-                this.responseData.time ++
-                this.timer = {h, m, s,}
+                this.timer = {d:int_day, h:int_hour, m:int_minute, s:int_second}
             },
             // 分享拼团
             shareGroup(){
@@ -241,6 +282,17 @@
                 console.log(e)
                 this.choosesGoodsInfo.num = e
             },
+
+            // 去到订单详情
+            goOderDetail(){
+                let order_id = 0
+                this.responseData.info.map((item) => {
+                    if(item.member_id === this.userInfo.id){
+                        order_id = item.order_id
+                    }
+                })
+                this._goPage('order_detail', {order_id: order_id})
+            },
         },
         // 分享到朋友
         onShareAppMessage(res) {
@@ -280,7 +332,12 @@
                     this.user_ids = user_ids
 
                     this.responseData = res.data
-                    myTimer = setInterval(this.getRTime, 1000)//设置定时器 每一秒执行一次
+                    this.$nextTick(()=>{
+                        myTimer = setInterval(()=>{
+                            this.responseData.time ++
+                            this.getRTime()
+                        }, 1000)//设置定时器 每一秒执行一次
+                    })
                 }
             })
         },
@@ -432,6 +489,45 @@
                     &.plain{
                         background: #fff;
                         color: $color-primary;
+                    }
+                }
+            }
+        }
+        .other-group-info{
+            background: #FFFFFF;
+            margin-top: 20upx;
+            .other-group-info-box{
+                display: flex;
+                flex-direction: column;
+                padding: 0 $uni-spacing-row-base;
+                .info-item{
+                    padding: 30upx 0;
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    border-bottom: 1px solid #FFF2F2F2 ;
+                    .info-item-title{
+                        width: 20%;
+                        color: $color-primary-plain;
+                        font-size: $uni-font-size-base;
+                    }
+                    .info-item-body{
+                        display: flex;
+                        align-items: center;
+                        justify-content: flex-end;
+                        width: 80%;
+                        .content{
+                            width: 78%;
+                            @extend %overflow-1-line;
+                            color: #808080;
+                            font-size: $uni-font-size-base;
+                            text-align: right;
+                        }
+                        .iconfont{
+                            font-size: 20upx;
+                            color: #D4D4D4;
+                            margin-left: 2%;
+                        }
                     }
                 }
             }

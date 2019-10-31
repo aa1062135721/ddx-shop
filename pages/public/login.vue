@@ -129,6 +129,7 @@
 		text-align: center;
 		.img{
 			width: 220upx;
+			height: 220upx;
 		}
 	}
 	.fixed{

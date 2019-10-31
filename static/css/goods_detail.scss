@@ -527,9 +527,6 @@
         view{
           margin-right: 18upx;
           margin-bottom: 10upx;
-          &:last-child{
-            margin: 0;
-          }
           font-size: $uni-font-size-sm;
           .iconfont{
             color: $color-primary;

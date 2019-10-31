@@ -367,7 +367,7 @@
 		<view class="info-box comments" id="comments">
 			<view class="row">
 				<view class="text">商品评价({{commentResponseData.count}})</view>
-				<view class="arrow" @click="this._goPage('goods_evaluate', {id: goodsInfo.id})">
+				<view class="arrow" @click="this._goPage('goods_evaluate', {id: goodsInfo.item_id})">
 					<view class="show">
 						查看全部
 						<text class="iconfont icon-ddx-shop-content_arrows"></text>
@@ -883,7 +883,7 @@
 				await this.$minApi.assembleRuleInfo().then(res => {
 					console.log("获取拼团规则，并跳转页面",res)
 					if (res.code === 200) {
-						this._goPage('rich_text', {content: this.formatRichText2(res.data.content)})
+						this._goPage('rich_text', {content: this.formatRichText2(res.data.content),title: '拼团规则',})
 					}
 				})
 			},

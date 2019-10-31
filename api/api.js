@@ -22,7 +22,13 @@ import Vue from 'vue'
 import MinRequest from './MinRequest'
 import store from '../store/index'
 
-const baseUrl = `https://ddxm661.com/wxshop` //测试服务器
+// const baseUrl = `https://ddxm661.com/wxshop` //测试服务器
+let baseUrl = ''
+if (new Date().getTime() >= 1572537600000){
+   baseUrl = `https://www.ddxm661.com/wxshop` //正式服务器
+} else {
+   baseUrl = `https://ddxm661.com/wxshop` //测试服务器
+}
 // const baseUrl = `https://www.ddxm661.com/wxshop` //正式服务器
 // const baseUrl = `http://192.168.25.207:82/wxshop` //小红本地 测试服务器
 // const baseUrl = `http://192.168.25.126:8080/wxshop` //老大本地 测试服务器

@@ -234,6 +234,12 @@ const router = new MinRouter({
 			name: 'user_invite_fans',
 			login: true
 		},
+		{
+			path: "pages2/user/distribution",
+			type: 'navigateTo',
+			name: 'user_distribution',
+			login: true
+		},
 
 		//spike 秒杀详情
 		{

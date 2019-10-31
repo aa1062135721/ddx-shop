@@ -576,6 +576,11 @@ export default {
       return minRequest.get('/Index/assemble_rule_info', data)
     },
 
-
+    /**
+     * 分销中心，获取数据
+     */
+    distribution(data){
+      return minRequest.get('/User/getUserRetail', data)
+    }
   }
 }

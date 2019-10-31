@@ -200,6 +200,12 @@
 					  "navigationBarTitleText": "邀请好友"
 					}
 				},
+				{
+					"path": "user/distribution",
+					"style": {
+						"navigationBarTitleText": "分销中心"
+					}
+				},
 
 				{
 					"path": "logistics/view",
@@ -245,33 +251,37 @@
     ],
     "preloadRule": {
 		"pages2/user/fans": {
-        "network": "all",
-        "packages": ["__APP__"]
-      },
+			"network": "all",
+			"packages": ["__APP__"]
+		},
 		"pages2/user/id-card-authentication": {
-        "network": "all",
-        "packages": ["__APP__"]
-      },
+			"network": "all",
+			"packages": ["__APP__"]
+		},
 		"pages2/user/setting": {
-        "network": "all",
-        "packages": ["__APP__"]
-      },
+			"network": "all",
+			"packages": ["__APP__"]
+		},
 		"pages2/user/money": {
-        "network": "all",
-        "packages": ["__APP__"]
-      },
+			"network": "all",
+			"packages": ["__APP__"]
+		},
 		"pages2/user/record": {
-        "network": "all",
-        "packages": ["__APP__"]
-      },
+			"network": "all",
+			"packages": ["__APP__"]
+		},
 		"pages2/user/modify-mobile": {
-        "network": "all",
-        "packages": ["__APP__"]
-      },
+			"network": "all",
+			"packages": ["__APP__"]
+		},
 		"pages2/user/invite-fans": {
-        "network": "all",
-        "packages": ["__APP__"]
-      },
+			"network": "all",
+			"packages": ["__APP__"]
+		},
+		"pages2/user/distribution": {
+			"network": "all",
+			"packages": ["__APP__"]
+		},
 
 		"pages2/logistics/view": {
 			"network": "all",

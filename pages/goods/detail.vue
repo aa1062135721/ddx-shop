@@ -271,7 +271,7 @@
 		<view class="info-box comments" id="comments">
 			<view class="row">
 				<view class="text">商品评价({{commentResponseData.count}})</view>
-				<view class="arrow" @click="this._goPage('goods_evaluate', {id: goodsInfo.id})">
+				<view class="arrow" @click="_goPage('goods_evaluate', {id: goodsInfo.id})">
 					<view class="show">
 						查看全部
 						<text class="iconfont icon-ddx-shop-content_arrows"></text>

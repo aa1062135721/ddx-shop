@@ -252,8 +252,12 @@
 				combination:{
 					assemble_list: [],
 					seckill_list: [],
-					tong_list: {},
-					kua_list:{},
+					tong_list: {
+						data:[],
+					},
+					kua_list:{
+						data:[],
+					},
 				},
 			}
 		},

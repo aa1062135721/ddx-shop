@@ -12,7 +12,8 @@
                 content: ''
             }
         },
-        onLoad() {
+        onLoad(param) {
+            console.log(param)
             console.log("带过来的参数",this.$parseURL())
             this.content = this.$parseURL().content
 

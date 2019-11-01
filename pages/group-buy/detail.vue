@@ -127,10 +127,11 @@
 								</view>
 								<view class="info">
 									<view>{{item.nickname}}：还差{{item.r_num}}人成团</view>
-									<view>仅剩 {{item.timeStr}}</view>
+									<view v-if="item.begin === 1">仅剩 {{item.timeStr}}</view>
+									<view v-if="item.begin === 0">组团已结束</view>
 								</view>
 							</view>
-							<view class="right">
+							<view class="right" v-if="item.begin === 1">
 								<view class="btn" @click="_goPage('group_buy_group', {id: item.order_id})" v-if="item.order_id">查看详情</view>
 								<view class="btn" @click="buyGroup(item.id)" v-else>去参团</view>
 							</view>
@@ -367,7 +368,7 @@
 		<view class="info-box comments" id="comments">
 			<view class="row">
 				<view class="text">商品评价({{commentResponseData.count}})</view>
-				<view class="arrow" @click="this._goPage('goods_evaluate', {id: goodsInfo.item_id})">
+				<view class="arrow" @click="_goPage('goods_evaluate', {id: goodsInfo.item_id})">
 					<view class="show">
 						查看全部
 						<text class="iconfont icon-ddx-shop-content_arrows"></text>
@@ -882,6 +883,7 @@
 			async goRulePage(){
 				await this.$minApi.assembleRuleInfo().then(res => {
 					console.log("获取拼团规则，并跳转页面",res)
+					console.log(this.formatRichText2(res.data.content))
 					if (res.code === 200) {
 						this._goPage('rich_text', {content: this.formatRichText2(res.data.content),title: '拼团规则',})
 					}

@@ -10,18 +10,21 @@
 		{
 			"path": "pages/tabs/car",
 			"style": {
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "购物车"
 			}
 		},
 		{
 			"path": "pages/tabs/mine",
 			"style": {
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "我的"
 			}
 		},
 		{
 			"path": "pages/tabs/category",
 			"style": {
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "分类"
 			}
 		},

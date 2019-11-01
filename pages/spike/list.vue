@@ -132,7 +132,8 @@
 <!--            </view>-->
         </view>
 
-        <uni-load-more :status="tabList[select_index].requestData.moreStatus" :show-icon="true"></uni-load-more>
+        <uni-load-more v-if="tabList.length" :status="tabList[select_index].requestData.moreStatus" :show-icon="true"></uni-load-more>
+        <uni-load-more v-else status="noMore" :show-icon="true"></uni-load-more>
     </view>
 </template>
 
@@ -147,25 +148,25 @@
           return {
               select_index: 0,
               tabList: [
-                  // {
-                  //     begin:1,//1：正在抢购，2即将开始，3已结束
-                  //     goodsList:[],
-                  //     id: 1,
-                  //     end_time: 1571967717,
-                  //     now_time: 1571967717,
-                  //     start: '10:00',
-                  //     start_time: 1571967717,
-                  //     requestData: {
-                  //         page: 1,
-                  //         limit: 10,
-                  //         moreStatus: "loading",
-                  //     },
-                  //    timer:{
-                  //        h: 0,
-                  //        m: 0,
-                  //        s: 0
-                  //    }
-                  // },
+                  {
+                      begin:0,//1：正在抢购，2即将开始，3已结束
+                      goodsList:[],
+                      id: 0,
+                      end_time: 0,
+                      now_time: 0,
+                      start: '',
+                      start_time: 0,
+                      requestData: {
+                          page: 1,
+                          limit: 10,
+                          moreStatus: "loading",
+                      },
+                     timer:{
+                         h: 0,
+                         m: 0,
+                         s: 0
+                     }
+                  },
               ],
           }
         },

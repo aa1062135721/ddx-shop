@@ -98,4 +98,11 @@ exports.install = function (Vue, options) {
     }
 
 
+    /**
+     * 判断是否为公众号环境
+     * @returns {boolean}
+     */
+    Vue.prototype.isWechat = () => {
+        return String(navigator.userAgent.toLowerCase().match(/MicroMessenger/i)) === "micromessenger"
+    }
 }

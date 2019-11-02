@@ -49,7 +49,7 @@
 </template>
 
 <script>
-    import { mapGetters } from 'vuex'
+    import { mapState } from 'vuex'
     import uniPopup from '@/components/uni-popup/uni-popup.vue'
 
     export default {
@@ -86,7 +86,7 @@
             },
         },
         computed: {
-            ...mapGetters(['userInfo'])
+            ...mapState(['userInfo'])
         },
         components: {
             uniPopup,

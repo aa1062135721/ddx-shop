@@ -29,7 +29,7 @@
 
 <script>
 	import uniPopup from "@/components/uni-popup/uni-popup.vue"
-	import {mapMutations,mapActions} from 'vuex'
+	import {mapMutations} from 'vuex'
     export default {
         name: "login",
 		components: {uniPopup},
@@ -88,10 +88,10 @@
 										// TODO
 										// 如果是返回token保存，否则用手机号授权登录
 										if (res.code === 200) {
-											this.saveToken(res.data.token)
+											this.setToken(res.data.token)
 											this.$minApi.getUserInfo().then(userInfo => {
 												if (userInfo.code === 200) {
-													this.saveUserInfo(userInfo.data)
+													this.setUserInfo(userInfo.data)
 												}
 											}).catch(err => {
 												console.log(err)
@@ -109,7 +109,7 @@
 						}
 					})
 			},
-			...mapActions(['saveToken', 'saveUserInfo'])
+			...mapMutations(['setToken', 'setUserInfo'])
 		}
     }
 </script>

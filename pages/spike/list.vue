@@ -148,25 +148,25 @@
           return {
               select_index: 0,
               tabList: [
-                  {
-                      begin:0,//1：正在抢购，2即将开始，3已结束
-                      goodsList:[],
-                      id: 0,
-                      end_time: 0,
-                      now_time: 0,
-                      start: '',
-                      start_time: 0,
-                      requestData: {
-                          page: 1,
-                          limit: 10,
-                          moreStatus: "loading",
-                      },
-                     timer:{
-                         h: 0,
-                         m: 0,
-                         s: 0
-                     }
-                  },
+                  // {
+                  //     begin:0,//1：正在抢购，2即将开始，3已结束
+                  //     goodsList:[],
+                  //     id: 0,
+                  //     end_time: 0,
+                  //     now_time: 0,
+                  //     start: '',
+                  //     start_time: 0,
+                  //     requestData: {
+                  //         page: 1,
+                  //         limit: 10,
+                  //         moreStatus: "loading",
+                  //     },
+                  //    timer:{
+                  //        h: 0,
+                  //        m: 0,
+                  //        s: 0
+                  //    }
+                  // },
               ],
           }
         },

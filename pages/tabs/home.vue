@@ -210,7 +210,7 @@
 	import uniNavBar from "@/components/uni-nav-bar/uni-nav-bar.vue"
 	import uniNoticeBar from '@/components/uni-notice-bar/uni-notice-bar.vue'
 
-	import {mapActions} from 'vuex'
+	import {mapMutations} from 'vuex'
 
 	export default {
 		data() {
@@ -263,7 +263,7 @@
 		},
 		async onLoad(param) {
 			if (param.user_id){
-				this.saveShareID(param.user_id)
+				this.setShareID(param.user_id)
 			}
 			await this._getCategory()
 			await this._getBanner()
@@ -286,7 +286,7 @@
 			}
 		},
 		methods: {
-			...mapActions(['saveShareID']),
+			...mapMutations(['setShareID']),
 			_goPage(url, query = {}){
 				this.$openPage({name:url, query})
 			},

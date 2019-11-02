@@ -290,7 +290,8 @@
                 <rich-text :nodes="goodsInfo.content"></rich-text>
             </view>
             <view class="content-know" v-if="showTabWho === 'know'">
-                <rich-text :nodes="buyYouKnow"></rich-text>
+<!--                <rich-text :nodes="buyYouKnow"></rich-text>-->
+                <view v-html="buyYouKnow"></view>
             </view>
         </view>
 
@@ -417,8 +418,7 @@
 
     import uniNumberBox from "@/components/uni-number-box/uni-number-box.vue"
     import uniPopup from '@/components/uni-popup/uni-popup.vue'
-    import { mapGetters } from 'vuex'
-    import {mapActions} from 'vuex'
+    import { mapState, mapMutations } from 'vuex'
 
     export default {
         name: "detail",
@@ -480,7 +480,7 @@
             }
         },
         methods: {
-            ...mapActions(['saveShareID']),
+            ...mapMutations(['setShareID']),
             // 商品banner滑动到非视频页面时候停止视频的播放
             swiperHandle(e){
                 if (this.goodsInfo.video && e.detail.current !== 0) {
@@ -705,7 +705,7 @@
                 requestData.id = param.id
             }
             if (param.user_id){
-                this.saveShareID(param.user_id)
+                this.setShareID(param.user_id)
             }
 
             if (this.$parseURL().id){
@@ -771,7 +771,7 @@
             this.afterHeaderzIndex = e.scrollTop > 0 ? 11 : 10;
         },
         computed: {
-            ...mapGetters(['userInfo'])
+            ...mapState(['userInfo'])
         },
     }
 </script>

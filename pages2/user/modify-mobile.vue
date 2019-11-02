@@ -17,7 +17,7 @@
 </template>
 
 <script>
-    import {mapActions, mapGetters} from 'vuex'
+    import {mapMutations, mapState} from 'vuex'
 
     export default {
         name: "user_modify-mobile",
@@ -33,7 +33,7 @@
             console.log("带过来的参数",this.$parseURL())
         },
         methods:{
-            ...mapActions(['saveToken', 'saveUserInfo']),
+            ...mapMutations(['setUserInfo']),
             async getCode(){
                 if ( !this.isPoneAvailable(this.mobile, true) || !this.canGetCode){
                     return
@@ -62,7 +62,7 @@
                             this.msg(res.msg)
                             this.$minApi.getUserInfo().then(userInfo => {
                                 if (userInfo.code === 200) {
-                                    this.saveUserInfo(userInfo.data)
+                                    this.setUserInfo(userInfo.data)
                                     uni.navigateBack({
                                         delta: 1
                                     })
@@ -98,7 +98,7 @@
             }
         },
         computed: {
-            ...mapGetters(['userInfo'])
+            ...mapState(['userInfo'])
         },
     }
 </script>

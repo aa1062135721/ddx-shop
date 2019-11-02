@@ -14,7 +14,7 @@
 </template>
 
 <script>
-    import {mapActions} from 'vuex'
+    import {mapMutations} from 'vuex'
 
     export default {
         name: "login-with-mobile",
@@ -29,7 +29,7 @@
           console.log("带过来的参数",this.$parseURL())
         },
         methods:{
-            ...mapActions(['saveToken', 'saveUserInfo']),
+            ...mapMutations(['setToken', 'setUserInfo']),
             async getCode(){
                 if ( !this.isPoneAvailable(this.mobile, true) || !this.canGetCode){
                     return
@@ -54,10 +54,10 @@
                         nickName: this.$parseURL().nickName,
                         user_id: uni.getStorageSync('shareID'),
                     }).then(res => {
-                        this.saveToken(res.data.token)
+                        this.setToken(res.data.token)
                         this.$minApi.getUserInfo().then(userInfo => {
                             if (userInfo.code === 200) {
-                                this.saveUserInfo(userInfo.data)
+                                this.setUserInfo(userInfo.data)
                             }
                         }).catch(err => {
                             console.log(err)

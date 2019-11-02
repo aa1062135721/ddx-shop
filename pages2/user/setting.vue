@@ -36,7 +36,7 @@
 </template>
 
 <script>
-    import {mapMutations,mapActions,mapGetters} from 'vuex'
+    import {mapMutations, mapState} from 'vuex'
 
     export default {
         name: "setting",
@@ -50,14 +50,14 @@
                 this.$openPage({name:url, query})
             },
             loginOut(){
-                this.saveUserInfo()
-                this.saveToken()
+                this.setUserInfo()
+                this.setToken()
                 uni.navigateBack()
             },
-            ...mapActions(['saveToken', 'saveUserInfo'])
+            ...mapMutations(['setToken', 'setUserInfo'])
         },
         computed:{
-            ...mapGetters(['userInfo'])
+            ...mapState(['userInfo'])
         }
     }
 </script>

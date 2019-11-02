@@ -10,7 +10,7 @@
 </template>
 
 <script>
-    import { mapGetters } from 'vuex'
+    import { mapState } from 'vuex'
 
     export default {
         name: "invite-fans",//邀请好友页面
@@ -50,7 +50,7 @@
             }
         },
         computed: {
-            ...mapGetters(['userInfo'])
+            ...mapState(['userInfo'])
         },
     }
 </script>

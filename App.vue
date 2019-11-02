@@ -3,66 +3,50 @@
 
 	export default {
 		methods: {
-			...mapMutations(['setToken', 'setUserInfo']),
-            ...mapActions(['saveToken', 'saveUserInfo']),
-            // 判断公众号截取code
-            getUrlParam(name) {
-                let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-                let r = window.location.search.substr(1).match(reg);
-                if (r != null) {
-                    return unescape(r[2]);
-                }
-                return null;
-            }
+			...mapMutations(['setToken']),
+            ...mapActions(['asyncGetUserInfo']),
 		},
 		onLaunch: function() {
 			console.log('App Launch')
-            console.log("回调地址（当前网页的地址）: window.location.href", window.location.href)
             try {
-                const token = uni.getStorageSync('token');
-                if (token) {
-                    this.saveToken(token);
-                    this.$minApi.getUserInfo().then(res => {
-                      if (res.code === 200) {
-                          this.saveUserInfo(res.data)
-                      }
-                    }).catch(err => {
-                        console.log(err)
-                    })
-                }
+                this.setToken('963d7c1f574a8bf947380914ef7d2777b48c18c6e3f0c3eeaf6e138506a6f00f') //保存用户token，并存vuex，永久存储
+                this.asyncGetUserInfo() //获取用户数据 并存vuex 临时存储
+
+                const token = uni.getStorageSync('token')
+                // if (this.isWechat()){
+                    if (token) {
+                        this.setToken(token)
+                        this.asyncGetUserInfo()
+                    } else {
+                        let code = this.getUrlParam("code") //是否存在code
+                        if (code == null || code === "") {
+                            //不存在就打开上面的地址进行授权
+                            this.loginWithOfficalAccount()
+                        } else {
+                            //存在则通过code传向后台
+                            let data = {
+                                code: code,
+                                tuserid: uni.getStorageSync('shareID'),//推荐人id
+                            }
+                            this.$minApi.getToken(data).then(res => {
+                                // TODO 这里需要不需要把用户数据一些数据存下来
+                                console.log('服务器返回的数据！', res)
+                                if (res.code === 200) {
+                                    this.setToken(res.data.token) //保存用户token，并存vuex，永久存储
+                                    this.asyncGetUserInfo() //获取用户数据 并存vuex 临时存储
+                                }
+                            })
+                        }
+                    }
+                // } else {
+                //     this.msg('请在微信浏览器中打开')
+                // }
             } catch (e) {
-                // error
-            }
-
-            if (this.isWechat()){
-                console.log('当前是公众号的环境')
-                let appid = "wxb5ee49b69efc2429"; //为测试号id
-                let code = this.getUrlParam("code"); //是否存在code
-                console.log("获取本地的code: ", code);
-                let local = window.location.href;
-                console.log("回调地址（当前网页的地址）: ", local);
-
-                if (code == null || code === "") {
-                    //不存在就打开上面的地址进行授权
-                    window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(local)}&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect`;
-                } else {
-                    //存在则通过code传向后台调用接口返回微信的个人信息
-                }
-            } else {
-                console.log('请在微信浏览器中打开')
+                console.log(e)
             }
 		},
 		onShow: function() {
 			console.log('App Show')
-            let _that = this
-            uni.getNetworkType({
-                success: function (res) {
-                    console.log(res.networkType)
-                    if (res.networkType === 'none') {
-                        _that.msg('请检查您的网络状态')
-                    }
-                }
-            });
 		},
 		onHide: function() {
 			console.log('App Hide')

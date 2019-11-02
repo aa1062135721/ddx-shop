@@ -70,7 +70,7 @@
 <script>
     import uniNumberBox from "@/components/uni-number-box/uni-number-box.vue"
     import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue'
-    import { mapGetters } from 'vuex'
+    import { mapState } from 'vuex'
 
     export default {
         name: "car",
@@ -351,7 +351,7 @@
             },
         },
         computed:{
-            ...mapGetters(['userInfo']),
+            ...mapState(['userInfo']),
         },
         components: {uniNumberBox,uniLoadMore,}
     }

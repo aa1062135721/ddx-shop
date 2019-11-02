@@ -32,7 +32,7 @@
 </template>
 
 <script>
-    import { mapGetters } from 'vuex'
+    import { mapState } from 'vuex'
 
     export default {
         name: "order_pay",
@@ -152,7 +152,7 @@
             },
         },
         computed: {
-            ...mapGetters(['userInfo'])
+            ...mapState(['userInfo'])
         },
     }
 </script>

@@ -202,7 +202,7 @@ const router = new MinRouter({
 			path: "pages/user/feedback",
 			type: 'navigateTo',
 			name: 'feedback',
-			login: false
+			login: true
 		},
 		{
 			path: "pages2/user/fans",

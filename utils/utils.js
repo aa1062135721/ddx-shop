@@ -105,4 +105,29 @@ exports.install = function (Vue, options) {
     Vue.prototype.isWechat = () => {
         return String(navigator.userAgent.toLowerCase().match(/MicroMessenger/i)) === "micromessenger"
     }
+
+    /**
+     * 判断公众号截取code
+     * @param name
+     * @returns {string|null}
+     */
+    Vue.prototype.getUrlParam = (name) => {
+        let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)")
+        let r = window.location.search.substr(1).match(reg)
+        if (r != null) {
+            return unescape(r[2])
+        }
+        return null
+    }
+
+    /**
+     * 微信公众号重定向
+     */
+    Vue.prototype.loginWithOfficalAccount = () => {
+        let appId = 'wxb5ee49b69efc2429'
+        let local = window.location.href //回调地址
+        window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${encodeURIComponent(local)}&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect`
+    }
+
+
 }

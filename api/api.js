@@ -31,8 +31,8 @@ const minRequest = new MinRequest()
 
 // 请求拦截器
 minRequest.interceptors.request((request) => {
-  if ( store.getters.token ) {
-    request.header['XX-Token'] = store.getters.token
+  if ( store.state.token ) {
+    request.header['XX-Token'] = store.state.token
   }
   return request
 })
@@ -59,13 +59,13 @@ const codeMessage = {
 // 响应拦截器
 minRequest.interceptors.response((response) => {
   /**
-   * 未登录
+   * TODO 未登录
    */
-  if (response.data.code === -1) {
-    uni.navigateTo({
-      url: `/pages/public/login`
-    })
-  }
+  // if (response.data.code === -1) {
+  //   uni.navigateTo({
+  //     url: `/pages/public/login`
+  //   })
+  // }
 
   /**
    * 登录过期或者token错误
@@ -575,6 +575,15 @@ export default {
      */
     distribution(data){
       return minRequest.get('/User/getUserRetail', data)
-    }
+    },
+
+    /**
+     * 微信公众号获取 token
+     */
+    getToken(data){
+      return minRequest.get('/Index/getusertoken', data)
+    },
+
+
   }
 }

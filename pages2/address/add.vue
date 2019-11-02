@@ -23,7 +23,8 @@
 				</view>
 				<picker class="value" mode="multiSelector" :value="multiIndex" :range="multiArray" range-key="area_name"  @change="bindMultiPickerChange"  @columnchange="bindMultiPickerColumnChange" >
 					<view>
-						<input type="number" placeholder="请选择地址" disabled="true" v-model="address.area_names">
+						{{address.area_names || '请选择地址'}}
+<!--						<input placeholder="请选择地址" disabled="true" v-model="address.area_names">-->
 					</view>
 				</picker>
 			</view>
@@ -43,7 +44,7 @@
 					<input type="text" placeholder="设置为默认地址" disabled="true">
 				</view>
 				<view class="value2">
-					 <switch :checked="address.default" color="#31BF1A" style="transform:scale(0.7)" @change="switch1Change" />
+					 <switch :checked="address.default ? true : false" color="#31BF1A" style="transform:scale(0.7)" @change="switch1Change" />
 				</view>
 			</view>
 		</view>
@@ -118,25 +119,30 @@
 					if (item.id.toString() === area_arr[0]){
 						console.log(index)
 						this.multiIndex[0] = index
+						this.$set(this.multiIndex, 0, index)
 					}
 				})
 				area2.forEach((item, index) => {
 					if (item.id.toString() === area_arr[1]){
 						console.log(index)
 						this.multiIndex[1] = index
+						this.$set(this.multiIndex, 1, index)
 					}
 				})
 				area3.forEach((item, index) => {
 					if (item.id.toString() === area_arr[2]){
 						console.log(index)
 						this.multiIndex[2] = index
+						this.$set(this.multiIndex, 2, index)
 					}
 				})
+				this.$forceUpdate()
 			} else {
 				let area1 = await this.getCity()
 				let area2 = await this.getCity(area1[0].id)
 				let area3 = await this.getCity(area2[0].id)
 				this.multiArray = [area1, area2, area3]
+				this.$forceUpdate()
 			}
 		    let _this = this
 			this.$eventHub.$on('attestation_id', function (data) {
@@ -201,8 +207,16 @@
 				console.log(this.multiIndex)
 			},
 			bindMultiPickerChange(e){
-				this.address.area_ids = `${this.multiArray[0][this.multiIndex[0]].id},${this.multiArray[1][this.multiIndex[1]].id},${this.multiArray[2][this.multiIndex[2]].id}`
-				this.address.area_names = `${this.multiArray[0][this.multiIndex[0]].area_name},${this.multiArray[1][this.multiIndex[1]].area_name},${this.multiArray[2][this.multiIndex[2]].area_name}`
+				if (this.multiArray[2].length){
+					this.address.area_ids = `${this.multiArray[0][this.multiIndex[0]].id},${this.multiArray[1][this.multiIndex[1]].id},${this.multiArray[2][this.multiIndex[2]].id}`
+				} else {
+					this.address.area_ids = `${this.multiArray[0][this.multiIndex[0]].id},${this.multiArray[1][this.multiIndex[1]].id}`
+				}
+				if (this.multiArray[2].length) {
+					this.address.area_names = `${this.multiArray[0][this.multiIndex[0]].area_name},${this.multiArray[1][this.multiIndex[1]].area_name},${this.multiArray[2][this.multiIndex[2]].area_name}`
+				} else {
+					this.address.area_names = `${this.multiArray[0][this.multiIndex[0]].area_name},${this.multiArray[1][this.multiIndex[1]].area_name}`
+				}
 				console.log(this.multiIndex)
 			},
 			switch1Change(e) {

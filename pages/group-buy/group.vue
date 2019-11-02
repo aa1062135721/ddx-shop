@@ -132,7 +132,7 @@
     let myTimer = null
     import uniNumberBox from "@/components/uni-number-box/uni-number-box.vue"
     import uniPopup from '@/components/uni-popup/uni-popup.vue'
-    import { mapGetters } from 'vuex'
+    import { mapState } from 'vuex'
 
     export default {
         data() {
@@ -362,7 +362,7 @@
             uniPopup,
         },
         computed: {
-            ...mapGetters(['userInfo'])
+            ...mapState(['userInfo'])
         },
     }
 </script>

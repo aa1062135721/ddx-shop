@@ -1,9 +1,6 @@
 <template>
     <view class="container">
         <view class="input">
-            <input type="number" placeholder="请输入原手机号码" maxlength="11" v-model="oldMobile">
-        </view>
-        <view class="input">
             <input type="number" placeholder="请输入新手机号码" maxlength="11" v-model="mobile">
         </view>
         <view class="input input-flex">
@@ -11,7 +8,7 @@
             <button class="seed-msg" size="mini" plain :class="{'on': canGetCode}" :disabled="!canGetCode" @click="getCode">获取验证码</button>
         </view>
         <view>
-            <view class="btn" :class="{'on': (!canGetCode) || (code.length === 0)}" @click="modify">修改</view>
+            <view class="btn" @click="modify">修改</view>
         </view>
     </view>
 </template>
@@ -23,7 +20,6 @@
         name: "user_modify-mobile",
         data(){
           return{
-              oldMobile: '',
               mobile: '',
               code: '',
               canGetCode: false,
@@ -49,10 +45,6 @@
                 })
             },
             async modify(){
-                if (this.oldMobile !== this.userInfo.mobile){
-                    this.msg('原手机号不正确')
-                    return
-                }
                 if (this.isPoneAvailable(this.mobile, true) &&  this.code.length > 0) {
                     await this.$minApi.modifyMobile({
                         mobile: this.mobile,
@@ -74,13 +66,6 @@
             },
         },
         watch:{
-            oldMobile(newData, oldData) {
-                if (newData.length === 11){
-                    if (!this.isPoneAvailable(newData)) {
-                        this.msg('原手机号格式不正确')
-                    }
-                }
-            },
             mobile(newData, oldData) {
                 if (newData.length === 11){
                     if (this.isPoneAvailable(newData, true)) {

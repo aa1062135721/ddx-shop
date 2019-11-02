@@ -1,5 +1,39 @@
 <template>
 	<view class="container">
+		<!-- 关注公众号 -->
+		<view class="follow-official-account">
+			<view class="box">
+				<view class="left">
+					<view class="follow-logo">
+						<image class="img" src="../../static/images/pandalogo1.png" model="widthFill"></image>
+					</view>
+					<view class="follow-text">
+						<view class="follow-text-title">捣蛋熊猫</view>
+						<view>关注一下，万千豪礼敬情相送</view>
+					</view>
+				</view>
+				<view class="right">
+					<view @click="openFollowOfficialAccount">关注</view>
+				</view>
+			</view>
+		</view>
+		<!-- 关注公众号 弹窗，弹出二维码 -->
+		<uni-popup ref="followOfficialAccountAlert" type="center" :custom="true">
+			<view class="follow-official-account-alert">
+				<view class="box">
+					<view>
+						<image class="img" src="../../static/images/goods.jpg" ></image>
+					</view>
+					<view>
+						长按识别二维码
+					</view>
+					<view>
+						关注公众号
+					</view>
+				</view>
+			</view>
+		</uni-popup>
+
 		<view class="header">
 			<!-- 头部-滚动渐变显示 -->
 			<view class="after" :style="{ opacity: afterHeaderOpacity, zIndex: afterHeaderzIndex }">
@@ -761,6 +795,12 @@
 						}
 					}
 				})
+			},
+
+
+			//打开关注公众号二维码弹框follow-official-account
+			openFollowOfficialAccount(){
+				this.$refs.followOfficialAccountAlert.open()
 			},
 		},
 		// 分享到朋友

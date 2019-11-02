@@ -12,7 +12,7 @@
             <view class="item">
                 <view class="left">
                     <view class="title">手机号码</view>
-                    <view class="value">{{userInfo.mobile}}</view>
+                    <view class="value">{{userInfo.mobile | filterMobile}}</view>
                 </view>
                 <view class="right">
                     <view class="btn" @click="_goPage('user_modify_mobile')">
@@ -20,7 +20,7 @@
                     </view>
                 </view>
             </view>
-            <view class="item">
+            <view class="item" style="display: none;">
                 <view class="left">
                     <view class="title">退出登录</view>
                     <view class="value">注销登录</view>
@@ -55,6 +55,11 @@
                 uni.navigateBack()
             },
             ...mapMutations(['setToken', 'setUserInfo'])
+        },
+        filters: {
+            filterMobile(mobile){
+                return   mobile.replace(mobile.substring(3,7), "****")
+            },
         },
         computed:{
             ...mapState(['userInfo'])

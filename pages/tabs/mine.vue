@@ -4,11 +4,11 @@
             <view class="user-info">
                 <view class="head">
                     <image :src="userInfo.pic" v-if="userInfo.id"></image>
-                    <image src="../../static/images/head.png" v-else @click="goPage('login')"></image>
+                    <image src="../../static/images/head.png" v-else></image>
                 </view>
                 <view class="name">
                     <text class="one" v-if="userInfo.id">{{userInfo.nickname}}</text>
-                    <text class="one" v-else @click="goPage('login')">未登录</text>
+                    <text class="one" v-else>未登录</text>
                     <text class="two" v-if="userInfo.id" @click="goPage('user_fans')">粉丝 {{userInfo.fans_num}}</text>
                 </view>
             </view>

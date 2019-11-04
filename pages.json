@@ -49,6 +49,12 @@
 			}
 		},
 		{
+			"path": "pages/public/login-with-mobile-public",
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
+		},
+		{
 			"path": "pages/public/search-with-hot-history",
 			"style": {
 				"navigationBarTitleText": "搜索"

@@ -3,44 +3,50 @@
 
 	export default {
 		methods: {
+            _goPage(url, query = {}){
+                this.$openPage({name:url, query})
+            },
 			...mapMutations(['setToken']),
             ...mapActions(['asyncGetUserInfo']),
 		},
 		onLaunch: function() {
 			console.log('App Launch')
             try {
-                this.setToken('963d7c1f574a8bf947380914ef7d2777b48c18c6e3f0c3eeaf6e138506a6f00f') //保存用户token，并存vuex，永久存储
-                this.asyncGetUserInfo() //获取用户数据 并存vuex 临时存储
-
                 const token = uni.getStorageSync('token')
-                // if (this.isWechat()){
-                    if (token) {
-                        this.setToken(token)
-                        this.asyncGetUserInfo()
+                if (token) {
+                    this.setToken(token)
+                    this.asyncGetUserInfo()
+                } else {
+                    let code = this.getUrlParam("code") //是否存在code
+                    if (code == null || code === "") {
+                        //不存在就打开上面的地址进行授权
+                        this.loginWithOfficalAccount()
                     } else {
-                        let code = this.getUrlParam("code") //是否存在code
-                        if (code == null || code === "") {
-                            //不存在就打开上面的地址进行授权
-                            this.loginWithOfficalAccount()
-                        } else {
-                            //存在则通过code传向后台
-                            let data = {
-                                code: code,
-                                tuserid: uni.getStorageSync('shareID'),//推荐人id
-                            }
-                            this.$minApi.getToken(data).then(res => {
-                                // TODO 这里需要不需要把用户数据一些数据存下来
-                                console.log('服务器返回的数据！', res)
-                                if (res.code === 200) {
-                                    this.setToken(res.data.token) //保存用户token，并存vuex，永久存储
-                                    this.asyncGetUserInfo() //获取用户数据 并存vuex 临时存储
-                                }
-                            })
+                        //存在则通过code传向后台
+                        let data = {
+                            code: code,
+                            // tuserid: uni.getStorageSync('shareID'),//推荐人id
                         }
+                        this.$minApi.getToken(data).then(res => {
+                            console.log('服务器返回的数据！', res)
+                            /**
+                             * 用户绑定手机号，能获取到用户信息，这时候用户登录成功了
+                             */
+                            if (res.code === 200 &&
+                                res.data.token !== "0" &&
+                                res.data.isbindMobile === 1){
+                                this.setToken(res.data.token) //保存用户token，并存vuex，永久存储
+                                this.asyncGetUserInfo() //获取用户数据 并存vuex 临时存储
+                            }
+                            /**
+                             * 用户关注了公众号，没有绑定手机号，能获取到用户信息，这时候需要跳转到绑定手机号页面
+                             */
+                            if (res.data.isbindMobile === 0 && res.data.subscribe === 1) {
+                                this._goPage('login-with-mobile-public', {member: res.member})
+                            }
+                        })
                     }
-                // } else {
-                //     this.msg('请在微信浏览器中打开')
-                // }
+                }
             } catch (e) {
                 console.log(e)
             }

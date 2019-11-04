@@ -15,6 +15,10 @@ import minRequest from './api/api'
 import store from './store/index'
 Vue.prototype.$store = store
 
+// weixin-sdk
+import jweixin from 'jweixin-module'
+Vue.prototype.$wx = jweixin
+
 // 阿里巴巴图标库
 import './static/css/iconfont.css'
 

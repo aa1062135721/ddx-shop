@@ -20,7 +20,7 @@
                     </view>
                 </view>
             </view>
-            <view class="item" style="display: none;">
+            <view class="item">
                 <view class="left">
                     <view class="title">退出登录</view>
                     <view class="value">注销登录</view>

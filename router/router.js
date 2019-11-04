@@ -49,6 +49,12 @@ const router = new MinRouter({
 			login: false
 		},
 		{
+			path: 'pages/public/login-with-mobile-public',
+			type: 'navigateTo',
+			name: 'login-with-mobile-public',
+			login: false
+		},
+		{
 			path: "pages/public/search-with-hot-history",
 			type: 'navigateTo',
 			name: 'search_with_hot_history',

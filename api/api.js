@@ -584,6 +584,12 @@ export default {
       return minRequest.get('/Index/getusertoken', data)
     },
 
+    /**
+     * 微信公众号绑定手机号
+     */
+    bindMobilePublic(data){
+      return minRequest.post('/Index/bd_mobile', data)
+    },
 
   }
 }

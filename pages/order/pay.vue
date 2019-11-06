@@ -58,7 +58,9 @@
             }
         },
         onShow(){
-            let url = encodeURIComponent(window.location.href.split('#')[0])
+            // let url = encodeURIComponent(window.location.href.split('#')[0]) // vue hash路由模式
+            // let url = encodeURIComponent(window.location.href.split('?')[0]) // vue history路由模式
+            let url = encodeURIComponent(window.location.href)
             this.$minApi.getWxConfig({url}).then(res => {
                 console.log(res)
                 if (res.code === 200) {

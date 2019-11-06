@@ -36,7 +36,7 @@
 
 		<view class="header">
 			<!-- 头部-滚动渐变显示 -->
-			<view class="after" :style="{ opacity: afterHeaderOpacity, zIndex: afterHeaderzIndex }">
+			<view class="after">
 				<view class="icon-btn-left" @click="_goBack">
 					<view class="icon iconfont icon-ddx-shop-content_arrows"></view>
 				</view>

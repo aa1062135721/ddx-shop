@@ -140,6 +140,7 @@
 		{
 			"path": "pages/group-buy/detail",
 			"style": {
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "一起拼团"
 			}
 		},
@@ -160,6 +161,7 @@
 		{
 			"path": "pages/spike/detail",
 			"style": {
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "抢购详情"
 			}
 		}

@@ -12,11 +12,12 @@
 		onLaunch: function() {
 			console.log('App Launch')
             try {
-                // this.setToken('4843b4e1c60c251e9e62e705a76c9a366d57f9807a9085c853b865cd1600049c')
+                // this.setToken('0c43bb7a21382cf0d7173d6403d5aeb31b1df2cf31f794dff15653ac27de30c6')
                 const token = uni.getStorageSync('token')
                 if (token) {
                     this.setToken(token)
                     this.asyncGetUserInfo()
+                    this.setSubscribe(1)
                 } else {
                     let code = this.getUrlParam("code") //是否存在code
                     if (code == null || code === "") {
@@ -51,6 +52,7 @@
                             console.log('服务器返回的数据！', err)
                             this.setToken() // 清空用户token
                             this.setUserInfo() // 清空用户数据
+                            this.setSubscribe() // 清空用户是否关注公众号数据
                         })
                     }
                 }
@@ -58,6 +60,7 @@
                 console.log(e)
                 this.setToken() // 清空用户token
                 this.setUserInfo() // 清空用户数据
+                this.setSubscribe() // 清空用户是否关注公众号数据
             }
 		},
 		onShow: function() {

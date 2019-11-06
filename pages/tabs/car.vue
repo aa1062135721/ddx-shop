@@ -359,7 +359,6 @@
 
 <style lang="scss">
     .container{
-        padding-top: $uni-spacing-col-lg;
         .car-list{
             padding-bottom: $uni-spacing-col-lg * 4;
             .section{

@@ -1,8 +1,45 @@
 <template>
     <view class="container">
+        <!-- 关注公众号 -->
+        <view class="follow-official-account" v-if="!subscribe">
+            <view class="box">
+                <view class="left">
+                    <view class="follow-logo">
+                        <image class="img" src="../../static/images/pandalogo1.png" model="widthFill"></image>
+                    </view>
+                    <view class="follow-text">
+                        <view class="follow-text-title">捣蛋熊猫</view>
+                        <view>关注一下，万千豪礼敬情相送</view>
+                    </view>
+                </view>
+                <view class="right">
+                    <view @click="openFollowOfficialAccount">关注</view>
+                </view>
+            </view>
+        </view>
+        <!-- 关注公众号 弹窗，弹出二维码 -->
+        <uni-popup ref="followOfficialAccountAlert" type="center" :custom="true" v-if="!subscribe">
+            <view class="follow-official-account-alert">
+                <view class="box">
+                    <view>
+                        <image class="img" src="../../static/images/main-qr-code.jpg" ></image>
+                    </view>
+                    <view>
+                        长按识别二维码
+                    </view>
+                    <view>
+                        关注公众号
+                    </view>
+                </view>
+            </view>
+        </uni-popup>
+
         <view class="header">
             <!-- 头部-滚动渐变显示 -->
             <view class="after" :style="{ opacity: afterHeaderOpacity, zIndex: afterHeaderzIndex }">
+                <view class="icon-btn-left" @click="_goBack">
+                    <view class="icon iconfont icon-ddx-shop-content_arrows"></view>
+                </view>
                 <view class="middle">
                     <view v-for="(anchor,index) in anchorlist" :class="[selectAnchor==index ?'on':'']" :key="index" @tap="toAnchor(index)">{{anchor.name}}</view>
                 </view>
@@ -490,6 +527,10 @@
             _goPage(url, query = {}) {
                 this.$openPage({name: url, query})
             },
+            // 返回按钮
+            _goBack() {
+                uni.navigateBack()
+            },
             //轮播图放大预览
             previewImg(src, urls) {
                 uni.previewImage({
@@ -681,6 +722,11 @@
                     }
                 })
             },
+
+            //打开关注公众号二维码弹框follow-official-account
+            openFollowOfficialAccount(){
+                this.$refs.followOfficialAccountAlert.open()
+            },
         },
         components: {
             uniNumberBox,
@@ -771,7 +817,7 @@
             this.afterHeaderzIndex = e.scrollTop > 0 ? 11 : 10;
         },
         computed: {
-            ...mapState(['userInfo'])
+            ...mapState(['userInfo', 'subscribe'])
         },
     }
 </script>

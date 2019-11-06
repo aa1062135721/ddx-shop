@@ -128,9 +128,26 @@
       flex-shrink: 0;
       display: flex;
       justify-content: flex-end;
+      z-index: 999;
       .iconfont{
         color: #6B6B6B;
         font-size: $uni-font-size-base + $uni-font-size-sm;
+      }
+    }
+    .icon-btn-left {
+      position: absolute;
+      left: $uni-spacing-row-sm;
+      top: 0;
+      height: 100upx;
+      line-height: 100upx;
+      flex-shrink: 0;
+      display: flex;
+      justify-content: flex-start;
+      z-index: 999;
+      .iconfont{
+        color: #6B6B6B;
+        font-size: $uni-font-size-sm + $uni-font-size-sm;
+        transform:rotate(180deg);
       }
     }
   }

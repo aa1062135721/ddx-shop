@@ -64,7 +64,6 @@ minRequest.interceptors.response((response) => {
   if (response.data.code === -1) {
     store.commit('setToken')
     store.commit('setUserInfo')
-    uni.navigateBack()
   }
 
   /**

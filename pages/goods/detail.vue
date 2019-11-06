@@ -345,7 +345,7 @@
 		<!-- 底部菜单 -->
 		<view class="footer">
 			<view class="icons">
-				<view class="box"  @click="this.$openPage('home')">
+				<view class="box"  @click="_goPage('home')">
 					<view class="iconfont icon-ddx-shop-shopping"></view>
 					<view class="text">商城</view>
 				</view>
@@ -353,7 +353,7 @@
 					<view class="iconfont icon-ddx-shop-pingjia-"></view>
 					<view class="text">客服</view>
 				</button>
-				<view class="box" @click="this.$openPage('car')">
+				<view class="box" @click="_goPage('car')">
 					<view class="iconfont icon-ddx-shop-shopping-cart-o"></view>
 					<view class="text">购物车</view>
 					<view class="number" v-if="carNum">{{carNum}}</view>

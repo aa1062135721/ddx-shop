@@ -12,6 +12,8 @@
 		onLaunch: function() {
 			console.log('App Launch')
             try {
+                // this.setToken('4843b4e1c60c251e9e62e705a76c9a366d57f9807a9085c853b865cd1600049c')
+                // this.asyncGetUserInfo()
                 const token = uni.getStorageSync('token')
                 if (token) {
                     this.setToken(token)

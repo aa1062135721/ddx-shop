@@ -57,6 +57,27 @@
                 this.payWay = '1'
             }
         },
+        onShow(){
+            let url = encodeURIComponent(window.location.href.split('#')[0])
+            this.$minApi.getWxConfig({url}).then(res => {
+                console.log(res)
+                if (res.code === 200) {
+                    this.$wx.config({
+                        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来
+                        appId: res.data.appid, // 必填，公众号的唯一标识
+                        timestamp: res.data.timestamp, // 必填，生成签名的时间戳
+                        nonceStr: res.data.noncestr, // 必填，生成签名的随机串
+                        signature: res.data.signature,// 必填，签名，见附录1
+                        jsApiList: [
+                            "chooseWXPay",//微信h5支付
+                        ]
+                    })
+                    this.$wx.error((res) => {
+                        this.msg(res)
+                    })
+                }
+            })
+        },
         methods: {
             _goPage(url, query = {}){
                 this.$openPage({name:url, query})
@@ -83,15 +104,6 @@
                 }
             },
             async formSubmit(e) {
-                console.log('form发生了submit事件，携带数据为：',e)
-                // 推送模板消息所需的数据
-                let sendTemplateMessageData = {
-                    form_id: e.detail.formId,//模板id
-                    page: `pages/order/detail?order_id=${this.orderData.order_id}`,//模板消息推送后可以跳转的页面
-                    oid: `${this.orderData.order_id}`,//订单id
-                    state: 0,//订单状态，0 未支付 1：支付成功；2：订单取消
-                }
-
                 let data ={
                     order_id: this.orderData.order_id,
                     pay_way: this.payWay,
@@ -101,48 +113,76 @@
                  * 如果支付方式为 微信和钱包支付
                  */
                 await this.$minApi.payWay(data).then(async res => {
-                    console.log(res)
+                    /**
+                     * res.data.id  //订单id
+                     * res.data.sn  //订单编号
+                     * res.data.order_distinguish // 0: 普通订单 1：拼团订单 2：抢购订单
+                     * 如果您选择的是微信支付，res.data 下还有许多微信支付需要的数据
+                     */
+                    console.log("需要支付的订单信息：", res)
                     if (res.code === 200) {
                         if (this.payWay === '3'){ //钱包支付
                             res.data.result = true
-                            sendTemplateMessageData.state = 1
-                            await this.$minApi.sendTemplateMessage(sendTemplateMessageData).then(res=>{
-                                console.log(res)
-                            })
                             await this._goPage('order_result', res.data)
                         }
                         if (this.payWay === '1') { // 微信支付
-                            await uni.requestPayment({
-                                provider: 'wxpay',
-                                timeStamp: res.data.timeStamp,
-                                nonceStr: res.data.nonceStr,
-                                package: res.data.package,
-                                signType: res.data.signType,
-                                paySign: res.data.paySign,
-                                success: async (payRes) => {
-                                    res.data.result = true
-                                    sendTemplateMessageData.state = 1
-                                    await this.$minApi.sendTemplateMessage(sendTemplateMessageData).then(res=>{
-                                        console.log(res)
-                                    })
-                                    await this._goPage('order_result', res.data)
-                                },
-                                fail: async (payErr) =>{
-                                    res.data.result = false
-                                    sendTemplateMessageData.state = 0
-                                    await this.$minApi.sendTemplateMessage(sendTemplateMessageData).then(res=>{
-                                        console.log(res)
-                                    })
-                                    await this._goPage('order_result', res.data)
-                                }
+                            this.$wx.ready(() => {
+                                this.$wx.chooseWXPay({
+                                    timestamp: res.data.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+                                    nonceStr: res.data.nonceStr, // 支付签名随机串，不长于 32 位
+                                    package: res.data.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
+                                    signType: res.data.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+                                    paySign: res.data.paySign, // 支付签名
+                                    success: async (success) => {
+                                        console.log("用户支付成功：", success)
+                                        res.data.result = true
+                                    },
+                                    fail: async (fail) => {
+                                        console.log("用户支付失败：",fail)
+                                        res.data.result = false
+                                    },
+                                    cancel: async (cancel) => {
+                                        console.log("用户取消支付：",cancel)
+                                        res.data.result = false
+                                    },
+                                    complete: async (complete) => {
+                                        console.log("无论支付结果为是成功/失败/取消：",complete)
+                                        // 拼团订单直接查看拼团详情
+                                        if (res.data.order_distinguish === 1){
+                                            this._goPage('group_buy_detail', {id: res.data.id})
+                                            return
+                                        }
+                                        this._goPage('order_result', res.data)
+                                    }
+                                })
                             })
+                            // await uni.requestPayment({
+                            //     provider: 'wxpay',
+                            //     timeStamp: res.data.timeStamp,
+                            //     nonceStr: res.data.nonceStr,
+                            //     package: res.data.package,
+                            //     signType: res.data.signType,
+                            //     paySign: res.data.paySign,
+                            //     success: async (payRes) => {
+                            //         res.data.result = true
+                            //         sendTemplateMessageData.state = 1
+                            //         await this.$minApi.sendTemplateMessage(sendTemplateMessageData).then(res=>{
+                            //             console.log(res)
+                            //         })
+                            //         await this._goPage('order_result', res.data)
+                            //     },
+                            //     fail: async (payErr) =>{
+                            //         res.data.result = false
+                            //         sendTemplateMessageData.state = 0
+                            //         await this.$minApi.sendTemplateMessage(sendTemplateMessageData).then(res=>{
+                            //             console.log(res)
+                            //         })
+                            //         await this._goPage('order_result', res.data)
+                            //     }
+                            // })
                         }
                     } else {
                         res.data.result = false
-                        sendTemplateMessageData.state = 0
-                        await this.$minApi.sendTemplateMessage(sendTemplateMessageData).then(res=>{
-                            console.log(res)
-                        })
                         await this._goPage('order_result', res.data)
                     }
                 }).catch(async err => {

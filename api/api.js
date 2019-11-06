@@ -591,5 +591,14 @@ export default {
       return minRequest.post('/Index/bd_mobile', data)
     },
 
+    /**
+     * 微信公众号
+     * 传入当前页面的url，获取wx.config中的配置参数
+     */
+    getWxConfig(data){
+      return minRequest.post('/User/getWeChatConfig', data)
+    },
+
+
   }
 }

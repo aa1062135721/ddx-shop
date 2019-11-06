@@ -61,11 +61,11 @@ minRequest.interceptors.response((response) => {
   /**
    * TODO 未登录
    */
-  // if (response.data.code === -1) {
-  //   uni.navigateTo({
-  //     url: `/pages/public/login`
-  //   })
-  // }
+  if (response.data.code === -1) {
+    store.commit('setToken')
+    store.commit('setUserInfo')
+    uni.navigateBack()
+  }
 
   /**
    * 登录过期或者token错误
@@ -74,6 +74,7 @@ minRequest.interceptors.response((response) => {
   if (response.data.code === -2) {
     store.commit('setToken')
     store.commit('setUserInfo')
+    uni.navigateBack()
   }
 
   if (response.statusCode !== 200){

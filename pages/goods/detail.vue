@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<!-- 关注公众号 -->
-		<view class="follow-official-account">
+		<view class="follow-official-account" v-if="subscribe">
 			<view class="box">
 				<view class="left">
 					<view class="follow-logo">
@@ -18,11 +18,11 @@
 			</view>
 		</view>
 		<!-- 关注公众号 弹窗，弹出二维码 -->
-		<uni-popup ref="followOfficialAccountAlert" type="center" :custom="true">
+		<uni-popup ref="followOfficialAccountAlert" type="center" :custom="true" v-if="subscribe">
 			<view class="follow-official-account-alert">
 				<view class="box">
 					<view>
-						<image class="img" src="../../static/images/goods.jpg" ></image>
+						<image class="img" src="../../static/images/main-qr-code.jpg" ></image>
 					</view>
 					<view>
 						长按识别二维码
@@ -914,7 +914,7 @@
 			uniPopup,
 		},
 		computed: {
-			...mapState(['userInfo'])
+			...mapState(['userInfo', 'subscribe'])
 		},
 	}
 </script>

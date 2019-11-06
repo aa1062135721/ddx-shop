@@ -7,6 +7,7 @@ const state = {
     token: '',//永久存储
     userInfo: {},//非永久存储
     shareID: '',//分享者id，如果小程序被张某分享（商品分享和邀请好友）给陈某，陈某打开小程序，注册时带上王某的唯一shareID，陈某就是王某的粉丝 // 永久存储
+    subscribe: 0,//是否关注公众号标识 0是未关注 1是关注  临时存储
 }
 
 const mutations = {
@@ -28,6 +29,9 @@ const mutations = {
         } catch (e) {
             console.log("vuex保存推荐人id报错", e)
         }
+    },
+    setSubscribe(state, saveData = 0) {
+        state.subscribe = saveData
     },
 }
 

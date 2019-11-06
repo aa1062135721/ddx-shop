@@ -52,7 +52,7 @@
             loginOut(){
                 this.setUserInfo()
                 this.setToken()
-                uni.navigateBack()
+                this._goPage('mine')
             },
             ...mapMutations(['setToken', 'setUserInfo'])
         },

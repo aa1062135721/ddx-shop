@@ -19,6 +19,10 @@ Vue.prototype.$store = store
 import jweixin from 'jweixin-module'
 Vue.prototype.$wx = jweixin
 
+import VueClipboard from 'vue-clipboard2' //用来复制数据到粘贴板
+Vue.use(VueClipboard)
+VueClipboard.config.autoSetContainer = true
+
 // 阿里巴巴图标库
 import './static/css/iconfont.css'
 

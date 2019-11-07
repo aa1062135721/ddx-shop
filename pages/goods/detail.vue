@@ -44,7 +44,7 @@
 				<view class="middle">
 					<view v-for="(anchor,index) in anchorlist" :class="[selectAnchor==index ?'on':'']" :key="index" @tap="toAnchor(index)">{{anchor.name}}</view>
 				</view>
-				<view class="icon-btn" @click="openShare">
+				<view class="icon-btn" @click="openShareH5"><!-- openShare 微信小程序的分享功能--->
 					<view class="icon iconfont icon-ddx-shop-share"></view>
 				</view>
 			</view>
@@ -469,6 +469,44 @@
 				</view>
 			</view>
 		</uni-popup>
+
+		<!-- h5分享	-->
+		<uni-popup ref="shareH5" type="bottom" :custom="true">
+			<view class="share-goods-h5">
+				<view class="share-title-h5-box">
+					<view class="share-title-h5-box-titles" v-show="goodsInfo.ratio !== '0.00'">
+						分享后预计最高可赚取佣金¥{{goodsInfo.ratio}}
+					</view>
+					<view class="share-title-h5-box-sub-title">
+						朋友通过你分享的页面成功购买后，你可获得对应的佣金。佣金可“我的-分销中心”里查看
+					</view>
+				</view>
+				<view class="share-content-h5-box">
+					<view class="items">
+						<view class="item" @click="shareFriendH5">
+							<view><image src="../../static/images/share/share-wx.png"></image></view>
+							<text>分享到微信</text>
+						</view>
+						<view class="item" @click="copyUrl">
+							<view><image src="../../static/images/share/copy-url.png"></image></view>
+							<text>复制链接</text>
+						</view>
+					</view>
+				</view>
+				<view class="share-goto-btn-box">
+					<view class="btn" @click="_goPage('user_distribution')">分销中心</view>
+				</view>
+
+				<view class="share-btn-h5-box" @click="closeShareH5">
+					取消
+				</view>
+			</view>
+		</uni-popup>
+		<view class="share-guide-h5" v-show="isShowShareH5" @click="isShowShareH5 =  false">
+			<view class="share-guide-h5-img"><image src="../../static/images/share/share-guide.png"></image></view>
+			<view class="share-guide-h5-title">立即分享给好友吧</view>
+			<view class="share-guide-h5-subtitle">点击屏幕右上角将本页分享给好友</view>
+		</view>
 	</view>
 </template>
 
@@ -545,6 +583,9 @@
 					specs_ids:[],//规格子id的组合
 					num:1,//选择购物数量
 				},
+
+				//h5的分享引导显示与否
+				isShowShareH5: false,
 			}
 		},
 		methods:{
@@ -753,6 +794,10 @@
 				})
 			},
 
+			/**
+			 * 小程序的分享功能
+			 * @returns {Promise<void>}
+			 */
 			//打开分享弹框
 			async openShare(){
 				if (!this.shareData.pic){
@@ -803,6 +848,37 @@
 						}
 					}
 				})
+			},
+
+			/**
+			 * h5 公众号的分享功能
+			 */
+			openShareH5(){
+				this.$refs.shareH5.open()
+			},
+			closeShareH5(){
+				this.$refs.shareH5.close()
+			},
+			copyUrl(){
+				let url = ''
+				let _that = this
+				if(window.location.href.indexOf("?") != -1 && this.userInfo.id) {
+					url = window.location.href + '&user_id=' + this.userInfo.id
+				} else {
+					url = window.location.href
+				}
+				_that.$copyText(url).then((e) => {
+					_that.closeShareH5()
+					_that.msg('复制成功')
+					console.log(e)
+				}, (e) => {
+					_that.msg('复制失败')
+					console.log(e)
+				})
+			},
+			shareFriendH5(){
+				this.closeShareH5()
+				this.isShowShareH5 = true
 			},
 
 
@@ -901,6 +977,54 @@
 					}
 				})
 			}
+			let url = encodeURIComponent(window.location.href)
+			this.$minApi.getWxConfig({url}).then(res => {
+				if (res.code === 200) {
+					this.$wx.config({
+						debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来
+						appId: res.data.appid, // 必填，公众号的唯一标识
+						timestamp: res.data.timestamp, // 必填，生成签名的时间戳
+						nonceStr: res.data.noncestr, // 必填，生成签名的随机串
+						signature: res.data.signature,// 必填，签名，见附录1
+						jsApiList: [
+							// 注意：使用新版本的分享功能，一定要在该列表加上对应的老版本功能接口，否则新接口不起作用
+							'updateTimelineShareData', //1.4.0的 分享到朋友圈
+							'onMenuShareTimeline', //老版本 分享到朋友圈
+
+							'updateAppMessageShareData',//1.4.0分享到朋友
+							'onMenuShareAppMessage',//老版本分享到朋友
+						]
+					})
+					this.$wx.error((res) => {
+						this.msg(res)
+					})
+					if(window.location.href.indexOf("?") != -1 && this.userInfo.id) {
+						url = window.location.href + '&user_id=' + this.userInfo.id
+					} else {
+						url = window.location.href
+					}
+					this.$wx.ready(() => {   //需在用户可能点击分享按钮前就先调用
+						this.$wx.updateAppMessageShareData({
+							title: '推荐你一个商品', // 分享标题
+							desc: this.goodsInfo.title, // 分享描述
+							link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+							imgUrl: this.goodsInfo.pics[0], // 分享图标
+							success: function () {
+								// 设置成功
+							}
+						})
+						// 分享到朋友圈
+						this.$wx.updateTimelineShareData({
+							title: '推荐你一个商品', // 分享标题
+							link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+							imgUrl: this.goodsInfo.pics[0], // 分享图标
+							success: function () {
+								// 设置成功
+							}
+						})
+					});
+				}
+			})
 		},
 		onReady(){
 			this.calcAnchor();//计算锚点高度，页面数据是ajax加载时，请把此行放在数据渲染完成事件中执行以保证高度计算正确

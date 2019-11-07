@@ -12,7 +12,7 @@
 		onLaunch: function() {
 			console.log('App Launch')
             try {
-                // this.setToken('0c43bb7a21382cf0d7173d6403d5aeb31b1df2cf31f794dff15653ac27de30c6')
+                // this.setToken('558780222c5ed99780a813a96cc38ccc8556d3f2d5eceb2751fd27a8575a5839')
                 const token = uni.getStorageSync('token')
                 if (token) {
                     this.setToken(token)
@@ -36,7 +36,7 @@
                              * 用户绑定手机号，能获取到用户信息，这时候用户登录成功了
                              */
                             if (res.code === 200 &&
-                                res.data.token !== "0" &&
+                                res.data.token &&
                                 res.data.isbindMobile === 1){
                                 this.setToken(res.data.token) //保存用户token，并存vuex，永久存储
                                 this.asyncGetUserInfo() //获取用户数据 并存vuex 临时存储
@@ -46,7 +46,7 @@
                              */
                             if (res.data.isbindMobile === 0 &&
                                 res.data.subscribe === 1) {
-                                this._goPage('login-with-mobile-public', {member: res.member})
+                                this._goPage('login-with-mobile-public', {member: JSON.parse(res.data.member)})
                             }
                         }).catch(err => {
                             console.log('服务器返回的数据！', err)

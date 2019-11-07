@@ -1,5 +1,39 @@
 <template>
     <view class="container">
+        <!-- 关注公众号 -->
+        <view class="follow-official-account" v-if="!subscribe">
+            <view class="box">
+                <view class="left">
+                    <view class="follow-logo">
+                        <image class="img" src="../../static/images/pandalogo1.png" model="widthFill"></image>
+                    </view>
+                    <view class="follow-text">
+                        <view class="follow-text-title">捣蛋熊猫</view>
+                        <view>关注一下，万千豪礼敬情相送</view>
+                    </view>
+                </view>
+                <view class="right">
+                    <view @click="openFollowOfficialAccount">关注</view>
+                </view>
+            </view>
+        </view>
+        <!-- 关注公众号 弹窗，弹出二维码 -->
+        <uni-popup ref="followOfficialAccountAlert" type="center" :custom="true" v-if="!subscribe">
+            <view class="follow-official-account-alert">
+                <view class="box">
+                    <view>
+                        <image class="img" src="../../static/images/main-qr-code.jpg" ></image>
+                    </view>
+                    <view>
+                        长按识别二维码
+                    </view>
+                    <view>
+                        关注公众号
+                    </view>
+                </view>
+            </view>
+        </uni-popup>
+
         <view class="goods-info">
             <view class="goods-info-img">
                 <image :src="responseData.item_pic" class="img"></image>
@@ -13,7 +47,7 @@
                         <view class="new-money">
                             ￥
                             <!--当前登录的用户是团长-->
-                            <block v-if="responseData.info[0].member_id === userInfo.id">{{responseData.assemble_price}}</block>
+                            <block v-if="responseData.info.length && responseData.info[0].member_id === userInfo.id">{{responseData.assemble_price}}</block>
                             <!--当前登录的用户不是团长-->
                             <block v-else>{{responseData.tuanyuan_price}}</block>
                         </view>
@@ -125,6 +159,12 @@
                 </view>
             </view>
         </view>
+        <!--  h5邀请好友参团 引导箭头      -->
+        <view class="share-guide-h5" v-show="isShowShareH5" @click="isShowShareH5 =  false">
+            <view class="share-guide-h5-img"><image src="../../static/images/share/share-guide.png"></image></view>
+            <view class="share-guide-h5-title">立即分享给好友吧</view>
+            <view class="share-guide-h5-subtitle">点击屏幕右上角将本页分享给好友</view>
+        </view>
     </view>
 </template>
 
@@ -132,7 +172,7 @@
     let myTimer = null
     import uniNumberBox from "@/components/uni-number-box/uni-number-box.vue"
     import uniPopup from '@/components/uni-popup/uni-popup.vue'
-    import { mapState } from 'vuex'
+    import { mapState, mapMutations } from 'vuex'
 
     export default {
         data() {
@@ -177,10 +217,14 @@
                 ],
 
                 //其他人进入本页面，如果登录了的，且自己参加拼团了，则显示查看拼团详情
-                is_show_order: false
+                is_show_order: false,
+
+                // 分享到好友，引导箭头是否显示
+                isShowShareH5: false,
             }
         },
         methods: {
+            ...mapMutations(['setShareID']),
             _goPage(url, query = {}){
                 this.$openPage({name:url, query})
             },
@@ -227,7 +271,7 @@
             },
             // 分享拼团
             shareGroup(){
-
+                this.isShowShareH5 = true
             },
             //加入拼团
             addGroup(){
@@ -296,6 +340,8 @@
                 })
                 this._goPage('order_detail', {order_id: order_id})
             },
+
+
         },
         // 分享到朋友
         onShareAppMessage(res) {
@@ -318,6 +364,9 @@
             if (param.id)   {
                 requestData.id = param.id
                 this.id = param.id
+            }
+            if (param.user_id){
+                this.setShareID(param.user_id)
             }
             if (this.$parseURL().id){
                 requestData.id = this.$parseURL().id
@@ -354,6 +403,56 @@
                 }
             })
         },
+        onShow(){
+            let url = encodeURIComponent(window.location.href)
+            this.$minApi.getWxConfig({url}).then(res => {
+                if (res.code === 200) {
+                    this.$wx.config({
+                        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来
+                        appId: res.data.appid, // 必填，公众号的唯一标识
+                        timestamp: res.data.timestamp, // 必填，生成签名的时间戳
+                        nonceStr: res.data.noncestr, // 必填，生成签名的随机串
+                        signature: res.data.signature,// 必填，签名，见附录1
+                        jsApiList: [
+                            // 注意：使用新版本的分享功能，一定要在该列表加上对应的老版本功能接口，否则新接口不起作用
+                            'updateTimelineShareData', //1.4.0的 分享到朋友圈
+                            'onMenuShareTimeline', //老版本 分享到朋友圈
+
+                            'updateAppMessageShareData',//1.4.0分享到朋友
+                            'onMenuShareAppMessage',//老版本分享到朋友
+                        ]
+                    })
+                    this.$wx.error((res) => {
+                        this.msg(res)
+                    })
+                    if(window.location.href.indexOf("?") != -1 && this.userInfo.id) {
+                        url = window.location.href + '&user_id=' + this.userInfo.id
+                    } else {
+                        url = window.location.href
+                    }
+                    this.$wx.ready(() => {   //需在用户可能点击分享按钮前就先调用
+                        this.$wx.updateAppMessageShareData({
+                            title: '邀请你加入拼团', // 分享标题
+                            desc: this.responseData.item_name, // 分享描述
+                            link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                            imgUrl: this.responseData.item_pic, // 分享图标
+                            success: function () {
+                                // 设置成功
+                            }
+                        })
+                        // 分享到朋友圈
+                        this.$wx.updateTimelineShareData({
+                            title: '邀请你加入拼团', // 分享标题
+                            link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                            imgUrl: this.responseData.item_pic, // 分享图标
+                            success: function () {
+                                // 设置成功
+                            }
+                        })
+                    });
+                }
+            })
+        },
         onUnload(){
             clearInterval(myTimer);
         },
@@ -362,7 +461,7 @@
             uniPopup,
         },
         computed: {
-            ...mapState(['userInfo'])
+            ...mapState(['userInfo', 'subscribe'])
         },
     }
 </script>
@@ -684,6 +783,121 @@
                     align-items: center;
                     justify-content:center;
                 }
+            }
+        }
+
+        /* 关注工作号 */
+        .follow-official-account{
+            z-index: 99;
+            width: 100%;
+            position: fixed;
+            top: calc(0upx + 100upx);
+            /*  #ifdef  APP-PLUS  */
+            top: calc(var(--status-bar-height) + 100upx);
+            /*  #endif  */
+            /*  #ifdef  H5  */
+            top: calc(var(--window-top) + 100upx);
+            /*  #endif  */
+            background: #FC5A5A;
+            padding: $uni-spacing-row-base;
+            .box{
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                .left{
+                    display: flex;
+                    .follow-logo{
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        .img{
+                            width: 60upx;
+                            height: 75upx;
+                            margin-right: 10upx;
+                        }
+                    }
+                    .follow-text{
+                        color: #FFFFFF;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                        font-size: $uni-font-size-base;
+                        .follow-text-title{
+                            font-size:$uni-font-size-sm;
+                        }
+                    }
+                }
+                .right{
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    view{
+                        border-radius:4upx;
+                        background: #FFFFFF;
+                        padding: 4upx 18upx;
+                        font-size: $uni-font-size-base;
+                    }
+                }
+            }
+        }
+        /* 关注公众号 弹窗，弹出二维码 */
+        .follow-official-account-alert{
+            background: #fff;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            height: auto;
+            .box{
+                padding: 34upx;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                .img{
+                    height: 414upx;
+                    width: 414upx;
+                    margin-bottom: 20upx;
+                }
+                view{
+                    color: #333333;
+                    font-size:$uni-font-size-lg;
+                    text-align: center;
+                    font-weight:500;
+                }
+
+            }
+        }
+
+        /*  h5邀请好友参团 引导箭头  */
+        .share-guide-h5{
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            z-index: 99999;
+            background: rgba(0,0,0,.5);
+            display: flex;
+            flex-direction: column;
+            .share-guide-h5-img{
+                display: flex;
+                justify-content: flex-end;
+                margin: 30upx;
+                margin-top: 0;
+                image{
+                    width:250upx;
+                    height:262upx;
+                }
+            }
+            .share-guide-h5-title{
+                text-align: center;
+                font-size: $uni-font-size-lg;
+                color: #fff;
+                margin-bottom: 30upx;
+            }
+            .share-guide-h5-subtitle{
+                text-align: center;
+                font-size: $uni-font-size-base;
+                color: #fff;
             }
         }
     }

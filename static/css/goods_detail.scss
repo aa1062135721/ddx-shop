@@ -711,7 +711,7 @@
   }
 }
 
-/* 分享 */
+/* 小程序 分享 */
 .share-goods{
   .share-title{
     width:680upx;
@@ -796,6 +796,114 @@
         }
       }
     }
+  }
+}
+/* h5 分享 */
+.share-goods-h5{
+  width: 100%;
+  background: #FFFFFF;
+  padding-top: 80upx;
+  .share-title-h5-box{
+    display: flex;
+    flex-direction: column;
+    padding: 0 64upx;
+    .share-title-h5-box-titles{
+      color: #333333;
+      font-size: $uni-font-size-base;
+      text-align: center;
+      margin-bottom: 30upx;
+    }
+    .share-title-h5-box-sub-title{
+      color: #999999;
+      font-size: $uni-font-size-sm;
+      text-align: center;
+    }
+  }
+  .share-content-h5-box{
+    margin-top: 80upx;
+   .items{
+     display: flex;
+     flex-wrap: wrap;
+     justify-content: center;
+     align-content: center;
+     .item{
+       padding: 30upx;
+       display: flex;
+       justify-content: center;
+       flex-direction: column;
+       align-content: center;
+       justify-items: center;
+       view{
+         text-align: center;
+         image{
+           width: 120upx;
+           height: 120upx;
+           margin-bottom: 16upx;
+         }
+       }
+       text{
+         color: #666666;
+         font-size: $uni-font-size-base;
+       }
+     }
+   }
+  }
+  .share-goto-btn-box{
+    margin-top: 80upx;
+    display: flex;
+    justify-content: center;
+    .btn{
+      border: 1px solid #CCCCCC;
+      height: 88upx;
+      line-height: 88upx;
+      text-align: center;
+      width: 348upx;
+      color: #333333;
+      font-size: $uni-font-size-base;
+      border-radius: 44upx;
+    }
+  }
+  .share-btn-h5-box{
+    margin-top: 80upx;
+    width: 100%;
+    height: 98upx;
+    line-height: 98upx;
+    font-size: $uni-font-size-lg;
+    color: #ffffff;
+    text-align: center;
+    background: $color-primary;
+  }
+}
+.share-guide-h5{
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 99999;
+  background: rgba(0,0,0,.5);
+  display: flex;
+  flex-direction: column;
+  .share-guide-h5-img{
+    display: flex;
+    justify-content: flex-end;
+    margin: 30upx;
+    margin-top: 0;
+    image{
+      width:250upx;
+      height:262upx;
+    }
+  }
+  .share-guide-h5-title{
+    text-align: center;
+    font-size: $uni-font-size-lg;
+    color: #fff;
+    margin-bottom: 30upx;
+  }
+  .share-guide-h5-subtitle{
+    text-align: center;
+    font-size: $uni-font-size-base;
+    color: #fff;
   }
 }
 

@@ -449,10 +449,10 @@
 					<view class="iconfont icon-ddx-shop-shopping"></view>
 					<view class="text">商城</view>
 				</view>
-				<button class="box" open-type="contact" :session-from="userInfo">
+				<view class="box" @click="contactCustomerService">
 					<view class="iconfont icon-ddx-shop-pingjia-"></view>
 					<view class="text">客服</view>
-				</button>
+				</view>
 				<view class="box" @click="_goPage('car')">
 					<view class="iconfont icon-ddx-shop-shopping-cart-o"></view>
 					<view class="text">购物车</view>
@@ -470,10 +470,22 @@
 							单独购买
 						</view>
 					</view>
-					<view class="buy my-vam" @click="open()">
+					<view class="buy my-vam" @click="open()" v-if="goodsInfo.begin === 1">
 						<view class="inner">
 							￥{{ (parseFloat(goodsInfo.commander_price) * parseFloat(choosesGoodsInfo.num)) | moneyToFixed }}<br />
 							一键开团
+						</view>
+					</view>
+					<view class="buy my-vam" v-if="goodsInfo.begin === 2"  style="background:#F9A13A;">
+						<view class="inner">
+							￥{{ (parseFloat(goodsInfo.commander_price) * parseFloat(choosesGoodsInfo.num)) | moneyToFixed }}<br />
+							待开始
+						</view>
+					</view>
+					<view class="buy my-vam" v-if="goodsInfo.begin === 3" style="background:#F9A13A;">
+						<view class="inner">
+							￥{{ (parseFloat(goodsInfo.commander_price) * parseFloat(choosesGoodsInfo.num)) | moneyToFixed }}<br />
+							已结束
 						</view>
 					</view>
 				</block>
@@ -521,10 +533,22 @@
 								单独购买
 							</view>
 						</view>
-						<view class="btn my-vam" @click="buyNow(1)">
+						<view class="btn my-vam" @click="buyNow(1)" v-if="goodsInfo.begin === 1">
 							<view class="inner">
 								￥{{ (parseFloat(goodsInfo.commander_price) * parseFloat(choosesGoodsInfo.num)) | moneyToFixed }}<br />
 								一键开团
+							</view>
+						</view>
+						<view class="buy my-vam" v-if="goodsInfo.begin === 2"  style="background:#F9A13A;">
+							<view class="inner">
+								￥{{ (parseFloat(goodsInfo.commander_price) * parseFloat(choosesGoodsInfo.num)) | moneyToFixed }}<br />
+								待开始
+							</view>
+						</view>
+						<view class="buy my-vam" v-if="goodsInfo.begin === 3" style="background:#F9A13A;">
+							<view class="inner">
+								￥{{ (parseFloat(goodsInfo.commander_price) * parseFloat(choosesGoodsInfo.num)) | moneyToFixed }}<br />
+								已结束
 							</view>
 						</view>
 					</block>
@@ -1010,6 +1034,21 @@
 			//打开关注公众号二维码弹框follow-official-account
 			openFollowOfficialAccount(){
 				this.$refs.followOfficialAccountAlert.open()
+			},
+
+			// 打开合从聊天弹窗
+			contactCustomerService(){
+				if (this.userInfo.id){
+					_AIHECONG('customer',{
+						head : this.userInfo.pic, //该字段可以将顾客头像同步过来
+						'名称' : this.userInfo.nickname,  // '属性名' : '值'
+						'邮箱' : '暂无',
+						'手机' : this.userInfo.mobile,
+						'会员账号' : "会员id：" + this.userInfo.id,
+						'会员等级' : '暂无'
+					})
+				}
+				_AIHECONG('showChat')
 			},
 		},
 		// 分享到朋友

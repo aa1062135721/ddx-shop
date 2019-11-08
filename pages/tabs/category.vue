@@ -523,7 +523,7 @@
 
                 .right-content {
                     width: 100%;
-                    /*padding: 20rpx 0;*/
+                    padding-bottom: 120upx;
                     box-sizing: border-box;
 
                     .product-wrapper {

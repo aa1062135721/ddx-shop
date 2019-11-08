@@ -107,7 +107,8 @@
         </view>
         <!--操作按钮-->
         <view class="fixed-btns">
-            <button @click="call">联系客服</button>
+            <button @click="call">手机客服</button>
+            <button @click="contactCustomerService">在线客服</button>
             <form @submit="cancelFormSubmit" :report-submit="true" v-if="responseData.status === 1">
                 <button form-type="submit">取消</button>
             </form>
@@ -120,6 +121,8 @@
 </template>
 
 <script>
+    import { mapState, } from 'vuex'
+
     export default {
         name: "detail",
         data(){
@@ -166,6 +169,21 @@
                 uni.makePhoneCall({
                     phoneNumber: '17384094352' //仅为示例
                 })
+            },
+            // 在线客服 打开合从聊天弹窗
+            contactCustomerService(){
+                if (this.userInfo.id){
+                    _AIHECONG('customer',{
+                        head : this.userInfo.pic, //该字段可以将顾客头像同步过来
+                        '名称' : this.userInfo.nickname,  // '属性名' : '值'
+                        '邮箱' : '暂无',
+                        '手机' : this.userInfo.mobile,
+                        '会员账号' : "会员id：" + this.userInfo.id,
+                        '会员等级' : '暂无',
+                        '订单号' : JSON.stringify({title: this.responseData.sn})
+                    })
+                }
+                _AIHECONG('showChat')
             },
 
             //支付
@@ -269,6 +287,9 @@
         },
         onShow(){
             this.loadData()
+        },
+        computed: {
+            ...mapState(['userInfo'])
         },
         filters:{
             /**

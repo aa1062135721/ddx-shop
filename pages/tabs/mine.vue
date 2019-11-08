@@ -9,7 +9,7 @@
                 <view class="name">
                     <text class="one" v-if="userInfo.id">{{userInfo.nickname}}</text>
                     <text class="one" v-else>未登录</text>
-                    <text class="two" v-if="userInfo.id" @click="goPage('user_fans')">粉丝 {{userInfo.fans_num}}</text>
+<!--                    <text class="two" v-if="userInfo.id" @click="goPage('user_fans')">粉丝 {{userInfo.fans_num}}</text>-->
                 </view>
             </view>
             <view class="setting" @click="goPage('setting')">

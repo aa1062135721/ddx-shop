@@ -710,6 +710,7 @@
 								line-height:34upx;
 								text-align: center;
 								border-radius:0 17upx 17upx 0;
+								z-index: 99;
 							}
 							.img{
 								width: 204upx;

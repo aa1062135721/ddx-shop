@@ -353,7 +353,7 @@
 					<view class="iconfont icon-ddx-shop-shopping"></view>
 					<view class="text">商城</view>
 				</view>
-				<button class="box" open-type="contact" :session-from="userInfo">
+				<button class="box" open-type="contact" :session-from="userInfo"   @click="contactCustomerService">
 					<view class="iconfont icon-ddx-shop-pingjia-"></view>
 					<view class="text">客服</view>
 				</button>
@@ -885,6 +885,21 @@
 			//打开关注公众号二维码弹框follow-official-account
 			openFollowOfficialAccount(){
 				this.$refs.followOfficialAccountAlert.open()
+			},
+
+			// 打开合从聊天弹窗
+			contactCustomerService(){
+				if (this.userInfo.id){
+					_AIHECONG('customer',{
+						head : this.userInfo.pic, //该字段可以将顾客头像同步过来
+						'名称' : this.userInfo.nickname,  // '属性名' : '值'
+						'邮箱' : '暂无',
+						'手机' : this.userInfo.mobile,
+						'会员账号' : "会员id：" + this.userInfo.id,
+						'会员等级' : '暂无'
+					})
+				}
+				_AIHECONG('showChat')
 			},
 		},
 		// 分享到朋友

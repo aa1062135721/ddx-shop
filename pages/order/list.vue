@@ -203,6 +203,9 @@
 
             //swiper 切换
             async changeTab(e){
+                if (e.target.current === this.tabCurrentIndex) {
+                    return
+                }
                 this.tabCurrentIndex = e.target.current
                 if (this.navList[this.tabCurrentIndex].requestData.page === 1) {
                     await this.loadData()
@@ -211,6 +214,9 @@
 
             //顶部tab点击
             async tabClick(index){
+                if (index === this.tabCurrentIndex) {
+                    return
+                }
                 this.tabCurrentIndex = index
                 if (this.navList[this.tabCurrentIndex].requestData.page === 1) {
                     await this.loadData()

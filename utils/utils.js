@@ -129,5 +129,63 @@ exports.install = function (Vue, options) {
         window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${encodeURIComponent(local)}&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect`
     }
 
+    /***
+     * 处理传进来的时间戳，返回的时间格式为 2017-12-11
+     * 如果传入flag参数，返回的时间格式为 2019年11月11日
+     */
+    Vue.prototype.timstampToDate = (timstamp, flag) => {
+        let time = new Date(timstamp)
+        let y = time.getFullYear()
+        let m = time.getMonth() - 0 + 1
+        let d = time.getDate()
+        m = (m + '').length === 1 ? '0' + m : m
+        d = (d + '').length === 1 ? '0' + d : d
+        if (flag) {
+            return y + '年' + m + '月' + d + '日'
+        } else {
+            return y + '-' + m + '-' + d
+        }
+    }
+
+    /**
+     * 返回一对日期
+     * {
+     *      start_date: '2019-11-11'，// 开始日期
+     *      end_date: '2019-11-18' // 结束日期
+     * }
+     */
+    Vue.prototype.getStartDateAndEndDate = (flat) => {
+        let returnData = {
+            start_date: '',
+            end_date: '',
+        }
+        switch (flat) {
+            case 'yesterday': // 昨日
+                returnData.start_date = Vue.prototype.timstampToDate(new Date().getTime() - 24 * 60 * 60 * 1000)
+                returnData.end_date = Vue.prototype.timstampToDate(new Date().getTime() - 24 * 60 * 60 * 1000)
+                break
+            case 'today': // 今日
+                returnData.start_date = Vue.prototype.timstampToDate(new Date().getTime())
+                returnData.end_date = returnData.start_date
+                break
+            case 'thisWeek': // 本周
+                let oneDayLong = 24 * 60 * 60 * 1000
+                let now = new Date()
+                let mondayTime = now.getTime() - (now.getDay() - 1) * oneDayLong
+                let sundayTime = now.getTime() + (7 - now.getDay()) * oneDayLong
+                returnData.start_date = Vue.prototype.timstampToDate(new Date(mondayTime).getTime())
+                returnData.end_date = Vue.prototype.timstampToDate(new Date(sundayTime).getTime())
+                break
+            case 'near7Days': // 近7日
+                returnData.start_date = Vue.prototype(new Date().getTime() - 7 * 24 * 60 * 60 * 1000)
+                returnData.end_date = Vue.prototype(new Date().getTime())
+                break
+            case 'near30Days': // 近30日
+                returnData.start_date = Vue.prototype(new Date().getTime() - 30 * 24 * 60 * 60 * 1000)
+                returnData.end_date = Vue.prototype(new Date().getTime())
+                break
+        }
+        return returnData
+    }
 
 }

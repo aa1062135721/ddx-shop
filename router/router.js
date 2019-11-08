@@ -246,6 +246,18 @@ const router = new MinRouter({
 			name: 'user_distribution',
 			login: true
 		},
+		{
+			path: "pages2/user/distribution/sum-customer",
+			type: 'navigateTo',
+			name: 'user_distribution_sum_customer',
+			login: true
+		},
+		{
+			path: "pages2/user/distribution/sum-order",
+			type: 'navigateTo',
+			name: 'user_distribution_sum_order',
+			login: true
+		},
 
 		//spike 秒杀详情
 		{

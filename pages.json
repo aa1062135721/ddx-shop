@@ -35,6 +35,18 @@
 				"navigationBarTitleText": "意见反馈"
 			}
 		},
+		{
+			"path": "pages2/user/distribution/sum-customer",
+			"style": {
+				"navigationBarTitleText": "我的客户"
+			}
+		},
+		{
+			"path": "pages2/user/distribution/sum-order",
+			"style": {
+				"navigationBarTitleText": "累计订单"
+			}
+		},
 
 		{
 			"path": "pages/public/login",
@@ -197,7 +209,7 @@
 				{
 					"path": "user/record",
 					"style": {
-					  "navigationBarTitleText": "我的明细"
+					  "navigationBarTitleText": "提现记录"
 					}
 				},
 				{

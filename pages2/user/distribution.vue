@@ -12,34 +12,34 @@
             </view>
         </view>
         <view class="section1">
-            <view class="item">
+            <view class="item" @click="_goPage('user_distribution_sum_order',{whichState: 1, whichDate: 1})">
                 <view class="num">{{responseData.accumulated_income}}</view>
                 <view class="text">累计收益（元）</view>
             </view>
-            <view class="item">
+            <view class="item" @click="_goPage('user_distribution_sum_order')">
                 <view class="num">{{responseData.sales_volume}}</view>
                 <view class="text">团队累计销售额（元）</view>
             </view>
-            <view class="item">
+            <view class="item" @click="_goPage('user_distribution_sum_order')">
                 <view class="num">{{responseData.cumulative_order}}</view>
                 <view class="text">累计订单</view>
             </view>
-            <view class="item">
+            <view class="item" @click="_goPage('user_distribution_sum_customer')">
                 <view class="num">{{responseData.cumulative_member}}</view>
                 <view class="text">累计客户</view>
             </view>
         </view>
         <view class="section2">
             <view class="box">
-                <view class="item">
+                <view class="item" @click="_goPage('user_distribution_sum_order', {whichState: 2, whichDate: 1})">
                     <view class="num">{{responseData.balance_accounts}}</view>
                     <view class="text">待结算收益（元）</view>
                 </view>
-                <view class="item">
+                <view class="item" @click="_goPage('user_money')">
                     <view class="num">{{responseData.can_use_amount}}</view>
                     <view class="text">可提现金额（元）</view>
                 </view>
-                <view class="item">
+                <view class="item" @click="_goPage('user_record')">
                     <view class="num">{{responseData.use_amount}}</view>
                     <view class="text">已提现金额（元）</view>
                 </view>
@@ -47,15 +47,15 @@
         </view>
         <view class="section2">
             <view class="box">
-                <view class="item">
+                <view class="item" @click="_goPage('user_distribution_sum_order', {whichState: 2, whichDate: 2})">
                     <view class="num">{{responseData.today_estimated_revenue}}</view>
                     <view class="text">今日预估收益（元）</view>
                 </view>
-                <view class="item">
+                <view class="item" @click="_goPage('user_distribution_sum_order', {whichState: 0, whichDate: 2})">
                     <view class="num">{{responseData.today_order}}</view>
                     <view class="text">今日订单</view>
                 </view>
-                <view class="item">
+                <view class="item" @click="_goPage('user_distribution_sum_customer', {whichDate: 2})">
                     <view class="num">{{responseData.today_member}}</view>
                     <view class="text">今日新增客户</view>
                 </view>
@@ -94,7 +94,9 @@
           })
         },
         methods: {
-
+            _goPage(url, query = {}){
+                this.$openPage({name:url, query})
+            },
         },
         computed: {
             ...mapState(['userInfo']),

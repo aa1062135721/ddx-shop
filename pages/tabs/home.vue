@@ -1,18 +1,13 @@
 <template>
 	<view class="container">
 			<!-- 首页的搜索框 -->
-			<uni-nav-bar
-					shadow="false"
-					fixed="true"
-					status-bar="true"
-					style="position: fixed;top: 0;left: 0;width: 100%;background: #ffffff;z-index: 9999;">
 				<view class="my-search-box">
 					<view class="my-search-input" @click="_goPage('search_with_hot_history')">
 						<text class="iconfont icon-ddx-shop-hot"></text>
 						<text>万千商品，等你来采购</text>
 					</view>
 				</view>
-			</uni-nav-bar>
+
 			<!-- 一级tab栏 -->
 			<wuc-tab :tab-list="tabList" :textFlex="true" :tabCur.sync="TabCur" tab-class="tabs"  @change="tabChange"
 					 style="position: fixed;left: 0;width: 100%;z-index: 999;"
@@ -62,7 +57,12 @@
 					<view class="all-goods">
 						<view class="item">
 							<view class="title-box" @click="_goPage('group_buy')">
-								<view class="title">超级拼团</view>
+								<view class="title">
+									<text>超级拼团</text>
+									<text class="more-text">
+										更多 <text class="iconfont icon-ddx-shop-content_arrows"></text>
+									</text>
+								</view>
 								<view class="sub-title">约惠好友 超值拼购</view>
 							</view>
 							<view class="goods-info">
@@ -79,7 +79,12 @@
 						</view>
 						<view class="item">
 							<view class="title-box" @click="_goPage('spike_list')">
-								<view class="title">限时秒杀</view>
+								<view class="title">
+									<text>限时秒杀</text>
+									<text class="more-text">
+										更多 <text class="iconfont icon-ddx-shop-content_arrows"></text>
+									</text>
+								</view>
 								<view class="sub-title">爆品限时限量抢</view>
 							</view>
 							<view class="goods-info">
@@ -96,7 +101,12 @@
 						</view>
 						<view class="item" v-if="combination.tong_list.data.length">
 							<view class="title-box" @click="_goPage('goods_search', {title: combination.tong_list.name, id: combination.tong_list.id})">
-								<view class="title">童装童鞋</view>
+								<view class="title">
+									<text>童装童鞋</text>
+									<text class="more-text">
+										更多 <text class="iconfont icon-ddx-shop-content_arrows"></text>
+									</text>
+								</view>
 								<view class="sub-title">天使般温柔呵护</view>
 							</view>
 							<view class="goods-info">
@@ -112,7 +122,12 @@
 						</view>
 						<view class="item" v-if="combination.kua_list.data.length">
 							<view class="title-box" @click="_goPage('goods_search', {title: combination.kua_list.name, id: combination.kua_list.id})">
-								<view class="title">跨境购</view>
+								<view class="title">
+									<text>跨境购</text>
+									<text class="more-text">
+										更多 <text class="iconfont icon-ddx-shop-content_arrows"></text>
+									</text>
+								</view>
 								<view class="sub-title">正品保障 跨境直邮</view>
 							</view>
 							<view class="goods-info">
@@ -130,6 +145,8 @@
 				</view>
 
 				<!-- HOT SALE-->
+				<!---
+
 				<view class="hot-sale" v-if="explosion.length">
 					<view class="hot-sale-banner">
 						<image class="img" src="../../static/images/home-hot-sale-banner.png" mode="widthFix"></image>
@@ -165,27 +182,43 @@
 					</view>
 				</view>
 
+				-->
 				<!-- 好物享不停 -->
-				<view class="goods-share-no-stop">
+				<view class="goods-share-no-stop" v-if="explosion.length">
 					<view class="goods-share-no-stop-box">
 						<view class="goods-top">
-							<view class="item">
+							<view class="item" @click="_goPage('goods_detail', {id: explosion[0].item.id})">
 								<view class="goods-tag">好评第一</view>
-								<view class="goods-price">￥50</view>
-								<image class="img" src="../../static/images/goods.jpg"></image>
+								<view class="goods-price">￥{{parseInt(explosion[0].item.min_price)}}</view>
+								<image class="img" :src="explosion[0].item.pic"></image>
 							</view>
-							<view class="item" style="height:336upx;">
+							<view class="item" style="height:336upx;" @click="_goPage('goods_detail', {id: explosion[1].item.id})">
 								<view class="goods-tag">销量第一</view>
-								<view class="goods-price" style="height: 64upx;width: 64upx;font-size: 20upx;line-height: 64upx">￥339</view>
-								<image class="img" src="../../static/images/goods.jpg"></image>
+								<view class="goods-price" style="height: 64upx;width: 64upx;font-size: 20upx;line-height: 64upx">￥{{parseInt(explosion[1].item.min_price)}}</view>
+								<image class="img" :src="explosion[1].item.pic"></image>
 							</view>
-							<view class="item">
+							<view class="item" @click="_goPage('goods_detail', {id: explosion[2].item.id})">
 								<view class="goods-tag">热门推荐</view>
-								<view class="goods-price">￥50</view>
-								<image class="img" src="../../static/images/goods.jpg"></image>
+								<view class="goods-price">￥{{parseInt(explosion[2].item.min_price)}}</view>
+								<image class="img" :src="explosion[2].item.pic"></image>
 							</view>
 						</view>
-						<view class="goods-box">
+						<view class="goods-box" v-if="explosion.length >= 3">
+							<view class="item" v-for="(item, index) in explosion[3].item" :key="index" @click="_goPage('goods_detail', {id: item.id})">
+								<view class="goods-title">
+									<view class="title">
+										{{item.title}}
+									</view>
+									<view class="footer">
+										<view class="price">￥{{item.min_price}}</view>
+										<view class="btn">立即购买</view>
+									</view>
+								</view>
+								<view class="goods-img">
+									<image class="img" :src="item.pic"></image>
+								</view>
+							</view>
+							<!----
 							<view class="item">
 								<view class="goods-title">
 									<view class="title">
@@ -256,20 +289,7 @@
 									<image class="img" src="../../static/images/goods.jpg"></image>
 								</view>
 							</view>
-							<view class="item">
-								<view class="goods-title">
-									<view class="title">
-										我是商品标题我是商品标题我是商品标题我是商品标题我是商品标题
-									</view>
-									<view class="footer">
-										<view class="price">￥399.99</view>
-										<view class="btn">立即购买</view>
-									</view>
-								</view>
-								<view class="goods-img">
-									<image class="img" src="../../static/images/goods.jpg"></image>
-								</view>
-							</view>
+							---->
 						</view>
 					</view>
 				</view>
@@ -333,7 +353,6 @@
 	import mGoods from '@/components/goods/goods.vue'
 	import WlmTab from '@/components/wlm-tab/wlm-tab.vue'
 	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue' //可选值：more（loading前）、loading（loading中）、noMore（没有更多了）
-	import uniNavBar from "@/components/uni-nav-bar/uni-nav-bar.vue"
 
 	import {mapState, mapMutations} from 'vuex'
 
@@ -606,7 +625,6 @@
 			mGoods,
 			WlmTab,
 			uniLoadMore,
-			uniNavBar,
 		},
 		computed: {
 			...mapState(['userInfo']),
@@ -633,7 +651,12 @@
 			display: flex;
 			justify-content: flex-start;
 			align-items: center;
-			height: 100%;
+			position: fixed;
+			top: 0;
+			left: 0;
+			background: #ffffff;
+			z-index: 9999;
+			padding: $uni-spacing-row-base;
 			width: 100%;
 			.my-search-input{
 				border: 1upx solid #efefef;
@@ -641,7 +664,7 @@
 				font-size: $uni-font-size-base;
 				background: #fff;
 				height: 60upx;
-				width: 65%;
+				width: 100%;
 				padding: 0 10upx;
 				border-radius:30upx;
 				display: flex;
@@ -785,10 +808,22 @@
 						justify-content: space-between;
 
 						.title-box{
+							margin-bottom: 20upx;
 							.title{
 								font-size: $uni-font-size-base;
 								color: $color-primary-plain;
 								font-weight: 600;
+								display: flex;
+								justify-content: space-between;
+								.more-text{
+									font-weight: normal;
+									color: #999999;
+									font-size: 18upx;
+									.iconfont{
+										margin-left: 4upx;
+										font-size: 18upx;
+									}
+								}
 							}
 							.sub-title{
 								font-size: $uni-font-size-sm;
@@ -959,13 +994,13 @@
 							}
 							.goods-price{
 								position: absolute;
-								top: 12upx;
+								top: 6upx;
 								right: 10upx;
 								color: #FD3666;
 								font-size: 16upx;
-								width:50upx;
-								height:50upx;
-								line-height:50upx;
+								width:60upx;
+								height:60upx;
+								line-height:60upx;
 								text-align: center;
 								z-index: 99;
 								background-size: cover;

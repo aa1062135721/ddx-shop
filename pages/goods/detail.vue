@@ -536,7 +536,7 @@
 					lvid: 0,
 					content: [],//图文详情
 					pics: [],//图片
-					sales: 36,        //销量
+					sales: 0,        //销量
 					specs_list: [
 						{
 							tid: "",

@@ -48,7 +48,7 @@
 				</view>
 
 				<!--	新人专享 	-->
-				<view class="newcomer">
+				<view class="newcomer" @click="_goPage('newcomer')">
 					<img class="img" src="../../static/images/newcomer.gif" />
 				</view>
 
@@ -497,6 +497,10 @@
 
 						break
 					case 2:
+						if (this.swiperList[key].value === 'double11'){
+							this._goPage('double11')
+							return
+						}
 						this._goPage('web_view',{url: this.swiperList[key].value})
 						break
 					case 3:
@@ -789,6 +793,7 @@
 			/*超级拼团 限时秒杀 童装童鞋 跨境商品*/
 			.goods-category{
 				padding: 0 $uni-spacing-row-sm;
+				margin-bottom: 20upx;
 				.all-goods{
 					margin: auto;
 					background: #FFFFFF;
@@ -800,8 +805,19 @@
 						width: 50%;
 						height: 50%;
 						box-sizing: border-box;
-						/*border-left: 1px solid #efefef;*/
-						/*border-bottom: 1px solid #efefef;*/
+						border-left: 1px solid #efefef;
+						border-bottom: 1px solid #efefef;
+						&:nth-child(1){
+							border-left: none;
+						}
+
+						&:nth-child(3){
+							border-bottom: none;
+							border-left: none;
+						}
+						&:nth-child(4){
+							border-bottom: none;
+						}
 						padding: 30upx 20upx 26upx 20upx;
 						display: flex;
 						flex-direction: column;

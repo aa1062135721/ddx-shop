@@ -176,6 +176,19 @@
 				"navigationStyle": "custom",
 				"navigationBarTitleText": "抢购详情"
 			}
+		},
+
+		{
+			"path": "pages/newcomer/newcomer",
+			"style": {
+				"navigationBarTitleText": "新人专享"
+			}
+		},
+		{
+			"path": "pages/double11/double11",
+			"style": {
+				"navigationBarTitleText": "怡思丁专场"
+			}
 		}
 	],
     "subPackages": [

@@ -307,6 +307,20 @@ const router = new MinRouter({
 			login: true
 		},
 
+		// 新人专场
+		{
+			path: "pages/newcomer/newcomer",
+			type: 'navigateTo',
+			name: 'newcomer',
+			login: true
+		},
+		// 双十一专场
+		{
+			path: "pages/double11/double11",
+			type: 'navigateTo',
+			name: 'double11',
+			login: false
+		},
 	]
 })
 

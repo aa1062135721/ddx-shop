@@ -158,7 +158,7 @@
                             <text>收货地址</text>
                         </view>
                     </view>
-                    <view class="item" style="width: 25%;" @click="goPage('user_invite_fans')">
+                    <view class="item" style="width: 25%;display: none;" @click="goPage('user_invite_fans')">
                         <view>
                             <image src="../../static/icon/invite-friend.png"></image>
                         </view>

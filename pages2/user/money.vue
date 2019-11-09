@@ -64,8 +64,14 @@
                 this.$refs.getMoneyToWx.close()
             },
             async getMoney(){
+                if (this.money === ''){
+                    this.close()
+                    this.msg('请输入提现金额')
+                    return
+                }
                 if (parseFloat(this.money) > parseFloat(this.userInfo.out_money)){
-                    this.msg('提现金额有误')
+                    this.close()
+                    this.msg('申请提现金额大于可提现金额')
                     return
                 }
                 let data  = {
@@ -73,6 +79,7 @@
                 }
                 await this.$minApi.applyMoney(data).then(res => {
                     if (res.code === 200) {
+                        this.close()
                         this.msg('申请成功')
                     }
                 })

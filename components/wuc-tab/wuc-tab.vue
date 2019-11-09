@@ -55,7 +55,7 @@ export default {
         selectClass: {
             type: String,
             default() {
-                return 'text-blue';
+                return 'select-tab-text-color';
             }
         }
     },
@@ -111,8 +111,8 @@ swiper {
 .flex-sub {
     flex: 1;
 }
-.text-blue{
-  color:#0081ff;
+.select-tab-text-color{
+  color: #FC5A5A;
 }
 .text-white{
   color:#ffffff;

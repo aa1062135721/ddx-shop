@@ -350,7 +350,7 @@
                 </view>
             </view>
             <view class="btn">
-                <view class="joinCart" @click="_goPage('goods_detail_redirect', {id:goodsInfo.item_id})">
+                <view class="joinCart" @click="_goPage('goods_detail', {id:goodsInfo.item_id})">
                     <view class="inner">
                         ￥{{goodsInfo.old_price}}
                         <br>

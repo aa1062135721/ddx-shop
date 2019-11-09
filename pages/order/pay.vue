@@ -84,9 +84,6 @@
             _goPage(url, query = {}){
                 this.$openPage({name:url, query})
             },
-            payResult(){
-                this._goPage('order_result')
-            },
             radioChange(evt) {
                 switch (evt.target.value) {
                     case '3':
@@ -125,7 +122,13 @@
                     if (res.code === 200) {
                         if (this.payWay === '3'){ //钱包支付
                             res.data.result = true
-                            await this._goPage('order_result', res.data)
+                            if (res.data.order_distinguish === 1){
+                                // 拼团订单直接查看拼团详情
+                                await this._goPage('group_buy_group_redirect', {id: res.data.id})
+                            } else {
+                                // 普通订单 或者是秒杀订单
+                                await this._goPage('order_result', res.data)
+                            }
                         }
                         if (this.payWay === '1') { // 微信支付
                             this.$wx.ready(() => {
@@ -149,39 +152,16 @@
                                     },
                                     complete: async (complete) => {
                                         console.log("无论支付结果为是成功/失败/取消：",complete)
-                                        // 拼团订单直接查看拼团详情
                                         if (res.data.order_distinguish === 1){
-                                            this._goPage('group_buy_detail', {id: res.data.id})
-                                            return
+                                            // 拼团订单直接查看拼团详情
+                                            await this._goPage('group_buy_group_redirect', {id: res.data.id})
+                                        } else {
+                                            // 普通订单 或者是秒杀订单
+                                            await this._goPage('order_result', res.data)
                                         }
-                                        this._goPage('order_result', res.data)
                                     }
                                 })
                             })
-                            // await uni.requestPayment({
-                            //     provider: 'wxpay',
-                            //     timeStamp: res.data.timeStamp,
-                            //     nonceStr: res.data.nonceStr,
-                            //     package: res.data.package,
-                            //     signType: res.data.signType,
-                            //     paySign: res.data.paySign,
-                            //     success: async (payRes) => {
-                            //         res.data.result = true
-                            //         sendTemplateMessageData.state = 1
-                            //         await this.$minApi.sendTemplateMessage(sendTemplateMessageData).then(res=>{
-                            //             console.log(res)
-                            //         })
-                            //         await this._goPage('order_result', res.data)
-                            //     },
-                            //     fail: async (payErr) =>{
-                            //         res.data.result = false
-                            //         sendTemplateMessageData.state = 0
-                            //         await this.$minApi.sendTemplateMessage(sendTemplateMessageData).then(res=>{
-                            //             console.log(res)
-                            //         })
-                            //         await this._goPage('order_result', res.data)
-                            //     }
-                            // })
                         }
                     } else {
                         res.data.result = false

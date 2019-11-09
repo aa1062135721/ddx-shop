@@ -190,6 +190,12 @@ const router = new MinRouter({
 			name: 'group_buy_group',
 			login: false
 		},
+		{
+			path: "pages/group-buy/group",
+			type: 'redirectTo',
+			name: 'group_buy_group_redirect',
+			login: false
+		},
 
 		//user pages & pages2
 		{

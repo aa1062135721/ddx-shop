@@ -31,7 +31,7 @@
 		onLaunch: function() {
 			console.log('App Launch')
             try {
-                // this.setToken('bb5fcf01423d659d14b221ddb8da5b7b417a31a526ffdff5b73db979afd82538')
+                // this.setToken('091bcef8d59ebf4fd806dbdfa9dfdf561e51caf0b0561fdd44307f48161177ab')
                 const token = uni.getStorageSync('token')
                 if (token) {
                     this.setToken(token)

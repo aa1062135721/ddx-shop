@@ -70,7 +70,7 @@
 						￥{{goodsInfo.commander_price}}
 					</text>
 					<text class="time-kill">
-						{{goodsInfo.people_num}}人拼团
+						{{goodsInfo.people_num}}人团
 					</text>
 				</view>
 				<view class="bottom">
@@ -464,7 +464,7 @@
 					 <view class='over'>已售完</view>
 				</block>
 				<block v-else>
-					<view class="joinCart my-vam" @click="open()">
+					<view class="joinCart my-vam" @click="_goPage('goods_detail', {id:goodsInfo.item_id})">
 						<view class="inner">
 							￥{{ (parseFloat(goodsInfo.old_price) * parseFloat(choosesGoodsInfo.num)) | moneyToFixed }}<br />
 							单独购买
@@ -527,28 +527,17 @@
 						<view class='over'>已下架</view>
 					</block>
 					<block v-else>
-						<view class="btn my-vam" style="background:#FC8A8A;" @click="buyNow(2)">
+<!--						<view class="btn my-vam" style="background:#FC8A8A;" @click="buyNow(2)">--> <!--- buyNow函数，传2也是单独购买，在当前页面直接飞到提交订单页面 --->
+						<view class="btn my-vam" style="background:#FC8A8A;" @click="_goPage('goods_detail', {id: goodsInfo.item_id})">
 							<view class="inner">
 								￥{{ (parseFloat(goodsInfo.old_price) * parseFloat(choosesGoodsInfo.num)) | moneyToFixed }}<br />
 								单独购买
 							</view>
 						</view>
-						<view class="btn my-vam" @click="buyNow(1)" v-if="goodsInfo.begin === 1">
+						<view class="btn my-vam" @click="buyNow(1)">
 							<view class="inner">
 								￥{{ (parseFloat(goodsInfo.commander_price) * parseFloat(choosesGoodsInfo.num)) | moneyToFixed }}<br />
 								一键开团
-							</view>
-						</view>
-						<view class="buy my-vam" v-if="goodsInfo.begin === 2"  style="background:#F9A13A;">
-							<view class="inner">
-								￥{{ (parseFloat(goodsInfo.commander_price) * parseFloat(choosesGoodsInfo.num)) | moneyToFixed }}<br />
-								待开始
-							</view>
-						</view>
-						<view class="buy my-vam" v-if="goodsInfo.begin === 3" style="background:#F9A13A;">
-							<view class="inner">
-								￥{{ (parseFloat(goodsInfo.commander_price) * parseFloat(choosesGoodsInfo.num)) | moneyToFixed }}<br />
-								已结束
 							</view>
 						</view>
 					</block>

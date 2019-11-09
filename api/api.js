@@ -333,7 +333,7 @@ export default {
     },
 
     /**
-     * 选择支付方式，如果是微信支付，还需调用微信支付接口，入股是钱包支付直接扣余额
+     * 选择支付方式，如果是微信支付，还需调用微信支付接口，如果是钱包支付直接扣余额
      */
     payWay(data){
       return minRequest.post('/Orderwxpay/pay', data)

@@ -214,6 +214,11 @@
                     if (res.code === 200) {
                         this.freight = res.data
                     }
+                    if (res.code === 403) {
+                        setTimeout(() => {
+                            uni.navigateBack()
+                        }, 1000)
+                    }
                 })
             },
             //提交订单

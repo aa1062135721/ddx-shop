@@ -73,7 +73,7 @@ minRequest.interceptors.response((response) => {
   if (response.data.code === -2) {
     store.commit('setToken')
     store.commit('setUserInfo')
-    uni.navigateBack()
+    (new Vue()).$openPage('mine')
   }
 
   if (response.statusCode !== 200){

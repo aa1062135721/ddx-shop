@@ -52,9 +52,10 @@
             loginOut(){
                 this.setUserInfo()
                 this.setToken()
+                this.setShopID()
                 this._goPage('mine')
             },
-            ...mapMutations(['setToken', 'setUserInfo'])
+            ...mapMutations(['setToken', 'setUserInfo', 'setShopID'])
         },
         filters: {
             filterMobile(mobile){

@@ -107,7 +107,7 @@
         </view>
         <!--操作按钮-->
         <view class="fixed-btns">
-            <button @click="call">手机客服</button>
+<!--            <button @click="call">手机客服</button>-->
             <button @click="contactCustomerService">在线客服</button>
             <form @submit="cancelFormSubmit" :report-submit="true" v-if="responseData.status === 1">
                 <button form-type="submit">取消</button>

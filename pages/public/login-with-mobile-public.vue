@@ -52,6 +52,7 @@
                         code: this.code,
                         member: this.$parseURL().member,
                         user_id: uni.getStorageSync('shareID'),
+                        shop_id: uni.getStorageSync('shopID'),
                     }).then(res => {
                         if (res.code === 200){
                             this.setToken(res.data.token) //保存用户token，并存vuex，永久存储

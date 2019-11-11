@@ -217,7 +217,7 @@
                     if (res.code === 403) {
                         setTimeout(() => {
                             uni.navigateBack()
-                        }, 1000)
+                        }, 2500)
                     }
                 })
             },

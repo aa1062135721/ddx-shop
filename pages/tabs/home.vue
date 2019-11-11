@@ -409,6 +409,9 @@
 			if (param.user_id){
 				this.setShareID(param.user_id)
 			}
+			if (param.shop_id) {
+				this.setShopID(param.shop_id)
+			}
 			await this._getCategory()
 			await this._getBanner()
 			await this._getIcon()
@@ -430,7 +433,7 @@
 			}
 		},
 		methods: {
-			...mapMutations(['setShareID']),
+			...mapMutations(['setShareID', 'setShopID']),
 			_goPage(url, query = {}){
 				this.$openPage({name:url, query})
 			},
@@ -542,6 +545,7 @@
 						this._goPage('spike_list')
 						break
 					case 6:
+						this._goPage('newcomer')
 						break
                 }
 			},
@@ -1070,8 +1074,8 @@
 										color: #fff;
 										font-size: 14upx;
 										background: #ED5D80;
+										width: 90upx;
 										padding: 6upx 10upx;
-										width: 80upx;
 										text-align: center;
 									}
 								}

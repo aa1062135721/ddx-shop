@@ -25,13 +25,13 @@
             _goPage(url, query = {}){
                 this.$openPage({name:url, query})
             },
-			...mapMutations(['setToken', 'setSubscribe', 'setUserInfo']),
+			...mapMutations(['setToken', 'setSubscribe', 'setUserInfo', 'setShopID']),
             ...mapActions(['asyncGetUserInfo']),
 		},
 		onLaunch: function() {
 			console.log('App Launch')
             try {
-                // this.setToken('091bcef8d59ebf4fd806dbdfa9dfdf561e51caf0b0561fdd44307f48161177ab')
+                // this.setToken('da6519274b1e40bad449565e4779fee126a6dcc97deeec662bc34a65c3bff294')
                 const token = uni.getStorageSync('token')
                 if (token) {
                     this.setToken(token)
@@ -72,6 +72,7 @@
                             this.setToken() // 清空用户token
                             this.setUserInfo() // 清空用户数据
                             this.setSubscribe() // 清空用户是否关注公众号数据
+                            this.setShopID() // 清空保存的门店数据
                         })
                     }
                 }
@@ -80,6 +81,7 @@
                 this.setToken() // 清空用户token
                 this.setUserInfo() // 清空用户数据
                 this.setSubscribe() // 清空用户是否关注公众号数据
+                this.setShopID() // 清空保存的门店数据
             }
 		},
 		onShow: function() {

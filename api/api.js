@@ -62,8 +62,9 @@ minRequest.interceptors.response((response) => {
    * TODO 未登录
    */
   if (response.data.code === -1) {
-    store.commit('setToken')
-    store.commit('setUserInfo')
+    let myVue = new Vue()
+    myVue.$store.commit('setToken')
+    myVue.$store.commit('setUserInfo')
   }
 
   /**
@@ -71,9 +72,10 @@ minRequest.interceptors.response((response) => {
    * 清除用户token和用户信息
    */
   if (response.data.code === -2) {
-    store.commit('setToken')
-    store.commit('setUserInfo')
-    (new Vue()).$openPage('mine')
+    let myVue = new Vue()
+    myVue.$store.commit('setToken')
+    myVue.$store.commit('setUserInfo')
+    myVue.$openPage('mine')
   }
 
   if (response.statusCode !== 200){

@@ -1015,7 +1015,7 @@
 					console.log("获取拼团规则，并跳转页面",res)
 					console.log(this.formatRichText2(res.data.content))
 					if (res.code === 200) {
-						this._goPage('rich_text', {content: this.formatRichText2(res.data.content),title: '拼团规则',})
+						this._goPage('rich_text', {content: res.data.content,title: '拼团规则',})
 					}
 				})
 			},

@@ -15,7 +15,7 @@
         onLoad(param) {
             console.log(param)
             console.log("带过来的参数",this.$parseURL())
-            this.content = this.$parseURL().content
+            this.content = this.formatRichText2(this.$parseURL().content)
 
             if (this.$parseURL().title) {
                 uni.setNavigationBarTitle({

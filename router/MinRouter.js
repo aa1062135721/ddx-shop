@@ -32,8 +32,7 @@ function openPage(args) {
     }
 
     if (isObject(query)) {
-        // queryStr = encodeURIComponent(JSON.stringify(query))
-        queryStr = JSON.stringify(query)
+        queryStr = encodeURIComponent(JSON.stringify(query))
     } else {
         throw new Error('query数据必须是Object')
     }
@@ -96,8 +95,7 @@ function openPage(args) {
 function parseURL() {
     const query = this.$root.$mp.query.query
     if (query) {
-        // return JSON.parse(decodeURIComponent(query))
-        return JSON.parse(query)
+        return JSON.parse(decodeURIComponent(query))
     } else {
         return {}
     }

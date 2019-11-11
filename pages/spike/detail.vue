@@ -877,65 +877,44 @@
                     this.commentResponseData.data = res.data
                 }
             })
+
+            // 如果是安卓平台 每次进入商品详情页面就会调用微信配置，自定义分享商品
+            if (this.getPlatform().isAndroid){
+                await this.wxConfig()
+            }
+            let url = ''
+            if(this.userInfo.id) {
+                url = window.location.href + '&user_id=' + this.userInfo.id
+            } else {
+                url = window.location.href
+            }
+            this.$nextTick(() => {
+                let param1 = {
+                        title: '推荐你一个商品', // 分享标题
+                        desc: this.goodsInfo.title, // 分享描述
+                        link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                        imgUrl: this.goodsInfo.pics[0], // 分享图标
+                        success: function () {}
+                    },
+                    param2 = {
+                        title: '推荐你一个商品', // 分享标题
+                        link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                        imgUrl: this.goodsInfo.pics[0], // 分享图标
+                        success: function () {}
+                    }
+                this.wxConigShareGoods(param1, param2)
+            })
         },
         async onShow() {
             if (this.userInfo.id){
                 //购物车数量
-                this.$minApi.getCarNum().then(res => {
+                await this.$minApi.getCarNum().then(res => {
                     console.log("购物车数量：", res)
                     if(res.code === 200){
                         this.carNum = res.data
                     }
                 })
             }
-            let url = encodeURIComponent(window.location.href)
-            this.$minApi.getWxConfig({url}).then(res => {
-                if (res.code === 200) {
-                    this.$wx.config({
-                        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来
-                        appId: res.data.appid, // 必填，公众号的唯一标识
-                        timestamp: res.data.timestamp, // 必填，生成签名的时间戳
-                        nonceStr: res.data.noncestr, // 必填，生成签名的随机串
-                        signature: res.data.signature,// 必填，签名，见附录1
-                        jsApiList: [
-                            // 注意：使用新版本的分享功能，一定要在该列表加上对应的老版本功能接口，否则新接口不起作用
-                            'updateTimelineShareData', //1.4.0的 分享到朋友圈
-                            'onMenuShareTimeline', //老版本 分享到朋友圈
-
-                            'updateAppMessageShareData',//1.4.0分享到朋友
-                            'onMenuShareAppMessage',//老版本分享到朋友
-                        ]
-                    })
-                    this.$wx.error((res) => {
-                        this.msg(res)
-                    })
-                    if(window.location.href.indexOf("?") != -1 && this.userInfo.id) {
-                        url = window.location.href + '&user_id=' + this.userInfo.id
-                    } else {
-                        url = window.location.href
-                    }
-                    this.$wx.ready(() => {   //需在用户可能点击分享按钮前就先调用
-                        this.$wx.updateAppMessageShareData({
-                            title: '推荐你一个商品', // 分享标题
-                            desc: this.goodsInfo.title, // 分享描述
-                            link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                            imgUrl: this.goodsInfo.pics[0], // 分享图标
-                            success: function () {
-                                // 设置成功
-                            }
-                        })
-                        // 分享到朋友圈
-                        this.$wx.updateTimelineShareData({
-                            title: '推荐你一个商品', // 分享标题
-                            link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                            imgUrl: this.goodsInfo.pics[0], // 分享图标
-                            success: function () {
-                                // 设置成功
-                            }
-                        })
-                    });
-                }
-            })
         },
         onReady(){
             this.calcAnchor();//计算锚点高度，页面数据是ajax加载时，请把此行放在数据渲染完成事件中执行以保证高度计算正确

@@ -188,4 +188,63 @@ exports.install = function (Vue, options) {
         return returnData
     }
 
+    /**
+     * 当前的平台是Android还是ios
+     * @returns {{isAndroid: boolean, isIOS: boolean}}
+     */
+    Vue.prototype.getPlatform = () => {
+        // 判断浏览器是 Android端 or IOS端
+        let userAgent = navigator.userAgent
+        let isAndroid = userAgent.indexOf("Android") > -1 || userAgent.indexOf("Adr") > -1
+        let isIOS = !!userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
+        return {
+            isAndroid,
+            isIOS,
+        }
+    }
+
+    /**
+     *  非ios设备，切换路由时候进行重新签名
+     */
+    Vue.prototype.wxConfig = () => {
+        //因为问题1，所以我们要在IOS端进入项目时，记住第一次进来的url地址，供签名使用
+        let that = new Vue()
+        let url = encodeURIComponent(window.location.href)
+        that.$minApi.getWxConfig({url}).then(res => {
+            if (res.code === 200) {
+                that.$wx.config({
+                    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来
+                    appId: res.data.appid, // 必填，公众号的唯一标识
+                    timestamp: res.data.timestamp, // 必填，生成签名的时间戳
+                    nonceStr: res.data.noncestr, // 必填，生成签名的随机串
+                    signature: res.data.signature,// 必填，签名，见附录1
+                    jsApiList: [
+                        // 注意：使用新版本的分享功能，一定要在该列表加上对应的老版本功能接口，否则新接口不起作用
+                        'updateTimelineShareData', //1.4.0的 分享到朋友圈
+                        'onMenuShareTimeline', //老版本 分享到朋友圈
+                        'updateAppMessageShareData',//1.4.0分享到朋友
+                        'onMenuShareAppMessage',//老版本分享到朋友
+                        'chooseWXPay',//支付
+                    ]
+                })
+                that.$wx.error((res) => {
+                    that.msg(res)
+                })
+            }
+        })
+    }
+
+    /**
+     * @param param1 分享到朋友
+     * @param param2 分享到朋友圈
+     */
+    Vue.prototype.wxConigShareGoods = (param1 = {}, param2 = {}) => {
+        let that = new Vue()
+        that.$wx.ready(() => {
+            //分享到朋友
+            that.$wx.updateAppMessageShareData(param1)
+            // 分享到朋友圈
+            that.$wx.updateTimelineShareData(param2)
+        })
+    }
 }

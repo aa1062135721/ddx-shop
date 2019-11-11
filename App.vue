@@ -30,8 +30,35 @@
 		},
 		onLaunch: function() {
 			console.log('App Launch')
+            // ios 进入应用就要配置微信sdk
+            if(this.getPlatform().isIOS){
+                let url = encodeURIComponent(window.location.href)
+                this.$minApi.getWxConfig({url}).then(res => {
+                    if (res.code === 200) {
+                        this.$wx.config({
+                            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来
+                            appId: res.data.appid, // 必填，公众号的唯一标识
+                            timestamp: res.data.timestamp, // 必填，生成签名的时间戳
+                            nonceStr: res.data.noncestr, // 必填，生成签名的随机串
+                            signature: res.data.signature,// 必填，签名，见附录1
+                            jsApiList: [
+                                // 注意：使用新版本的分享功能，一定要在该列表加上对应的老版本功能接口，否则新接口不起作用
+                                'updateTimelineShareData', //1.4.0的 分享到朋友圈
+                                'onMenuShareTimeline', //老版本 分享到朋友圈
+                                'updateAppMessageShareData',//1.4.0分享到朋友
+                                'onMenuShareAppMessage',//老版本分享到朋友
+                                'chooseWXPay',//支付
+                            ]
+                        })
+                        this.$wx.error((res) => {
+                            this.msg(res)
+                        })
+                    }
+                })
+            }
+
             try {
-                // this.setToken('d03e50fd0f6568b9ce0205b24db133dd4bf2566b0d6772c4bde868ebc9adb8cd')
+                // this.setToken('e245245f2f1648314bd5373b5c9e19add2808cf5344b5acf16b85857a9c43092')
                 const token = uni.getStorageSync('token')
                 if (token) {
                     this.setToken(token)

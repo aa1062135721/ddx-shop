@@ -56,29 +56,11 @@
                 this.disabledMoney = true
                 this.payWay = '1'
             }
-        },
-        onShow(){
-            // let url = encodeURIComponent(window.location.href.split('#')[0]) // vue hash路由模式
-            // let url = encodeURIComponent(window.location.href.split('?')[0]) // vue history路由模式
-            let url = encodeURIComponent(window.location.href)
-            this.$minApi.getWxConfig({url}).then(res => {
-                console.log(res)
-                if (res.code === 200) {
-                    this.$wx.config({
-                        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来
-                        appId: res.data.appid, // 必填，公众号的唯一标识
-                        timestamp: res.data.timestamp, // 必填，生成签名的时间戳
-                        nonceStr: res.data.noncestr, // 必填，生成签名的随机串
-                        signature: res.data.signature,// 必填，签名，见附录1
-                        jsApiList: [
-                            "chooseWXPay",//微信h5支付
-                        ]
-                    })
-                    this.$wx.error((res) => {
-                        this.msg(res)
-                    })
-                }
-            })
+
+            // 如果是安卓平台 每次进入商品详情页面就会调用微信配置，自定义分享商品
+            if (this.getPlatform().isAndroid){
+                this.wxConfig()
+            }
         },
         methods: {
             _goPage(url, query = {}){

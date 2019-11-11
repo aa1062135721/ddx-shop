@@ -93,10 +93,17 @@ export default {
 			}
 		},
 		//HM修改 双向绑定
-		value(val) {
-			console.log("子组件",val)
-			this.inputVal = val;
-			// this.isFocus = true;
+		// value(val) {
+		// 	console.log("子组件",val)
+		// 	this.inputVal = val;
+		// 	// this.isFocus = true;
+		// },
+		value: {
+			immediate:true,
+			handler:function(newVal){
+				console.log('我是父组件带过来的值，', newVal)
+				this.inputVal = newVal
+			}
 		},
 	}
 };

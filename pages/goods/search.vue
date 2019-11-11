@@ -124,6 +124,11 @@
 					delete data.title
 				}
 
+				// 如果是首页的跨境购进入的
+				if (this.$parseURL().is_cate) {
+					data.is_cate = 1
+				}
+
 				switch (this.filterIndex) {
 					case 0:
 						break

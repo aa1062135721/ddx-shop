@@ -121,7 +121,7 @@
 							</view>
 						</view>
 						<view class="item" v-if="combination.kua_list.data.length">
-							<view class="title-box" @click="_goPage('goods_search', {title: combination.kua_list.name, id: combination.kua_list.id})">
+							<view class="title-box" @click="_goPage('goods_search', {title: combination.kua_list.name, id: combination.kua_list.id, is_cate: 1})">
 								<view class="title">
 									<text>跨境购</text>
 									<text class="more-text">
@@ -533,6 +533,10 @@
                     case 1:
                         break
                     case 2:
+						if (item.value === 'msg'){
+							this.msg('功能正在完善中，请敬请期待！')
+							return
+						}
                         this._goPage('web_view',{url: item.value})
                         break
                     case 3:

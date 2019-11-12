@@ -32,9 +32,7 @@
                                 <text class="unit" style="color:#FC5A5A;">元</text>
                             </view>
                         </view>
-                        <view>
-                            <text>钱包</text>
-                        </view>
+                        <text class="text" style="margin-top: 6upx;">钱包</text>
                     </view>
                     <view class="item">
                         <view>
@@ -42,9 +40,7 @@
                                 0<text class="unit">分</text>
                             </view>
                         </view>
-                        <view>
-                            <text>积分</text>
-                        </view>
+                        <text class="text" style="margin-top: 6upx;">积分</text>
                     </view>
                     <view class="item">
                         <view>
@@ -52,9 +48,7 @@
                                 0<text class="unit">张</text>
                             </view>
                         </view>
-                        <view>
-                            <text>优惠券</text>
-                        </view>
+                        <text class="text" style="margin-top: 6upx;">优惠券</text>
                     </view>
                     <view class="item">
                         <view>
@@ -62,9 +56,7 @@
                                 0<text class="unit">张</text>
                             </view>
                         </view>
-                        <view>
-                            <text>卡包</text>
-                        </view>
+                        <text class="text" style="margin-top: 6upx;">卡包</text>
                     </view>
                 </view>
             </view>
@@ -81,38 +73,37 @@
                 <view class="box" style="justify-content: space-between;">
                     <view class="item" @click="goPage('order_list',{status: 1})">
                         <view>
-                            <i class="iconfont icon-ddx-shop-daifukuan"></i>
+                            <image src="../../static/icon/order/pre-payment.png"></image>
                         </view>
-                        <view>
-                            <text>待付款</text>
-                        </view>
+                        <text class="text">待付款</text>
                         <view class="red" v-if="userInfo.stay_pay">{{userInfo.stay_pay}}</view>
                     </view>
                     <view class="item" @click="goPage('order_list',{status: 2})">
                         <view>
-                            <i class="iconfont icon-ddx-shop-daifahuo1"></i>
+                            <image src="../../static/icon/order/to-be-delivered.png"></image>
                         </view>
-                        <view>
-                            <text>待发货</text>
-                        </view>
+                        <text class="text">待发货</text>
                         <view class="red" v-if="userInfo.stay_sendout">{{userInfo.stay_sendout}}</view>
                     </view>
                     <view class="item" @click="goPage('order_list',{status: 3})">
                         <view>
-                            <i class="iconfont icon-ddx-shop-daishouhuo"></i>
+                            <image src="../../static/icon/order/pending-receipt.png"></image>
                         </view>
-                        <view>
-                            <text>待收货</text>
-                        </view>
+                        <text class="text">待收货</text>
                         <view class="red" v-if="userInfo.stay_takeover">{{userInfo.stay_takeover}}</view>
                     </view>
                     <view class="item" @click="goPage('order_list',{status:4})">
                         <view>
-                            <i class="iconfont icon-ddx-shop-daipingjia"></i>
+                            <image src="../../static/icon/order/comment.png"></image>
                         </view>
+                        <text class="text">待评价</text>
+                        <view class="red" v-if="userInfo.stay_discuss">{{userInfo.stay_discuss}}</view>
+                    </view>
+                    <view class="item" @click="goPage('order_list',{status:5})">
                         <view>
-                            <text>待评价</text>
+                            <image src="../../static/icon/order/refund-after-sale.png"></image>
                         </view>
+                        <text class="text">退款/售后</text>
                         <view class="red" v-if="userInfo.stay_discuss">{{userInfo.stay_discuss}}</view>
                     </view>
                 </view>
@@ -130,65 +121,49 @@
                         <view>
                             <image src="../../static/icon/distribution.png"></image>
                         </view>
-                        <view>
-                            <text>分销中心</text>
-                        </view>
+                        <text class="text">分销中心</text>
                     </view>
                     <view class="item" style="width: 25%;" v-if="userInfo.isShareholder" @click="goPage('web_view', {url: `https://www.ddxm661.com/frontend/public/dist#/shareholder?mobile=${userInfo.mobile}`})">
                         <view>
                             <image src="../../static/icon/business-data.png"></image>
                         </view>
-                        <view>
-                            <text>经营数据</text>
-                        </view>
+                        <text class="text">经营数据</text>
                     </view>
                     <view class="item" style="width: 25%;" v-if="userInfo.isShareholder" @click="goPage('web_view', {url: 'https://www.ddxm661.com/frontend/public/dist/#/home/mall'})">
                         <view>
                             <image src="../../static/icon/business-data.png"></image>
                         </view>
-                        <view>
-                            <text>经营数据(原)</text>
-                        </view>
+                        <text class="text">经营数据(原)</text>
                     </view>
                     <view class="item" style="width: 25%;" @click="goPage('address_list')">
                         <view>
                             <image src="../../static/icon/location.png"></image>
                         </view>
-                        <view>
-                            <text>收货地址</text>
-                        </view>
+                        <text class="text">收货地址</text>
                     </view>
                     <view class="item" style="width: 25%;display: none;" @click="goPage('user_invite_fans')">
                         <view>
                             <image src="../../static/icon/invite-friend.png"></image>
                         </view>
-                        <view>
-                            <text>邀请好友</text>
-                        </view>
+                        <text class="text">邀请好友</text>
                     </view>
                     <view class="item" style="width: 25%;display: none;">
                         <view>
                             <image src="../../static/icon/collection.png"></image>
                         </view>
-                        <view>
-                            <text>我的收藏</text>
-                        </view>
+                        <text class="text">我的收藏</text>
                     </view>
                     <view class="item" style="width: 25%;display: none;">
                         <view>
                             <image src="../../static/icon/footprint.png"></image>
                         </view>
-                        <view>
-                            <text>我的足迹</text>
-                        </view>
+                        <text class="text">我的足迹</text>
                     </view>
                     <view class="item" style="width: 25%;" @click="goPage('feedback')">
                         <view>
                             <image src="../../static/icon/suggestion.png"></image>
                         </view>
-                        <view>
-                            <text>意见反馈</text>
-                        </view>
+                        <text class="text">意见反馈</text>
                     </view>
                 </view>
             </view>
@@ -298,13 +273,15 @@
                     flex-direction: row;
                     justify-content: flex-start;
                     align-items: center;
-                    font-size: $uni-font-size-lg;
+                    font-size: $uni-font-size-base;
+                    font-weight:500;
                 }
                 .right{
                     color: #808080;
+                    font-size: $uni-font-size-sm;
                     .iconfont{
                         margin-left: 6upx;
-                        font-size: $uni-font-size-base;
+                        font-size: $uni-font-size-sm;
                     }
                 }
 
@@ -329,13 +306,9 @@
                         .iconfont{
                             font-size: 60upx;
                         }
-                        text{
-                            font-size: $uni-font-size-base;
-                            color: $color-primary-plain;
-                        }
                         image{
-                            width: 80upx;
-                            height: 80upx;
+                            width: 60upx;
+                            height: 60upx;
                         }
                         .icon-text{
                             color: $color-primary-plain;
@@ -345,10 +318,14 @@
                             }
                         }
                     }
+                    .text{
+                        font-size: $uni-font-size-sm;
+                        color: $color-primary-plain;
+                    }
                     .red{
                         position: absolute;
                         top: 4upx;
-                        right: 4upx;
+                        right: 16upx;
                         background: red;
                         border-radius: 50%;
                         color: #ffffff;

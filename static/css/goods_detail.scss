@@ -387,7 +387,7 @@
   .icons {
     display: flex;
     justify-content: center;
-    height: 98upx;
+    height: 88upx;
     width: 35%;
     .box {
       /* 客服按钮去掉小程序默认按钮样式 */
@@ -402,13 +402,13 @@
       }
 
       position: relative;
-      width: 98upx;
-      height: 98upx;
+      width: upx;
+      height: 88upx;
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
       .iconfont {
-        font-size: 60upx;
+        font-size: 50upx;
         color: #828282;
       }
       .text {

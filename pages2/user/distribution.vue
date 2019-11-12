@@ -109,7 +109,7 @@
         .bg{
             width: 100%;
             height:268upx;
-            background-color: #FA7D7D;
+            background-color: #F65D5C;
             background-repeat: no-repeat;
             background-size: cover;
             .user-info{

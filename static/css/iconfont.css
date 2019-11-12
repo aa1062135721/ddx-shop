@@ -1,11 +1,11 @@
 @font-face {
     font-family: 'iconfont';  /* project id 1364550 */
-    src: url('//at.alicdn.com/t/font_1364550_u8xog0d347.eot');
-    src: url('//at.alicdn.com/t/font_1364550_u8xog0d347.eot?#iefix') format('embedded-opentype'),
-    url('//at.alicdn.com/t/font_1364550_u8xog0d347.woff2') format('woff2'),
-    url('//at.alicdn.com/t/font_1364550_u8xog0d347.woff') format('woff'),
-    url('//at.alicdn.com/t/font_1364550_u8xog0d347.ttf') format('truetype'),
-    url('//at.alicdn.com/t/font_1364550_u8xog0d347.svg#iconfont') format('svg');
+    src: url('//at.alicdn.com/t/font_1364550_lp9hqsjd8p7.eot');
+    src: url('//at.alicdn.com/t/font_1364550_lp9hqsjd8p7.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_1364550_lp9hqsjd8p7.woff2') format('woff2'),
+    url('//at.alicdn.com/t/font_1364550_lp9hqsjd8p7.woff') format('woff'),
+    url('//at.alicdn.com/t/font_1364550_lp9hqsjd8p7.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_1364550_lp9hqsjd8p7.svg#iconfont') format('svg');
 }
 
 .iconfont {
@@ -19,10 +19,6 @@
 
 .icon-ddx-shop-time:before {
     content: "\e65f";
-}
-
-.icon-ddx-shop-check:before {
-    content: "\e615";
 }
 
 .icon-ddx-shop-down:before {
@@ -49,20 +45,8 @@
     content: "\e6ac";
 }
 
-.icon-ddx-shop-yaoqingma:before {
-    content: "\e683";
-}
-
 .icon-ddx-shop-anonymous-iconfont:before {
     content: "\e601";
-}
-
-.icon-ddx-shop-daishouhuo:before {
-    content: "\e622";
-}
-
-.icon-ddx-shop-daifahuo1:before {
-    content: "\e616";
 }
 
 .icon-ddx-shop-setting:before {
@@ -71,14 +55,6 @@
 
 .icon-ddx-shop-hot:before {
     content: "\e619";
-}
-
-.icon-ddx-shop-tick:before {
-    content: "\e606";
-}
-
-.icon-ddx-shop-pengyouquan:before {
-    content: "\e633";
 }
 
 .icon-ddx-shop-pingjia-:before {
@@ -101,36 +77,12 @@
     content: "\e650";
 }
 
-.icon-ddx-shop-laba:before {
-    content: "\e6b8";
-}
-
-.icon-ddx-shop-more:before {
-    content: "\e71f";
-}
-
-.icon-ddx-shop-daichengtuan:before {
-    content: "\e60b";
-}
-
 .icon-ddx-shop-wechat:before {
     content: "\e634";
 }
 
-.icon-ddx-shop-more-:before {
-    content: "\e612";
-}
-
-.icon-ddx-shop-bofanganniu:before {
-    content: "\e613";
-}
-
 .icon-ddx-shop-location:before {
     content: "\e7cc";
-}
-
-.icon-ddx-shop-daifukuan:before {
-    content: "\e66a";
 }
 
 .icon-ddx-shop-circle:before {
@@ -141,11 +93,7 @@
     content: "\e603";
 }
 
-.icon-ddx-shop-daipingjia:before {
-    content: "\e655";
-}
-
-.icon-ddx-shop-gouwuche1:before {
-    content: "\e605";
+.icon-ddx-shop-tick:before {
+    content: "\e633";
 }
 

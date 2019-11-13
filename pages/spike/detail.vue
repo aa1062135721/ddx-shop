@@ -890,14 +890,14 @@
             }
             this.$nextTick(() => {
                 let param1 = {
-                        title: '推荐你一个商品', // 分享标题
-                        desc: this.goodsInfo.title, // 分享描述
+                        title: `捣蛋熊商城-${this.goodsInfo.title}`, // 分享标题
+                        desc: `原价${this.goodsInfo.old_price}，现价仅需${this.goodsInfo.price}，先到先得`, // 分享描述
                         link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                         imgUrl: this.goodsInfo.pics[0], // 分享图标
                         success: function () {}
                     },
                     param2 = {
-                        title: '推荐你一个商品', // 分享标题
+                        title: `捣蛋熊商城-${this.goodsInfo.title}`, // 分享标题
                         link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                         imgUrl: this.goodsInfo.pics[0], // 分享图标
                         success: function () {}

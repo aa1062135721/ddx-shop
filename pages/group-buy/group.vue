@@ -373,7 +373,7 @@
                 this.id = this.$parseURL().id
             }
 
-            this.$minApi.groupBuyDetail(requestData).then(res => {
+            await this.$minApi.groupBuyDetail(requestData).then(async res => {
                 console.log(res)
                 if (res.code === 200){
 
@@ -413,16 +413,16 @@
             } else {
                 url = window.location.href
             }
-            this.$nextTick(() => {
+            await this.$nextTick(() => {
                 let param1 = {
-                        title: '邀请你加入拼团', // 分享标题
-                        desc: this.responseData.item_name, // 分享描述
+                        title: `捣蛋熊拼团-${this.responseData.item_name}`, // 分享标题
+                        desc: `仅限${this.responseData.tuanyuan_price}元，立省${(parseFloat(this.responseData.old_price) - parseFloat(this.responseData.tuanyuan_price)).toFixed(2)}元，先到先得`, // 分享描述
                         link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                         imgUrl: this.responseData.item_pic, // 分享图标
                         success: function () {}
                     },
                     param2 = {
-                        title: '邀请你加入拼团', // 分享标题
+                        title: `捣蛋熊拼团-${this.responseData.item_name}`, // 分享标题
                         link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                         imgUrl: this.responseData.item_pic, // 分享图标
                         success: function () {}

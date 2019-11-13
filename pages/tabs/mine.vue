@@ -123,13 +123,13 @@
                         </view>
                         <text class="text">分销中心</text>
                     </view>
-                    <view class="item" style="width: 25%;" v-if="userInfo.isShareholder" @click="goPage('web_view', {url: `https://www.ddxm661.com/frontend/public/dist#/shareholder?mobile=${userInfo.mobile}`})">
+                    <view class="item" style="width: 25%;" v-if="userInfo.isShareholder" @click="goPage('web_view', {url: newShareholderDataUrl})">
                         <view>
                             <image src="../../static/icon/business-data.png"></image>
                         </view>
                         <text class="text">经营数据</text>
                     </view>
-                    <view class="item" style="width: 25%;" v-if="userInfo.isShareholder" @click="goPage('web_view', {url: 'https://www.ddxm661.com/frontend/public/dist/#/home/mall'})">
+                    <view class="item" style="width: 25%;" v-if="userInfo.isShareholder" @click="goPage('web_view', {url: oldShareholderDataUrl})">
                         <view>
                             <image src="../../static/icon/business-data.png"></image>
                         </view>
@@ -172,6 +172,7 @@
 </template>
 
 <script>
+    import * as Constant from '../../utils/constant'
     import {  mapState, mapActions } from 'vuex'
 
     export default {
@@ -198,6 +199,12 @@
 		},
         computed: {
             ...mapState(['userInfo']),
+            oldShareholderDataUrl(){
+                return Constant[Constant.NODE_ENV].oldShareholderDataUrl
+            },
+            newShareholderDataUrl(){
+                return  Constant[Constant.NODE_ENV].newShareholderDataUrl + this.$store.state.userInfo.mobile
+            },
         }
     }
 </script>

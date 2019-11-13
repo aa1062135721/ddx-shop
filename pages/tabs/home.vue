@@ -13,9 +13,11 @@
 					 style="position: fixed;left: 0;width: 100%;z-index: 999;"
 					 :style="style"
 			></wuc-tab>
+
+			<!--	站位符	-->
+			<view class="my-block"></view>
 			<!-- 推荐tab栏里的数据 -->
 			<view class="content" v-if="TabCur === 0">
-				<view class="my-block"></view>
 				<!-- 推荐 -- banner-->
 				<view class="swiper-box" v-if="swiperList.length">
 					<swiper circular="true" autoplay="true" :indicator-dots="true" indicator-active-color="#FC8A8A" style="width: 710upx;height: 268upx;">
@@ -185,7 +187,7 @@
 				-->
 				<!-- 好物享不停 -->
 				<view class="goods-share-no-stop" v-if="explosion.length">
-					<view class="goods-share-no-stop-box" style='background-image: url("../../static/images/goods-share-no-stop.png")'>
+					<view class="goods-share-no-stop-box">
 						<view class="goods-top">
 							<view class="item" @click="_goPage('goods_detail', {id: explosion[0].item.id})">
 								<view class="goods-tag">好评第一</view>
@@ -320,7 +322,6 @@
 			</view>
 			<!-- 其他tab栏里的数据 -->
 			<view class="content" v-if="TabCur !== 0">
-				<view class="my-block"></view>
 				<view class="limited-time">
 					<view class="item" v-for="(item, index) in subTab" :key="index" @click="_clickSubTab(item)">
 						<view>
@@ -695,19 +696,18 @@
 			font-size: $uni-font-size-base;
 			text-align: center;
 			width: 100%;
-			/* #ifndef MP-WEIXIN */
 			position: fixed;
 			z-index: 999;
-			top: calc(44px + var(--status-bar-height));
+			top: 80upx;
 			left: 0;
-			/* #endif */
+		}
+
+		.my-block{
+			width: 100%;
+			height: calc( 80upx + 90upx);
+			background: #fff;
 		}
 		.content{
-			.my-block{
-				width: 100%;
-				height: calc(44px + var(--status-bar-height) + 90upx + 30upx);
-				background: #fff;
-			}
 			.swiper-box{
 				padding: 10upx $uni-spacing-row-sm;
 				width: 100%;
@@ -976,6 +976,7 @@
 				padding: 0 $uni-spacing-row-base;
 				margin-bottom: 20upx;
 				.goods-share-no-stop-box{
+					background-image: url("~@/static/images/goods-share-no-stop.png");
 					height: 1166upx;
 					background-size: cover;
 					background-repeat: no-repeat;

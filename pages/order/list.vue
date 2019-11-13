@@ -1,14 +1,16 @@
 <template>
     <view class="content">
-        <view class="navbar">
-            <view
-                v-for="(item, index) in navList" :key="index"
-                class="nav-item"
-                :class="{current: tabCurrentIndex === index}"
-                @click="tabClick(index)">
-                {{item.text}}
+        <scroll-view  scroll-x="true">
+            <view class="navbar">
+                <view
+                    v-for="(item, index) in navList" :key="index"
+                    class="nav-item"
+                    :class="{current: tabCurrentIndex === index}"
+                    @click="tabClick(index)">
+                    {{item.text}}
+                </view>
             </view>
-        </view>
+        </scroll-view>
         <swiper :current="tabCurrentIndex" class="swiper-box" duration="300" @change="changeTab">
             <swiper-item class="tab-content" v-for="(tabItem,tabIndex) in navList" :key="tabIndex">
                 <scroll-view
@@ -21,7 +23,7 @@
                         <view class="section" v-for="(item, key) in tabItem.orderList" :key="key">
                             <view class="shop-name" @click="goPage('order_detail',{order_id:item.id})">
                                 <view>{{item.sn}}</view>
-                                <view>{{item.status | orderStatusToString}}</view>
+                                <view>{{item.status.order_type}}</view>
                             </view>
                             <view class="goods" v-for="(goods, goods_key) in item.item_list" :key="goods_key" @click="goPage('order_detail',{order_id:item.id})">
                                 <view class="goods-img">
@@ -41,8 +43,8 @@
                                                 X{{goods.num}}
                                             </view>
                                         </view>
-                                        <view class="goods-return-status" v-if="goods.refund_status">
-                                            {{goods.refund_status | refundStatusToText}}
+                                        <view class="goods-return-status">
+                                            {{goods.refund_type}}
                                         </view>
                                     </view>
                                 </view>
@@ -139,6 +141,16 @@
                         },
                         orderList: []
                     },
+                    {
+                        state: 5,
+                        text: '退款/售后',
+                        loadingType: 'more',
+                        requestData:{
+                            page:1,
+                            limit:10,
+                        },
+                        orderList: []
+                    },
                 ],
             };
         },
@@ -158,6 +170,9 @@
                     break
                 case 4://待评价
                     this.tabCurrentIndex = 4
+                    break
+                case 5://退款/售后
+                    this.tabCurrentIndex = 5
                     break
                 default://全部
                     this.tabCurrentIndex = 0
@@ -345,7 +360,11 @@
         box-shadow: 0 1px 5px rgba(0,0,0,.06);
         position: relative;
         z-index: 10;
+        width: 100%;
+        text-align: center;
+        white-space: nowrap;
         .nav-item{
+            background: #FFFFFF;
             flex: 1;
             display: flex;
             justify-content: center;
@@ -354,6 +373,7 @@
             font-size: 15px;
             color: $color-primary-plain;
             position: relative;
+            padding: 0 20upx;
             &.current{
                 color: $color-primary;
                 &:after{

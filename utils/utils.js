@@ -1,3 +1,5 @@
+import * as Constant from '../utils/constant'
+
 exports.install = function (Vue, options) {
     //判断是否为空
     Vue.prototype.isEmpty = (value, title = '') => {
@@ -124,7 +126,7 @@ exports.install = function (Vue, options) {
      * 微信公众号重定向
      */
     Vue.prototype.loginWithOfficalAccount = () => {
-        let appId = 'wxb5ee49b69efc2429'
+        let appId = Constant[Constant.NODE_ENV].appId
         let local = window.location.href //回调地址
         window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${encodeURIComponent(local)}&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect`
     }

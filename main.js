@@ -53,6 +53,12 @@ Vue.use(Utils)
  *        console.log("从其他页面传过来的值",data);
  *    })
  * }
+ *
+ * page 2 step 3 *
+ * onUnload(){
+ *  this.$eventHub.$off('search_word')
+ * }
+ *
  */
 Vue.prototype.$eventHub = new Vue(); // Global event bus
 

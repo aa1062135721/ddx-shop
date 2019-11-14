@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<view class="list-all">
-			<view class="a-list" v-for="(item, index) in list" :key="index">
+			<view class="a-list" v-for="(item, index) in list" :key="index" @click="choosesAddress(item)">
 				<view class="info">
 					<view class="name-moblie">
 						<view class="name">{{item.name}} <span class="tag-real-name">已实名</span></view>
@@ -12,7 +12,7 @@
 							<span class="tag-span" v-if="item.default">默认</span>
 							<view class="text">{{item.addres}}</view>
 						</view>
-						<view class="detail-right" @click="goToAddOrEdit(item)">
+						<view class="detail-right" @click.stop="goToAddOrEdit(item)">
 							<i class="iconfont icon-ddx-shop-bianji"></i>
 						</view>
 					</view>
@@ -25,13 +25,13 @@
 			新增收货地址
 		</view>
 	</view>
-
 </template>
 
 <script>
-	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
+	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue'
+
     export default {
-        name: "address_list",
+        name: "address_choose", // 选择收货地址
 		components: {
 			uniLoadMore
 		},
@@ -70,6 +70,20 @@
 					}
 				}).catch(err => {
 					console.log(err)
+				})
+			},
+			choosesAddress(address) {
+            	console.log('您选择的收货地址是：', address)
+				let _this = this
+				uni.navigateBack({
+				    delta: 1,
+				    success: function (res) {
+				    },
+				    fail: function (err) {
+				    },
+				    complete: function () {
+				        _this.$eventHub.$emit('address', address)
+				    }
 				})
 			},
         }

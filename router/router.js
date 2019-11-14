@@ -69,6 +69,12 @@ const router = new MinRouter({
 			login: true
 		},
 		{
+			path: 'pages2/address/chooses',
+			type: 'navigateTo',
+			name: 'address_chooses',
+			login: true
+		},
+		{
 			path: 'pages2/address/add',
 			type: 'navigateTo',
 			name: 'address_add',

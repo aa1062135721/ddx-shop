@@ -1,8 +1,7 @@
 <template>
     <view class="container">
         <view class="address">
-            <view  class="has-address" v-if="addressList.length"  @click="choosesAddressOpen">
-                <block v-if="address.id">
+            <view  class="has-address" v-if="address.id" @click="_goPage('address_chooses')">
                     <view>
                         <i class="iconfont icon-ddx-shop-location"></i>
                     </view>
@@ -10,28 +9,15 @@
                         <view>{{address.name}}<span class="mobile">{{address.phone}}</span></view>
                         <view class="address-detail">{{address.addres}}</view>
                     </view>
-                    <view @click.stop="_goPage('address_list')">
-                        <i class="iconfont icon-ddx-shop-content_arrows"></i>
-                    </view>
-                </block>
-                <block v-else>
-                    <view>
-                        <i class="iconfont icon-ddx-shop-location"></i>
-                    </view>
-                    <view class="text">
-                        <view>请选择<span class="mobile">联系方式</span></view>
-                        <view class="address-detail">详细地址</view>
-                    </view>
                     <view>
                         <i class="iconfont icon-ddx-shop-content_arrows"></i>
                     </view>
-                </block>
             </view>
-            <view  class="no-address" v-else @click="_goPage('address_add')">
+            <view  class="no-address" v-else @click="_goPage('address_chooses')">
                 <view>
                     <i class="iconfont icon-ddx-shop-anonymous-iconfont icon-color"></i>
                 </view>
-                <view>新增收货地址</view>
+                <view>选择收货地址</view>
             </view>
         </view>
         <view class="car-list">
@@ -78,35 +64,14 @@
                 <view class="btn" @click="submitOrder">提交订单</view>
             </view>
         </view>
-
-        <!-- 选择收货 -->
-        <uni-popup ref="address" type="top" :custom="true" @change="addressChange" v-if="addressList.length">
-            <view class="address" style="height: auto;">
-                <view  class="has-address" style="margin: 28upx 0;" v-for="(address, index) in addressList" :key="index" @click="choosesAddress(address)">
-                    <view>
-                        <i class="iconfont icon-ddx-shop-location"></i>
-                    </view>
-                    <view class="text">
-                        <view>{{address.name}}<span class="mobile">{{address.phone}}</span></view>
-                        <view class="address-detail">{{address.addres}}</view>
-                    </view>
-                    <view>
-                        <i class="iconfont icon-ddx-shop-content_arrows"></i>
-                    </view>
-                </view>
-            </view>
-        </uni-popup>
     </view>
 </template>
 
 <script>
-    import uniPopup from '@/components/uni-popup/uni-popup.vue'
-
     export default {
         name: "submit",
         data(){
           return {
-              addressList: [],//地址列表
               address: {},
 
               myResponseData:[],//购买的商品数据
@@ -123,39 +88,27 @@
             this.sumNum = this.$parseURL().sumNum
             this.sumSum = this.$parseURL().sumSum
             this.sumMoney = this.$parseURL().sumMoney
+
+            let _this = this
+            this.$eventHub.$on('address', function (data) {
+                _this.address = data
+                console.log("从其他页面传过来的值",data)
+            })
+        },
+        /**
+         * 页面卸载事件
+         */
+        onUnload(){
+            this.$eventHub.$off('address')
         },
         async onShow(){
-            await this.loadAddressData()
             await this.getFreight()
         },
         methods:{
             _goPage(url, query = {}){
                 this.$openPage({name:url, query})
             },
-            async loadAddressData(){
-                await this.$minApi.addressList().then(res => {
-                    console.log(res)
-                    if (res.code === 200 && res.data.length) {
-                        this.addressList = res.data
-                        res.data.map((item) => {
-                            if (item.default) {
-                                this.address = item
-                            }
-                        })
-                    }
-                })
-            },
-            addressChange(e) {
-                console.log(e.show)
-            },
-            choosesAddressOpen(){
-                this.$refs.address.open()
-            },
-            choosesAddress(val){
-                this.address = val
-                this.$refs.address.close()
-                this.getFreight()
-            },
+
             //获取运费
             async getFreight(){
                 let data = {
@@ -315,7 +268,7 @@
             }
         },
         components: {
-            uniPopup,
+
         }
     }
 </script>

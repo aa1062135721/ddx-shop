@@ -283,6 +283,13 @@
 					}
 				},
 				{
+					"path": "address/chooses",
+					"style": {
+						"navigationStyle": "custom",
+						"navigationBarTitleText": "选择收货地址"
+					}
+				},
+				{
 					"path": "address/add",
 					"style": {
 						"navigationBarTitleText": "新增收货地址"
@@ -298,6 +305,10 @@
 			"packages": ["__APP__"]
 		},
 		"pages2/user/id-card-authentication": {
+			"network": "all",
+			"packages": ["__APP__"]
+		},
+		"pages2/user/id-card-authentication-detail": {
 			"network": "all",
 			"packages": ["__APP__"]
 		},
@@ -345,6 +356,10 @@
 		},
 
 		"pages2/address/list": {
+			"network": "all",
+			"packages": ["__APP__"]
+		},
+		"pages2/address/chooses": {
 			"network": "all",
 			"packages": ["__APP__"]
 		},

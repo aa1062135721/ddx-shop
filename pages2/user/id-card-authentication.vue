@@ -1,31 +1,39 @@
 <template>
-    <view class="grace-idcard-main">
-        <view class="grace-idcard-text">
-            身份证照片 ( 正面 )
-        </view>
-        <view class="grace-idcard-items">
-            <view class="grace-idcard-uper-btn" @tap="selectImg1">
-                <view class="img"><image src="../../static/images/camera.png" mode="widthFix"></image></view>
-                <view class="text">拍摄或选择照片</view>
-            </view>
-            <view class="grace-idcard-preview">
-                <image :src="idCard1"  @tap="previewImg1"></image>
+    <view>
+        <view class="tps">
+            <view class="box">
+                <text class="iconfont icon-ddx-shop-icon_notice"></text>
+                <text>请确保你上传的身份证姓名、身份证号、付款账号姓名、身份证号保持一致</text>
             </view>
         </view>
-        <view class="grace-idcard-text">
-            身份证照片 ( 背面 )
-        </view>
-        <view class="grace-idcard-items">
-            <view class="grace-idcard-uper-btn" @tap="selectImg2">
-                <view class="img"><image src="../../static/images/camera.png" mode="widthFix"></image></view>
-                <view class="text">拍摄或选择照片</view>
+        <view class="grace-idcard-main">
+            <view class="grace-idcard-text">
+                身份证照片 ( 正面 )
             </view>
-            <view class="grace-idcard-preview">
-                <image :src="idCard2" @tap="previewImg2"></image>
+            <view class="grace-idcard-items">
+                <view class="grace-idcard-uper-btn" @tap="selectImg1">
+                    <view class="img"><image src="../../static/images/camera.png" mode="widthFix"></image></view>
+                    <view class="text">拍摄或选择照片</view>
+                </view>
+                <view class="grace-idcard-preview">
+                    <image :src="idCard1"  @tap="previewImg1"></image>
+                </view>
             </view>
-        </view>
-        <view style="margin-top:38upx;">
-            <button type="primary" @tap="uploadCards" style="background: #FC5A5A;">上传</button>
+            <view class="grace-idcard-text">
+                身份证照片 ( 背面 )
+            </view>
+            <view class="grace-idcard-items">
+                <view class="grace-idcard-uper-btn" @tap="selectImg2">
+                    <view class="img"><image src="../../static/images/camera.png" mode="widthFix"></image></view>
+                    <view class="text">拍摄或选择照片</view>
+                </view>
+                <view class="grace-idcard-preview">
+                    <image :src="idCard2" @tap="previewImg2"></image>
+                </view>
+            </view>
+            <view style="margin-top:38upx;">
+                <button type="primary" @tap="uploadCards" style="background: #FC5A5A;">上传</button>
+            </view>
         </view>
     </view>
 </template>
@@ -165,15 +173,6 @@
     }
 </script>
 
-<style>
-    view{font-size:28upx;}
-    .grace-idcard-main{margin:20upx 30upx;}
-    .grace-idcard-text{line-height:2em; margin-top:30upx;}
-    .grace-idcard-items{background:#FFFFFF; padding:30upx 0; display:flex; margin:30upx 0; border-radius:10upx; align-items: flex-start;align-items: center;}
-    .grace-idcard-uper-btn{width:276upx; margin:0 60upx; background:#F1F1F1; padding-bottom:10upx; border-radius:10upx; text-align:center;}
-    .grace-idcard-uper-btn .img{width:100upx; height:100upx; margin:0 auto; margin-top:30upx;}
-    .grace-idcard-uper-btn .img image{width:100upx; height:100upx;}
-    .grace-idcard-uper-btn .text{width:100%; margin-top:10upx; text-align:center; line-height:2em;}
-    .grace-idcard-preview{width:50%; margin:0 30upx;}
-    .grace-idcard-preview image{width:100%;height: 170upx;}
+<style scoped lang="scss">
+    @import "id-card-authentication";
 </style>

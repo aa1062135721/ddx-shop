@@ -4,6 +4,7 @@
 			<image :src="goodsInfo.pic" :lazy-load="true"></image>
 			<view class="mask" v-if="goodsInfo.status !== 1"></view>
 			<view class="tips" v-if="goodsInfo.status !== 1">已下架</view>
+			<view class="left-flag">限时抢购</view>
 		</view>
 		<view class="info">
 			<view class="title">
@@ -91,6 +92,19 @@
 			width:344upx;
 			height:344upx;
 			border-radius:8upx 8upx 0upx 0upx;
+		}
+		.left-flag{
+			position: absolute;    /*绝对定位*/
+			width:200upx;
+			height: 40upx;
+			line-height: 40upx;
+			text-align: center;
+			font-size:  $uni-font-size-sm;
+			background-color: $color-primary;
+			color: #fff;
+			transform: rotate(-45deg);
+			left: -44upx;
+			top: 36upx;
 		}
 	}
 	.info{

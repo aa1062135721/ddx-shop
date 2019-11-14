@@ -8,14 +8,44 @@
             <view class="item">
                 <view>
                     <text class="name">
-                        可提现金额(元)
+                        可提现金额
                     </text>
                     <text>
-                        {{userInfo.out_money}}
+                        ￥{{userInfo.out_money}}
                     </text>
                 </view>
                 <view class="tag">
                     <view class="btn" @click="open">申请提现</view>
+                </view>
+            </view>
+            <view class="item">
+                <view>
+                    <text class="name">
+                        限时余额
+                    </text>
+                    <text>
+                        ￥{{userInfo.out_money}}
+                    </text>
+                </view>
+                <view class="tag">
+                    <span class="iconfont">
+                        未激活 请通知门店店长激活后方可使用
+                    </span>
+                </view>
+            </view>
+            <view class="item">
+                <view>
+                    <text class="name">
+                        限时余额
+                    </text>
+                    <text>
+                        ￥{{999.99}}
+                    </text>
+                </view>
+                <view class="tag">
+                    <span class="iconfont">
+                        2019-12-12 00:00:00 后过期
+                    </span>
                 </view>
             </view>
             <view class="item" @click="_goPage('user_record')">
@@ -47,7 +77,7 @@
     import uniPopup from '@/components/uni-popup/uni-popup.vue'
 
     export default {
-        name: "user_money",
+        name: "user_money", // 钱包
         data(){
             return{
                 money: '',
@@ -135,6 +165,9 @@
                 margin-right: 36upx;
             }
             .tag{
+                .iconfont{
+                    font-size: $uni-font-size-sm;
+                }
                 .btn{
                     height:54upx;
                     line-height: 54upx;

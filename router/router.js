@@ -211,6 +211,12 @@ const router = new MinRouter({
 			login: true
 		},
 		{
+			path: "pages2/user/id-card-authentication-detail",
+			type: 'navigateTo',
+			name: 'id_card_authentication_detail',
+			login: true
+		},
+		{
 			path: "pages/user/feedback",
 			type: 'navigateTo',
 			name: 'feedback',

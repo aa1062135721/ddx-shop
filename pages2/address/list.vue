@@ -4,15 +4,18 @@
 			<view class="a-list" v-for="(item, index) in list" :key="index">
 				<view class="info">
 					<view class="name-moblie">
-						<view class="name">{{item.name}}</view>
+						<view class="name">{{item.name}} <span class="tag-real-name">已实名</span></view>
 						<view class="mobile">{{item.phone}}</view>
 					</view>
 					<view class="detail">
-						<span v-if="item.default">默认</span> {{item.addres}}
+						<view class="detail-left">
+							<span class="tag-span" v-if="item.default">默认</span>
+							<view class="text">{{item.addres}}</view>
+						</view>
+						<view class="detail-right" @click="goToAddOrEdit(item)">
+							<i class="iconfont icon-ddx-shop-bianji"></i>
+						</view>
 					</view>
-				</view>
-				<view class="edit" @click="goToAddOrEdit(item)">
-					<span>编辑</span>
 				</view>
 			</view>
 		</view>
@@ -90,13 +93,24 @@
 			padding:$uni-spacing-row-lg 0;
 			width:100%;
 			.info{
-				width: 80%;
+				width:100%;
 				.name-moblie{
 					display: flex;
 					flex-direction: row;
-					justify-content: flex-start;
+					justify-content: space-between;
+					align-items: center;
 					font-size: $uni-font-size-lg;
 					line-height: $uni-font-size-lg * 2;
+					.name{
+						.tag-real-name{
+							margin-left: 10upx;
+							font-size: $uni-font-size-sm;
+							color: $color-primary;
+							border: 1px solid $color-primary;
+							padding: 4upx 6upx;
+							border-radius: 4upx;
+						}
+					}
 					.mobile{
 						margin-left: 20upx;
 						color: #808080;
@@ -104,24 +118,34 @@
 					}
 				}
 				.detail{
-					@extend %overflow-1-line;
+					width: 100%;
+					display: flex;
+					justify-content: space-between;
 					color:#1A1A1A;
-					span{
-						color: #FC5A5A;
-						background: #FCE8E8;
-						padding: 2upx;
-						margin-right: 10upx;
+					.detail-left{
+						overflow: hidden;
+						display: flex;
+						align-items: center;
+						width: 80%;
+						.tag-span{
+							color: #FC5A5A;
+							background: #FCE8E8;
+							padding: 4upx 6upx;
+							margin-right: 10upx;
+						}
+						.text{
+							width: 80%;
+							@extend %overflow-1-line;
+						}
 					}
-				}
-			}
-			.edit{
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				span{
-					color: #808080;
-					padding-left: 20upx;
-					border-left: 1upx solid #E4E4E4;
+					.detail-right{
+						display: flex;
+						justify-content: flex-end;
+						width: 20%;
+						.iconfont{
+							font-size: $uni-font-size-base;
+						}
+					}
 				}
 			}
 
@@ -140,6 +164,9 @@
 		text-align: center;
 		span{
 			margin-right: 10upx;
+		}
+		.iconfont{
+			color: $color-primary;
 		}
 	}
 }

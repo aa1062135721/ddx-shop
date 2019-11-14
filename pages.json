@@ -208,6 +208,12 @@
 					}
 			  	},
 				{
+					"path": "user/id-card-authentication-detail",
+					"style": {
+						"navigationBarTitleText": "实名认证"
+					}
+				},
+				{
 					"path": "user/setting",
 					"style": {
 					  "navigationBarTitleText": "设置"

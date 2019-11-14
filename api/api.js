@@ -617,6 +617,13 @@ export default {
       return minRequest.get('/Retail/orderList', data)
     },
 
+    /**
+     * 查看身份证认证信息
+     */
+    getAttestation(data) {
+      return minRequest.get('/User/getAttestation', data)
+    },
+
 
   }
 }

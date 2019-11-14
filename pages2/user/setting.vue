@@ -22,6 +22,21 @@
             </view>
             <view class="item">
                 <view class="left">
+                    <view class="title">实名认证</view>
+                    <view class="value" v-if="userInfo.attestation">已实名认证</view>
+                    <view class="value" v-else>未实名认证</view>
+                </view>
+                <view class="right">
+                    <view v-if="userInfo.attestation" class="btn" @click="_goPage('id_card_authentication_detail')">
+                        查看
+                    </view>
+                    <view v-else class="btn" @click="_goPage('id_card_authentication')">
+                        去认证
+                    </view>
+                </view>
+            </view>
+            <view class="item">
+                <view class="left">
                     <view class="title">退出登录</view>
                     <view class="value">注销登录</view>
                 </view>

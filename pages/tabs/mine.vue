@@ -104,7 +104,7 @@
                             <image src="../../static/icon/order/refund-after-sale.png"></image>
                         </view>
                         <text class="text">退款/售后</text>
-                        <view class="red" v-if="userInfo.stay_discuss">{{userInfo.stay_discuss}}</view>
+                        <view class="red" v-if="userInfo.stay_sale">{{userInfo.stay_sale}}</view>
                     </view>
                 </view>
             </view>

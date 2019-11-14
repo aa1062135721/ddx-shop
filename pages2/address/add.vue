@@ -48,29 +48,6 @@
 				</view>
 			</view>
 		</view>
-		<uni-collapse class="my-collapse">
-			<uni-collapse-item title="选填身份证(仅用于保税仓和澳洲仓订单)" class="id-info">
-				<view class="address">
-					<view class="a-input">
-						<view class="name">
-							上传身份证
-						</view>
-						<view class="value">
-							<input type="text" placeholder="已上传" disabled="true" v-if="address.id_info.length || address.attestation_id">
-							<input type="text" placeholder="点击上传" @click="upIdInfo" disabled="true" v-else>
-						</view>
-					</view>
-					<view class="tips">
-						<view class="title">
-							为什么要上传身份证信息？
-						</view>
-						<view class="text">
-							根据海关相关规定，购买跨境商品需要办理清关手续；上传身份证信息，可确保您购买的商品顺利通过海关检查。捣蛋熊承诺：您所传身份证信息仅用于办理跨境商品清关手续，系统加密保存，他人无法获取相关信息。
-						</view>
-					</view>
-				</view>
-			</uni-collapse-item>
-		</uni-collapse>
 
 		<view class=btns>
 			<button type="warn" class="save" @click="saveAddress">保存地址</button>
@@ -98,7 +75,6 @@
 					default: 0,//	是否默认：1默认，0不默认
 					address: '',
 					id_info:[],
-					attestation_id: '',
 				}
 			}
 		},
@@ -144,11 +120,6 @@
 				this.multiArray = [area1, area2, area3]
 				this.$forceUpdate()
 			}
-		    let _this = this
-			this.$eventHub.$on('attestation_id', function (data) {
-			    _this.address.attestation_id = data.attestation_id
-				console.log("从其他页面传过来的值",data);
-			})
 		},
 		methods: {
 			_goPage(url, query = {}){
@@ -244,7 +215,6 @@
 					address: this.address.address,
 					id: this.address.id,
 					default: this.address.default,
-					attestation_id: this.address.attestation_id,
 				}
 				try {
 					const res = await this.$minApi.addressAddOrEdit(data)
@@ -326,26 +296,6 @@
 					width: 100%;
 					text-align: justify;
 					color: #808080;
-				}
-			}
-		}
-		.my-collapse{
-			/deep/ .uni-collapse{
-				/*&::before{*/
-				/*	height: 0;*/
-				/*	background: none;*/
-				/*}*/
-				&::after{
-					height: 0;
-					background: none;
-				}
-			}
-			.id-info{
-				/deep/ .uni-collapse-cell{
-					&::after{
-						height: 0;
-						background: none;
-					}
 				}
 			}
 		}

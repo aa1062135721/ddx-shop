@@ -975,3 +975,43 @@
     }
   }
 }
+
+/* 如果是跨境商品，展示跨境商品的说明 */
+.cross-border-goods{
+  @extend %border-color-solid-top;
+  background: #fff;
+  padding: $uni-spacing-row-base;
+  margin-bottom: 20upx;
+  .title {
+    text-align: justify;
+    color: $color-primary-plain;
+    font-size: $uni-font-size-base;
+    .tag{
+      background: #FFC63E;
+      color: #ffffff;
+      padding: 0 8upx;
+      font-size: $uni-font-size-sm;
+      margin-right: $uni-spacing-row-base;
+      border-radius: $uni-border-radius-sm;
+    }
+  }
+  .sub-title{
+    display: flex;
+    align-items: center;
+    .tag{
+      background: #000;
+      color: #ffffff;
+      font-size: 16upx;
+      height: 30upx;
+      width: 30upx;
+      text-align: center;
+      line-height: 30upx;
+      margin-right: $uni-spacing-row-base;
+      border-radius: 50%;
+    }
+    margin: 16upx 0 0 0;
+    text-align: justify;
+    font-size: $uni-font-size-base;
+    color: #1A1A1A;
+  }
+}

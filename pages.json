@@ -166,8 +166,8 @@
 		{
 			"path": "pages/spike/list",
 			"style": {
-				"navigationBarTitleText": "捣蛋抢购",
-				"navigationBarBackgroundColor": "#52CBF4"
+				"navigationBarTitleText": "每日秒杀"
+//				"navigationBarBackgroundColor": "#52CBF4"
 			}
 		},
 		{

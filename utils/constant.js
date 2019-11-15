@@ -22,7 +22,8 @@ export const production = {
  * 开发环境
  */
 export const development = {
-    baseUrl: 'https://ddxm661.com/wxshop',
+    baseUrl: 'https://ddxm661.com/wxshop', // 测试服务器
+    // baseUrl: 'http://192.168.25.207:82/wxshop',// 小红本地服务器
     appId: 'wx6e3b81d3c901cbf2',
     appSecret: 'faff929ed271fe64f63e95f2128065b5',
     oldShareholderDataUrl: 'http://testdd.ddxm661.com/dist/#/home/mall',

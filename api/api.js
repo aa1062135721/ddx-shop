@@ -624,6 +624,11 @@ export default {
       return minRequest.get('/User/getAttestation', data)
     },
 
-
+    /**
+     * 获取秒杀商品列表
+     */
+    getSeckillList(data){
+      return minRequest.get('/Index/seckillList', data)
+    }
   }
 }

@@ -121,6 +121,18 @@
 			</view>
 		</view>
 
+		<!--	跨境购买 单独展示的文字 	-->
+		<div class="cross-border-goods" v-if="goodsInfo.mold_id === 1">
+			<view class="title">
+				<text class="tag">提示</text>
+				用户下单后，保税商品预计在2-3个工作日送达，直邮商品7-15个工作日送达。按照国家新政对跨境商品征收跨境综合税。跨境购订单需要顾客保持信息一致，要求顾客支付人姓名、收货人姓名、实名认证的姓名一致。
+			</view>
+			<view class="sub-title">
+				<view class="tag">%</view>
+				您购买成功后，实际支付的价格已含9.1%的跨境代扣税
+			</view>
+		</div>
+
 		<!-- 其他拼团信息 -->
 		<view class="info-box comments" style="padding-bottom: 0;" v-if="goodsInfo.count">
 			<view class="row">

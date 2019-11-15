@@ -367,7 +367,7 @@
                 .shop-name{
                     display: flex;
                     justify-content: space-between;
-                    border-bottom: 1px solid #cccccc;
+                    border-bottom: 1px solid #efefef;
                     padding: $uni-spacing-row-sm;
                     color: #000000;
                     font-size: $uni-font-size-lg;
@@ -485,7 +485,7 @@
             width: 100%;
 			bottom: 0;
 			/* #ifdef H5 */
-			margin-bottom:100upx;
+			margin-bottom: var(--window-bottom);
 			/* #endif */
             left: 0;
             display: flex;

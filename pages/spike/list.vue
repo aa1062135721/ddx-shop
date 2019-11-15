@@ -4,7 +4,7 @@
             <img class="img" src="./bg.png" alt="">
         </view>
         <view class="spike-list-content">
-            <view class="spike-list-content-box" v-for="(item, index) in goodsData" :key="index" @click="_goPage('spike_detail', {id: item.item_id})">
+            <view class="spike-list-content-box" v-for="(item, index) in goodsData" :key="index" @click="_goPage('spike_detail', {item_id: item.item_id, seckill_id: item.id})">
                 <view class="left">
                     <image :src="item.pic" class="img" :lazy-load="true"></image>
                 </view>

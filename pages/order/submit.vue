@@ -72,7 +72,9 @@
         name: "submit",
         data(){
           return {
-              address: {},
+              address: {
+                  id: 0
+              },
 
               myResponseData:[],//购买的商品数据
               sumNum:0,//件数
@@ -80,19 +82,106 @@
               sumMoney:0.0,//总金额
 
               freight: 0.0, // 运费
+
+              //提交订单，或者是获取运费需要上传的数据
+              requestData: null
           }
         },
         async onLoad(){
+            //获取默认收货地址
+            await this.$minApi.addressList({default: 1}).then(res => {
+                if (res.code === 200 && res.data.length) {
+                    this.address = res.data[0]
+                }
+            })
+
             console.log("带过来的参数:",this.$parseURL())
             this.myResponseData = this.$parseURL().myResponseData
             this.sumNum = this.$parseURL().sumNum
             this.sumSum = this.$parseURL().sumSum
             this.sumMoney = this.$parseURL().sumMoney
 
+            //根据当前订单类型 来获取运费，或者提交订单 普通/拼团/秒杀订单
+            let goodsData = []
+            switch (this.$parseURL().createOrderType) {
+                case "buy_now":
+                    this.$parseURL().myResponseData.forEach((item1, index1) => {
+                        item1.data.forEach((item2, index2) => {
+                            goodsData.push({
+                                id: item2.item_id,
+                                num: item2.num,
+                                specs_ids: item2.key,
+                            })
+                        })
+                    })
+                    this.requestData = {
+                        address_id: this.address.id,// 收货地址id
+                        order_distinguish: 0, //普通订单
+                        item: goodsData
+                    }
+                    break
+                case "car":
+                    this.$parseURL().myResponseData.forEach((item1, index1) => {
+                        item1.data.forEach((item2, index2) => {
+                            goodsData.push({
+                                id: item2.item_id,
+                                num: item2.num,
+                                specs_ids: item2.key,
+                                card_id: item2.id,
+                            })
+                        })
+                    })
+                    this.requestData = {
+                        address_id: this.address.id,// 收货地址id
+                        order_distinguish: 0, //购物车订单（普通订单）
+                        item: goodsData
+                    }
+                    break
+                case "group":
+                    this.$parseURL().myResponseData.forEach((item1, index1) => {
+                        item1.data.forEach((item2, index2) => {
+                            goodsData.push({
+                                id: item2.item_id,
+                                num: item2.num,
+                                specs_ids: item2.key,
+                            })
+                        })
+                    })
+                    this.requestData = {
+                        address_id: this.address.id,// 收货地址id
+                        activity_id: this.$parseURL().assemble_id, //拼团id
+                        order_distinguish: 1, //拼团订单
+                        commander: this.$parseURL().commander,//如果为拼团订单，则此参数1为团长，反之为团员   （非必传）
+                        update: this.$parseURL().update,// 拼团版本id
+                        item: goodsData,
+                    }
+                    break
+                case "spike":
+                    this.$parseURL().myResponseData.forEach((item1, index1) => {
+                        item1.data.forEach((item2, index2) => {
+                            goodsData.push({
+                                id: item2.item_id,
+                                num: item2.num,
+                                specs_ids: item2.key,
+                            })
+                        })
+                    })
+                    this.requestData = {
+                        address_id: this.address.id,// 收货地址id
+                        activity_id: this.$parseURL().seckill_id, //秒杀或者限时购 id
+                        order_distinguish: 2, //秒杀或者限时购订单
+                        item: goodsData,
+                    }
+                    break
+            }
+            this.getFreight()
+
+            // 选择地址 从其他页面传过来的值
             let _this = this
             this.$eventHub.$on('address', function (data) {
                 _this.address = data
-                console.log("从其他页面传过来的值",data)
+                _this.requestData.address_id = data.id
+                _this.getFreight()
             })
         },
         /**
@@ -101,9 +190,6 @@
         onUnload(){
             this.$eventHub.$off('address')
         },
-        async onShow(){
-            await this.getFreight()
-        },
         methods:{
             _goPage(url, query = {}){
                 this.$openPage({name:url, query})
@@ -111,62 +197,12 @@
 
             //获取运费
             async getFreight(){
-                let data = {
-                    address_id: this.address.id || '',
-                    item: []
-                }
-
-                let order_distinguish = 0    //订单类型：0普通订单，1拼团订单，2秒杀订单
-                let commander =  0            //如果为拼团订单：则传入此参数：1表示团长，反正为团员
-                let activity_id = 0        //如果为拼团或秒杀订单：则此参数表示为拼团或者秒杀订单的id，必传
-
-                //根据当前订单类型 来获取运费，普通/拼团/秒杀订单
-                switch (this.$parseURL().createOrderType) {
-                    case "buy_now":
-                        order_distinguish = 0
-                        break
-                    case "car":
-                        order_distinguish = 0
-                        break
-                    case "group":
-                        order_distinguish = 1
-                        commander = this.$parseURL().commander // 团长开团，或者团员组团
-                        activity_id =this.$parseURL().assemble_id     //拼团活动id
-                        break
-                    case "spike":
-                        order_distinguish = 2
-                        activity_id =this.$parseURL().seckill_id     //秒杀活动id
-                        break
-                }
-                this.myResponseData.forEach((item1, index1) => {
-                    let obj =  {
-                            id:16,        //商品id
-                            num:6,        //商品数量
-                            specs_ids:"",  //规格的id组，注意：如果是统一规格，也必须传此字段，值为空字符串
-                            order_distinguish: order_distinguish,
-                    }
-                    // 拼团订单
-                    if (this.$parseURL().createOrderType === 'group') {
-                        obj.commander = commander
-                        obj.activity_id = activity_id
-                    }
-                    // 秒杀订单
-                    if (this.$parseURL().createOrderType === 'spike') {
-                        obj.activity_id = activity_id
-                    }
-                    item1.data.forEach((item2, index2) => {
-                        obj.id = item2.item_id
-                        obj.num = item2.num
-                        obj.specs_ids = item2.key || ''
-                        data.item.push(obj)
-                    })
-                })
-
-                await this.$minApi.freight(data).then(res => {
+                await this.$minApi.freight(this.requestData).then(res => {
                     console.log(res)
                     if (res.code === 200) {
                         this.freight = res.data
                     }
+                    // 仅限新人购买
                     if (res.code === 403) {
                         setTimeout(() => {
                             uni.navigateBack()
@@ -180,85 +216,66 @@
                     this.msg('未选择收货地址')
                     return
                 }
-                let requestData = {
-                    address_id: this.address.id,
-                    item: [],
-                }
                 switch (this.$parseURL().createOrderType){
                     case 'car': // 购物车下单
-                        this.myResponseData.forEach((item1) => {
-                            item1.data.forEach((item2) => {
-                                let obj =  {
-                                    id:0,        //商品id
-                                    num:0,        //商品数量
-                                    specs_ids: '',  //规格的id组，注意：如果是统一规格，也必须传此字段，值为空字符串
-                                    card_id:0,   //购物车id
-                                }
-                                obj.card_id = item2.id || ''
-                                obj.id = item2.item_id
-                                obj.num = item2.num
-                                obj.specs_ids = item2.key || ''
-                                requestData.item.push(obj)
-                            })
-                        })
-                        console.log('购物车下单', requestData)
-                        await this.$minApi.createOrder(requestData).then(res => {
+                        await this.$minApi.createOrder(this.requestData).then(res => {
                             if (res.code === 200) {
                                 this._goPage('order_pay', res.data)
+                            }
+                            // 购买了跨境商品，所选收货地址没有实名认证
+                            if (res.code === 108) {
+                                this.msg('购买的商品包含跨境商品，收货地址没有实名认证')
+                                setTimeout(()=>{
+                                    this._goPage('id_card_authentication')
+                                }, 1000)
                             }
                         }).catch(err => {
                             console.log(err)
                         })
                         break
                     case 'buy_now':
-                        this.myResponseData.forEach((item1, index1) => {
-                            let obj =  {
-                                id:0,        //商品id
-                                num:0,        //商品数量
-                                specs_ids:""  //规格的id组，注意：如果是统一规格，也必须传此字段，值为空字符串
-                            }
-                            item1.data.forEach((item2, index2) => {
-                                obj.id = item2.item_id
-                                obj.num = item2.num
-                                obj.specs_ids = item2.key || ''
-                                requestData.item.push(obj)
-                            })
-                        })
-                        console.log('直接下单', requestData)
-                        await this.$minApi.createOrder(requestData).then(res => {
+                        await this.$minApi.createOrder(this.requestData).then(res => {
                             if (res.code === 200) {
                                 this._goPage('order_pay', res.data)
+                            }
+                            // 购买了跨境商品，所选收货地址没有实名认证
+                            if (res.code === 108) {
+                                this.msg('购买的商品包含跨境商品，收货地址没有实名认证')
+                                setTimeout(()=>{
+                                    this._goPage('id_card_authentication')
+                                }, 1000)
                             }
                         }).catch(err => {
                             console.log(err)
                         })
                         break
                     case 'group':
-                        console.log('拼团下单提交了')
-                        let groupRequestData = {
-                            address_id: this.address.id,
-                            assemble_id: this.$parseURL().assemble_id,     //拼团活动id
-                            num: this.$parseURL().num,//购买数量
-                            update: this.$parseURL().update,          //版本，拼团组详情的id
-                            assemble_list_id: this.$parseURL().assemble_list_id,    //拼团组的id，非必传，不传表示自己开团，否则表示与别人成团
-                        }
-                        await this.$minApi.createOrderByGroup(groupRequestData).then(res => {
+                        await this.$minApi.createOrderByGroup(this.requestData).then(res => {
                             if (res.code === 200) {
                                 this._goPage('order_pay', res.data)
+                            }
+                            // 购买了跨境商品，所选收货地址没有实名认证
+                            if (res.code === 108) {
+                                this.msg('购买的商品包含跨境商品，收货地址没有实名认证')
+                                setTimeout(()=>{
+                                    this._goPage('id_card_authentication')
+                                }, 1000)
                             }
                         }).catch(err => {
                             console.log(err)
                         })
                         break
                     case 'spike':
-                        console.log('秒杀下单提交了')
-                        let skillRequestData = {
-                            address_id: this.address.id,
-                            seckill_id: this.$parseURL().seckill_id
-                        }
-                        await this.$minApi.createOrderBySeckill(skillRequestData).then(res => {
+                        await this.$minApi.createOrederSeckillDoPost(this.requestData).then(res => {
                             if (res.code === 200) {
                                 this._goPage('order_pay', res.data)
+                            }
+                            // 购买了跨境商品，所选收货地址没有实名认证
+                            if (res.code === 108) {
+                                this.msg('购买的商品包含跨境商品，收货地址没有实名认证')
+                                setTimeout(()=>{
+                                    this._goPage('id_card_authentication')
+                                }, 1000)
                             }
                         }).catch(err => {
                             console.log(err)
@@ -323,7 +340,7 @@
                 .shop-name{
                     display: flex;
                     justify-content: space-between;
-                    border-bottom: 1px solid #cccccc;
+                    border-bottom: 1px solid #f2f2f2;
                     padding: $uni-spacing-row-sm;
                     color: #000000;
                     font-size: $uni-font-size-lg;

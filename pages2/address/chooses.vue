@@ -4,7 +4,7 @@
 			<view class="a-list" v-for="(item, index) in list" :key="index" @click="choosesAddress(item)">
 				<view class="info">
 					<view class="name-moblie">
-						<view class="name">{{item.name}} <span class="tag-real-name">已实名</span></view>
+						<view class="name">{{item.name}} <span class="tag-real-name" v-if="item.attestation">已实名</span></view>
 						<view class="mobile">{{item.phone}}</view>
 					</view>
 					<view class="detail">

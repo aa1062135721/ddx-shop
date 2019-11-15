@@ -59,21 +59,17 @@
 			_goPage(url, query = {}){
 				this.$openPage({name:url, query})
 			},
-			/**
-			 * 去到商品详情页面，先后级 分别是 秒杀商品，拼团商品，普通商品
-			 * @param goods
-			 */
+			// 去到商品详情/限时购详情/拼团详情
 			goGoodsDetails(goods){
 				console.log('商品信息：', goods)
-
-				//秒杀活动id，如果有此参数则表示此商品参与此秒杀活动
-				if (goods.seckill_id) {
-					this._goPage('spike_detail', {id: goods.seckill_id})
+				// 限时购
+				if (goods.activity_id && goods.activity_type === 4) {
+					this._goPage('spike_detail', {seckill_id: goods.activity_id,item_id: goods.id})
 					return
 				}
-				//拼团活动id，如果有此参数则表示此商品参与此拼团活动
-				if (goods.assemble_id) {
-					this._goPage('group_buy_detail', {id: goods.assemble_id})
+				//拼团活动
+				if (goods.activity_id && goods.activity_type === 3) {
+					this._goPage('group_buy_detail', {id: goods.activity_id})
 					return
 				}
 

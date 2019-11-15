@@ -629,6 +629,21 @@ export default {
      */
     getSeckillList(data){
       return minRequest.get('/Index/seckillList', data)
+    },
+
+    /**
+     * 获取秒杀详情 第二期
+     */
+    seckill_info(data){
+      return minRequest.get('/Index/seckill_info', data)
+    },
+
+    /**
+     * 秒杀/限时购 下单 第二期
+     */
+    createOrederSeckillDoPost(data){
+      return minRequest.post('/order/seckill_doPost1', data)
     }
+
   }
 }

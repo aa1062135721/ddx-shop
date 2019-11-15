@@ -4,7 +4,7 @@
 			<image :src="goodsInfo.pic" :lazy-load="true"></image>
 			<view class="mask" v-if="goodsInfo.status !== 1"></view>
 			<view class="tips" v-if="goodsInfo.status !== 1">已下架</view>
-			<view class="left-flag">限时抢购</view>
+			<view class="left-flag" v-if="goodsInfo.activity_id && goodsInfo.activity_type === 4">限时抢购</view>
 		</view>
 		<view class="info">
 			<view class="title">

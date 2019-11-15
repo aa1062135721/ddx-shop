@@ -22,7 +22,7 @@
     import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue' //可选值：more（loading前）、loading（loading中）、noMore（没有更多了）
 
     export default {
-        name: "user_record",//提现记录
+        name: "user_record",// 消费记录
         data(){
             return{
                 requestData: {

@@ -54,6 +54,12 @@
                     <i class="iconfont icon-ddx-shop-content_arrows"></i>
                 </view>
             </view>
+            <view class="item" @click="_goPage('user_expenses_record')">
+                <view class="name">消费记录</view>
+                <view class="tag">
+                    <i class="iconfont icon-ddx-shop-content_arrows"></i>
+                </view>
+            </view>
         </view>
 
         <!-- 申请提现弹框 输入提现金额 -->

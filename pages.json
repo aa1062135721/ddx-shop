@@ -35,18 +35,6 @@
 				"navigationBarTitleText": "意见反馈"
 			}
 		},
-		{
-			"path": "pages2/user/distribution/sum-customer",
-			"style": {
-				"navigationBarTitleText": "我的客户"
-			}
-		},
-		{
-			"path": "pages2/user/distribution/sum-order",
-			"style": {
-				"navigationBarTitleText": "累计订单"
-			}
-		},
 
 		{
 			"path": "pages/public/login",
@@ -232,6 +220,12 @@
 					}
 				},
 				{
+					"path": "user/expenses-record",
+					"style": {
+						"navigationBarTitleText": "消费记录"
+					}
+				},
+				{
 					"path": "user/modify-mobile",
 					"style": {
 					  "navigationBarTitleText": "修改手机号码"
@@ -247,6 +241,18 @@
 					"path": "user/distribution",
 					"style": {
 						"navigationBarTitleText": "分销中心"
+					}
+				},
+				{
+					"path": "user/distribution/sum-customer",
+					"style": {
+						"navigationBarTitleText": "我的客户"
+					}
+				},
+				{
+					"path": "user/distribution/sum-order",
+					"style": {
+						"navigationBarTitleText": "累计订单"
 					}
 				},
 
@@ -324,6 +330,10 @@
 			"network": "all",
 			"packages": ["__APP__"]
 		},
+		"pages2/user/expenses-record": {
+			"network": "all",
+			"packages": ["__APP__"]
+		},
 		"pages2/user/modify-mobile": {
 			"network": "all",
 			"packages": ["__APP__"]
@@ -333,6 +343,14 @@
 			"packages": ["__APP__"]
 		},
 		"pages2/user/distribution": {
+			"network": "all",
+			"packages": ["__APP__"]
+		},
+		"pages2/user/distribution/sum-customer": {
+			"network": "all",
+			"packages": ["__APP__"]
+		},
+		"pages2/user/distribution/sum-order": {
 			"network": "all",
 			"packages": ["__APP__"]
 		},

@@ -489,7 +489,9 @@
                 background-color: #F2F2F2;
 
                 .left-content {
-
+                    /* #ifdef H5 */
+                    padding-bottom: var(--window-bottom);
+                    /* #endif */
                     .title-content {
                         width: 100%;
                         height: 100rpx;
@@ -523,7 +525,9 @@
 
                 .right-content {
                     width: 100%;
-                    padding-bottom: 120upx;
+                    /* #ifdef H5 */
+                    padding-bottom: var(--window-bottom);
+                    /* #endif */
                     box-sizing: border-box;
 
                     .product-wrapper {
@@ -690,8 +694,11 @@
             top: 0;
             z-index: 999;
             display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             width: vww(20);
-            height: 100%;
+            height: calc(100% - var(--window-bottom));
             text-align: center;
 
             .city-indexs {
@@ -701,7 +708,6 @@
                 align-self: center;
 
                 > view {
-                    margin-bottom: vww(10);
                     width: vww(20);
                     font-size: $uni-font-size-base;
                     color: $color-primary-plain;

@@ -101,10 +101,8 @@
                     </view>
                 </view>
                 <view class="one" v-if="goodsInfo.status === 2">
-                    <view class="title">秒杀状态</view>
+                    <view class="title">距离开始还剩</view>
                     <view class="time">
-                        <view class="title">距离开始还剩</view>
-                        <view class="time">
                             <block v-if="timer.d">
                                 <text class="tag">{{timer.d}}</text>
                                 <text class="no-tag">天</text>
@@ -114,7 +112,6 @@
                             <text class="tag">{{timer.m}}</text>
                             <text class="no-tag">:</text>
                             <text class="tag">{{timer.s}}</text>
-                        </view>
                     </view>
                 </view>
             </view>
@@ -697,7 +694,10 @@
                 //1：正在抢购，2即将开始，3已结束
                 if (this.goodsInfo.start_time  > this.goodsInfo.now_time) {
                     this.$set(this.goodsInfo, 'status', 2)
-                    time_distance = this.goodsInfo.now_time * 1000 - this.goodsInfo.start_time * 1000
+                    time_distance = this.goodsInfo.start_time * 1000 - this.goodsInfo.now_time * 1000
+                    if (time_distance <= 0){
+                        this.$set(this.goodsInfo, 'status', 1)
+                    }
                     console.log("秒杀活动还未开始")
                 }
 
@@ -856,16 +856,46 @@
                 console.log("其他页面带过来的参数：",this.$parseURL())
             }
 
-            await this.$minApi.seckill_info(requestData).then(res => {
+            await this.$minApi.seckill_info(requestData).then(async res => {
                 console.log('秒杀详情：', res)
                 if (res.code === 200) {
                     res.data.item.content = this.formatRichText2(res.data.item.content)
                     this.goodsInfo = res.data
                     this.choosesGoodsInfo.specs = res.data.item_specs[0]
-                    myTimer = setInterval(()=> {
-                        this.goodsInfo.now_time ++
-                        this.getRTime()
-                    }, 1000) //设置定时器 每一秒执行一次
+
+                    // 如果是安卓平台 每次进入商品详情页面就会调用微信配置，自定义分享商品
+                    if ((await this.getPlatform()).isAndroid){
+                        await this.wxConfig()
+                    }
+                    let url = ''
+                    if(this.userInfo.id) {
+                        url = window.location.href + '&user_id=' + this.userInfo.id
+                    } else {
+                        url = window.location.href
+                    }
+                    await this.$nextTick(async () => {
+                        //设置定时器 每一秒执行一次
+                        myTimer = setInterval(()=> {
+                            this.goodsInfo.now_time ++
+                            this.getRTime()
+                        }, 1000)
+                        await this.calcAnchor();//计算锚点高度，页面数据是ajax加载时，请把此行放在数据渲染完成事件中执行以保证高度计算正确
+
+                        let param1 = {
+                                title: `捣蛋熊商城-${this.goodsInfo.item.title}`, // 分享标题
+                                desc: `原价${this.goodsInfo.item.old_price}，现价仅需${this.goodsInfo.item.price}，先到先得`, // 分享描述
+                                link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                                imgUrl: this.goodsInfo.item.pics[0], // 分享图标
+                                success: function () {}
+                            },
+                            param2 = {
+                                title: `捣蛋熊商城-${this.goodsInfo.title}`, // 分享标题
+                                link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                                imgUrl: this.goodsInfo.item.pics[0], // 分享图标
+                                success: function () {}
+                            }
+                        await this.wxConigShareGoods(param1, param2)
+                    })
                 } else {
                     this.msg('活动结束')
                     setTimeout(()=> {
@@ -889,34 +919,6 @@
                 }
             })
 
-            // 如果是安卓平台 每次进入商品详情页面就会调用微信配置，自定义分享商品
-            if (this.getPlatform().isAndroid){
-                await this.wxConfig()
-            }
-            let url = ''
-            if(this.userInfo.id) {
-                url = window.location.href + '&user_id=' + this.userInfo.id
-            } else {
-                url = window.location.href
-            }
-            await this.$nextTick(async () => {
-                await this.calcAnchor();//计算锚点高度，页面数据是ajax加载时，请把此行放在数据渲染完成事件中执行以保证高度计算正确
-
-                let param1 = {
-                        title: `捣蛋熊商城-${this.goodsInfo.item.title}`, // 分享标题
-                        desc: `原价${this.goodsInfo.item.old_price}，现价仅需${this.goodsInfo.item.price}，先到先得`, // 分享描述
-                        link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                        imgUrl: this.goodsInfo.item.pics[0], // 分享图标
-                        success: function () {}
-                    },
-                    param2 = {
-                        title: `捣蛋熊商城-${this.goodsInfo.title}`, // 分享标题
-                        link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                        imgUrl: this.goodsInfo.item.pics[0], // 分享图标
-                        success: function () {}
-                    }
-                await this.wxConigShareGoods(param1, param2)
-            })
         },
         async onShow() {
             if (this.userInfo.id){

@@ -43,6 +43,13 @@
                                 <block v-if="item.timer.d">{{item.timer.d}}天</block> {{item.timer.h}}:{{item.timer.m}}:{{item.timer.s}}
                             </view>
                         </view>
+                        <view class="right-info" v-show="item.status === 3">
+                            <view class="btn over">秒杀结束</view>
+                            <view class="tips-time" style="opacity: 0;">
+                                <text class="text">秒杀结束</text>
+                                0天00:00:00
+                            </view>
+                        </view>
                     </view>
                 </view>
             </view>
@@ -125,12 +132,12 @@
                     let time_distance = 0
                     if (item.status === 1) {  // 正在秒杀
                         time_distance = item.end_time * 1000 - this.goodsData[0].now_time * 1000;
-                        if (time_distance < 0) { //秒杀已结束
-                            // this.goodsData.slice(index)
+                        if (time_distance <= 0) { //秒杀已结束
+                            item.status = 3
                         }
                     } else if (item.status === 2){  // 未开始
-                        time_distance = this.goodsData[0].now_time * 1000 - item.start_time * 1000;
-                        if (time_distance < 0) { // 秒杀开始了
+                        time_distance = item.start_time * 1000 - this.goodsData[0].now_time * 1000;
+                        if (time_distance <= 0) { // 秒杀开始了
                             item.status = 1
                         }
                     }

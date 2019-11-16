@@ -606,6 +606,9 @@
             // -webkit-overflow-scrolling: touch;
             width: 100%;
             height: 100%;
+            /* #ifdef H5 */
+            height: calc(100% - var(--window-bottom));
+            /* #endif */
             background: #F6F5FA;
             // overflow-y: auto;
 

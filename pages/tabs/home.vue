@@ -423,30 +423,34 @@
 			await this._getCategoryGoodsList()
 
 			// 如果是安卓平台 每次进入商品详情页面就会调用微信配置，自定义分享商品
-			if (this.getPlatform().isAndroid){
+			if ((await this.getPlatform()).isAndroid){
 				await this.wxConfig()
 			}
 			let url = ''
 			if(this.userInfo.id) {
-				url = window.location.href + '&user_id=' + this.userInfo.id
+				if (window.location.href.indexOf('?') !== -1){
+					url = window.location.href + '&user_id=' + this.userInfo.id
+				} else {
+					url = window.location.href + '?user_id=' + this.userInfo.id
+				}
 			} else {
 				url = window.location.href
 			}
-			this.$nextTick(() => {
+			this.$nextTick(async () => {
 				let param1 = {
 							title: '捣蛋熊商城', // 分享标题
 							desc: '高品质、一站式服务平台', // 分享描述
 							link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-							imgUrl: `${window.location.origin + window.location.pathname}static/images/pandalogo.png`, // 分享图标
+							imgUrl: `${window.location.origin + window.location.pathname}/static/images/pandalogo.png`, // 分享图标
 							success: function () {}
 						},
 						param2 = {
 							title: '捣蛋熊商城', // 分享标题
 							link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-							imgUrl: `${window.location.origin + window.location.pathname}static/images/pandalogo.png`, // 分享图标
+							imgUrl: `${window.location.origin + window.location.pathname}/static/images/pandalogo.png`, // 分享图标
 							success: function () {}
 						}
-				this.wxConigShareGoods(param1, param2)
+				await this.wxConigShareGoods(param1, param2)
 			})
 		},
 		async onReachBottom() {

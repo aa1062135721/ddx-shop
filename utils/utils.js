@@ -208,14 +208,14 @@ exports.install = function (Vue, options) {
     /**
      *  非ios设备，切换路由时候进行重新签名
      */
-    Vue.prototype.wxConfig = () => {
+    Vue.prototype.wxConfig = async () => {
         //因为问题1，所以我们要在IOS端进入项目时，记住第一次进来的url地址，供签名使用
         let that = new Vue()
         let url = encodeURIComponent(window.location.href)
-        that.$minApi.getWxConfig({url}).then(res => {
+        await that.$minApi.getWxConfig({url}).then(async res => {
             if (res.code === 200) {
-                that.$wx.config({
-                    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来
+                await that.$wx.config({
+                    debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来
                     appId: res.data.appid, // 必填，公众号的唯一标识
                     timestamp: res.data.timestamp, // 必填，生成签名的时间戳
                     nonceStr: res.data.noncestr, // 必填，生成签名的随机串
@@ -229,7 +229,7 @@ exports.install = function (Vue, options) {
                         'chooseWXPay',//支付
                     ]
                 })
-                that.$wx.error((res) => {
+                await that.$wx.error((res) => {
                     that.msg(res)
                 })
             }
@@ -240,13 +240,15 @@ exports.install = function (Vue, options) {
      * @param param1 分享到朋友
      * @param param2 分享到朋友圈
      */
-    Vue.prototype.wxConigShareGoods = (param1 = {}, param2 = {}) => {
+    Vue.prototype.wxConigShareGoods = async (param1 = {}, param2 = {}) => {
         let that = new Vue()
-        that.$wx.ready(() => {
-            //分享到朋友
-            that.$wx.updateAppMessageShareData(param1)
-            // 分享到朋友圈
-            that.$wx.updateTimelineShareData(param2)
-        })
+        await setTimeout(async () => {
+            await that.$wx.ready(async () => {
+                //分享到朋友
+                await that.$wx.updateAppMessageShareData(param1)
+                // 分享到朋友圈
+                await that.$wx.updateTimelineShareData(param2)
+            })
+        }, 1000)
     }
 }

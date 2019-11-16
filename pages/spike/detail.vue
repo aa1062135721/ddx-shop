@@ -527,45 +527,43 @@
 
                 goodsInfo: {
                     id: 0,
-                    title: "普通秒杀",        //标签
-                    start_time: 1573747200,   //开始时间
-                    end_time: 1574265600, //结束时间
-                    now_time: 1573798755, //服务器当前时间
-                    status: 1,    //状态：1正在秒杀/抢购，2已结束
-                    is_over: 2,   //是否已抢完
-                    attributes: "颜色,尺码",  //规格组的名称，如果是单规格则此字段为空
+                    title: "",        //标签
+                    start_time: 0,   //开始时间
+                    end_time: 0, //结束时间
+                    now_time: 0, //服务器当前时间
+                    status: 0,    //状态：1正在秒杀/抢购，2已结束
+                    is_over: 0,   //是否已抢完
+                    attributes: "",  //规格组的名称，如果是单规格则此字段为空
                     item: {       //商品信息
-                        id: 2440, //商品id
-                        status: 1,    //商品状态，暂时没用
-                        title: "DQB小众童装2019秋季新品男女童装卫衣潮牌印花套头长袖刺绣卫衣", //商品名
+                        id: 0, //商品id
+                        status: 0,    //商品状态，暂时没用
+                        title: "0", //商品名
                         subtitle: "", //副标题
-                        mold_id: 5,   //分区id
+                        mold_id: 0,   //分区id
                         video: "",    //视频
-                        initial_sales: 12,    //销量。暂时没用
-                        reality_sales: 1,     //实际销量，暂时没用
-                        lvid: 1,  //运费id，暂时没用
-                        content: "<p><img src=\"https://img.alicdn.com/imgextra/i3/2201548744720/O1CN01shzOaA1kjnyqBNMXg_!!2201548744720.jpg\"/><img src=\"https://img.alicdn.com/imgextra/i1/2201548744720/O1CN01kErsgn1kjnyqBMxbN_!!2201548744720.jpg\"/><img src=\"https://img.alicdn.com/imgextra/i3/2201548744720/O1CN01lm2XpQ1kjnypDTLal_!!2201548744720.jpg\" class=\"\" width=\"750\" height=\"561\"/><img src=\"https://img.alicdn.com/imgextra/i2/2201548744720/O1CN01lJcUCU1kjnylMDZH3_!!2201548744720.jpg\" class=\"\" width=\"750\" height=\"788\"/><img src=\"https://img.alicdn.com/imgextra/i1/2201548744720/O1CN0166ZMfn1kjnykALvFU_!!2201548744720.jpg\" class=\"\" width=\"750\" height=\"758\"/><img src=\"https://img.alicdn.com/imgextra/i1/2201548744720/O1CN0159CZtw1kjnyqBM5al_!!2201548744720.jpg\" class=\"\" width=\"750\" height=\"569\"/><img src=\"https://img.alicdn.com/imgextra/i3/2201548744720/O1CN01DkK4C11kjnyqccs4o_!!2201548744720.jpg\" class=\"\" width=\"750\" height=\"1190\"/><img src=\"https://img.alicdn.com/imgextra/i1/2201548744720/O1CN01B8ekOd1kjnykAMWhI_!!2201548744720.jpg\" class=\"\" width=\"750\" height=\"575\"/><img src=\"https://img.alicdn.com/imgextra/i4/2201548744720/O1CN01lKCVvz1kjnyn6k7Gb_!!2201548744720.jpg\" class=\"\" width=\"750\" height=\"1204\"/><img src=\"https://img.alicdn.com/imgextra/i4/2201548744720/O1CN010L6Gtd1kjnyoOECj9_!!2201548744720.jpg\" class=\"\" width=\"750\" height=\"1217\"/><img src=\"https://img.alicdn.com/imgextra/i4/2201548744720/O1CN01CSjRRC1kjnypk3DqO_!!2201548744720.jpg\" class=\"\" width=\"750\" height=\"1215\"/><img src=\"https://img.alicdn.com/imgextra/i3/2201548744720/O1CN01nDRGqZ1kjnykALvHD_!!2201548744720.jpg\" class=\"\" width=\"750\" height=\"689\"/><img src=\"https://img.alicdn.com/imgextra/i1/2201548744720/O1CN011m6Kzw1kjnyoOE0Fe_!!2201548744720.jpg\" class=\"\" width=\"750\" height=\"431\"/><img src=\"https://img.alicdn.com/imgextra/i2/2201548744720/O1CN01MwdyQF1kjnyqBMcrI_!!2201548744720.jpg\" class=\"\" width=\"750\" height=\"560\"/><img src=\"https://img.alicdn.com/imgextra/i4/2201548744720/O1CN01CHUFi91kjnyqBOuDA_!!2201548744720.jpg\" class=\"\" width=\"750\" height=\"606\"/><img src=\"https://img.alicdn.com/imgextra/i2/2201548744720/O1CN01L6o6FN1kjnypDSwhy_!!2201548744720.jpg\" class=\"\" width=\"750\" height=\"1128\"/><img src=\"https://img.alicdn.com/imgextra/i3/2201548744720/O1CN019lFAJL1kjnyfYkgiZ_!!2201548744720.jpg\" class=\"\" width=\"750\" height=\"651\"/></p>",
-                        //详情
-                        pics: [   //商品组图
-                            "http://picture.ddxm661.com/ad4df2019110916303286.jpg"
-                        ],
+                        initial_sales: 0,    //销量。暂时没用
+                        reality_sales: 0,     //实际销量，暂时没用
+                        lvid: 0,  //运费id，暂时没用
+                        content: "",
+                        //详情   //商品组图
+                        pics: [],
                         ratio: "0.00",    //分销金额，暂时没用
-                        mold: "商城自营", //分区名称
-                        mold_know: "<p class=\"MsoNormal\"><!--[if !supportLists]--><span>·&nbsp;</span><!--[endif]--><span>a）海外直邮商品都是正品吗？</span><span><o:p></o:p></span></p><p class=\"MsoNormal\"><span>平台上所有产品都是供应商海外原装进口，海关监管并检验，并且每个商品进驻海关保税区，都需要做清关，以确保商品是正品。</span><span><o:p></o:p></span></p><p class=\"MsoNormal\"><span>b）是否支持退货？</span><span><o:p></o:p></span></p><p class=\"MsoNormal\"><span><font face=\"宋体\">由于跨境购物自身的特殊性（物流距离，耗时较长，商品退换货出关时存在税费及清关的障碍等）所售商品不支持任何无理由退换货，不支持无理由拒收，此类商品如果被拒收或退回，将扣除</font>50%的订单总金额，请您务必收到货时在快递员见证下先拆包检查，&nbsp;有问题的及时拒收并联系客服处理，没问题再签收！（其他售后问题请参考帮助中心的售后服务）。</span><span><o:p></o:p></span></p><p class=\"MsoNormal\"><span>c）为什么有运单号但一直没有物流信息？</span><span><o:p></o:p></span></p><p class=\"MsoNormal\"><span>&nbsp;&nbsp;一般情况下，接收到您的单子之后会在48小时内出运单号，然后将您的个人信息以及运单号一起提交海关审核，等海关审核结束后会进入正常的物流运转。</span><span><o:p></o:p></span></p><p class=\"MsoNormal\"><span>补充说明：</span><span><o:p></o:p></span></p><p class=\"MsoNormal\"><span>1&nbsp;）您在捣蛋熊猫</span><span>平台</span><span>买的跨境商品为产地直销，商品直接进入试点城市保税仓，接受海关监管，为消费者直接在海外购买购买商品；</span><span><o:p></o:p></span></p><p class=\"MsoNormal\"><span>2&nbsp;）您在捣蛋熊猫平台购买境外商品时，自动视为同意由捣蛋熊猫代您向中国海关进行申报和代缴税款。因此在下单前需提供您的姓名和身份证号码进行实名身份信息&nbsp;注册认证；</span><span><o:p></o:p></span></p><p class=\"MsoNormal\"><span>3&nbsp;）商品本身可能无中文标签，您可以查看网站的翻译或者在线联系我们的客服；</span><span><o:p></o:p></span></p><p class=\"MsoNormal\"><span>4&nbsp;）您购买的境外商品适用的品质，健康，标识等项目使用标准符合原产国使用标准，但是可能与我国标准有所不同，所以在使用过程中由此可能产生的危害&nbsp;或损失以及其他风险，由您个人承担。</span><span><o:p></o:p></span></p><p class=\"MsoNormal\"><span>5&nbsp;）请您确保您在捣蛋熊猫平台所使用的消费者身份信息在整个购买及收货过程中持续真实、合法、有效；并且您承诺不以任何形式在海带平台刷单，不利用海带平台进行任何违法活动。</span><span><o:p></o:p></span></p><p class=\"MsoNormal\"><span>6）所有跨境商品仅限于个人自用，可能由于与国际标准不同而存在风险，不得进行再次销售。</span><span><o:p></o:p></span></p><p class=\"MsoNormal\"><span>7）您知晓并同意捣蛋熊猫平台有权在您违反本承诺保证时，对您处以暂停服务、关停账户等处罚措施并有权要求您赔偿因违反本承诺保证对海带平台造成的全部损失。</span><span><o:p></o:p></span></p><p class=\"MsoNormal\"><span>8）跨境婴幼儿奶粉按照国际标准生产，其蛋白质含量可能低于国内标准，长期喂食会造成婴幼儿蛋白质摄入不足，建议及时补充肉类或鱼类辅食。</span><span><o:p></o:p></span></p><p class=\"MsoNormal\"><span>&nbsp;</span></p><p class=\"MsoNormal\"><b><span>一般贸易</span></b><b><span><font face=\"宋体\">类</font></span></b><b><span>商品购买</span></b><b><span><font face=\"宋体\">须知</font></span></b><b><span><o:p></o:p></span></b></p><p class=\"MsoNormal\"><span>&nbsp;</span></p><p class=\"MsoNormal\"><span>1&nbsp;）商品本身有中文标签，或者您可以查看网站的翻译或在线联系我们的客服；&nbsp;</span><span><o:p></o:p></span></p><p class=\"MsoNormal\"><span>2&nbsp;）同商品可能涉及到不同的仓库，因发货仓库不同，货物配送到您手中的时效会稍有区别，请以实际为准；</span><span><o:p></o:p></span></p><p class=\"MsoNormal\"><span>3&nbsp;）您确保订单中的收货地址、收件人姓名、手机号码等各项信息的准确性和有效性，以便商品及时、准确地发出，并随时查看个人账户&nbsp;里“我的订单”的订单状态更新情况；</span><span><o:p></o:p></span></p><p class=\"MsoNormal\"><span>4&nbsp;）送货过程中如果快递员联络您未及时得到回复，此订单将被默认为您已经放弃订购，由此产生的费用或其他后果由您自行承担；</span><span><o:p></o:p></span></p><p class=\"MsoNormal\"><span>5&nbsp;）商品不支持任何无理由退换货，不支持无理由拒收，此类商品如果被拒收或退回，将扣除50%的订单总金额，请您务必收到货时在快递员见证下先拆包检查。&nbsp;清仓商品主要是客户退换货的商品，请慎拍。有问题的及时拒收并联系客服处理，没问题再签收！（其他售后问题请参考帮助中心的售后服务）。</span><span><o:p></o:p></span></p><p class=\"MsoNormal\"><span>6）请您确保您在捣蛋熊猫平台所使用的消费者身份信息在整个购买及收货过程中持续真实、合法、有效；并且您承诺不以任何形式在捣蛋熊猫平台刷单，不利用捣蛋熊猫平台进行任何违法活动。</span><span><o:p></o:p></span></p><p class=\"MsoNormal\"><span>7）请您确保不以任何形式在线上线下留存/销售跨境商品。</span><span><o:p></o:p></span></p><p class=\"MsoNormal\"><span>8）您知晓并同意捣蛋熊猫平台有权在您违反本承诺保证时，对您处以暂停服务、关停账户等处罚措施并有权要求您赔偿因违反本承诺保证对捣蛋熊猫平台造成的全部损失。</span><span><o:p></o:p></span></p>",
+                        mold: "", //分区名称
+                        mold_know: "",
                         //购买需知
-                        price: "70.00",   //现价
-                        old_price: "199.00"   //原价
+                        price: "",   //现价
+                        old_price: ""   //原价
                     },
                     item_specs: [     //规格组，如果是多规格的话，此参数就只有一个值，多规格有一个或一个以上的值
                         {
-                            specs_ids: "21_25",   //规格id组，单规格为空
-                            item_name: "DQB小众童装2019秋季新品男女童装卫衣潮牌印花套头长袖刺绣卫衣 style=",
-                            specs_names: "黑色_130",  //规格组合名称
-                            old_price: "199.00",  //此规格组合的原价
-                            price: "70.00",       //此规格组合的现价
-                            item_id: 2440,
+                            specs_ids: "",   //规格id组，单规格为空
+                            item_name: "",
+                            specs_names: "",  //规格组合名称
+                            old_price: "",  //此规格组合的原价
+                            price: "",       //此规格组合的现价
+                            item_id: 0,
                             stock: -1,        //单人限购，如果为-1表示为不限购，反之为限购数量
-                            pic: "http://picture.ddxm661.com/5dc9f201911081520373607.jpg" //此规格组的名称
+                            pic: "" //此规格组的名称
                         },
                     ]
                 },

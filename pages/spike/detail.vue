@@ -43,7 +43,7 @@
                 <view class="middle">
                     <view v-for="(anchor,index) in anchorlist" :class="[selectAnchor==index ?'on':'']" :key="index" @tap="toAnchor(index)">{{anchor.name}}</view>
                 </view>
-                <view class="icon-btn" @click="openShareH5"><!-- openShare 微信小程序的分享功能--->
+                <view class="icon-btn" @click="openShareH5">
                     <view class="icon iconfont icon-ddx-shop-share"></view>
                 </view>
             </view>
@@ -413,12 +413,12 @@
                 <view class="goods-info">
                     <view class="main">
                         <view class="image">
-                            <image class="img" :src='goodsInfo.item_specs[choosesGoodsInfo.specs_index].pic' @click="previewImg(goodsInfo.item_specs[choosesGoodsInfo.specs_index].pic, [goodsInfo.item_specs[choosesGoodsInfo.specs_index].pic])"></image>
+                            <image class="img" :src='choosesGoodsInfo.specs.pic' @click="previewImg(choosesGoodsInfo.specs.pic, [choosesGoodsInfo.specs.pic])"></image>
                         </view>
                         <view class="info">
-                            <view class="price">￥{{goodsInfo.item_specs[choosesGoodsInfo.specs_index].price}}</view>
-                            <view class="stock" v-if="goodsInfo.item_specs[choosesGoodsInfo.specs_index].residue_num !== -1">限购: {{goodsInfo.item_specs[choosesGoodsInfo.specs_index].residue_num}}</view>
-                            <view class="chooses"></view>
+                            <view class="price">￥{{choosesGoodsInfo.specs.price}}</view>
+<!--                            <view class="stock">限购: 5</view>-->
+<!--                            <view class="chooses"></view>-->
                         </view>
                         <view class="close">
                             <text class="iconfont icon-ddx-shop-close" @click="close()"></text>
@@ -441,8 +441,8 @@
                             购买数量
                         </view>
                         <view class="content">
-                            <uni-number-box v-if="goodsInfo.item_specs[choosesGoodsInfo.specs_index].residue_num !== -1" :min="1" :step="1" :max="goodsInfo.item_specs[choosesGoodsInfo.specs_index].residue_num" :value="choosesGoodsInfo.num" @change="changeNum"></uni-number-box>
-                            <uni-number-box v-else :min="1" :step="1" :value="choosesGoodsInfo.num" @change="changeNum"></uni-number-box>
+                            <uni-number-box v-if="choosesGoodsInfo.specs.residue_num === -1" :min="1" :step="1" :value="choosesGoodsInfo.num" @change="changeNum"></uni-number-box>
+                            <uni-number-box v-else :min="1" :max="choosesGoodsInfo.specs.residue_num"  :step="1" :value="choosesGoodsInfo.num" @change="changeNum"></uni-number-box>
                         </view>
                     </view>
                 </view>
@@ -454,9 +454,14 @@
                             单独购买
                         </view>
                     </view>
-                    <view class="btn" @click="createOreder" v-if="goodsInfo.status === 1">
-                       立即秒杀
-                    </view>
+                    <block v-if="goodsInfo.status === 1">
+                        <view class="btn" v-if="choosesGoodsInfo.specs.residue_num === 0">
+                            已抢完
+                        </view>
+                        <view class="btn" @click="createOreder" v-else>
+                            立即秒杀
+                        </view>
+                    </block>
                     <view class="btn" style="background:#F9A13A;" v-if="goodsInfo.status === 2">
                         待开始
                     </view>
@@ -576,6 +581,7 @@
                     count: 0,
                     data: [],
                 },
+
                 //购物车数量
                 carNum:0,
 
@@ -632,6 +638,7 @@
                     urls
                 })
             },
+
             //跳转锚点
             toAnchor(index){
                 this.selectAnchor = index;
@@ -658,6 +665,7 @@
                     this.anchorlist[2].top = data.top - headerHeight - statusbarHeight1;
                 }).exec();
             },
+
             //打开选择规格弹框
             open(){
                 this.$refs.selectSpecification.open()

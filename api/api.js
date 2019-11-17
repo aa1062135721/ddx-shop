@@ -625,7 +625,7 @@ export default {
     },
 
     /**
-     * 获取秒杀商品列表
+     * 获取秒杀商品列表 第二期
      */
     getSeckillList(data){
       return minRequest.get('/Index/seckillList', data)
@@ -643,7 +643,22 @@ export default {
      */
     createOrederSeckillDoPost(data){
       return minRequest.post('/order/seckill_doPost1', data)
-    }
+    },
+
+    /**
+     * 拼团列表 第二期
+     */
+    getAssembleList(data) {
+      return minRequest.get('/assemble/assemble_List', data)
+    },
+
+    /**
+     * 拼团详情 第二期
+     */
+    assembleInfo(data) {
+      return minRequest.get('/assemble/assemble_info', data)
+    },
+
 
   }
 }

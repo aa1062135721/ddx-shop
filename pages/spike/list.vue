@@ -200,7 +200,7 @@
             padding: 0 $uni-spacing-row-sm;
             .spike-list-content-box{
                 background: #FFFFFF;
-                border-radius:10upx;
+                border-radius:4upx;
                 box-shadow:0 0 10upx 0 #B7B7B7;
                 width:100%;
                 height:228upx;

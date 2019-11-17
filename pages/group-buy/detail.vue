@@ -43,7 +43,7 @@
 				<view class="middle">
 					<view v-for="(anchor,index) in anchorlist" :class="[selectAnchor==index ?'on':'']" :key="index" @tap="toAnchor(index)">{{anchor.name}}</view>
 				</view>
-				<view class="icon-btn" @click="openShareH5"><!-- openShare 微信小程序的分享功能--->
+				<view class="icon-btn" @click="openShareH5">
 					<view class="icon iconfont icon-ddx-shop-share"></view>
 				</view>
 			</view>
@@ -51,14 +51,14 @@
 		<!-- 商品主图轮播 -->
 		<view class="swiper-box">
 			<swiper circular="true" :indicator-dots="true" indicator-active-color="#FC8A8A" @change="swiperHandle">
-				<swiper-item style="display: flex;flex-direction: column;justify-content: center;background: #000;" v-if="goodsInfo.video">
-					<video id="myVideo" :src="goodsInfo.video"
+				<swiper-item style="display: flex;flex-direction: column;justify-content: center;background: #000;" v-if="goodsInfo.item.video">
+					<video id="myVideo" :src="goodsInfo.item.video"
 						   controls
 						   style="width: 100%;"
 					></video>
 				</swiper-item>
-				<swiper-item v-for="(img_src,index) in goodsInfo.pics" :key="index">
-					<image :src="img_src" @click="previewImg(img_src, goodsInfo.pics)"></image>
+				<swiper-item v-for="(img_src,index) in goodsInfo.item.pics" :key="index">
+					<image :src="img_src" @click="previewImg(img_src, goodsInfo.item.pics)"></image>
 				</swiper-item>
 			</swiper>
 		</view>
@@ -67,20 +67,20 @@
 			<view class="left">
 				<view class="top">
 					<text class="price">
-						￥{{goodsInfo.commander_price}}
+						￥{{goodsInfo.item.price}}
 					</text>
 					<text class="time-kill">
-						{{goodsInfo.people_num}}人团
+						{{goodsInfo.assemble_num}}人团
 					</text>
 				</view>
 				<view class="bottom">
 					<text class="old-price">
-						￥{{goodsInfo.old_price}}
+						￥{{goodsInfo.item.old_price}}
 					</text>
 				</view>
 			</view>
 			<view class="right">
-				<view class="one" v-if="goodsInfo.begin === 1">
+				<view class="one" v-if="goodsInfo.status === 1">
 					<view class="title">距离结束还剩</view>
 					<view class="time">
 						<text class="tag" v-if="timer.d">{{timer.d + '天'}}</text>
@@ -92,16 +92,22 @@
 						<text class="tag">{{timer.s}}</text>
 					</view>
 				</view>
-				<view class="one" v-if="goodsInfo.begin === 3">
+				<view class="one" v-if="goodsInfo.status === 3">
 					<view class="title">拼团状态</view>
 					<view class="time">
 						<text class="tag">已经结束</text>
 					</view>
 				</view>
-				<view class="one" v-if="goodsInfo.begin === 2">
-					<view class="title">拼团状态</view>
+				<view class="one" v-if="goodsInfo.status === 2">
+					<view class="title">距离开始还剩</view>
 					<view class="time">
-						<text class="tag">即将开始</text>
+						<text class="tag" v-if="timer.d">{{timer.d + '天'}}</text>
+						<text class="no-tag" v-if="timer.d"></text>
+						<text class="tag">{{timer.h}}</text>
+						<text class="no-tag">:</text>
+						<text class="tag">{{timer.m}}</text>
+						<text class="no-tag">:</text>
+						<text class="tag">{{timer.s}}</text>
 					</view>
 				</view>
 			</view>
@@ -109,20 +115,20 @@
 		<!-- 标题 -->
 		<view class="info-box goods-info">
 			<view class="title">
-				<text class="tag" v-if="goodsInfo.mold_id">{{goodsInfo.mold}}</text>
-				{{goodsInfo.title}}
+				<text class="tag" v-if="goodsInfo.item.mold_id">{{goodsInfo.item.mold}}</text>
+				{{goodsInfo.item.title}}
 			</view>
 			<!-- 子标题  承诺  -->
-			<view class="sub-title" v-if="goodsInfo.subtitle">
-				{{goodsInfo.subtitle}}
+			<view class="sub-title" v-if="goodsInfo.item.subtitle">
+				{{goodsInfo.item.subtitle}}
 			</view>
-			<view class="promise" v-if="goodsInfo.promise">
-				{{goodsInfo.promise}}
+			<view class="promise" v-if="goodsInfo.item.promise">
+				{{goodsInfo.item.promise}}
 			</view>
 		</view>
 
 		<!--	跨境购买 单独展示的文字 	-->
-		<div class="cross-border-goods" v-if="goodsInfo.mold_id === 1">
+		<div class="cross-border-goods" v-if="goodsInfo.item.mold_id === 1">
 			<view class="title">
 				<text class="tag">提示</text>
 				用户下单后，保税商品预计在2-3个工作日送达，直邮商品7-15个工作日送达。按照国家新政对跨境商品征收跨境综合税。跨境购订单需要顾客保持信息一致，要求顾客支付人姓名、收货人姓名、实名认证的姓名一致。
@@ -134,9 +140,9 @@
 		</div>
 
 		<!-- 其他拼团信息 -->
-		<view class="info-box comments" style="padding-bottom: 0;" v-if="goodsInfo.count">
+		<view class="info-box comments" style="padding-bottom: 0;" v-if="goodsInfo.assemble_group.length">
 			<view class="row">
-				<view class="text" style="font-size: 28upx;">有<text style="color: #FC5A5A;">{{goodsInfo.count}}人</text>正在拼团，你可以直接参与哦</view>
+				<view class="text" style="font-size: 28upx;">有<text style="color: #FC5A5A;">{{goodsInfo.assemble_group.length}}人</text>正在拼团，你可以直接参与哦</view>
 				<view class="arrow" @click="openMoreOtherGroupBuy">
 					<view class="show">
 						查看全部
@@ -144,45 +150,45 @@
 					</view>
 				</view>
 			</view>
-			<view class="many-group-buy" v-for="(item, index) in goodsInfo.assemble_list" :key="index" v-if="index < 2">
+			<view class="many-group-buy" v-for="(item, index) in goodsInfo.assemble_group" :key="index" v-if="index < 2">
 				<view class="one">
-					<view><image :src="item.pic" class="img"></image></view>
-					<view>{{item.nickname}}</view>
+					<view><image :src="item.commander_pic" class="img"></image></view>
+					<view>
+						<view>{{item.commander_nickname}}</view>
+						<view>{{item.copywriting}}</view>
+					</view>
 				</view>
 				<view class="two">
 					<view class="info">
 						<view class="info-title">还差{{item.r_num}}人成团</view>
-						<view class="info-time" v-if="item.begin === 1">仅剩 {{item.timeStr}}</view>
-						<view class="info-time" v-if="item.begin === 0">组团已结束</view>
+						<view class="info-time" v-if="item.status === 1">仅剩 {{item.timeStr}}</view>
+						<view class="info-time" v-if="item.status === 0">组团已结束</view>
 					</view>
-					<view class="btns" v-if="item.begin === 1">
-						<view class="btn" @click="_goPage('group_buy_group', {id: item.order_id})"  v-if="item.order_id">查看详情</view>
-						<view class="btn" @click="buyGroup(item.id)" v-else>去参团</view>
+					<view class="btns">
+						<view class="btn" @click="buyGroup(item.id)">去参团</view>
 					</view>
 				</view>
 			</view>
-
 		</view>
 		<!-- 其他拼团信息，查看更多 -->
-		<uni-popup ref="moreOtherGroupBuy" type="center" :custom="true" :mask-click="false" v-if="goodsInfo.assemble_list.length">
+		<uni-popup ref="moreOtherGroupBuy" type="center" :custom="true" :mask-click="false" v-if="goodsInfo.assemble_group.length">
 			<view class="more-other-group-buy">
 				<view class="box">
 					<view class="title">参与可直接成团</view>
 					<view class="center">
-						<view class="item" v-for="(item, index) in goodsInfo.assemble_list" :key="index">
+						<view class="item" v-for="(item, index) in goodsInfo.assemble_group" :key="index">
 							<view class="left">
 								<view>
-									<image :src="item.pic" class="img"></image>
+									<image :src="item.commander_pic" class="img"></image>
 								</view>
 								<view class="info">
-									<view>{{item.nickname}}：还差{{item.r_num}}人成团</view>
-									<view v-if="item.begin === 1">仅剩 {{item.timeStr}}</view>
-									<view v-if="item.begin === 0">组团已结束</view>
+									<view>{{item.commander_nickname}}：还差{{item.r_num}}人成团</view>
+									<view v-if="item.status === 1">仅剩 {{item.timeStr}}</view>
+									<view v-if="item.status === 0">组团已结束</view>
 								</view>
 							</view>
-							<view class="right" v-if="item.begin === 1">
-								<view class="btn" @click="_goPage('group_buy_group', {id: item.order_id})" v-if="item.order_id">查看详情</view>
-								<view class="btn" @click="buyGroup(item.id)" v-else>去参团</view>
+							<view class="right">
+								<view class="btn" @click="buyGroup(item.id)">去参团</view>
 							</view>
 						</view>
 					</view>
@@ -230,7 +236,7 @@
 			<view class="item">
 				<view class="one">
 					<view class="title">说明</view>
-					<view class="content" v-if="goodsInfo.mold_id !== 1">
+					<view class="content" v-if="goodsInfo.item.mold_id !== 1">
 						<view>
 							<text class="iconfont icon-ddx-shop-tick"></text>捣蛋熊发货&售后
 						</view>
@@ -278,7 +284,7 @@
 			<view class="my-service">
 				<view class="my-service-title">服务说明</view>
 				<view class="my-service-box">
-					<block v-if="goodsInfo.mold_id !== 1">
+					<block v-if="goodsInfo.item.mold_id !== 1">
 						<view class="item">
 							<view class="title-and-point">
 								<view class="iconfont icon-ddx-shop-tick"></view>
@@ -397,18 +403,17 @@
 			</view>
 		</uni-popup>
 
-		<!--商品信息  -->
-		<view class="info-box goods-info2">
-			<view class="item">
+		<!-- 选择商品 商品信息  -->
+		<view class="info-box goods-info2" v-if="goodsInfo.attributes">
+			<view class="item" @click="open">
 				<view class="one">
-					<view class="title">数量</view>
-					<view class="comtent">
-						<uni-number-box v-if="goodsInfo.buy_num <= goodsInfo.remaining_stock" :min="1" :max="goodsInfo.buy_num" :value="1" :step="1" @change="changeNum"></uni-number-box>
-						<uni-number-box v-else :min="1" :max="goodsInfo.remaining_stock" :value="1" :step="1" @change="changeNum"></uni-number-box>
-					</view>
+					<text class="title">选择规格</text>
+					<text class="comtent">
+						<text>{{goodsInfo.attributes}}</text>
+					</text>
 				</view>
 				<view class="two">
-<!--					<text class="iconfont icon-ddx-shop-content_arrows"></text>-->
+					<text class="iconfont icon-ddx-shop-content_arrows"></text>
 				</view>
 			</view>
 		</view>
@@ -417,7 +422,7 @@
 		<view class="info-box comments" id="comments">
 			<view class="row">
 				<view class="text">商品评价({{commentResponseData.count}})</view>
-				<view class="arrow" @click="_goPage('goods_evaluate', {id: goodsInfo.item_id})">
+				<view class="arrow" @click="_goPage('goods_evaluate', {id: goodsInfo.item.id})">
 					<view class="show">
 						查看全部
 						<text class="iconfont icon-ddx-shop-content_arrows"></text>
@@ -439,18 +444,16 @@
 		</view>
 
 		<!-- 详情 -->
-		<view class="description">
+		<view class="description" id="description">
 			<view class="title">
 				<text :class="{'on': showTabWho === 'detail'}" @click="showTabWho = 'detail'">图文详情</text>
-				<text :class="{'on': showTabWho === 'know'}" @click="showTabWho = 'know'" v-if="buyYouKnow">购买须知</text>
+				<text :class="{'on': showTabWho === 'know'}" @click="showTabWho = 'know'" v-if="goodsInfo.item.mold_know">购买须知</text>
 			</view>
 			<view class="content"  v-if="showTabWho === 'detail'">
-				<rich-text :nodes="goodsInfo.content"></rich-text>
-<!--				<image v-for="(img, index) in goodsInfo.content" :src="img" :key="index" style="width: 100%;" :lazy-load="true" mode="widthFix"></image>-->
+				<rich-text :nodes="goodsInfo.item.content"></rich-text>
 			</view>
 			<view class="content-know" v-if="showTabWho === 'know'">
-<!--				<rich-text :nodes="buyYouKnow"></rich-text>-->
-				<view v-html="buyYouKnow"></view>
+				<view v-html="goodsInfo.item.mold_know"></view>
 			</view>
 		</view>
 
@@ -472,54 +475,52 @@
 				</view>
 			</view>
 			<view class="btn">
-				<block v-if="goodsInfo.remaining_stock === 0">
-					 <view class='over'>已售完</view>
-				</block>
-				<block v-else>
-					<view class="joinCart my-vam" @click="_goPage('goods_detail', {id:goodsInfo.item_id})">
-						<view class="inner">
-							￥{{ (parseFloat(goodsInfo.old_price) * parseFloat(choosesGoodsInfo.num)) | moneyToFixed }}<br />
-							单独购买
-						</view>
+				<view class="joinCart my-vam" @click="_goPage('goods_detail', {id: goodsInfo.item.id})">
+					<view class="inner">
+						￥{{ (parseFloat(goodsInfo.item.old_price) * parseFloat(choosesGoodsInfo.num)) | moneyToFixed }}<br />
+						单独购买
 					</view>
-					<view class="buy my-vam" @click="open()" v-if="goodsInfo.begin === 1">
-						<view class="inner">
-							￥{{ (parseFloat(goodsInfo.commander_price) * parseFloat(choosesGoodsInfo.num)) | moneyToFixed }}<br />
-							一键开团
-						</view>
+				</view>
+				<view class="buy my-vam" @click="open()" v-if="goodsInfo.status === 1">
+					<view class="inner">
+<!--						￥{{ (parseFloat(choosesGoodsInfo.specs.commander_price) * parseFloat(choosesGoodsInfo.num)) | moneyToFixed }}<br />-->
+						一键开团
 					</view>
-					<view class="buy my-vam" v-if="goodsInfo.begin === 2"  style="background:#F9A13A;">
-						<view class="inner">
-							￥{{ (parseFloat(goodsInfo.commander_price) * parseFloat(choosesGoodsInfo.num)) | moneyToFixed }}<br />
-							待开始
-						</view>
-					</view>
-					<view class="buy my-vam" v-if="goodsInfo.begin === 3" style="background:#F9A13A;">
-						<view class="inner">
-							￥{{ (parseFloat(goodsInfo.commander_price) * parseFloat(choosesGoodsInfo.num)) | moneyToFixed }}<br />
-							已结束
-						</view>
-					</view>
-				</block>
+				</view>
+				<view class="buy my-vam" v-if="goodsInfo.status === 2"  style="background:#F9A13A;">
+						待开始
+				</view>
+				<view class="buy my-vam" v-if="goodsInfo.status === 3" style="background:#F9A13A;">
+						已结束
+				</view>
 			</view>
 		</view>
 
 		<!-- 购买的时候选择规格，数量…… -->
-		<uni-popup ref="selectSpecification" type="bottom" :custom="true" @change="change">
+		<uni-popup ref="selectSpecification" type="bottom" :custom="true">
 			<view class="select-specification">
 				<view class="goods-info">
 					<view class="main">
-						<view class="image" @click="previewImg(goodsInfo.pics[0], goodsInfo.pics)">
-							<image class="img" :src='goodsInfo.pics[0]'></image>
+						<view class="image" @click="previewImg(choosesGoodsInfo.specs.pic, [choosesGoodsInfo.specs.pic])">
+							<image class="img" :src='choosesGoodsInfo.specs.pic'></image>
 						</view>
 						<view class="info">
-							<view class="price">￥{{goodsInfo.commander_price}}</view>
-							<view class="stock">库存:{{goodsInfo.all_stock}}</view>
-							<view class="stock">限购:{{goodsInfo.buy_num}}</view>
-							<view class="chooses"></view>
+							<view class="price">￥{{choosesGoodsInfo.specs.commander_price}}</view>
+<!--							<view class="stock">限购:5</view>-->
+<!--							<view class="chooses"></view>-->
 						</view>
 						<view class="close">
 							<text class="iconfont icon-ddx-shop-close" @click="close()"></text>
+						</view>
+					</view>
+				</view>
+				<view class="specification" v-if="goodsInfo.attributes">
+					<view class="main">
+						<view class="title">
+							请选择规格
+						</view>
+						<view class="content">
+							<text  v-for="(item, index) in goodsInfo.item_specs" :key="index" :class="{on: item === choosesGoodsInfo.specs && goodsInfo.attributes === item.specs_names}" @click="choosesSpecs(index, item)" >{{item.specs_names}}</text>
 						</view>
 					</view>
 				</view>
@@ -529,60 +530,28 @@
 							购买数量
 						</view>
 						<view class="content">
-							<uni-number-box v-if="goodsInfo.buy_num <= goodsInfo.remaining_stock" :min="1" :max="goodsInfo.buy_num" :value="1" :step="1" @change="changeNum"></uni-number-box>
-							<uni-number-box v-else :min="1" :max="goodsInfo.remaining_stock" :value="1" :step="1" @change="changeNum"></uni-number-box>
+							<uni-number-box v-if="choosesGoodsInfo.specs.residue_num === -1" :min="1" :step="1"  :value="choosesGoodsInfo.num" @change="changeNum"></uni-number-box>
+							<uni-number-box v-else :min="1" :step="1" :max="choosesGoodsInfo.specs.residue_num" :value="choosesGoodsInfo.num" @change="changeNum"></uni-number-box>
 						</view>
 					</view>
 				</view>
 				<view class="btns">
-					<block v-if="goodsInfo.remaining_stock === 0">
-						<view class='over'>已下架</view>
+					<block v-if="choosesGoodsInfo.specs.residue_num === 0">
+						<view class='over'>已拼完</view>
 					</block>
 					<block v-else>
-<!--						<view class="btn my-vam" style="background:#FC8A8A;" @click="buyNow(2)">--> <!--- buyNow函数，传2也是单独购买，在当前页面直接飞到提交订单页面 --->
-						<view class="btn my-vam" style="background:#FC8A8A;" @click="_goPage('goods_detail', {id: goodsInfo.item_id})">
+						<view class="btn my-vam" style="background:#FC8A8A;" @click="_goPage('goods_detail', {id: goodsInfo.item.id})">
 							<view class="inner">
-								￥{{ (parseFloat(goodsInfo.old_price) * parseFloat(choosesGoodsInfo.num)) | moneyToFixed }}<br />
 								单独购买
 							</view>
 						</view>
 						<view class="btn my-vam" @click="buyNow(1)">
 							<view class="inner">
-								￥{{ (parseFloat(goodsInfo.commander_price) * parseFloat(choosesGoodsInfo.num)) | moneyToFixed }}<br />
+								￥{{ (parseFloat(choosesGoodsInfo.specs.commander_price) * parseFloat(choosesGoodsInfo.num)) | moneyToFixed }}<br />
 								一键开团
 							</view>
 						</view>
 					</block>
-				</view>
-			</view>
-		</uni-popup>
-
-		<!-- 小程序分享转发功能 -->
-		<uni-popup ref="share" type="center" :custom="true">
-			<view class="share-goods">
-				<view class="share-title">
-					<view class="titles">
-						<view class="title">分享给好友</view>
-						<view class="sub-title" v-if="shareData.price">可获得佣金 最高 <span class="share-money">{{ shareData.price | moneyToFixed }}元</span></view>
-					</view>
-					<view class="share-images">
-						<image src="../../static/images/share/share-red-envelope.png" class="img" mode="widthFix"></image>
-					</view>
-				</view>
-				<view class="goods-image">
-					<image :src="shareData.pic" mode="widthFix" class="goods-img"></image>
-				</view>
-				<view class="share-btns">
-					<view class="content">
-						<button class="box" open-type="share">
-							<image src="../../static/images/share/share-wx.png" class="img"></image>
-							<view class="tag">微信好友</view>
-						</button>
-						<button class="box" @click="downLoadShareImage">
-							<image src="../../static/images/share/share-download.png" class="img"></image>
-							<view class="tag">保存图片</view>
-						</button>
-					</view>
 				</view>
 			</view>
 		</uni-popup>
@@ -638,66 +607,120 @@
 		data() {
 			return {
 				timer: {
-					d:`0`,
+					d: 0,
 					h:`00`,
 					m:`00`,
 					s:`00`
 				},
 
 				goodsInfo: {
-					id: 0,//拼团活动id
-					update: 0,    //版本
-					pics: [],
-					mold_id: 0,
-					content: [],
-					title: "",   //名称
-					item_id: 0,  //商品id
-					item_name: "",
-					old_price: "",    //原价
-					price: "",        //拼团价
-					commander_price: "",
-					people_num: 0,    //拼团一个需要多少人
-					buy_num: 0,   //每人限购数量
-					all_stock: 2,
-					remaining_stock: 2,       //剩余可拼团购买的数量
-					retail: 0,
-					begin_time: 0,
-					end_time: 0,
-					hot: 0,
-					postage_id: 0,
-					count: 0,     //一共有多少人拼团。如果为0的话下面的  assemble_list为 [];
-					assemble_list: [],
-					mold: "",
-					all_people: 0     //已成功拼团人数
+					id: 5,    //拼团id
+					title: "拼团",
+					start_time: 1573747200,   //开始时间
+					end_time: 1575043200, //结束时间
+					type: 3,
+					people_num: 2,    //每人限购
+					assemble_num: 3,  //几人团
+					now_time: 1573906737, //服务器当前时间
+					status: 1,    //1正在拼团，2立即开始 3平图案
+					is_over: 2,   //是否拼完
+					attributes: "颜色,尺码",  //规格组
+					item: {       //商品信息
+						id: 2440,
+						status: 1,
+						title: "",
+						subtitle: "",
+						mold_id: 5,
+						video: "",
+						initial_sales: 12,
+						reality_sales: 1,
+						lvid: 1,
+						content: "",
+						pics: [],
+						ratio: "0.00",
+						mold: "商城自营",
+						mold_know: "",
+						promise: "捣蛋熊承诺：正品保证  安心售后  假一赔十",
+						price: "10.00",
+						old_price: "199.00"
+					},
+					item_specs: [ //商品规格信息
+						{
+							specs_ids: "20_24",
+							item_name: "DQB小众童装2019秋季新品男女童装卫衣潮牌印花套头长袖刺绣卫衣",
+							specs_names: "红色_120",
+							old_price: "199.00",  //原价
+							price: "10.00",   //团员价
+							commander_price: "5.00",  //团长价
+							item_id: 2440,
+							residue_num: -1,
+							pic: "http://picture.ddxm661.com/5dc9f201911081520373607.jpg"
+						},
+						{
+							specs_ids: "20_26",
+							item_name: "DQB小众童装2019秋季新品男女童装卫衣潮牌印花套头长袖刺绣卫衣",
+							specs_names: "红色_140",
+							old_price: "199.00",
+							price: "20.00",
+							commander_price: "15.00",
+							item_id: 2440,
+							residue_num: 2,
+							pic: "http://picture.ddxm661.com/5dc9f201911081520373607.jpg"
+						},
+					],
+					assemble_group: [ //有几组正在拼团
+						{
+							id: 22,
+							r_num: 2, //还差几人
+							end_time: 1573731184, //结束时间
+							commander_nickname: "夜未央", //团长名
+							status:1,
+							timeStr: '1天22:33:20',
+							commander_pic: "http://thirdwx.qlogo.cn/mmopen/RzbvdRz23xicxuLkiccicV8r9Q5ySQgcDia3xImBdVUibbcy6fP840tRice4ua7BUibxgvfRYq0ibj3teu7420m4lb5SIozU04FWTv40/132", //团长头像
+						}
+					],
+					order_info: { //加入当前登录的用户已经加入此团蛋还未成功的订单信息，
+						order_id: 3822,   //订单id
+						order_status: 0,  //支付状态：0 为待支付  1为已支付，    待支付跳支付，已支付跳拼团详情
+						order_amount: "5.80"  //订单总额
+					}
 				},
-				//购买须知
-				buyYouKnow:'',
+
+				//选中 商品详情 还是 购买须知
 				showTabWho:'detail',// detail 图文详情    know 购买须知
-				//分享数据
-				shareData:{
-					price:0,
-					pic:'',
-				},
+
 				//商品评论
 				commentResponseData:{
 					count: 0,
 					data: [],
 				},
+
 				//购物车数量
 				carNum:0,
 
-				//控制渐变标题栏的参数
-				beforeHeaderzIndex: 11,//层级
-				afterHeaderzIndex: 10,//层级
-				beforeHeaderOpacity: 1,//不透明度
-				afterHeaderOpacity: 0,//不透明度
-
-				anchorlist:[],//导航条锚点
+				//导航条锚点 高度，要根据ajax返回的数据并渲染到页面后，去计算
+				anchorlist:[
+					{name:'主图',top:0},
+					{name:'评价',top:0},
+					{name:'详情',top:0}
+				],//导航条锚点
 				selectAnchor:0,//选中锚点
 
 				//当前已经选择了的商品，数量
 				choosesGoodsInfo:{
 					num:1,//选择购物数量
+					specs_index: 0,// 选中的规格下标
+					// 选中的规格
+					specs: {
+						specs_ids: "",   //规格id组，单规格为空
+						item_name: "",
+						specs_names: "",  //规格组合名称
+						old_price: "",  //此规格组合的原价
+						price: "",       //此规格组合的现价
+						item_id: 0,
+						residue_num: -1,        //单人限购，如果为-1表示为不限购，反之为限购数量
+						pic: "" //此规格组的名称
+					},
 					assemble_list_id: 0,//拼团组的id，非必传，不传表示自己开团，否则表示与别人成团
 				},
 
@@ -709,7 +732,7 @@
 			...mapMutations(['setShareID']),
 			// 商品banner滑动到非视频页面时候停止视频的播放
 			swiperHandle(e){
-				if (this.goodsInfo.video && e.detail.current !== 0) {
+				if (this.goodsInfo.item.video && e.detail.current !== 0) {
 					uni.createVideoContext('myVideo').pause()
 				}
 			},
@@ -728,6 +751,7 @@
 					urls
 				})
 			},
+
 			//跳转锚点
 			toAnchor(index){
 				this.selectAnchor = index;
@@ -735,13 +759,7 @@
 			},
 			//计算锚点高度
 			calcAnchor(){
-				this.anchorlist=[
-					{name:'主图',top:0},
-					{name:'评价',top:0},
-					{name:'详情',top:0}
-				]
-				let commentsView = uni.createSelectorQuery().select("#comments");
-				commentsView.boundingClientRect((data) => {
+				uni.createSelectorQuery().select("#comments").boundingClientRect((data) => {
 					let statusbarHeight = 0;
 					//APP内还要计算状态栏高度
 					// #ifdef APP-PLUS
@@ -749,8 +767,15 @@
 					// #endif
 					let headerHeight = uni.upx2px(100);
 					this.anchorlist[1].top = data.top - headerHeight - statusbarHeight;
-					this.anchorlist[2].top = data.bottom - headerHeight - statusbarHeight;
-
+				}).exec();
+				uni.createSelectorQuery().select("#description").boundingClientRect(data => {
+					let statusbarHeight1 = 0;
+					//APP内还要计算状态栏高度
+					// #ifdef APP-PLUS
+					statusbarHeight1 = plus.navigator.getStatusbarHeight()
+					// #endif
+					let headerHeight = uni.upx2px(100);
+					this.anchorlist[2].top = data.top - headerHeight - statusbarHeight1;
 				}).exec();
 			},
 
@@ -762,16 +787,23 @@
 				this.$refs.selectSpecification.close()
 			},
 			//选择规格
-			change(e) {
-				console.log(e.show)
+			choosesSpecs(index, item){
+				this.choosesGoodsInfo.specs_index = index
+				this.choosesGoodsInfo.num = 1
+				this.choosesGoodsInfo.specs = item
+				this.goodsInfo.attributes = item.specs_names
+			},
+			//购买数量更改
+			changeNum(e){
+				this.choosesGoodsInfo.num = e
 			},
 
 			//打开服务说明
 			openService(){
-				this.$refs.myService.open()
+				this.$refs.myService.open();
 			},
 			closeService(){
-				this.$refs.myService.close()
+				this.$refs.myService.close();
 			},
 
 			//打开更多拼团信息
@@ -782,61 +814,56 @@
 				this.$refs.moreOtherGroupBuy.close()
 			},
 
-			//购买数量更改
-			changeNum(e){
-				console.log(e)
-				this.choosesGoodsInfo.num = e
-			},
-
 			/**
 			 * 倒计时
 			 */
 			// 整个拼团商品的 倒计时
 			getRTime(){
+				let time_distance = 0 //时间差
 				//1：正在拼团，2即将开始，3已结束
-				if (this.goodsInfo.begin_time  > this.goodsInfo.now_time) {
+				if (this.goodsInfo.start_time  > this.goodsInfo.now_time) {
+					this.$set(this.goodsInfo, 'status', 2)
+					time_distance = this.goodsInfo.start_time * 1000 - this.goodsInfo.now_time * 1000
 					console.log("拼团活动还未开始呢")
-					this.$set(this.goodsInfo, 'begin', 2)
 				}
 
-				if (this.goodsInfo.begin_time  <= this.goodsInfo.now_time &&
-						this.goodsInfo.now_time <=  this.goodsInfo.end_time
-				) {
-					console.log('拼团活动 running')
-					let time_distance = this.goodsInfo.end_time * 1000 - this.goodsInfo.now_time * 1000; // 结束时间减去当前时间
-					let int_day,int_hour,int_minute,int_second
-					// 天时分秒换算
-					int_day = Math.floor(time_distance/86400000)
-					time_distance -= int_day * 86400000;
-					int_hour = Math.floor(time_distance/3600000)
-					time_distance -= int_hour * 3600000;
-					int_minute = Math.floor(time_distance/60000)
-					time_distance -= int_minute * 60000;
-					int_second = Math.floor(time_distance/1000)
-
-					// 时分秒为单数时、前面加零站位
-					if(int_hour < 10)
-						int_hour = "0" + int_hour;
-					if(int_minute < 10)
-						int_minute = "0" + int_minute;
-					if(int_second < 10)
-						int_second = "0" + int_second;
-					this.timer = {d:int_day, h:int_hour, m:int_minute, s:int_second}
-					this.$set(this.goodsInfo, 'begin', 1)
+				if (this.goodsInfo.start_time  <= this.goodsInfo.now_time && this.goodsInfo.now_time <=  this.goodsInfo.end_time) {
+					this.$set(this.goodsInfo, 'status', 1)
+					time_distance = this.goodsInfo.end_time * 1000 - this.goodsInfo.now_time * 1000
+					console.log("秒杀活正在进行中")
 				}
+
+				let int_day,int_hour,int_minute,int_second
+				// 天时分秒换算
+				int_day = Math.floor(time_distance/86400000)
+				time_distance -= int_day * 86400000;
+				int_hour = Math.floor(time_distance/3600000)
+				time_distance -= int_hour * 3600000;
+				int_minute = Math.floor(time_distance/60000)
+				time_distance -= int_minute * 60000;
+				int_second = Math.floor(time_distance/1000)
+
+				// 时分秒为单数时、前面加零站位
+				if(int_hour < 10)
+					int_hour = "0" + int_hour;
+				if(int_minute < 10)
+					int_minute = "0" + int_minute;
+				if(int_second < 10)
+					int_second = "0" + int_second;
+				this.timer = {d:int_day, h:int_hour, m:int_minute, s:int_second}
 
 				if (this.goodsInfo.end_time  < this.goodsInfo.now_time) {
-					console.log("拼团活动已经结束啦")
-					this.$set(this.goodsInfo, 'begin', 3)
+					this.$set(this.goodsInfo, 'status', 3)
 					clearInterval(myTimer1)
+					console.log("拼团活动已经结束啦")
 				}
 			},
 			// 倒计时 (10组拼团人的倒计时)
 			timeStrChange(){
-				this.goodsInfo.assemble_list.map(item => {
-					let time_distance = item.end_time * 1000 - this.goodsInfo.assemble_list[0].now_time * 1000; // 结束时间减去当前时间
+				this.goodsInfo.assemble_group.map(item => {
+					let time_distance = item.end_time * 1000 - this.goodsInfo.now_time * 1000; // 结束时间减去当前时间
 					if (time_distance < 0) {
-						item.begin = 0
+						item.status = 0
 					}
 					let int_day,int_hour,int_minute,int_second
 					// 天时分秒换算
@@ -933,62 +960,6 @@
 			},
 
 			/**
-			 * 小程序的分享功能
-			 * @returns {Promise<void>}
-			 */
-			//打开分享弹框
-			async openShare(){
-				if (!this.shareData.pic){
-					uni.showLoading({
-						title: '加载中…',
-						mask:true,
-					})
-					let requestData = {
-						scene: `user_id=${this.userInfo.id}&id=${this.goodsInfo.id}`,
-						page: 'pages/group-buy/detail',
-						pic: this.goodsInfo.pics[0],
-						title: this.goodsInfo.title,
-						price: `￥${this.goodsInfo.commander_price}`,
-						goods_id: this.goodsInfo.item_id,
-					}
-					await this.$minApi.shareGoods(requestData).then(res => {
-						console.log("获取分享数据：", res)
-						if (res.code === 200) {
-							this.shareData = res.data
-							this.$refs.share.open()
-							uni.hideLoading()
-						} else {
-							uni.hideLoading()
-						}
-					}).catch(err => {
-						uni.hideLoading()
-					})
-				} else {
-					this.$refs.share.open()
-				}
-			},
-			closeShare(){
-				this.$refs.share.close()
-			},
-			//下载分享图片
-			downLoadShareImage(){
-				uni.downloadFile({
-					url: this.shareData.pic,
-					success: (res) => {
-						if (res.statusCode === 200) {
-							uni.saveImageToPhotosAlbum({
-								filePath:res.tempFilePath,
-								success:()=>{
-									this.closeShare()
-									this.msg('下载成功')
-								}
-							})
-						}
-					}
-				})
-			},
-
-			/**
 			 * h5 公众号的分享功能
 			 */
 			openShareH5(){
@@ -1025,7 +996,6 @@
 			async goRulePage(){
 				await this.$minApi.assembleRuleInfo().then(res => {
 					console.log("获取拼团规则，并跳转页面",res)
-					console.log(this.formatRichText2(res.data.content))
 					if (res.code === 200) {
 						this._goPage('rich_text', {content: res.data.content,title: '拼团规则',})
 					}
@@ -1052,106 +1022,99 @@
 				_AIHECONG('showChat')
 			},
 		},
-		// 分享到朋友
-		onShareAppMessage(res) {
-			if (res.from === 'button') {// 来自页面内分享按钮
-				console.log(res.target)
-			}
-			return {
-				title: `${this.goodsInfo.title}`,
-				path: `pages/group-buy/detail?user_id=${this.userInfo.id}&id=${this.goodsInfo.id}`
-			}
-		},
 		async onLoad(param) {
 			let requestData = {
-				id:0,
+				assemble_id:0,
+				item_id:0,
 			}
-			console.log("带过来的参数1:", param)
-			if (param.id){
-				requestData.id = param.id
-			}
+
 			if (param.user_id){
 				this.setShareID(param.user_id)
 			}
-
-			console.log("带过来的参数2",this.$parseURL())
-			if (this.$parseURL().id){
-				requestData.id = this.$parseURL().id
+			if (param.item_id){
+				requestData.item_id = param.item_id
+				requestData.assemble_id = param.assemble_id
+				console.log("通过分享进入页面，带过来的参数:", param)
 			}
 
-			await this.$minApi.assembleDetail(requestData).then(res => {
+			if (this.$parseURL().item_id){
+				requestData.item_id = this.$parseURL().item_id
+				requestData.assemble_id = this.$parseURL().assemble_id
+				console.log("其他页面带过来的参数：",this.$parseURL())
+			}
+
+			await this.$minApi.assembleInfo(requestData).then(async res => {
 				console.log("拼团详情：",res)
 				if (res.code === 200){
-					res.data.content = this.formatRichText2(res.data.content)
-					if (res.data.assemble_list.length) {
-						res.data.assemble_list.map((item) => {
+					res.data.item.content = this.formatRichText2(res.data.item.content)
+					if (res.data.assemble_group.length) {
+						res.data.assemble_group.map((item) => {
 							// 是否可以参加拼团 //1为可以，参加，0为不可以
-							item.begin = 1
+							item.status = 1
 							// 还剩多少时间可以参加拼团
 							item.timeStr = ''
 						})
 					}
+					this.choosesGoodsInfo.specs = res.data.item_specs[0]
 					this.goodsInfo = res.data
-					this.$nextTick(()=>{
-						if (this.goodsInfo.assemble_list.length){
-							// 10个人的组团倒计时
-							myTimer = setInterval(() => {
-								this.goodsInfo.assemble_list[0].now_time ++
-								this.timeStrChange()
-							}, 1000);//设置定时器 每一秒执行一次
-						}
+
+					// 如果是安卓平台 每次进入商品详情页面就会调用微信配置，自定义分享商品
+					if (await(this.getPlatform()).isAndroid){
+						await this.wxConfig()
+					}
+					let url = ''
+					if(this.userInfo.id) {
+						url = window.location.href + '&user_id=' + this.userInfo.id
+					} else {
+						url = window.location.href
+					}
+
+					this.$nextTick(async ()=>{
 						//整个商品的拼团倒计时
 						myTimer1 = setInterval(() =>{
 							this.goodsInfo.now_time ++
 							this.getRTime()
 						}, 1000) //设置定时器 每一秒执行一次
+
+						this.calcAnchor();//计算锚点高度，页面数据是ajax加载时，请把此行放在数据渲染完成事件中执行以保证高度计算正确
+
+						if (this.goodsInfo.assemble_group.length){
+							// 10个人的组团倒计时
+							myTimer = setInterval(() => {
+								this.timeStrChange()
+							}, 1000);//设置定时器 每一秒执行一次
+						}
+
+						let param1 = {
+									title: `捣蛋熊拼团-${res.data.item.title}`, // 分享标题
+									desc: `仅限${res.data.item.price}元，立省${(parseFloat(res.data.item.old_price) - parseFloat(res.data.item.price)).toFixed(2)}元，先到先得`, // 分享描述
+									link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+									imgUrl: res.data.item.pics[0], // 分享图标
+									success: function () {}
+								},
+							param2 = {
+								title: `捣蛋熊拼团-${res.data.item.title}`, // 分享标题
+								link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+								imgUrl: res.data.item.pics[0], // 分享图标
+								success: function () {}
+							}
+						await this.wxConigShareGoods(param1, param2)
 					})
+				} else {
+					this.msg('活动结束')
+					setTimeout(()=> {
+						uni.navigateBack()
+					}, 1000)
 				}
 			})
-			// 购买须知
-			if (this.goodsInfo.mold_id) {
-				await this.$minApi.buyYouKnow({id:this.goodsInfo.mold_id}).then(res => {
-					console.log("购买须知：",res)
-					if (res.code === 200) {
-						this.buyYouKnow = res.data.content
-					}
-				})
-			}
 
 			//商品评论
-			await this.$minApi.goodsDetailComment({item_id: this.goodsInfo.item_id}).then(res => {
+			await this.$minApi.goodsDetailComment({item_id: this.goodsInfo.item.id}).then(res => {
 				console.log("获取商品评论：",res)
 				if (res.code === 200) {
 					this.commentResponseData.count = res.count
 					this.commentResponseData.data = res.data
 				}
-			})
-
-			// 如果是安卓平台 每次进入商品详情页面就会调用微信配置，自定义分享商品
-			if (this.getPlatform().isAndroid){
-				await this.wxConfig()
-			}
-			let url = ''
-			if(this.userInfo.id) {
-				url = window.location.href + '&user_id=' + this.userInfo.id
-			} else {
-				url = window.location.href
-			}
-			this.$nextTick(() => {
-				let param1 = {
-							title: `捣蛋熊拼团-${this.goodsInfo.title}`, // 分享标题
-							desc: `仅限${this.goodsInfo.commander_price}元，立省${(parseFloat(this.goodsInfo.old_price) - parseFloat(this.goodsInfo.commander_price)).toFixed(2)}元，先到先得`, // 分享描述
-							link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-							imgUrl: this.goodsInfo.pics[0], // 分享图标
-							success: function () {}
-						},
-					param2 = {
-						title: `捣蛋熊拼团-${this.goodsInfo.title}`, // 分享标题
-						link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-						imgUrl: this.goodsInfo.pics[0], // 分享图标
-						success: function () {}
-					}
-				this.wxConigShareGoods(param1, param2)
 			})
 		},
 		async onShow() {
@@ -1164,21 +1127,6 @@
 					}
 				})
 			}
-		},
-		onReady(){
-			this.calcAnchor();//计算锚点高度，页面数据是ajax加载时，请把此行放在数据渲染完成事件中执行以保证高度计算正确
-		},
-		onPageScroll(e) {
-			//锚点切换
-			this.selectAnchor = e.scrollTop>=this.anchorlist[2].top?2:e.scrollTop>=this.anchorlist[1].top?1:0;
-			//导航栏渐变
-			let tmpY = 375;
-			e.scrollTop = e.scrollTop > tmpY ? 375 : e.scrollTop;
-			this.afterHeaderOpacity = e.scrollTop * (1 / tmpY);
-			this.beforeHeaderOpacity = 1 - this.afterHeaderOpacity;
-			//切换层级
-			this.beforeHeaderzIndex = e.scrollTop > 0 ? 10 : 11;
-			this.afterHeaderzIndex = e.scrollTop > 0 ? 11 : 10;
 		},
 		onUnload(){
 			clearInterval(myTimer)

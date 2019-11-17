@@ -476,7 +476,7 @@
         <uni-popup ref="shareH5" type="bottom" :custom="true">
             <view class="share-goods-h5">
                 <view class="share-title-h5-box">
-                    <view class="share-title-h5-box-titles" v-show="goodsInfo.ratio !== '0.00'">
+                    <view class="share-title-h5-box-titles" v-show="goodsInfo.item.ratio !== '0.00'">
                         分享后预计最高可赚取佣金¥{{goodsInfo.ratio}}
                     </view>
                     <view class="share-title-h5-box-sub-title">

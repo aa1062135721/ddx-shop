@@ -149,11 +149,14 @@
                     })
                     this.requestData = {
                         address_id: this.address.id,// 收货地址id
-                        activity_id: this.$parseURL().assemble_id, //拼团id
+                        activity_id: this.$parseURL().activity_id, //拼团id
                         order_distinguish: 1, //拼团订单
                         commander: this.$parseURL().commander,//如果为拼团订单，则此参数1为团长，反之为团员   （非必传）
-                        update: this.$parseURL().update,// 拼团版本id
                         item: goodsData,
+                    }
+                    if (this.$parseURL().assemble_list_id) {
+                        delete this.requestData.commander
+                        this.requestData.assemble_list_id = this.$parseURL().assemble_list_id
                     }
                     break
                 case "spike":
@@ -250,7 +253,8 @@
                         })
                         break
                     case 'group':
-                        await this.$minApi.createOrderByGroup(this.requestData).then(res => {
+                        // 当返回码code为208时，表示有未支付的订单，需跳转到支付界面，返回的data为订单信息
+                        await this.$minApi.createAassembleOrder(this.requestData).then(res => {
                             if (res.code === 200) {
                                 this._goPage('order_pay', res.data)
                             }
@@ -259,6 +263,16 @@
                                 this.msg('购买的商品包含跨境商品，收货地址没有实名认证')
                                 setTimeout(()=>{
                                     this._goPage('id_card_authentication')
+                                }, 1000)
+                            }
+                            // 表示有未支付的订单，需跳转到支付界面
+                            if (res.code === 208) {
+                                this.msg('该商品有未支付的拼团订单，请直接支付')
+                                setTimeout(()=>{
+                                    this._goPage('order_pay', {
+                                        amount: res.data.amount,      //总金额
+                                        order_id: res.data.order_id      //订单id
+                                    })
                                 }, 1000)
                             }
                         }).catch(err => {
@@ -275,6 +289,16 @@
                                 this.msg('购买的商品包含跨境商品，收货地址没有实名认证')
                                 setTimeout(()=>{
                                     this._goPage('id_card_authentication')
+                                }, 1000)
+                            }
+                            // 表示有未支付的订单，需跳转到支付界面
+                            if (res.code === 208) {
+                                this.msg('该商品有未支付的秒杀订单，请直接支付')
+                                setTimeout(()=>{
+                                    this._goPage('order_pay', {
+                                        amount: res.data.amount,      //总金额
+                                        order_id: res.data.order_id      //订单id
+                                    })
                                 }, 1000)
                             }
                         }).catch(err => {

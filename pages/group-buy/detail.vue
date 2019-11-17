@@ -153,9 +153,9 @@
 			<view class="many-group-buy" v-for="(item, index) in goodsInfo.assemble_group" :key="index" v-if="index < 2">
 				<view class="one">
 					<view><image :src="item.commander_pic" class="img"></image></view>
-					<view>
+					<view class="name-and-tips">
 						<view>{{item.commander_nickname}}</view>
-						<view>{{item.copywriting}}</view>
+						<view class="tips">{{item.copywriting}}</view>
 					</view>
 				</view>
 				<view class="two">
@@ -165,7 +165,7 @@
 						<view class="info-time" v-if="item.status === 0">组团已结束</view>
 					</view>
 					<view class="btns">
-						<view class="btn" @click="buyGroup(item.id)">去参团</view>
+						<view class="btn" @click="buyGroup(item)">去参团</view>
 					</view>
 				</view>
 			</view>
@@ -188,7 +188,7 @@
 								</view>
 							</view>
 							<view class="right">
-								<view class="btn" @click="buyGroup(item.id)">去参团</view>
+								<view class="btn" @click="buyGroup(item)">去参团</view>
 							</view>
 						</view>
 					</view>
@@ -497,7 +497,7 @@
 		</view>
 
 		<!-- 购买的时候选择规格，数量…… -->
-		<uni-popup ref="selectSpecification" type="bottom" :custom="true">
+		<uni-popup ref="selectSpecification" type="bottom" :custom="true" :maskClick="false">
 			<view class="select-specification">
 				<view class="goods-info">
 					<view class="main">
@@ -505,7 +505,8 @@
 							<image class="img" :src='choosesGoodsInfo.specs.pic'></image>
 						</view>
 						<view class="info">
-							<view class="price">￥{{choosesGoodsInfo.specs.commander_price}}</view>
+							<view class="price">团长价：￥{{choosesGoodsInfo.specs.commander_price}}</view>
+							<view class="stock">团员价：￥{{choosesGoodsInfo.specs.price}}</view>
 <!--							<view class="stock">限购:5</view>-->
 <!--							<view class="chooses"></view>-->
 						</view>
@@ -548,7 +549,8 @@
 						<view class="btn my-vam" @click="buyNow(1)">
 							<view class="inner">
 								￥{{ (parseFloat(choosesGoodsInfo.specs.commander_price) * parseFloat(choosesGoodsInfo.num)) | moneyToFixed }}<br />
-								一键开团
+								<block v-if="choosesGoodsInfo.assemble_list_id">参团</block>
+								<block v-else>一键开团</block>
 							</view>
 						</view>
 					</block>
@@ -560,7 +562,7 @@
 		<uni-popup ref="shareH5" type="bottom" :custom="true">
 			<view class="share-goods-h5">
 				<view class="share-title-h5-box">
-					<view class="share-title-h5-box-titles" v-show="goodsInfo.ratio !== '0.00'">
+					<view class="share-title-h5-box-titles" v-show="goodsInfo.item.ratio !== '0.00'">
 						分享后预计最高可赚取佣金¥{{goodsInfo.ratio}}
 					</view>
 					<view class="share-title-h5-box-sub-title">
@@ -784,6 +786,7 @@
 				this.$refs.selectSpecification.open()
 			},
 			close(){
+				this.choosesGoodsInfo.assemble_list_id = 0
 				this.$refs.selectSpecification.close()
 			},
 			//选择规格
@@ -895,48 +898,45 @@
 			 * type = 1,2
 			 */
 			buyNow(type = 1){
+				//判断是否为开团
+				if (this.choosesGoodsInfo.assemble_list_id) {
+					type = 3
+				}
 				this.close()
-				console.log("商品信息: ",this.goodsInfo, ', 购买参数：', this.choosesGoodsInfo)
 				let price = 0.0
 				switch (type) {
 					case 1:
-						price = this.goodsInfo.commander_price // price 拼团价
-						break
-					case 2:
-						price = this.goodsInfo.old_price // old_price 原价 单独购买
+						price = this.choosesGoodsInfo.specs.commander_price // price 拼团价
 						break
 					case 3:
-						price = this.goodsInfo.price // 和别人组团 组团价
+						price = this.choosesGoodsInfo.specs.price // 和别人组团 组团价
 						break
 				}
 
 				//件数，订单类型，总量，总金额, 商品参数
 				let 	sumNum = 1,
-						createOrderType = ((type === 1 || type === 3) ? 'group' : 'buy_now'),
+						createOrderType = 'group',
 						sumSum = this.choosesGoodsInfo.num,
 						sumMoney = parseFloat(this.choosesGoodsInfo.num) * parseFloat(price),
 						myResponseData = [
 							{
-								mold_id: this.goodsInfo.mold_id,
-								name: this.goodsInfo.mold,
+								mold_id: this.goodsInfo.item.mold_id,
+								name: this.goodsInfo.item.mold,
 								data:[]
 							}
 						]
 				let goods = {
-					categoryArr: [],//["S", "通过热望各位梵蒂冈如果", "还惹我"],//当前选中的规格名组合成数组
-					id: 0,//购物车id,这里是直接够买不是购物车够买，所以这里的数据设置为0
-					is_checked: false,//购物车里被选中为结算商品,这里是直接够买不是购物车够买，所以这里的数据设置为false
-					item_id: this.goodsInfo.item_id, // 商品id
-					key: "",//"10_15_17",//当前选中的规格id组合
-					key_name: "",// "S_通过热望各位梵蒂冈如果_还惹我", //当前选中的规格名组合
+					categoryArr: this.choosesGoodsInfo.specs.specs_names ? this.choosesGoodsInfo.specs.specs_names.split('_') : [],//["S", "通过热望各位梵蒂冈如果", "还惹我"],//当前选中的规格名组合成数组
+					item_id: this.goodsInfo.item.id, // 商品id
+					key: this.choosesGoodsInfo.specs.specs_ids,//"10_15_17",//当前选中的规格id组合
+					key_name: this.choosesGoodsInfo.specs.specs_names,// "S_通过热望各位梵蒂冈如果_还惹我", //当前选中的规格名组合
 					mold: myResponseData[0].name,//"第一.1类型",//
 					mold_id: myResponseData[0].mold_id,//2,//
 					num: this.choosesGoodsInfo.num,//2,//够买数量
-					pic: this.goodsInfo.pics[0],//"http://picture.ddxm661.com/75b9420190906171730779.jpg",//商品图片
+					pic: this.choosesGoodsInfo.specs.pic,//"http://picture.ddxm661.com/75b9420190906171730779.jpg",//商品图片
 					price:  price,//"15.00",//商品价格
-					status: 1,// 1,//商品状态
-					store: this.goodsInfo.buy_num, // -1,//商品库存
-					title: this.goodsInfo.title,// "测试2",//商品标题
+					store: this.choosesGoodsInfo.specs.residue_num, // -1,//商品库存
+					title: this.choosesGoodsInfo.specs.item_name,// "测试2",//商品标题
 				}
 				myResponseData[0].data.push(goods)
 				this._goPage('order_submit', {
@@ -945,18 +945,42 @@
 					createOrderType,//订单类型
 					sumSum,//总量
 					sumMoney,//总金额
-					commander: (type === 1 ? 1 : 0),// 如果为拼团订单，此参数拿去获取运费：1表示团长，2表示为团员
-					assemble_id: this.goodsInfo.id,     //拼团活动id
 					num: this.choosesGoodsInfo.num,//购买数量
-					update: this.goodsInfo.update,          //版本，拼团组详情的id
+					activity_id: this.goodsInfo.id,//拼团活动id
+					commander: (type === 1 ? 1 : 0),// 如果为拼团订单，此参数拿去获取运费：1表示团长，2表示为团员
 					assemble_list_id: this.choosesGoodsInfo.assemble_list_id,    //拼团组的id，非必传，不传表示自己开团，否则表示与别人成团
 				})
 			},
 
 			// 一键成团
-			buyGroup(assemble_list_id = 0){
-				this.choosesGoodsInfo.assemble_list_id = assemble_list_id
-				this.buyNow(3)
+			buyGroup(item){
+				// "order_info": { //加入当前登录的用户已经加入此团蛋还未成功的订单信息，
+				// 	"order_id": 3822,   //订单id
+				//	"order_status": 0,  //支付状态：0 为待支付  1为已支付，    待支付跳支付，已支付跳拼团详情
+				// "order_amount": "5.80"  //订单总额
+				// }
+				if(this.goodsInfo.order_info.order_id) {
+					if (this.goodsInfo.order_info.order_status === 0) {
+						this.msg('你还有拼团未支付')
+						setTimeout(()=>{
+							this._goPage('order_pay', {
+								order_id: this.goodsInfo.order_info.order_id,
+								amount: this.goodsInfo.order_info.order_amount,
+							})
+							return
+						}, 1000)
+					}
+					if (this.goodsInfo.order_info.order_status === 1) {
+						this.msg('你已经参加过拼团了')
+						setTimeout(()=>{
+							this._goPage('group_buy_group', {id: this.goodsInfo.order_info.order_id})
+							return
+						}, 1000)
+					}
+					return
+				}
+				this.choosesGoodsInfo.assemble_list_id = item.id
+				this.open()
 			},
 
 			/**
@@ -1118,6 +1142,7 @@
 			})
 		},
 		async onShow() {
+			this.choosesGoodsInfo.assemble_list_id = 0
 			if (this.userInfo.id){
 				//购物车数量
 				await this.$minApi.getCarNum().then(res => {
@@ -1168,7 +1193,15 @@
 					width: 100upx;
 					height: 100upx;
 					border-radius: 50%;
-					margin-right: 8upx;
+					margin-right: 16upx;
+				}
+				.name-and-tips{
+					display: flex;
+					flex-direction: column;
+					.tips{
+						color: #808080;
+						font-size: $uni-font-size-sm;
+					}
 				}
 			}
 			.two{

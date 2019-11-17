@@ -659,6 +659,12 @@ export default {
       return minRequest.get('/assemble/assemble_info', data)
     },
 
+    /**
+     * 拼团下单 第二期
+     */
+    createAassembleOrder(data) {
+      return minRequest.post('/order/assemble_doPost1', data)
+    },
 
   }
 }

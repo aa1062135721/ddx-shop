@@ -68,7 +68,7 @@
 								<view class="sub-title">约惠好友 超值拼购</view>
 							</view>
 							<view class="goods-info">
-								<view class="goods" v-for="(item, index) in combination.assemble_list" :key="index" @click="_goPage('group_buy_detail', {id: item.id})">
+								<view class="goods" v-for="(item, index) in combination.assemble_list" :key="index" @click="_goPage('group_buy_detail', {assemble_id: item.id, item_id: item.item_id})">
 									<view class="goods-img">
 										<image class="img" :src="item.pic" :lazy-load="true"></image>
 									</view>
@@ -90,7 +90,7 @@
 								<view class="sub-title">爆品限时限量抢</view>
 							</view>
 							<view class="goods-info">
-								<view class="goods" v-for="(item, index) in combination.seckill_list" :key="index"  @click="_goPage('spike_detail', {id: item.id})">
+								<view class="goods" v-for="(item, index) in combination.seckill_list" :key="index"  @click="_goPage('spike_detail', {seckill_id: item.id, item_id: item.item_id})">
 									<view class="goods-img">
 										<image class="img" :src="item.pic" :lazy-load="true"></image>
 									</view>

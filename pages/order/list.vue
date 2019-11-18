@@ -53,20 +53,20 @@
                                 <view class="title">共计 {{item.number}}件商品 合计￥<text class="money">{{item.amount}}</text></view>
                                     <!-- 1待付款，2待发货，3待收货，4待评价，5已完成，6已经取消订单 -->
                                     <view class="btns">
-                                        <button class="active" v-if="item.status === 1" @click.stop="payNow(key)">支付</button>
+                                        <button class="active" v-if="item.status.order_type === '待付款'" @click.stop="payNow(key)">支付</button>
 
-                                        <form @submit="cancelFormSubmit" :report-submit="true" v-if="item.status === 1">
+                                        <form @submit="cancelFormSubmit" :report-submit="true" v-if="item.status.order_type === '待付款'">
                                             <input type="hidden" name="orderId" :value="item.id" style="display: none;">
                                             <button form-type="submit">取消</button>
                                         </form>
 
-                                        <button  v-if="item.status === 3" @click="overOrder(item.id)">确认收货</button>
+                                        <button  v-if="item.status.order_type === '待收货'" @click="overOrder(item.id)">确认收货</button>
 
-                                        <button class="active" v-if="item.status === 4" @click="goPage('order_evaluate', {data:item})">评价</button>
+                                        <button class="active" v-if="item.status.order_type === '待评价'" @click="goPage('order_evaluate', {data:item})">评价</button>
 
-                                        <button v-if="item.status === 5 || item.status === 6" @click="delOrder(item.id)">删除</button>
+                                        <button v-if="['已完成', '已取消'].indexOf(item.status.order_type) !== -1" @click="delOrder(item.id)">删除</button>
 
-                                        <button v-if="item.order_distinguish === 1 && item.status !== 1 && item.status !== 6" class="active" @click.stop="goPage('group_buy_group', {id: item.id})">查看拼团</button>
+                                        <button v-if="item.order_distinguish === 1 && ['待付款', '已取消'].indexOf(item.status.order_type) === -1" class="active" @click.stop="goPage('group_buy_group', {id: item.id})">查看拼团</button>
                                 </view>
                             </view>
                         </view>

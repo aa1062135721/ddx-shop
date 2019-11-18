@@ -266,7 +266,9 @@
                             color: #999999;
                             position: relative;
                             .btn{
-                                width: 120upx;
+                                width: 126upx;
+                                height: 48upx;
+                                line-height: 48upx;
                                 text-align: center;
                                 border-radius: 6upx;
                                 border: 1px solid #FC2D2D;

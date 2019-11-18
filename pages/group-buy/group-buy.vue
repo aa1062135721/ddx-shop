@@ -1,7 +1,7 @@
 <template>
    <view class="container">
       <view class="banner">
-         <image src="../../static/images/tab-group.jpg" mode="widthFix" style="width: 100%;"></image>
+         <img src="../../static/images/tab-group.png" style="width: 100%;">
       </view>
       <view class="group-buy">
 
@@ -43,7 +43,7 @@
          </view>
 
       </view>
-      <uni-load-more :status="requestData.moreStatus" :show-icon="true"></uni-load-more>
+      <uni-load-more :status="requestData.moreStatus" :show-icon="true" color="#fff"></uni-load-more>
    </view>
 </template>
 
@@ -125,8 +125,12 @@
     }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
+   page {
+      background: rgba(255,175,48,1);
+   }
    .container{
+      background:linear-gradient(180deg,rgba(255,27,40,1) 0%,rgba(255,175,48,1) 100%);
       .group-buy{
          padding: $uni-spacing-row-base;
          display: flex;

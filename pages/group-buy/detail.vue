@@ -477,7 +477,7 @@
 			<view class="btn">
 				<view class="joinCart my-vam" @click="_goPage('goods_detail', {id: goodsInfo.item.id})">
 					<view class="inner">
-						￥{{ (parseFloat(goodsInfo.item.old_price) * parseFloat(choosesGoodsInfo.num)) | moneyToFixed }}<br />
+<!--						￥{{ (parseFloat(goodsInfo.item.old_price) * parseFloat(choosesGoodsInfo.num)) | moneyToFixed }}<br />-->
 						单独购买
 					</view>
 				</view>
@@ -521,7 +521,7 @@
 							请选择规格
 						</view>
 						<view class="content">
-							<text  v-for="(item, index) in goodsInfo.item_specs" :key="index" :class="{on: item === choosesGoodsInfo.specs && goodsInfo.attributes === item.specs_names}" @click="choosesSpecs(index, item)" >{{item.specs_names}}</text>
+							<text  v-for="(item, index) in goodsInfo.item_specs" :key="index" :class="{on: item === choosesGoodsInfo.specs}" @click="choosesSpecs(index, item)" >{{item.specs_names}}</text>
 						</view>
 					</view>
 				</view>
@@ -548,7 +548,7 @@
 						</view>
 						<view class="btn my-vam" @click="buyNow(1)">
 							<view class="inner">
-								￥{{ (parseFloat(choosesGoodsInfo.specs.commander_price) * parseFloat(choosesGoodsInfo.num)) | moneyToFixed }}<br />
+<!--								￥{{ (parseFloat(choosesGoodsInfo.specs.commander_price) * parseFloat(choosesGoodsInfo.num)) | moneyToFixed }}<br />-->
 								<block v-if="choosesGoodsInfo.assemble_list_id">参团</block>
 								<block v-else>一键开团</block>
 							</view>

@@ -390,8 +390,8 @@
             <view class="btn">
                 <view class="joinCart" @click="_goPage('goods_detail', {id: goodsInfo.item.id})">
                     <view class="inner">
-                        ￥{{goodsInfo.item.old_price}}
-                        <br>
+<!--                        ￥{{goodsInfo.item.old_price}}-->
+<!--                        <br>-->
                         单独购买
                     </view>
                 </view>
@@ -431,7 +431,7 @@
                             请选择规格
                         </view>
                         <view class="content">
-                            <text  v-for="(item, index) in goodsInfo.item_specs" :key="index" :class="{on: item === choosesGoodsInfo.specs && goodsInfo.attributes === item.specs_names}" @click="choosesSpecs(index, item)" >{{item.specs_names}}</text>
+                            <text  v-for="(item, index) in goodsInfo.item_specs" :key="index" :class="{on: item === choosesGoodsInfo.specs}" @click="choosesSpecs(index, item)" >{{item.specs_names}}</text>
                         </view>
                     </view>
                 </view>
@@ -449,8 +449,8 @@
                 <view class="btns">
                     <view class="btn" style="background:#FC8A8A;" @click="_goPage('goods_detail_redirect', {id:goodsInfo.item.id})">
                         <view class="inner">
-                            ￥{{goodsInfo.item.old_price}}
-                            <br>
+<!--                            ￥{{goodsInfo.item.old_price}}-->
+<!--                            <br>-->
                             单独购买
                         </view>
                     </view>

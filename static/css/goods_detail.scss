@@ -474,7 +474,7 @@
     .main{
       padding-top: $uni-spacing-col-base;
       padding-bottom: $uni-spacing-col-base;
-      border-bottom:1upx #E4E4E4 solid;
+      border-bottom:1px #EEEEEE solid;
       display: flex;
       flex-wrap: nowrap;
       justify-content: space-between;
@@ -515,7 +515,6 @@
           position: absolute;
           top: 0;
           right: 0;
-          font-size: $uni-font-size-lg + $uni-font-size-sm;
         }
       }
     }

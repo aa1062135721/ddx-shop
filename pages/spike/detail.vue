@@ -390,8 +390,6 @@
             <view class="btn">
                 <view class="joinCart" @click="_goPage('goods_detail', {id: goodsInfo.item.id})">
                     <view class="inner">
-<!--                        ￥{{goodsInfo.item.old_price}}-->
-<!--                        <br>-->
                         单独购买
                     </view>
                 </view>
@@ -447,25 +445,18 @@
                     </view>
                 </view>
                 <view class="btns">
-                    <view class="btn" style="background:#FC8A8A;" @click="_goPage('goods_detail_redirect', {id:goodsInfo.item.id})">
-                        <view class="inner">
-<!--                            ￥{{goodsInfo.item.old_price}}-->
-<!--                            <br>-->
-                            单独购买
-                        </view>
-                    </view>
                     <block v-if="goodsInfo.status === 1">
-                        <view class="btn" v-if="choosesGoodsInfo.specs.residue_num === 0">
+                        <view class="over" v-if="choosesGoodsInfo.specs.residue_num === 0">
                             已抢完
                         </view>
-                        <view class="btn" @click="createOreder" v-else>
-                            立即秒杀
+                        <view class="over" style="background: #FC5A5A;" @click="createOreder" v-else>
+                            确定
                         </view>
                     </block>
-                    <view class="btn" style="background:#F9A13A;" v-if="goodsInfo.status === 2">
+                    <view class="over" v-if="goodsInfo.status === 2">
                         待开始
                     </view>
-                    <view class="btn" style="background:#F9A13A;" v-if="goodsInfo.status === 3">
+                    <view class="over" v-if="goodsInfo.status === 3">
                         已结束
                     </view>
                 </view>
@@ -940,6 +931,10 @@
         onUnload(){
             clearInterval(myTimer)
             myTimer = null
+        },
+        onPageScroll(e) {
+            //锚点切换
+            this.selectAnchor = e.scrollTop>=this.anchorlist[2].top?2:e.scrollTop>=this.anchorlist[1].top?1:0;
         },
         computed: {
             ...mapState(['userInfo', 'subscribe'])

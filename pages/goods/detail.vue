@@ -276,8 +276,7 @@
 				<view class="one">
 					<text class="title">选择</text>
 					<text class="comtent">
-						<text v-for="(item, index) in choosesGoodsInfo.specs_ids" :key="index" style="margin-right: 4upx;">{{item.name}}</text>
-						<text v-if="!choosesGoodsInfo.specs_ids.length">请选择规格</text>
+						<text>请选择规格</text>
 					</text>
 				</view>
 				<view class="two">
@@ -312,7 +311,7 @@
 		</view>
 
 		<!-- 详情 -->
-		<view class="description">
+		<view class="description" id="description">
 			<view class="title">
 				<text :class="{'on': showTabWho === 'detail'}" @click="showTabWho = 'detail'">图文详情</text>
 				<text :class="{'on': showTabWho === 'know'}" @click="showTabWho = 'know'" v-if="buyYouKnow">购买须知</text>
@@ -556,7 +555,11 @@
 				//购物车数量
 				carNum:0,
 
-				anchorlist:[],//导航条锚点
+				anchorlist:[
+					{name:'主图',top:0},
+					{name:'评价',top:0},
+					{name:'详情',top:0}
+				],//导航条锚点
 				selectAnchor:0,//选中锚点
 
 				//当前已经选择了的商品，数量
@@ -599,22 +602,23 @@
 			},
 			//计算锚点高度
 			calcAnchor(){
-				this.anchorlist=[
-					{name:'主图',top:0},
-					{name:'评价',top:0},
-					{name:'详情',top:0}
-				]
-				let commentsView = uni.createSelectorQuery().select("#comments");
-				commentsView.boundingClientRect((data) => {
+				uni.createSelectorQuery().select("#comments").boundingClientRect((data) => {
 					let statusbarHeight = 0;
 					//APP内还要计算状态栏高度
 					// #ifdef APP-PLUS
-						statusbarHeight = plus.navigator.getStatusbarHeight()
+					statusbarHeight = plus.navigator.getStatusbarHeight()
 					// #endif
 					let headerHeight = uni.upx2px(100);
 					this.anchorlist[1].top = data.top - headerHeight - statusbarHeight;
-					this.anchorlist[2].top = data.bottom - headerHeight - statusbarHeight;
-
+				}).exec();
+				uni.createSelectorQuery().select("#description").boundingClientRect(data => {
+					let statusbarHeight1 = 0;
+					//APP内还要计算状态栏高度
+					// #ifdef APP-PLUS
+					statusbarHeight1 = plus.navigator.getStatusbarHeight()
+					// #endif
+					let headerHeight = uni.upx2px(100);
+					this.anchorlist[2].top = data.top - headerHeight - statusbarHeight1;
 				}).exec();
 			},
 			//返回上一页
@@ -939,6 +943,7 @@
 						url = window.location.href
 					}
 					this.$nextTick(() => {
+						this.calcAnchor();//计算锚点高度，页面数据是ajax加载时，请把此行放在数据渲染完成事件中执行以保证高度计算正确
 						let param1 = {
 									title: `捣蛋熊商城-${res.data.title}`, // 分享标题
 									desc: `高品质、一站式服务平台`, // 分享描述
@@ -1003,9 +1008,9 @@
 				})
 			}
 		},
-		onReady(){
-			this.calcAnchor();//计算锚点高度，页面数据是ajax加载时，请把此行放在数据渲染完成事件中执行以保证高度计算正确
-		},
+		// onReady(){
+		// 	this.calcAnchor();//计算锚点高度，页面数据是ajax加载时，请把此行放在数据渲染完成事件中执行以保证高度计算正确
+		// },
 		onPageScroll(e) {
 			//锚点切换
 			this.selectAnchor = e.scrollTop>=this.anchorlist[2].top?2:e.scrollTop>=this.anchorlist[1].top?1:0;

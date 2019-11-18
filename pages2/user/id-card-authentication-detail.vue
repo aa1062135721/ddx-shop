@@ -43,8 +43,8 @@
             this.$minApi.getAttestation().then(res => {
                 console.log(res)
                 if (res.code === 200) {
-                    this.idCard1 = res.data.back
-                    this.idCard2 = res.data.front
+                    this.idCard1 = res.data.front
+                    this.idCard2 = res.data.frontback
                 }
             })
         },

@@ -138,7 +138,8 @@
                                 _self.$minApi.checkingIdCard(checkingIdCardData).then(res => {
                                     console.log(res)
                                     if (res.code === 200){
-                                        //这儿返回到编辑地址
+                                        _self.$store.dispatch('asyncGetUserInfo')
+                                        //返回
                                         uni.navigateBack({
                                             delta: 1,
                                             success: function (res) {
@@ -146,11 +147,10 @@
                                             fail: function (err) {
                                             },
                                             complete: function (ss) {
-                                                _self.$eventHub.$emit('attestation_id', res.data);
                                             }
                                         })
                                     } else {
-                                        uni.showToast({title:"未能识别你上传的身份证", icon:"none"});
+                                        uni.showToast({title:"图片信息读取不成功，请重新规范拍摄上传", icon:"none"});
                                     }
                                     uni.hideLoading()
                                 })

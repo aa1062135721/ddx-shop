@@ -267,8 +267,8 @@
                             position: relative;
                             .btn{
                                 width: 126upx;
-                                height: 48upx;
-                                line-height: 48upx;
+                                height: 44upx;
+                                line-height: 44upx;
                                 text-align: center;
                                 border-radius: 6upx;
                                 border: 1px solid #FC2D2D;

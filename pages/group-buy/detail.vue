@@ -541,17 +541,9 @@
 						<view class='over'>已拼完</view>
 					</block>
 					<block v-else>
-						<view class="btn my-vam" style="background:#FC8A8A;" @click="_goPage('goods_detail', {id: goodsInfo.item.id})">
-							<view class="inner">
-								单独购买
-							</view>
-						</view>
-						<view class="btn my-vam" @click="buyNow(1)">
-							<view class="inner">
-<!--								￥{{ (parseFloat(choosesGoodsInfo.specs.commander_price) * parseFloat(choosesGoodsInfo.num)) | moneyToFixed }}<br />-->
-								<block v-if="choosesGoodsInfo.assemble_list_id">参团</block>
-								<block v-else>一键开团</block>
-							</view>
+						<view class='over' style="background:#FC5A5A;" @click="buyNow(1)">
+							<block v-if="choosesGoodsInfo.assemble_list_id">参团</block>
+							<block v-else>一键开团</block>
 						</view>
 					</block>
 				</view>
@@ -1158,6 +1150,10 @@
 			clearInterval(myTimer1)
 			myTimer = null
 			myTimer1 = null
+		},
+		onPageScroll(e) {
+			//锚点切换
+			this.selectAnchor = e.scrollTop>=this.anchorlist[2].top?2:e.scrollTop>=this.anchorlist[1].top?1:0;
 		},
 		components: {
 			uniNumberBox,

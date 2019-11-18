@@ -171,7 +171,7 @@
 			</view>
 		</view>
 		<!-- 其他拼团信息，查看更多 -->
-		<uni-popup ref="moreOtherGroupBuy" type="center" :custom="true" :mask-click="false" v-if="goodsInfo.assemble_group.length">
+		<uni-popup ref="moreOtherGroupBuy" type="center" :custom="true" :mask-click="false">
 			<view class="more-other-group-buy">
 				<view class="box">
 					<view class="title">参与可直接成团</view>

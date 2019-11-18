@@ -18,7 +18,7 @@
 			</view>
 		</view>
 		<!-- 关注公众号 弹窗，弹出二维码 -->
-		<uni-popup ref="followOfficialAccountAlert" type="center" :custom="true" v-if="!subscribe">
+		<uni-popup ref="followOfficialAccountAlert" type="center" :custom="true">
 			<view class="follow-official-account-alert">
 				<view class="box">
 					<view>
@@ -52,7 +52,7 @@
 		<!-- 商品主图轮播 -->
 		<view class="swiper-box">
 			<swiper circular="true" :indicator-dots="true" indicator-active-color="#FC8A8A" @change="swiperHandle">
-				<swiper-item style="display: flex;flex-direction: column;justify-content: center;background: #000;" v-if="goodsInfo.video">
+				<swiper-item style="background: #000;vertical-align: center;margin: auto;" v-if="goodsInfo.video">
 					<video id="myVideo" :src="goodsInfo.video"
 						   controls
 						   style="width: 100%;"
@@ -272,15 +272,6 @@
 
 		<!--商品信息  -->
 		<view class="info-box goods-info2">
-<!--			<view class="item">-->
-<!--				<view class="one">-->
-<!--					<text class="title">配送</text>-->
-<!--					<text class="comtent">重庆市 市辖区 渝北区</text>-->
-<!--				</view>-->
-<!--				<view class="two">-->
-<!--					<text class="iconfont icon-ddx-shop-content_arrows"></text>-->
-<!--				</view>-->
-<!--			</view>-->
 			<view class="item" v-if="goodsInfo.specs_list.length" @click="open('chooses')">
 				<view class="one">
 					<text class="title">选择</text>
@@ -291,27 +282,6 @@
 				</view>
 				<view class="two">
 					<text class="iconfont icon-ddx-shop-content_arrows"></text>
-				</view>
-			</view>
-<!--			<view class="item">-->
-<!--				<view class="one">-->
-<!--					<text class="title">运费</text>-->
-<!--					<text class="comtent">10元邮费</text>-->
-<!--				</view>-->
-<!--				<view class="two">-->
-<!--					<text class="iconfont icon-ddx-shop-content_arrows"></text>-->
-<!--				</view>-->
-<!--			</view>-->
-			<view class="item">
-				<view class="one">
-					<view class="title">数量</view>
-					<view class="comtent">
-						<uni-number-box v-if="specsInfo.store !== -1" :min="1" :step="1" :max="specsInfo.store" :value="choosesGoodsInfo.num" @change="changeNum"></uni-number-box>
-						<uni-number-box v-else :min="1" :step="1" :value="choosesGoodsInfo.num" @change="changeNum"></uni-number-box>
-					</view>
-				</view>
-				<view class="two">
-<!--					<text class="iconfont icon-ddx-shop-content_arrows"></text>-->
 				</view>
 			</view>
 		</view>
@@ -380,8 +350,8 @@
 						<view class='over'>已售完</view>
 					</block>
 					<block  v-else>
-						<view class="joinCart" @click="open('car')">加入购物车</view>
-						<view class="buy" @click="open('buy')">立即购买</view>
+						<view class="joinCart" @click="open('chooses')">加入购物车</view>
+						<view class="buy" @click="open('chooses')">立即购买</view>
 					</block>
 				</block>
 				<block  v-else>
@@ -404,7 +374,7 @@
 								<text v-if="specsInfo.store === -1">库存充足</text>
 								<text v-else>库存：{{specsInfo.store}}</text>
 							</view>
-							<view class="chooses">已选：
+							<view class="chooses" v-if="choosesGoodsInfo.specs_ids.length">已选：
 								<text v-for="(item, index) in choosesGoodsInfo.specs_ids" :key="index" style="margin-right: 4upx;">{{item.name}}</text>
 							</view>
 						</view>

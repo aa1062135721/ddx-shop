@@ -18,33 +18,21 @@
                     <view class="btn" @click="open">申请提现</view>
                 </view>
             </view>
-            <view class="item">
+            <view class="item" v-for="(item, index) in userInfo.expireList" :key="index">
                 <view>
                     <text class="name">
                         限时余额
                     </text>
                     <text>
-                        ￥{{userInfo.out_money}}
+                        ￥{{item.price}}
                     </text>
                 </view>
                 <view class="tag">
-                    <span class="iconfont">
-                        未激活 请通知门店店长激活后方可使用
+                    <span class="iconfont" v-show="item.status === 0">
+                        未激活 通知门店店长激活后使用
                     </span>
-                </view>
-            </view>
-            <view class="item">
-                <view>
-                    <text class="name">
-                        限时余额
-                    </text>
-                    <text>
-                        ￥{{999.99}}
-                    </text>
-                </view>
-                <view class="tag">
-                    <span class="iconfont">
-                        2019-12-12 00:00:00 后过期
+                    <span class="iconfont" v-show="item.status === 1">
+                        {{item.expire_time}} 后过期
                     </span>
                 </view>
             </view>

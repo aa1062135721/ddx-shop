@@ -10,11 +10,21 @@
                     <view class="item">
                         <view>
                             <view>钱包</view>
-                            <view class="has-money">可用余额：¥{{userInfo.usable_money}}</view>
+                            <view class="has-money">可用余额（包括已激活的限时余额）：¥{{userInfo.usable_money}}</view>
                         </view>
                         <view>
                             <radio value="3" :checked="payWay === '3'" :disabled="disabledMoney" color="#FC5A5A" />
                         </view>
+                    </view>
+                    <view class="item" v-for="(item, index) in userInfo.expireList" :key="index" style="padding: 10upx 0;flex-direction: column;align-items: flex-start;">
+                            <view>限时余额</view>
+                            <view class="has-money" style="display: flex;justify-content: space-between;width: 100%;">
+                                <div>¥{{item.price}}</div>
+                                <div>
+                                    <block v-if="item.status === 1">{{item.expire_time}} 后过期</block>
+                                    <block v-if="item.status === 0">未激活</block>
+                                </div>
+                            </view>
                     </view>
                     <view class="item">
                         <view>
@@ -97,13 +107,15 @@
                     /**
                      * res.data.id  //订单id
                      * res.data.sn  //订单编号
+                     * res.data.nickname  //收货人
+                     * res.data.address  //收货地址
+                     * res.data.money  //订单支付金额
                      * res.data.order_distinguish // 0: 普通订单 1：拼团订单 2：抢购订单
                      * 如果您选择的是微信支付，res.data 下还有许多微信支付需要的数据
                      */
                     console.log("需要支付的订单信息：", res)
                     if (res.code === 200) {
                         if (this.payWay === '3'){ //钱包支付
-                            res.data.result = true
                             if (res.data.order_distinguish === 1){
                                 // 拼团订单直接查看拼团详情
                                 await this._goPage('group_buy_group_redirect', {id: res.data.id})
@@ -122,18 +134,6 @@
                                     paySign: res.data.paySign, // 支付签名
                                     success: async (success) => {
                                         console.log("用户支付成功：", success)
-                                        res.data.result = true
-                                    },
-                                    fail: async (fail) => {
-                                        console.log("用户支付失败：",fail)
-                                        res.data.result = false
-                                    },
-                                    cancel: async (cancel) => {
-                                        console.log("用户取消支付：",cancel)
-                                        res.data.result = false
-                                    },
-                                    complete: async (complete) => {
-                                        console.log("无论支付结果为是成功/失败/取消：",complete)
                                         if (res.data.order_distinguish === 1){
                                             // 拼团订单直接查看拼团详情
                                             await this._goPage('group_buy_group_redirect', {id: res.data.id})
@@ -141,17 +141,27 @@
                                             // 普通订单 或者是秒杀订单
                                             await this._goPage('order_result', res.data)
                                         }
+                                    },
+                                    fail: async (fail) => {
+                                        console.log("用户支付失败：",fail)
+                                        await this._goPage('order_detail_redirect', {order_id: res.data.id})
+                                    },
+                                    cancel: async (cancel) => {
+                                        console.log("用户取消支付：",cancel)
+                                        await this._goPage('order_detail_redirect', {order_id: res.data.id})
+                                    },
+                                    complete: async (complete) => {
+                                        console.log("无论支付结果为是成功/失败/取消：",complete)
                                     }
                                 })
                             })
                         }
                     } else {
-                        res.data.result = false
-                        await this._goPage('order_result', res.data)
+                        await this._goPage('order_detail_redirect', {order_id: res.data.id})
                     }
                 }).catch(async err => {
                     console.log(err)
-                    this.msg('服务器发生错误')
+                    this.msg('系统繁忙，请稍后支付~')
                 })
             },
         },
@@ -188,10 +198,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            width: 100%;
             padding: 36upx 0;
             .has-money{
                 color: #808080;
                 font-size: $uni-font-size-sm;
+                display: flex;
+                justify-content: space-between;
             }
         }
     }
@@ -207,5 +220,6 @@
         background: $color-primary;
         font-size: $uni-font-size-lg;
         border-radius: 0;
+        z-index: 999;
     }
 </style>

@@ -521,7 +521,7 @@
 							请选择规格
 						</view>
 						<view class="content">
-							<text  v-for="(item, index) in goodsInfo.item_specs" :key="index" :class="{on: item === choosesGoodsInfo.specs}" @click="choosesSpecs(index, item)" >{{item.specs_names}}</text>
+							<text  v-for="(item, index) in goodsInfo.item_specs" :key="index" :class="{on: index === choosesGoodsInfo.specs_index}" @click="choosesSpecs(index, item)" >{{item.specs_names}}</text>
 						</view>
 					</view>
 				</view>
@@ -608,75 +608,64 @@
 				},
 
 				goodsInfo: {
-					id: 5,    //拼团id
-					title: "拼团",
+					id: 0,    //拼团id
+					title: "",
 					start_time: 1573747200,   //开始时间
 					end_time: 1575043200, //结束时间
-					type: 3,
-					people_num: 2,    //每人限购
-					assemble_num: 3,  //几人团
+					type: 0,
+					people_num: 0,    //每人限购
+					assemble_num: 0,  //几人团
 					now_time: 1573906737, //服务器当前时间
-					status: 1,    //1正在拼团，2立即开始 3平图案
-					is_over: 2,   //是否拼完
-					attributes: "颜色,尺码",  //规格组
+					status: 0,    //1正在拼团，2立即开始 3平图案
+					is_over: 0,   //是否拼完
+					attributes: "",  //规格组
 					item: {       //商品信息
-						id: 2440,
-						status: 1,
+						id: 0,
+						status: 0,
 						title: "",
 						subtitle: "",
-						mold_id: 5,
+						mold_id: 0,
 						video: "",
-						initial_sales: 12,
-						reality_sales: 1,
-						lvid: 1,
+						initial_sales: 0,
+						reality_sales: 0,
+						lvid: 0,
 						content: "",
 						pics: [],
 						ratio: "0.00",
-						mold: "商城自营",
+						mold: "",
 						mold_know: "",
-						promise: "捣蛋熊承诺：正品保证  安心售后  假一赔十",
-						price: "10.00",
-						old_price: "199.00"
+						promise: "",
+						price: "",
+						old_price: ""
 					},
 					item_specs: [ //商品规格信息
-						{
-							specs_ids: "20_24",
-							item_name: "DQB小众童装2019秋季新品男女童装卫衣潮牌印花套头长袖刺绣卫衣",
-							specs_names: "红色_120",
-							old_price: "199.00",  //原价
-							price: "10.00",   //团员价
-							commander_price: "5.00",  //团长价
-							item_id: 2440,
-							residue_num: -1,
-							pic: "http://picture.ddxm661.com/5dc9f201911081520373607.jpg"
-						},
-						{
-							specs_ids: "20_26",
-							item_name: "DQB小众童装2019秋季新品男女童装卫衣潮牌印花套头长袖刺绣卫衣",
-							specs_names: "红色_140",
-							old_price: "199.00",
-							price: "20.00",
-							commander_price: "15.00",
-							item_id: 2440,
-							residue_num: 2,
-							pic: "http://picture.ddxm661.com/5dc9f201911081520373607.jpg"
-						},
+						// {
+						// 	specs_ids: "20_26",
+						// 	item_name: "DQB小众童装2019秋季新品男女童装卫衣潮牌印花套头长袖刺绣卫衣",
+						// 	specs_names: "红色_140",
+						// 	old_price: "199.00",
+						// 	price: "20.00",
+						// 	commander_price: "15.00",
+						// 	item_id: 2440,
+						// 	residue_num: 2,
+						// 	pic: "http://picture.ddxm661.com/5dc9f201911081520373607.jpg"
+						// },
 					],
 					assemble_group: [ //有几组正在拼团
-						{
-							id: 22,
-							r_num: 2, //还差几人
-							end_time: 1573731184, //结束时间
-							commander_nickname: "夜未央", //团长名
-							status:1,
-							timeStr: '1天22:33:20',
-							commander_pic: "http://thirdwx.qlogo.cn/mmopen/RzbvdRz23xicxuLkiccicV8r9Q5ySQgcDia3xImBdVUibbcy6fP840tRice4ua7BUibxgvfRYq0ibj3teu7420m4lb5SIozU04FWTv40/132", //团长头像
-						}
+						// {
+						// 	id: 22,
+						// 	r_num: 2, //还差几人
+						// 	end_time: 1573731184, //结束时间
+						// 	commander_nickname: "夜未央", //团长名
+						// 	status:1,
+						// 	timeStr: '1天22:33:20',
+						// 	commander_pic: "http://thirdwx.qlogo.cn/mmopen/RzbvdRz23xicxuLkiccicV8r9Q5ySQgcDia3xImBdVUibbcy6fP840tRice4ua7BUibxgvfRYq0ibj3teu7420m4lb5SIozU04FWTv40/132", //团长头像
+						// }
 					],
 					order_info: { //加入当前登录的用户已经加入此团蛋还未成功的订单信息，
-						order_id: 3822,   //订单id
-						order_status: 0,  //支付状态：0 为待支付  1为已支付，    待支付跳支付，已支付跳拼团详情
-						order_amount: "5.80"  //订单总额
+						// order_id: 3822,   //订单id
+						// order_status: 0,  //支付状态：0 为待支付  1为已支付，    待支付跳支付，已支付跳拼团详情
+						// order_amount: "5.80"  //订单总额
 					}
 				},
 
@@ -703,7 +692,7 @@
 				//当前已经选择了的商品，数量
 				choosesGoodsInfo:{
 					num:1,//选择购物数量
-					specs_index: 0,// 选中的规格下标
+					specs_index: -1,// 选中的规格下标 -1表示未选中
 					// 选中的规格
 					specs: {
 						specs_ids: "",   //规格id组，单规格为空
@@ -931,6 +920,10 @@
 					title: this.choosesGoodsInfo.specs.item_name,// "测试2",//商品标题
 				}
 				myResponseData[0].data.push(goods)
+				if (this.goodsInfo.attributes !== this.choosesGoodsInfo.specs.specs_names){
+					this.msg('请选择规格')
+					return
+				}
 				this._goPage('order_submit', {
 					myResponseData,//购买的商品数据
 					sumNum,//件数

@@ -429,7 +429,7 @@
                             请选择规格
                         </view>
                         <view class="content">
-                            <text  v-for="(item, index) in goodsInfo.item_specs" :key="index" :class="{on: item === choosesGoodsInfo.specs}" @click="choosesSpecs(index, item)" >{{item.specs_names}}</text>
+                            <text  v-for="(item, index) in goodsInfo.item_specs" :key="index" :class="{on: index === choosesGoodsInfo.specs_index}" @click="choosesSpecs(index, item)" >{{item.specs_names}}</text>
                         </view>
                     </view>
                 </view>
@@ -588,7 +588,7 @@
                 choosesGoodsInfo:{
                     num:1,//选择购物数量
                     // 选中的规格下标
-                    specs_index: 0,
+                    specs_index: -1,// -1表示未选择
                     // 选中的规格
                     specs: {
                         specs_ids: "",   //规格id组，单规格为空

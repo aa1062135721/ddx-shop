@@ -44,7 +44,7 @@
                 console.log(res)
                 if (res.code === 200) {
                     this.idCard1 = res.data.front
-                    this.idCard2 = res.data.frontback
+                    this.idCard2 = res.data.back
                 }
             })
         },

@@ -82,7 +82,7 @@
 		{
 			"path": "pages/order/detail",
 			"style": {
-				"navigationBarTitleText": "捣蛋熊商城"
+				"navigationBarTitleText": "订单详情"
 			}
 		},
 		{
@@ -202,7 +202,6 @@
 				{
 					"path": "user/id-card-authentication-detail",
 					"style": {
-						"navigationStyle": "custom",
 						"navigationBarTitleText": "实名认证"
 					}
 				},

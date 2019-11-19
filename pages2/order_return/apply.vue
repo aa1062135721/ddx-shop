@@ -6,7 +6,7 @@
             </view>
             <view class="right">
                 <view class="title">{{orderGoodsData.subtitle}}</view>
-                <view class="other">{{orderGoodsData.attr_name}}</view>
+                <view class="other" v-if="orderGoodsData.attr_name">规格：{{orderGoodsData.attr_name}}</view>
             </view>
         </view>
 
@@ -112,16 +112,16 @@
             return {
                 orderGoodsData:{
                     attr_name: "",
-                    deliver: "已发货",
+                    deliver: "",
                     deliver_status: 1,
-                    item_id: 276,
-                    mold: "熊猫自营",
+                    item_id: 0,
+                    mold: "",
                     mold_id: 5,
-                    num: 1,
-                    pic: "http://picture.ddxm661.com/ef473201909291639357921.png",
-                    real_price: "14.80",
+                    num: 0,
+                    pic: "",
+                    real_price: "",
                     status: 1,
-                    subtitle: "重粮 有机荞麦米 400g",
+                    subtitle: "",
                 },
                 requestData:{
                     order_id:0,//订单id
@@ -146,6 +146,11 @@
             this.orderGoodsData = this.$parseURL().goods
             this.requestData.order_id = this.$parseURL().order_id
             this.requestData.goods_id = this.$parseURL().goods.id
+
+            // 如果是安卓平台 每次进入商品详情页面就会调用微信配置，自定义分享商品
+            if ((this.getPlatform()).isAndroid){
+                this.wxConfig()
+            }
         },
         methods: {
             //图片放大预览
@@ -159,39 +164,41 @@
 
             //上传图片
             choosesImages(){
-                let _that = this
-                uni.chooseImage({
-                    count:3 - _that.requestData.pics.length,
-                    success:async (res) =>{
-                        _that.upLoadFiles(res.tempFilePaths)
-                    }
-                })
-            },
-            async upLoadFiles(data){
-                let _that = this
-                data.map(async (item) => {
-                    await uni.uploadFile({
-                        url: _that.$minApi.urls.upload,
-                        filePath: item,
-                        fileType: 'image',
-                        name: 'file',
-                        success: async (uploadFileRes1) => {
-                            if("string" === typeof uploadFileRes1.data){
-                                if (JSON.parse(uploadFileRes1.data).code === 200) {
-                                    _that.requestData.pics.push(JSON.parse(uploadFileRes1.data).data.url)
-                                }
-                            }else{
-                                if (uploadFileRes1.data.code === 200) {
-                                    _that.requestData.pics.push(uploadFileRes1.data.data.url)
-                                }
-                            }
+                let _self = this
+                _self.$wx.ready(() => {
+                    _self.$wx.chooseImage({
+                        count: 3 - _self.requestData.pics.length,
+                        needResult: 1,
+                        sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                        success: async function (data) {
+                          // 返回选定照片的本地ID列表，data.localIds[0]可以作为img标签的src属性显示图片
+                            data.localIds.map(async (item) => {
+                                // 上传背面
+                                await _self.$wx.uploadImage({
+                                    localId: item, // 需要上传的图片的本地ID，由chooseImage接口获得
+                                    isShowProgressTips: 0, // 默认为1，显示进度提示
+                                    success: async function (res) {
+                                        await _self.$minApi.getFileFromWeChat({media_id: res.serverId}).then(res => {
+                                            if (res.code === 200){
+                                                _self.requestData.pics.push(res.data.url)
+                                            }
+                                        }).catch(err => {
+                                            console.log(err)
+                                        })
+                                    },
+                                    fail: function (error) {
+                                        console.log(error)
+                                    }
+                                })
+                            })
                         },
-                        fail: function (err) {
+                        fail: function (res) {
+                            console.log(res)
                         }
                     })
                 })
             },
-
             //删除图片
             delImg(sIndex){
                 this.requestData.pics.splice(sIndex,1)

@@ -1,10 +1,5 @@
 <template>
     <view>
-        <!-- #ifdef H5 -->
-        <div id="my-h5-back" @click="_goBack"></div>
-        <div style="height: 50px;width: 100%;"></div>
-        <!-- #endif -->
-
         <view class="grace-idcard-main">
             <view class="grace-idcard-text">
                 身份证照片 ( 正面 )
@@ -76,6 +71,6 @@
     }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
     @import "id-card-authentication";
 </style>

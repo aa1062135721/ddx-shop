@@ -8,12 +8,15 @@
                     </view>
                     <view class="goods-title">
                         {{item.subtitle}}
+                        <div style="color: #666666;font-size: 24upx;" v-if="item.attr_name">
+                            规格：{{item.attr_name}}
+                        </div>
                     </view>
                 </view>
                 <view class="goods-comment">
                     <view class="name">商品评价</view>
-                    <view>
-                        <uni-rate  max="5" size="18" :value="item.requestData.level" active-color="#FC5A5A" :is-fill="true" @change="changeRate($event, index)"></uni-rate>
+                    <view class="my-start">
+                        <sunui-star :defaultStar="item.requestData.level" :maxStar="5" starSize='"18px"'  :isTips="false" @changeStar="changeStar($event, index)" />
                     </view>
                 </view>
             </view>
@@ -39,7 +42,7 @@
 </template>
 
 <script>
-    import uniRate from "@/components/uni-rate/uni-rate.vue"
+    import sunuiStar from "@/components/sunui-star/sunui-star.vue"
 
     export default {
         name: "order_evaluate",
@@ -49,6 +52,11 @@
           }
         },
         onLoad(){
+            // 如果是安卓平台 每次进入商品详情页面就会调用微信配置，自定义分享商品
+            if ((this.getPlatform()).isAndroid){
+                this.wxConfig()
+            }
+
             console.log('其他页面带过来的参数：', this.$parseURL())
             let myData = []
             this.$parseURL().data.item_list.map((goods, index) => {
@@ -76,35 +84,38 @@
             },
             async choosesImages(index){
                 console.log("下标：",index)
-                let _that = this
-                await uni.chooseImage({
-                    count:9 - _that.goodsList[index].requestData.pics.length,
-                    success:async (res) =>{
-                        console.log(res)
-                        _that.upLoadFiles(index, res.tempFilePaths)
-                    }
-                })
-            },
-            async upLoadFiles(index, data){
-                let _that = this
-                data.map(async (item) => {
-                    await uni.uploadFile({
-                        url: _that.$minApi.urls.upload,
-                        filePath: item,
-                        fileType: 'image',
-                        name: 'file',
-                        success: async (uploadFileRes1) => {
-                            if("string" === typeof uploadFileRes1.data){
-                                if (JSON.parse(uploadFileRes1.data).code === 200) {
-                                    _that.goodsList[index].requestData.pics.push(JSON.parse(uploadFileRes1.data).data.url)
-                                }
-                            }else{
-                                if (uploadFileRes1.data.code === 200) {
-                                    _that.goodsList[index].requestData.pics.push(uploadFileRes1.data.data.url)
-                                }
-                            }
+
+                let _self = this
+                _self.$wx.ready(() => {
+                    _self.$wx.chooseImage({
+                        count: 9 - _self.goodsList[index].requestData.pics.length,
+                        needResult: 1,
+                        sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                        success: async function (data) {
+                            // 返回选定照片的本地ID列表，data.localIds[0]可以作为img标签的src属性显示图片
+                            data.localIds.map(async (item) => {
+                                // 上传背面
+                                await _self.$wx.uploadImage({
+                                    localId: item, // 需要上传的图片的本地ID，由chooseImage接口获得
+                                    isShowProgressTips: 0, // 默认为1，显示进度提示
+                                    success: async function (res) {
+                                        await _self.$minApi.getFileFromWeChat({media_id: res.serverId}).then(res => {
+                                            if (res.code === 200){
+                                                _self.goodsList[index].requestData.pics.push(res.data.url)
+                                            }
+                                        }).catch(err => {
+                                            console.log(err)
+                                        })
+                                    },
+                                    fail: function (error) {
+                                        console.log(error)
+                                    }
+                                })
+                            })
                         },
-                        fail: function (err) {
+                        fail: function (res) {
+                            console.log(res)
                         }
                     })
                 })
@@ -113,9 +124,9 @@
                 console.log("下标：",index,sIndex)
                 this.goodsList[index].requestData.pics.splice(sIndex,1)
             },
-            //评分
-            changeRate(e,index){
-                console.log(e, index)
+            // 评分
+            changeStar: function(e, index) {
+                console.log('curStar:', e.curStar)
                 this.goodsList[index].requestData.level = e.value
             },
             mySubmit(){
@@ -166,7 +177,7 @@
             },
         },
         components: {
-            uniRate,
+            sunuiStar,
         }
     }
 </script>
@@ -199,12 +210,15 @@
             .goods-comment{
                 display: flex;
                 align-items: center;
+                justify-content: space-between;
                 .name{
                     text-align: center;
                     width: 150upx;
-                    margin-right: 20upx;
                     color: $color-primary-plain;
                     font-size: $uni-font-size-lg;
+                }
+                .my-start{
+                    width: calc(100% - 150upx)
                 }
             }
         }

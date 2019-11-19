@@ -7,7 +7,7 @@
         <form @submit="formSubmit" :report-submit="true">
             <view class="box">
                 <radio-group @change="radioChange">
-                    <view class="item">
+                    <label class="item">
                         <view>
                             <view>钱包</view>
                             <view class="has-money">可用余额（包括已激活的限时余额）：¥{{userInfo.usable_money}}</view>
@@ -15,7 +15,7 @@
                         <view>
                             <radio value="3" :checked="payWay === '3'" :disabled="disabledMoney" color="#FC5A5A" />
                         </view>
-                    </view>
+                    </label>
                     <view class="item" v-for="(item, index) in userInfo.expireList" :key="index" style="padding: 10upx 0;flex-direction: column;align-items: flex-start;">
                             <view>限时余额</view>
                             <view class="has-money" style="display: flex;justify-content: space-between;width: 100%;">
@@ -26,14 +26,14 @@
                                 </div>
                             </view>
                     </view>
-                    <view class="item">
+                    <label class="item">
                         <view>
                             <view>微信支付</view>
                         </view>
                         <view>
                             <radio value="1" :checked="payWay === '1'" color="#FC5A5A" />
                         </view>
-                    </view>
+                    </label>
                 </radio-group>
             </view>
             <button form-type="submit" class="my-btn">确认支付</button>
@@ -101,7 +101,8 @@
                 }
                 /**
                  * 请求接口，传订单id，和支付方式
-                 * 如果支付方式为 微信和钱包支付
+                 * 支付方式为 微信和钱包支付
+                 * 如果为钱包支付，直接账户余额，如果有激活的限时余额，则先用限时余额
                  */
                 await this.$minApi.payWay(data).then(async res => {
                     /**
@@ -157,7 +158,10 @@
                             })
                         }
                     } else {
-                        await this._goPage('order_detail_redirect', {order_id: res.data.id})
+                        this.msg(res.msg)
+                        setTimeout(()=>{
+                            this._goPage('order_detail_redirect', {order_id: res.data.id})
+                        }, 1500)
                     }
                 }).catch(async err => {
                     console.log(err)

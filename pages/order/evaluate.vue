@@ -16,7 +16,7 @@
                 <view class="goods-comment">
                     <view class="name">商品评价</view>
                     <view class="my-start">
-                        <sunui-star :defaultStar="item.requestData.level" :maxStar="5" starSize='"18px"'  :isTips="false" @changeStar="changeStar($event, index)" />
+                        <sunui-star :defaultStar="item.requestData.level" :maxStar="5"  :starSize='"1em"' :isTips="false" @changeStar="changeStar($event, index)" />
                     </view>
                 </view>
             </view>
@@ -127,7 +127,7 @@
             // 评分
             changeStar: function(e, index) {
                 console.log('curStar:', e.curStar)
-                this.goodsList[index].requestData.level = e.value
+                this.goodsList[index].requestData.level = e.curStar
             },
             mySubmit(){
                 console.log(this.goodsList)
@@ -166,7 +166,6 @@
                         this.$minApi.addGoodsComment(item).then(res => {
                             console.log(res)
                             if (index + 1 === requestData.length){
-                                this.msg("您的评论等待审核中，审核通过后会展示出来")
                                 setTimeout(()=>{ uni.navigateBack() }, 1000)
                             }
                         })

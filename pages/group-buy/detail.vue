@@ -616,7 +616,7 @@
 					people_num: 0,    //每人限购
 					assemble_num: 0,  //几人团
 					now_time: 1573906737, //服务器当前时间
-					status: 0,    //1正在拼团，2立即开始 3平图案
+					status: 1,    //1正在拼团，2立即开始 3平图案
 					is_over: 0,   //是否拼完
 					attributes: "",  //规格组
 					item: {       //商品信息

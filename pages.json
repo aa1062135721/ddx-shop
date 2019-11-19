@@ -70,6 +70,7 @@
 		{
 			"path": "pages/order/result",
 			"style": {
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "支付结果"
 			}
 		},

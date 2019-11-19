@@ -767,7 +767,6 @@
 				this.$refs.selectSpecification.open()
 			},
 			close(){
-				this.choosesGoodsInfo.assemble_list_id = 0
 				this.$refs.selectSpecification.close()
 			},
 			//选择规格
@@ -939,28 +938,44 @@
 
 			// 一键成团
 			buyGroup(item){
+				console.log(item)
 				// "order_info": { //加入当前登录的用户已经加入此团蛋还未成功的订单信息，
 				// 	"order_id": 3822,   //订单id
 				//	"order_status": 0,  //支付状态：0 为待支付  1为已支付，    待支付跳支付，已支付跳拼团详情
 				// "order_amount": "5.80"  //订单总额
 				// }
 				if(this.goodsInfo.order_info.order_id) {
+					let _that = this
 					if (this.goodsInfo.order_info.order_status === 0) {
-						this.msg('你还有拼团未支付')
-						setTimeout(()=>{
-							this._goPage('order_pay', {
-								order_id: this.goodsInfo.order_info.order_id,
-								amount: this.goodsInfo.order_info.order_amount,
-							})
-							return
-						}, 1000)
+						uni.showModal({
+							title: '提示',
+							content: '该商品你还有拼团未支付,请取消订单或者现在去支付',
+							success: function (showModalRes) {
+								if (showModalRes.confirm) {
+									console.log('用户点击确定');
+									_that._goPage('order_pay', {
+										order_id: this.goodsInfo.order_info.order_id,
+										amount: this.goodsInfo.order_info.order_amount,
+									})
+								} else if (showModalRes.cancel) {
+									console.log('用户点击取消');
+								}
+							}
+						});
 					}
 					if (this.goodsInfo.order_info.order_status === 1) {
-						this.msg('你已经参加过拼团了')
-						setTimeout(()=>{
-							this._goPage('group_buy_group', {id: this.goodsInfo.order_info.order_id})
-							return
-						}, 1000)
+						uni.showModal({
+							title: '提示',
+							content: '你已经参加过拼团了，是否查看？',
+							success: function (showModalRes) {
+								if (showModalRes.confirm) {
+									console.log('用户点击确定');
+									_that._goPage('group_buy_group', {id: this.goodsInfo.order_info.order_id})
+								} else if (showModalRes.cancel) {
+									console.log('用户点击取消');
+								}
+							}
+						});
 					}
 					return
 				}

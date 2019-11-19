@@ -79,7 +79,8 @@ minRequest.interceptors.response((response) => {
   if (response.statusCode !== 200){
     Vue.prototype.msg(codeMessage[response.statusCode])
   }
-  if (response.data.code !== 200 && response.data.msg && response.data.code !== -2){
+  // if (response.data.code !== 200 && response.data.msg && response.data.code !== -2){
+  if ([200, 108, 107, 208, -2].indexOf(response.data.code) === -1 && response.data.msg){
     Vue.prototype.msg(response.data.msg)
   }
   return response.data

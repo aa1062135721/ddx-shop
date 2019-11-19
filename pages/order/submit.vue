@@ -152,11 +152,8 @@
                         activity_id: this.$parseURL().activity_id, //拼团id
                         order_distinguish: 1, //拼团订单
                         commander: this.$parseURL().commander,//如果为拼团订单，则此参数1为团长，反之为团员   （非必传）
+                        assemble_list_id: this.$parseURL().assemble_list_id,//如果上 参团，这个上参团的id
                         item: goodsData,
-                    }
-                    if (this.$parseURL().assemble_list_id) {
-                        delete this.requestData.commander
-                        this.requestData.assemble_list_id = this.$parseURL().assemble_list_id
                     }
                     break
                 case "spike":
@@ -224,13 +221,35 @@
                         await this.$minApi.createOrder(this.requestData).then(res => {
                             if (res.code === 200) {
                                 this._goPage('order_pay', res.data)
-                            }
-                            // 购买了跨境商品，所选收货地址没有实名认证
-                            if (res.code === 108) {
-                                this.msg('购买的商品包含跨境商品，收货地址没有实名认证')
-                                setTimeout(()=>{
-                                    this._goPage('id_card_authentication')
-                                }, 1000)
+                            } else {
+                                let _that = this
+                                if([108, 107, 208].indexOf(res.code) !== -1){
+                                    uni.showModal({
+                                        title: '提示',
+                                        content: res.msg,
+                                        success: function (showModalRes) {
+                                            if (showModalRes.confirm) {
+                                                console.log('用户点击确定');
+                                                if (res.code === 108) { // 需要实名认证
+                                                    _that._goPage('id_card_authentication')
+                                                }
+                                                if (res.code === 107) { // 收件人姓名与实名认证信息不符,请修改或更换收件人信息
+                                                    _that._goPage('address_chooses')
+                                                }
+                                                if (res.code === 208) { // 您当前存在未支付的秒杀订单,请先支付，需跳转到支付界面，返回的data为订单信息,order_id":3812,"amount":"119.00
+                                                    _that._goPage('order_pay', {
+                                                        amount: res.data.amount,      //总金额
+                                                        order_id: res.data.order_id      //订单id
+                                                    })
+                                                }
+                                            } else if (showModalRes.cancel) {
+                                                console.log('用户点击取消');
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    this.msg(res.msg)
+                                }
                             }
                         }).catch(err => {
                             console.log(err)
@@ -240,13 +259,35 @@
                         await this.$minApi.createOrder(this.requestData).then(res => {
                             if (res.code === 200) {
                                 this._goPage('order_pay', res.data)
-                            }
-                            // 购买了跨境商品，所选收货地址没有实名认证
-                            if (res.code === 108) {
-                                this.msg('购买的商品包含跨境商品，收货地址没有实名认证')
-                                setTimeout(()=>{
-                                    this._goPage('id_card_authentication')
-                                }, 1000)
+                            } else {
+                                let _that = this
+                                if([108, 107, 208].indexOf(res.code) !== -1){
+                                    uni.showModal({
+                                        title: '提示',
+                                        content: res.msg,
+                                        success: function (showModalRes) {
+                                            if (showModalRes.confirm) {
+                                                console.log('用户点击确定');
+                                                if (res.code === 108) { // 需要实名认证
+                                                    _that._goPage('id_card_authentication')
+                                                }
+                                                if (res.code === 107) { // 收件人姓名与实名认证信息不符,请修改或更换收件人信息
+                                                    _that._goPage('address_chooses')
+                                                }
+                                                if (res.code === 208) { // 您当前存在未支付的秒杀订单,请先支付，需跳转到支付界面，返回的data为订单信息,order_id":3812,"amount":"119.00
+                                                    _that._goPage('order_pay', {
+                                                        amount: res.data.amount,      //总金额
+                                                        order_id: res.data.order_id      //订单id
+                                                    })
+                                                }
+                                            } else if (showModalRes.cancel) {
+                                                console.log('用户点击取消');
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    this.msg(res.msg)
+                                }
                             }
                         }).catch(err => {
                             console.log(err)
@@ -257,23 +298,35 @@
                         await this.$minApi.createAassembleOrder(this.requestData).then(res => {
                             if (res.code === 200) {
                                 this._goPage('order_pay', res.data)
-                            }
-                            // 购买了跨境商品，所选收货地址没有实名认证
-                            if (res.code === 108) {
-                                this.msg('购买的商品包含跨境商品，收货地址没有实名认证')
-                                setTimeout(()=>{
-                                    this._goPage('id_card_authentication')
-                                }, 1000)
-                            }
-                            // 表示有未支付的订单，需跳转到支付界面
-                            if (res.code === 208) {
-                                this.msg('该商品有未支付的拼团订单，请直接支付')
-                                setTimeout(()=>{
-                                    this._goPage('order_pay', {
-                                        amount: res.data.amount,      //总金额
-                                        order_id: res.data.order_id      //订单id
-                                    })
-                                }, 1000)
+                            } else {
+                                let _that = this
+                                if([108, 107, 208].indexOf(res.code) !== -1){
+                                    uni.showModal({
+                                        title: '提示',
+                                        content: res.msg,
+                                        success: function (showModalRes) {
+                                            if (showModalRes.confirm) {
+                                                console.log('用户点击确定');
+                                                if (res.code === 108) { // 需要实名认证
+                                                    _that._goPage('id_card_authentication')
+                                                }
+                                                if (res.code === 107) { // 收件人姓名与实名认证信息不符,请修改或更换收件人信息
+                                                    _that._goPage('address_chooses')
+                                                }
+                                                if (res.code === 208) { // 您当前存在未支付的秒杀订单,请先支付，需跳转到支付界面，返回的data为订单信息,order_id":3812,"amount":"119.00
+                                                    _that._goPage('order_pay', {
+                                                        amount: res.data.amount,      //总金额
+                                                        order_id: res.data.order_id      //订单id
+                                                    })
+                                                }
+                                            } else if (showModalRes.cancel) {
+                                                console.log('用户点击取消');
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    this.msg(res.msg)
+                                }
                             }
                         }).catch(err => {
                             console.log(err)
@@ -283,23 +336,35 @@
                         await this.$minApi.createOrederSeckillDoPost(this.requestData).then(res => {
                             if (res.code === 200) {
                                 this._goPage('order_pay', res.data)
-                            }
-                            // 购买了跨境商品，所选收货地址没有实名认证
-                            if (res.code === 108) {
-                                this.msg('购买的商品包含跨境商品，收货地址没有实名认证')
-                                setTimeout(()=>{
-                                    this._goPage('id_card_authentication')
-                                }, 1000)
-                            }
-                            // 表示有未支付的订单，需跳转到支付界面
-                            if (res.code === 208) {
-                                this.msg('该商品有未支付的秒杀订单，请直接支付')
-                                setTimeout(()=>{
-                                    this._goPage('order_pay', {
-                                        amount: res.data.amount,      //总金额
-                                        order_id: res.data.order_id      //订单id
-                                    })
-                                }, 1000)
+                            } else {
+                                let _that = this
+                                if([108, 107, 208].indexOf(res.code) !== -1){
+                                    uni.showModal({
+                                        title: '提示',
+                                        content: res.msg,
+                                        success: function (showModalRes) {
+                                            if (showModalRes.confirm) {
+                                                console.log('用户点击确定');
+                                                if (res.code === 108) { // 需要实名认证
+                                                    _that._goPage('id_card_authentication')
+                                                }
+                                                if (res.code === 107) { // 收件人姓名与实名认证信息不符,请修改或更换收件人信息
+                                                    _that._goPage('address_chooses')
+                                                }
+                                                if (res.code === 208) { // 您当前存在未支付的秒杀订单,请先支付，需跳转到支付界面，返回的data为订单信息,order_id":3812,"amount":"119.00
+                                                    _that._goPage('order_pay', {
+                                                        amount: res.data.amount,      //总金额
+                                                        order_id: res.data.order_id      //订单id
+                                                    })
+                                                }
+                                            } else if (showModalRes.cancel) {
+                                                console.log('用户点击取消');
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    this.msg(res.msg)
+                                }
                             }
                         }).catch(err => {
                             console.log(err)

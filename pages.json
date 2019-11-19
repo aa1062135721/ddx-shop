@@ -121,12 +121,14 @@
 		{
 			"path": "pages/web-view/web-view",
 			"style": {
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "网页"
 			}
 		},
 		{
 			"path": "pages/web-view/rich-text",
 			"style": {
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "富文本"
 			}
 		},
@@ -142,7 +144,7 @@
 			"path": "pages/group-buy/detail",
 			"style": {
 				"navigationStyle": "custom",
-				"navigationBarTitleText": "一起拼团"
+				"navigationBarTitleText": "捣蛋熊商城"
 			}
 		},
 		{
@@ -170,6 +172,7 @@
 		{
 			"path": "pages/newcomer/newcomer",
 			"style": {
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "新人专享"
 			}
 		},
@@ -193,12 +196,13 @@
 				{
 					"path": "user/id-card-authentication",
 					"style": {
-					  "navigationBarTitleText": "实名认证"
+						"navigationBarTitleText": "实名认证"
 					}
 			  	},
 				{
 					"path": "user/id-card-authentication-detail",
 					"style": {
+						"navigationStyle": "custom",
 						"navigationBarTitleText": "实名认证"
 					}
 				},
@@ -211,7 +215,8 @@
 				{
 					"path": "user/money",
 					"style": {
-					  "navigationBarTitleText": "我的钱包"
+						"navigationStyle": "custom",
+					  	"navigationBarTitleText": "我的钱包"
 					}
 				},
 				{

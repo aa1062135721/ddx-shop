@@ -1,9 +1,7 @@
 <template>
     <view class="spike-list-container">
         <!-- #ifdef H5 -->
-        <div id="my-h5-back" @click="_goBack">
-            <i class="iconfont icon-ddx-shop-content_arrows"></i>
-        </div>
+        <div id="my-h5-back" @click="_goBack"></div>
         <!-- #endif -->
 
         <view class="bg-image">

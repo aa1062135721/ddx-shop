@@ -1,5 +1,10 @@
 <template>
     <view>
+        <!-- #ifdef H5 -->
+        <div id="my-h5-back" @click="_goBack"></div>
+        <div style="height: 50px;width: 100%;"></div>
+        <!-- #endif -->
+
         <view class="grace-idcard-main">
             <view class="grace-idcard-text">
                 身份证照片 ( 正面 )
@@ -49,6 +54,10 @@
             })
         },
         methods: {
+            // 返回按钮
+            _goBack() {
+                uni.navigateBack()
+            },
             previewImg1 : function(){
                 if ( this.idCard1 !== '../static/idcard1.png' ){
                     uni.previewImage({

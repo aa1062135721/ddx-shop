@@ -1,5 +1,9 @@
 <template>
     <view>
+        <!-- #ifdef H5 -->
+        <div id="my-h5-back" @click="_goBack"></div>
+        <!-- #endif -->
+
         <view class="bg">
             <view class="name">总金额（元）</view>
             <view class="money">{{userInfo.money}}</view>
@@ -80,6 +84,10 @@
         methods:{
             _goPage(url, query = {}){
                 this.$openPage({name:url, query})
+            },
+            // 返回按钮
+            _goBack() {
+                uni.navigateBack()
             },
             open(){
                 this.$refs.getMoneyToWx.open()

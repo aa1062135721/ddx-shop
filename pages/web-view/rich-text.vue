@@ -1,5 +1,9 @@
 <template>
     <view>
+        <!-- #ifdef H5 -->
+        <div id="my-h5-back" @click="_goBack"></div>
+        <!-- #endif -->
+
         <rich-text :nodes="content"></rich-text>
     </view>
 </template>
@@ -24,7 +28,10 @@
             }
         },
         methods: {
-
+            // 返回按钮
+            _goBack() {
+                uni.navigateBack()
+            },
         }
     }
 </script>

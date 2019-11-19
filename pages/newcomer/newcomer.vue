@@ -1,5 +1,9 @@
 <template>
     <div>
+        <!-- #ifdef H5 -->
+        <div id="my-h5-back" @click="_goBack"></div>
+        <!-- #endif -->
+
         <div class="bg">
             <img src="./bg.png" alt="背景图片">
         </div>
@@ -28,6 +32,10 @@
         methods:{
             _goPage(url, query = {}){
                 this.$openPage({name:url, query})
+            },
+            // 返回按钮
+            _goBack() {
+                uni.navigateBack()
             },
         }
     }

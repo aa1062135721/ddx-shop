@@ -23,7 +23,7 @@
                         <view class="section" v-for="(item, key) in tabItem.orderList" :key="key">
                             <view class="shop-name" @click="goPage('order_detail',{order_id:item.id})">
                                 <view>{{item.sn}}</view>
-                                <view>{{item.status.order_type}}</view>
+                                <view>{{item.status.refund_type || item.status.order_type}}</view>
                             </view>
                             <view class="goods" v-for="(goods, goods_key) in item.item_list" :key="goods_key" @click="goPage('order_detail',{order_id:item.id})">
                                 <view class="goods-img">

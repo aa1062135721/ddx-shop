@@ -84,8 +84,8 @@
             </view>
             <view class="btns">
                 <button class="btn active" v-if="responseData.status === 1 && responseData.r_num !== 0 && is_show_order" @click="shareGroup" open-type="share">已参团，邀请好友参团</button>
-                <view class="btn plain" v-if="responseData.status === 2" @click="_goPage('group_buy')">再开一团</view>
-                <view class="btn active" @click="addGroup" v-if="user_ids.indexOf(userInfo.id) === -1">加入拼团</view>
+                <view class="btn plain" v-if="responseData.status === 2" @click="_goPage('group_buy')">去开一团</view>
+                <view class="btn active" @click="addGroup" v-if="user_ids.indexOf(userInfo.id) === -1 && responseData.status === 1">加入拼团</view>
             </view>
         </view>
 

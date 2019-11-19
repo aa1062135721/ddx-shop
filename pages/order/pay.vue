@@ -42,7 +42,7 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex'
+    import { mapState, } from 'vuex'
 
     export default {
         name: "order_pay",
@@ -58,6 +58,14 @@
             }
         },
         onLoad(){
+            // 如果是ios 强制刷新一波
+            if (this.getPlatform().isIOS){
+                if(!(uni.getStorageSync('refresh'))){
+                    uni.setStorageSync('refresh', "ios进入支付页面需要强制刷新一波")
+                    location.reload();
+                }
+            }
+
             console.log("其他页面带过来的参数：", this.$parseURL())
             this.orderData = this.$parseURL()
             if (parseFloat(this.$parseURL().amount) <= parseFloat(this.userInfo.usable_money)){

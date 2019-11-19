@@ -36,7 +36,7 @@
             }
 
             try {
-                // this.setToken('4cd137fc4edb8feea635e3fbd583a191c500f6178ec0cb94ddf1fcb1ccaea6e3')
+                // this.setToken('4e63976e65c7d9771686975dc2406f3746070c1bdbf23cd2e7c1fd63bb7cfea4')
                 const token = uni.getStorageSync('token')
                 if (token) {
                     this.setToken(token)

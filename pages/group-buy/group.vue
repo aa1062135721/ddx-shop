@@ -18,7 +18,7 @@
             </view>
         </view>
         <!-- 关注公众号 弹窗，弹出二维码 -->
-        <uni-popup ref="followOfficialAccountAlert" type="center" :custom="true" v-if="!subscribe">
+        <uni-popup ref="followOfficialAccountAlert" type="center" :custom="true">
             <view class="follow-official-account-alert">
                 <view class="box">
                     <view>
@@ -78,57 +78,18 @@
                     <view class="tag" v-if="item.commander === 1">团长</view>
                     <view class="tag" v-if="item.status === 0 && item.commander === 0">待支付</view>
                 </view>
-                <view class="head" v-for="index of responseData.r_num" :key="index">
+                <view class="head" v-for="index in responseData.r_num">
                     <image src="../../static/images/help.png" class="img no-img"></image>
                 </view>
             </view>
             <view class="btns">
                 <button class="btn active" v-if="responseData.status === 1 && responseData.r_num !== 0 && is_show_order" @click="shareGroup" open-type="share">已参团，邀请好友参团</button>
                 <view class="btn plain" v-if="responseData.status === 2" @click="_goPage('group_buy')">再开一团</view>
-                <view class="btn active" @click="open" v-if="user_ids.indexOf(userInfo.id) === -1">加入拼团</view>
+                <view class="btn active" @click="addGroup" v-if="user_ids.indexOf(userInfo.id) === -1">加入拼团</view>
             </view>
         </view>
-        <!-- 购买的数量…… -->
-        <uni-popup ref="selectSpecification" type="bottom" :custom="true">
-            <view class="select-specification">
-                <view class="goods-info">
-                    <view class="main">
-                        <view class="image" @click="previewImg(responseData.item_pic, [responseData.item_pic])">
-                            <image class="img" :src='responseData.item_pic'></image>
-                        </view>
-                        <view class="info">
-                            <view class="price">￥{{responseData.tuanyuan_price}}</view>
-                            <view class="stock">
-                                库存:
-                                <text v-if="responseData.remaining_stock !== -1"> {{ responseData.remaining_stock}}</text>
-                                <text v-else> 库存充足</text>
-                            </view>
-                            <view class="stock" v-if="responseData.buy_num !== -1">限购: {{ responseData.buy_num}}</view>
-                            <view class="chooses"></view>
-                        </view>
-                        <view class="close">
-                            <text class="iconfont icon-ddx-shop-close" @click="close()"></text>
-                        </view>
-                    </view>
-                </view>
-                <view class="buy-num">
-                    <view class="main">
-                        <view class="title">
-                            购买数量
-                        </view>
-                        <view class="content">
-                            <uni-number-box v-if="responseData.buy_num <= responseData.remaining_stock && responseData.buy_num !== -1 && responseData.remaining_stock !== -1" :min="1" :max="responseData.buy_num" :value="choosesGoodsInfo.num" :step="1" @change="changeNum"></uni-number-box>
-                            <uni-number-box v-else :min="1" :value="choosesGoodsInfo.num" :step="1" @change="changeNum"></uni-number-box>
-                        </view>
-                    </view>
-                </view>
-                <view class="btns">
-                    <view class='over' style="background: #FC5A5A;" @click="addGroup">确定</view>
-                </view>
-            </view>
-        </uni-popup>
 
-        <!-- 其他拼团信息 -->
+        <!-- 其他信息 -->
         <view class="other-group-info">
             <view class="other-group-info-box">
                 <view class="info-item" @click="_goPage('goods_detail', {id: responseData.item_id})">
@@ -159,6 +120,7 @@
                 </view>
             </view>
         </view>
+
         <!--  h5邀请好友参团 引导箭头      -->
         <view class="share-guide-h5" v-show="isShowShareH5" @click="isShowShareH5 =  false">
             <view class="share-guide-h5-img"><image src="../../static/images/share/share-guide.png"></image></view>
@@ -170,7 +132,6 @@
 
 <script>
     let myTimer = null
-    import uniNumberBox from "@/components/uni-number-box/uni-number-box.vue"
     import uniPopup from '@/components/uni-popup/uni-popup.vue'
     import { mapState, mapMutations } from 'vuex'
 
@@ -207,10 +168,7 @@
                     time: 1569399771, //服务器当前时间
                     info: [],//参团人员信息
                 },
-                //选择的数量
-                choosesGoodsInfo:{
-                    num:1,
-                },
+
                 //参加拼团人的id集合
                 user_ids:[
 
@@ -227,14 +185,6 @@
             ...mapMutations(['setShareID']),
             _goPage(url, query = {}){
                 this.$openPage({name:url, query})
-            },
-            //轮播图放大预览
-            previewImg(src,urls){
-                uni.previewImage({
-                    indicator:'number',
-                    current:src,
-                    urls
-                })
             },
 
             //倒计时
@@ -269,66 +219,26 @@
                 }
                 this.timer = {d:int_day, h:int_hour, m:int_minute, s:int_second}
             },
+
             // 分享拼团
             shareGroup(){
                 this.isShowShareH5 = true
             },
+            //打开关注公众号二维码弹框follow-official-account
+            openFollowOfficialAccount(){
+                this.$refs.followOfficialAccountAlert.open()
+            },
+
+
             //加入拼团
             addGroup(){
-                //件数，订单类型，总量，总金额, 商品参数
-                let sumNum = 1,
-                    createOrderType = 'group',
-                    sumSum = this.choosesGoodsInfo.num,
-                    sumMoney = parseFloat(this.choosesGoodsInfo.num) * parseFloat(this.responseData.tuanyuan_price),
-                    myResponseData = [
-                        {
-                            mold_id: this.responseData.mold_id,
-                            name: this.responseData.mold,
-                            data:[]
-                        }
-                    ]
-                let goods = {
-                    categoryArr: [],//["S", "通过热望各位梵蒂冈如果", "还惹我"],//当前选中的规格名组合成数组
-                    id: 0,//购物车id,这里是直接够买不是购物车够买，所以这里的数据设置为0
-                    is_checked: false,//购物车里被选中为结算商品,这里是直接够买不是购物车够买，所以这里的数据设置为false
-                    item_id: this.responseData.item_id, // 商品id
-                    key: "",//"10_15_17",//当前选中的规格id组合
-                    key_name: "",// "S_通过热望各位梵蒂冈如果_还惹我", //当前选中的规格名组合
-                    mold: myResponseData[0].name,//"第一.1类型",//
-                    mold_id: myResponseData[0].mold_id,//2,//
-                    num: this.choosesGoodsInfo.num,//2,//够买数量
-                    pic: this.responseData.item_pic,//"http://picture.ddxm661.com/75b9420190906171730779.jpg",//商品图片
-                    price: this.responseData.tuanyuan_price,//"15.00",//商品价格
-                    status: 1,// 1,//商品状态
-                    store: this.responseData.buy_num, // -1,//商品库存
-                    title: this.responseData.item_name,// "测试2",//商品标题
-                }
-                myResponseData[0].data.push(goods)
-                this._goPage('order_submit', {
-                    myResponseData,//购买的商品数据
-                    sumNum,//件数
-                    createOrderType,//订单类型
-                    sumSum,//总量
-                    sumMoney,//总金额
+                this._goPage('group_buy_detail', {
                     assemble_id: this.responseData.assemble_id,     //拼团活动id
-                    num: this.choosesGoodsInfo.num,//购买数量
-                    update: this.responseData.update,          //版本，拼团组详情的id
-                    assemble_list_id: this.responseData.assemble_list_id,    //拼团组的id，非必传，不传表示自己开团，否则表示与别人成团
+                    item_id: this.responseData.item_id,//商品id
+                    assemble_list_id: this.responseData.assemble_list_id, // 该组团 的唯一id，表明可以加入该拼团
                 })
             },
 
-            //打开选择数量
-            open(){
-                this.$refs.selectSpecification.open()
-            },
-            close(){
-                this.$refs.selectSpecification.close()
-            },
-            //购买数量更改
-            changeNum(e){
-                console.log(e)
-                this.choosesGoodsInfo.num = e
-            },
 
             // 去到订单详情
             goOderDetail(){
@@ -343,66 +253,7 @@
 
 
         },
-        // 分享到朋友
-        onShareAppMessage(res) {
-            if (res.from === 'button') {// 来自页面内分享按钮
-                console.log(res.target)
-            }
-            return {
-                title: `${this.responseData.item_name}`,
-                path: `pages/group-buy/group?id=${this.id}`
-            }
-        },
         async onLoad(param){
-            console.log("第一个参数", param)
-
-            console.log("其他页面带过来的参数：", this.$parseURL())
-
-            let requestData = {
-                id: 0
-            }
-            if (param.id)   {
-                requestData.id = param.id
-                this.id = param.id
-            }
-            if (param.user_id){
-                this.setShareID(param.user_id)
-            }
-            if (this.$parseURL().id){
-                requestData.id = this.$parseURL().id
-                this.id = this.$parseURL().id
-            }
-
-            await this.$minApi.groupBuyDetail(requestData).then(async res => {
-                console.log(res)
-                if (res.code === 200){
-
-                    let user_ids = []
-                    res.data.info.map(item => {
-                        user_ids.push(item.member_id)
-                    })
-                    this.user_ids = user_ids
-
-                    this.responseData = res.data
-                    this.$nextTick(()=>{
-                        myTimer = setInterval(()=>{
-                            this.responseData.time ++
-                            this.getRTime()
-                        }, 1000)//设置定时器 每一秒执行一次
-
-                        let order_id = 0
-                        this.responseData.info.map((item) => {
-                            if(item.member_id === this.userInfo.id){
-                                order_id = item.order_id
-                            }
-                        })
-                        if (order_id && this.userInfo.id) {
-                            this.is_show_order = true
-                        }
-                    })
-                }
-            })
-
             // 如果是安卓平台 每次进入商品详情页面就会调用微信配置，自定义分享商品
             if (this.getPlatform().isAndroid){
                 await this.wxConfig()
@@ -413,28 +264,76 @@
             } else {
                 url = window.location.href
             }
-            await this.$nextTick(() => {
-                let param1 = {
-                        title: `捣蛋熊拼团-${this.responseData.item_name}`, // 分享标题
-                        desc: `仅限${this.responseData.tuanyuan_price}元，立省${(parseFloat(this.responseData.old_price) - parseFloat(this.responseData.tuanyuan_price)).toFixed(2)}元，先到先得`, // 分享描述
-                        link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                        imgUrl: this.responseData.item_pic, // 分享图标
-                        success: function () {}
-                    },
-                    param2 = {
-                        title: `捣蛋熊拼团-${this.responseData.item_name}`, // 分享标题
-                        link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                        imgUrl: this.responseData.item_pic, // 分享图标
-                        success: function () {}
+
+            let requestData = {
+                id: 0
+            }
+
+            if (param.user_id){
+                this.setShareID(param.user_id)
+            }
+            if (param.id) {
+                requestData.id = param.id
+                this.id = param.id
+                console.log("通过分享带进来的参数：", param)
+            }
+
+
+            if (this.$parseURL().id){
+                console.log("其他页面带过来的参数：", this.$parseURL())
+                requestData.id = this.$parseURL().id
+                this.id = this.$parseURL().id
+            }
+
+            await this.$minApi.groupBuyDetail(requestData).then(async res => {
+                if (res.code === 200){
+
+                    let user_ids = [] // 所有参加拼团人的id
+                    let order_id = 0 // 当前登录者 是否参团，如果参团，者这个order_id 就为当前登录者的订单id
+                    res.data.info.map(item => {
+                        user_ids.push(item.member_id)
+                        if((this.userInfo.id) && (item.member_id === this.userInfo.id)){
+                            order_id = item.order_id
+                        }
+                    })
+                    if (order_id && this.userInfo.id) { //如果当前用户登录了，且参加拼团了， 则显示跳转到该自己拼团的订单详情
+                        this.is_show_order = true
                     }
-                this.wxConigShareGoods(param1, param2)
+                    this.user_ids = user_ids // 所有参加拼团人的id
+
+                    this.responseData = res.data
+                    this.$nextTick(()=>{
+                        myTimer = setInterval(()=>{
+                            this.responseData.time ++
+                            this.getRTime()
+                        }, 1000)//设置定时器 每一秒执行一次
+
+                        /**
+                         * 分享
+                         */
+                        let param1 = {
+                                title: `捣蛋熊拼团-${res.data.item_name}`, // 分享标题
+                                desc: `仅限${res.data.tuanyuan_price}元，立省${(parseFloat(res.data.old_price) - parseFloat(res.data.tuanyuan_price)).toFixed(2)}元，先到先得`, // 分享描述
+                                link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                                imgUrl: res.data.item_pic, // 分享图标
+                                success: function () {}
+                            },
+                            param2 = {
+                                title: `捣蛋熊拼团-${res.data.item_name}`, // 分享标题
+                                link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                                imgUrl: res.data.item_pic, // 分享图标
+                                success: function () {}
+                            }
+                        this.wxConigShareGoods(param1, param2)
+                    })
+                }
             })
         },
         onUnload(){
             clearInterval(myTimer);
+            myTimer = null
         },
         components: {
-            uniNumberBox,
             uniPopup,
         },
         computed: {
@@ -619,146 +518,6 @@
                             margin-left: 2%;
                         }
                     }
-                }
-            }
-        }
-
-        /*  选择规格，数量后加入该购物车或者立即购买 */
-        .select-specification{
-            background: #fff;
-            .goods-info{
-                width: 100%;
-                padding: 0 $uni-spacing-col-base;
-                .main{
-                    padding-top: $uni-spacing-col-base;
-                    padding-bottom: $uni-spacing-col-base;
-                    border-bottom:1upx #E4E4E4 solid;
-                    display: flex;
-                    flex-wrap: nowrap;
-                    width: 100%;
-                    justify-content: space-between;
-                    .image{
-                        width: 30%;
-                        height: 100%;
-                        .img{
-                            width: 208upx;
-                            height: 208upx;
-                            border-radius: 4upx;
-                        }
-                    }
-                    .info{
-                        width: 60%;
-                        height: 100%;
-                        padding-left:$uni-spacing-col-base;
-                        display: flex;
-                        flex-direction: column;
-                        .price{
-                            color: $color-primary;
-                            font-size: $uni-font-size-lg;
-                        }
-                        .stock{
-                            color: #808080;
-                            font-size: $uni-font-size-base;
-                        }
-                        .chooses{
-                            color: $color-primary-plain;
-                            font-size: $uni-font-size-lg;
-                        }
-                    }
-                    .close{
-                        width: 10%;
-                        height: 100%;
-                        position: relative;
-                        .iconfont{
-                            position: absolute;
-                            top: 0;
-                            right: 0;
-                            font-size: $uni-font-size-lg + $uni-font-size-sm;
-                        }
-                    }
-                }
-
-            }
-            .specification{
-                width: 100%;
-                padding:0 $uni-spacing-col-base;
-                .main{
-                    padding-top: $uni-spacing-col-base;
-                    padding-bottom: $uni-spacing-col-base;
-                    border-bottom:1upx #E4E4E4 solid;
-                    .title{
-                        color: $color-primary-plain;
-                        font-size: $uni-font-size-lg;
-                        padding-bottom: $uni-spacing-col-base;
-                    }
-                    .content{
-                        display: flex;
-                        flex-direction: row;
-                        justify-content: flex-start;
-                        flex-wrap: wrap;
-                        text{
-                            background: #F2F2F2;
-                            border: 1upx solid #F2F2F2;
-                            color: $color-primary-plain;
-                            font-size: $uni-font-size-base;
-                            margin-right: 20upx;
-                            margin-bottom: 20upx;
-                            padding:10upx 24upx;
-                            border-radius:4upx;
-                            &.on{
-                                color: $color-primary;
-                                border: 1upx solid $color-primary;
-                                background: #FAE8E8;
-                            }
-                        }
-                    }
-                }
-            }
-            .buy-num{
-                width: 100%;
-                margin-bottom: 20upx;
-                .main{
-                    padding: $uni-spacing-col-base;
-                    display: flex;
-                    justify-content: space-between;
-                    .title{
-                        color: $color-primary-plain;
-                        font-size: $uni-font-size-lg;
-                        padding-bottom: $uni-spacing-col-base;
-                    }
-                    .content{
-                        font-size: $uni-font-size-sm;
-                    }
-                }
-            }
-            .btns{
-                width: 100%;
-                height: 98upx;
-                display: flex;
-                justify-content:space-between;
-                color: #fff;
-                .btn{
-                    background: $color-primary;
-                    font-size: $uni-font-size-lg;
-                    text-align: center;
-                    height: 98upx;
-                    width: 50%;
-                    display: flex;
-                    align-content: center;
-                    align-items: center;
-                    justify-content:center;
-                }
-                .over{
-                    background: #666666;;
-                    font-size: $uni-font-size-lg;
-                    text-align: center;
-                    height: 98upx;
-                    line-height: 98upx;
-                    width: 100%;
-                    display: flex;
-                    align-content: center;
-                    align-items: center;
-                    justify-content:center;
                 }
             }
         }

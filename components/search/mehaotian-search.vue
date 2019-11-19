@@ -63,6 +63,9 @@ export default {
 			this.active = true;
 		},
 		blur() {
+			setTimeout(() => {
+				window.scrollTo(0, 0)
+			}, 100);
 			this.isFocus = false;
 			if (!this.inputVal) {
 				this.active = false;

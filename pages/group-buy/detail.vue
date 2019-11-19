@@ -482,10 +482,8 @@
 					</view>
 				</view>
 				<view class="buy my-vam" @click="open()" v-if="goodsInfo.status === 1">
-					<view class="inner">
-<!--						￥{{ (parseFloat(choosesGoodsInfo.specs.commander_price) * parseFloat(choosesGoodsInfo.num)) | moneyToFixed }}<br />-->
-						一键开团
-					</view>
+						<block v-if="choosesGoodsInfo.assemble_list_id">一键参团</block>
+						<block v-else>一键拼团</block>
 				</view>
 				<view class="buy my-vam" v-if="goodsInfo.status === 2"  style="background:#F9A13A;">
 						待开始
@@ -1062,8 +1060,11 @@
 			}
 
 			if (this.$parseURL().item_id){
-				requestData.item_id = this.$parseURL().item_id
-				requestData.assemble_id = this.$parseURL().assemble_id
+				requestData.item_id = this.$parseURL().item_id // 商品id
+				requestData.assemble_id = this.$parseURL().assemble_id // 拼团活动id
+				if (this.$parseURL().assemble_list_id) { // 别人通过的分享，参团的团组 id
+					this.choosesGoodsInfo.assemble_list_id = this.$parseURL().assemble_list_id
+				}
 				console.log("其他页面带过来的参数：",this.$parseURL())
 			}
 
@@ -1142,7 +1143,9 @@
 			})
 		},
 		async onShow() {
-			this.choosesGoodsInfo.assemble_list_id = 0
+			if (!this.$parseURL().assemble_list_id) {
+				this.choosesGoodsInfo.assemble_list_id = 0
+			}
 			if (this.userInfo.id){
 				//购物车数量
 				await this.$minApi.getCarNum().then(res => {

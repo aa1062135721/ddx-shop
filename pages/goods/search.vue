@@ -67,16 +67,16 @@
 					this._goPage('spike_detail', {seckill_id: goods.activity_id,item_id: goods.id})
 					return
 				}
-				// 秒杀
-				if (goods.activity_id && goods.activity_type === 2) {
-					this._goPage('spike_detail', {seckill_id: goods.activity_id,item_id: goods.id})
-					return
-				}
-				//拼团活动
-				if (goods.activity_id && goods.activity_type === 3) {
-					this._goPage('group_buy_detail', {assemble_id: goods.activity_id, item_id: goods.id})
-					return
-				}
+				// // 秒杀
+				// if (goods.activity_id && goods.activity_type === 2) {
+				// 	this._goPage('spike_detail', {seckill_id: goods.activity_id,item_id: goods.id})
+				// 	return
+				// }
+				// //拼团活动
+				// if (goods.activity_id && goods.activity_type === 3) {
+				// 	this._goPage('group_buy_detail', {assemble_id: goods.activity_id, item_id: goods.id})
+				// 	return
+				// }
 
 				this._goPage('goods_detail', {id: goods.id})
 			},

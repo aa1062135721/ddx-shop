@@ -1,5 +1,11 @@
 <template>
    <view class="container">
+      <!-- #ifdef H5 -->
+      <div id="my-h5-back" @click="_goBack">
+         <i class="iconfont icon-ddx-shop-content_arrows"></i>
+      </div>
+      <!-- #endif -->
+
       <view class="banner">
          <img src="../../static/images/tab-group.png" style="width: 100%;">
       </view>
@@ -87,6 +93,10 @@
         methods:{
            _goPage(url = '', query = {}){
               this.$openPage({name:url, query})
+           },
+           // 返回按钮
+           _goBack() {
+              uni.navigateBack()
            },
            async _assembleList(){
               this.requestData.moreStatus = 'loading'

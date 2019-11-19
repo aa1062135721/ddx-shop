@@ -32,33 +32,11 @@
 			console.log('App Launch')
             // ios 进入应用就要配置微信sdk
             if(this.getPlatform().isIOS){
-                let url = encodeURIComponent(window.location.href)
-                this.$minApi.getWxConfig({url}).then(res => {
-                    if (res.code === 200) {
-                        this.$wx.config({
-                            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来
-                            appId: res.data.appid, // 必填，公众号的唯一标识
-                            timestamp: res.data.timestamp, // 必填，生成签名的时间戳
-                            nonceStr: res.data.noncestr, // 必填，生成签名的随机串
-                            signature: res.data.signature,// 必填，签名，见附录1
-                            jsApiList: [
-                                // 注意：使用新版本的分享功能，一定要在该列表加上对应的老版本功能接口，否则新接口不起作用
-                                'updateTimelineShareData', //1.4.0的 分享到朋友圈
-                                'onMenuShareTimeline', //老版本 分享到朋友圈
-                                'updateAppMessageShareData',//1.4.0分享到朋友
-                                'onMenuShareAppMessage',//老版本分享到朋友
-                                'chooseWXPay',//支付
-                            ]
-                        })
-                        this.$wx.error((res) => {
-                            this.msg(res)
-                        })
-                    }
-                })
+               this.wxConfig()
             }
 
             try {
-                // this.setToken('4fb5ea08a179322cd2b72f87b5a4ce865b68ae2eb7afc726404d8e1e4495ad87')
+                // this.setToken('4cd137fc4edb8feea635e3fbd583a191c500f6178ec0cb94ddf1fcb1ccaea6e3')
                 const token = uni.getStorageSync('token')
                 if (token) {
                     this.setToken(token)
@@ -92,7 +70,7 @@
                              */
                             if (res.data.isbindMobile === 0 &&
                                 res.data.subscribe === 1) {
-                                this._goPage('login-with-mobile-public', {member: JSON.parse(res.data.member)})
+                                this._goPage('login-with-mobile-public', {member: res.data.member})
                             }
                         }).catch(err => {
                             console.log('服务器返回的数据！', err)
@@ -152,5 +130,24 @@
     image,
     video {
         box-sizing: border-box;
+    }
+    #my-h5-back{
+        position: absolute;
+        z-index: 999999999;
+        top: 10upx;
+        left: 8upx;
+        background: rgba(0,0,0,0.5);
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        .iconfont{
+            color: #FFFFFF;
+            font-size: 18px;
+            transform:rotate(180deg);
+        }
     }
 </style>

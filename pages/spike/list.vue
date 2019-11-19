@@ -1,5 +1,11 @@
 <template>
     <view class="spike-list-container">
+        <!-- #ifdef H5 -->
+        <div id="my-h5-back" @click="_goBack">
+            <i class="iconfont icon-ddx-shop-content_arrows"></i>
+        </div>
+        <!-- #endif -->
+
         <view class="bg-image">
             <img class="img" src="./bg.png" alt="">
         </view>
@@ -91,6 +97,10 @@
         methods: {
             _goPage(url, query = {}){
                 this.$openPage({name:url, query})
+            },
+            // 返回按钮
+            _goBack() {
+                uni.navigateBack()
             },
             // 获取秒杀商品列表
             async loadData() {

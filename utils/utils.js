@@ -206,6 +206,7 @@ exports.install = function (Vue, options) {
     }
 
     /**
+     *  ios设备，进入app就请去配置签名
      *  非ios设备，切换路由时候进行重新签名
      */
     Vue.prototype.wxConfig = async () => {
@@ -227,6 +228,10 @@ exports.install = function (Vue, options) {
                         'updateAppMessageShareData',//1.4.0分享到朋友
                         'onMenuShareAppMessage',//老版本分享到朋友
                         'chooseWXPay',//支付
+                        'chooseImage',
+                        'uploadImage',
+                        'getLocalImgData',
+                        'downloadImage',
                     ]
                 })
                 await that.$wx.error((res) => {

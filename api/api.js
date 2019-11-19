@@ -102,6 +102,16 @@ export default {
 
     },
     /**
+     * 微信公众号上传
+     * wx.chooseImage()选择文件
+     * wx.uploadImage()上传临时文件得到serverId
+     * 利用serverId，获取文件在在自己服务器的七牛云唯一名字
+     */
+    getFileFromWeChat(data){
+      return minRequest.get('/Index/getMediaId', data)
+    },
+
+    /**
      * 登录页面-获取协议
      */
     agreement (data) {

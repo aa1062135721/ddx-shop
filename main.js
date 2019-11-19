@@ -1,6 +1,10 @@
 import Vue from 'vue'
 import App from './App'
 
+// 微信公众号开发 调试工具
+import  VConsole from 'vconsole'
+new VConsole()
+
 // 引入路由文件
 import MinRouter from './router/MinRouter'
 Vue.use(MinRouter)

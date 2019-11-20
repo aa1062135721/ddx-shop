@@ -918,10 +918,10 @@
   justify-content: space-between;
   .left{
     .top{
-      font-size: $uni-font-size-lg;
+      font-size: $uni-font-size-base;
       .price{
         margin-right: 28upx;
-        font-size: $uni-font-size-lg;
+        font-size: $uni-font-size-base;
       }
       .time-kill{
 
@@ -931,7 +931,11 @@
       .old-price{
         text-decoration: line-through;
         color: #FBC7C7;
-        font-size: $uni-font-size-sm;
+        font-size: 22upx;
+      }
+      .mei-ren-xian-gou{
+        margin-left: 10upx;
+        font-size: 22upx;
       }
     }
   }

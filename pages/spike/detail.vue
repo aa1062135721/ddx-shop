@@ -74,9 +74,16 @@
                     </text>
                 </view>
                 <view class="bottom">
-                    <text class="old-price">
+                    <span class="old-price">
                         ￥{{goodsInfo.item.old_price}}
-                    </text>
+                    </span>
+                    <span class="mei-ren-xian-gou">每人限购:{{goodsInfo.people_num}}件</span>
+                    <span class="mei-ren-xian-gou" v-if="goodsInfo.item_specs.length === 1">
+                        已秒杀{{choosesGoodsInfo.specs.already_num}}件,剩余
+                        <block v-if="choosesGoodsInfo.specs.residue_num === -1">99<sup>+</sup></block>
+                        <block v-else>{{choosesGoodsInfo.specs.residue_num}}</block>
+                        件
+                    </span>
                 </view>
             </view>
             <view class="right">
@@ -417,6 +424,12 @@
                             <view class="price">￥{{choosesGoodsInfo.specs.price}}</view>
 <!--                            <view class="stock">限购: 5</view>-->
 <!--                            <view class="chooses"></view>-->
+                            <view class="stock">
+                                已秒杀{{choosesGoodsInfo.specs.already_num}}件，剩余
+                                <block v-if="choosesGoodsInfo.specs.residue_num === -1">99<sup>+</sup></block>
+                                <block v-else>{{choosesGoodsInfo.specs.residue_num}}</block>
+                                件
+                            </view>
                         </view>
                         <view class="close">
                             <text class="iconfont icon-ddx-shop-close" @click="close()"></text>
@@ -429,7 +442,7 @@
                             请选择规格
                         </view>
                         <view class="content">
-                            <text  v-for="(item, index) in goodsInfo.item_specs" :key="index" :class="{on: index === choosesGoodsInfo.specs_index}" @click="choosesSpecs(index, item)" >{{item.specs_names}}</text>
+                            <text  v-for="(item, index) in goodsInfo.item_specs" :key="index" :class="{on: item === choosesGoodsInfo.specs}" @click="choosesSpecs(index, item)" >{{item.specs_names}}</text>
                         </view>
                     </view>
                 </view>

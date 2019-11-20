@@ -215,8 +215,8 @@ exports.install = function (Vue, options) {
         let url = encodeURIComponent(window.location.href)
         await that.$minApi.getWxConfig({url}).then(async res => {
             if (res.code === 200) {
-                await that.$wx.config({
-                    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来
+                that.$wx.config({
+                    debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来
                     appId: res.data.appid, // 必填，公众号的唯一标识
                     timestamp: res.data.timestamp, // 必填，生成签名的时间戳
                     nonceStr: res.data.noncestr, // 必填，生成签名的随机串
@@ -232,9 +232,29 @@ exports.install = function (Vue, options) {
                         'uploadImage',
                         'getLocalImgData',
                         'downloadImage',
+                        'checkJsApi',
                     ]
                 })
-                await that.$wx.error((res) => {
+                that.$wx.ready(function () {
+                    that.$wx.checkJsApi({
+                        jsApiList: [
+                            'updateTimelineShareData', //1.4.0的 分享到朋友圈
+                            'onMenuShareTimeline', //老版本 分享到朋友圈
+                            'updateAppMessageShareData',//1.4.0分享到朋友
+                            'onMenuShareAppMessage',//老版本分享到朋友
+                            'chooseWXPay',//支付
+                            'chooseImage',
+                            'uploadImage',
+                            'getLocalImgData',
+                            'downloadImage',
+                            'checkJsApi',
+                        ],
+                        success: function (res) {
+                            console.log(res)
+                        }
+                    })
+                })
+                that.$wx.error((res) => {
                     that.msg(res)
                 })
             }
@@ -248,12 +268,10 @@ exports.install = function (Vue, options) {
     Vue.prototype.wxConigShareGoods = async (param1 = {}, param2 = {}) => {
         let that = new Vue()
         await setTimeout(async () => {
-            await that.$wx.ready(async () => {
-                //分享到朋友
-                await that.$wx.updateAppMessageShareData(param1)
-                // 分享到朋友圈
-                await that.$wx.updateTimelineShareData(param2)
-            })
-        }, 1000)
+            //分享到朋友
+            await that.$wx.updateAppMessageShareData(param1)
+            // 分享到朋友圈
+            await that.$wx.updateTimelineShareData(param2)
+        }, 400)
     }
 }

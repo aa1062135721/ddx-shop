@@ -80,8 +80,8 @@
 					<span class="mei-ren-xian-gou">每人限购:{{goodsInfo.people_num}}件</span>
 					<span class="mei-ren-xian-gou" v-if="goodsInfo.item_specs.length === 1">
                         已秒杀{{choosesGoodsInfo.specs.already_num}}件,剩余
-                        <block v-if="choosesGoodsInfo.specs.residue_num === -1">99<sup>+</sup></block>
-                        <block v-else>{{choosesGoodsInfo.specs.residue_num}}</block>
+                        <block v-if="choosesGoodsInfo.specs.over_num === -1">99<sup>+</sup></block>
+                        <block v-else>{{choosesGoodsInfo.specs.over_num}}</block>
                         件
                     </span>
 				</view>
@@ -520,8 +520,8 @@
 							<view class="stock">团员价：￥{{choosesGoodsInfo.specs.price}}</view>
 							<view class="stock">
 								已团{{choosesGoodsInfo.specs.already_num}}件，剩余
-								<block v-if="choosesGoodsInfo.specs.residue_num === -1">99<sup>+</sup></block>
-								<block v-else>{{choosesGoodsInfo.specs.residue_num}}</block>
+								<block v-if="choosesGoodsInfo.specs.over_num === -1">99<sup>+</sup></block>
+								<block v-else>{{choosesGoodsInfo.specs.over_num}}</block>
 								件
 							</view>
 						</view>

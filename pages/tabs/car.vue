@@ -193,16 +193,26 @@
             },
             //全选一个类型的商品
             choosesCatgrayGoods(key){
-                this.myResponseData[key].is_checked = true
-                console.log(key)
-                this.myResponseData[key].data.map((goods) => {
-                    if (goods.status === 1){
-                        goods.is_checked = true
-                    }
-                })
-                this.choosesGoodsType(key)
-                this.$forceUpdate()
-                this.getSumData()
+                if (this.myResponseData[key].is_checked === false){
+                    this.myResponseData[key].is_checked = true
+                    console.log(key)
+                    this.myResponseData[key].data.map((goods) => {
+                        if (goods.status === 1){
+                            goods.is_checked = true
+                        }
+                    })
+                    this.choosesGoodsType(key)
+                    this.$forceUpdate()
+                    this.getSumData()
+                } else { // 取消全选
+                    this.myResponseData[key].is_checked = false
+                    console.log(key)
+                    this.myResponseData[key].data.map((goods) => {
+                        goods.is_checked = false
+                    })
+                    this.$forceUpdate()
+                    this.getSumData()
+                }
             },
             //选择一个商品
             choosesGoods(key,goods_key){
@@ -228,30 +238,39 @@
             },
             //全选商品
             choosesAllGoods(){
-                this.myResponseData.map((item) => {
-                    let count = 0 //每个分类下 选中的商品个数
-                    item.data.map(goods => {
-                        if (goods.status === 1){
-                            goods.is_checked = true
-                            count ++
-                        }
-                    })
-                    if (item.data.length === count) {
-                        item.is_checked = true
-                    } else {
+                if (this.mySum.is_checked) {
+                    this.myResponseData.map((item) => {
                         item.is_checked = false
-                    }
-                    // 取消选择跨境商品
-                    if (item.mold_id === 1 && this.myResponseData.length !== 1) {
                         item.data.map(goods => {
-                            if (goods.status === 1){
-                                goods.is_checked = false
+                            goods.is_checked = false
+                        })
+                    })
+                } else {
+
+                    this.myResponseData.map((item) => {
+                        let count = 0 //每个分类下 选中的商品个数
+                        item.data.map(goods => {
+                            if (goods.status === 1) {
+                                goods.is_checked = true
+                                count++
                             }
                         })
-                        item.is_checked = false
-                    }
-                })
-
+                        if (item.data.length === count) {
+                            item.is_checked = true
+                        } else {
+                            item.is_checked = false
+                        }
+                        // 取消选择跨境商品
+                        if (item.mold_id === 1 && this.myResponseData.length !== 1) {
+                            item.data.map(goods => {
+                                if (goods.status === 1) {
+                                    goods.is_checked = false
+                                }
+                            })
+                            item.is_checked = false
+                        }
+                    })
+                }
                 this.$forceUpdate()
                 this.getSumData()
             },

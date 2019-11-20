@@ -4,6 +4,7 @@
             <view class="items">
                 <view class="item" :class="{'active' : chooseWho === 1}" @click="clickChangeWho(1)">分类</view>
                 <view class="item" :class="{'active' : chooseWho === 2}" @click="clickChangeWho(2)">品牌</view>
+                <view class="item" :class="{'active' : chooseWho === 3}" @click="clickChangeWho(3)">摩登汽车</view>
             </view>
             <view v-if="chooseWho === 1">
                 <mSearch  :show="false" v-model="searchVal" @search="goSearch"></mSearch>
@@ -89,6 +90,41 @@
                 </view>
             </view>
         </view>
+
+        <view class="city-select" v-if="chooseWho === 3">
+            <scroll-view :scroll-top="right_scroll_car" scroll-y="true" class="city-select-main" id="city-select-main">
+                <!-- 热门品牌 -->
+                <view class="hot-brand" id="city-letter-hot" v-if="brandArr_car[0].name === 'hot' && brandArr_car[0].data.length">
+                    <view class="title">热门品牌</view>
+                    <view class="box">
+                        <view class="item" v-for="(item, index) in brandArr_car[0].data" :key="index" @click="clickBrandCar(item)">
+                            <image :src="item.thumb"></image>
+                            <text>{{item.title}}</text>
+                        </view>
+                    </view>
+                </view>
+                <view class="citys">
+                    <view v-for="(item, index) in brandArr_car" :key="index">
+                        <block v-if="item.name !== 'hot' && item.data.length">
+                            <view class="citys-item-letter" :id="'city-letter-car-'+item.name">{{item.name}}</view>
+                            <view class="citys-item" v-for="(ite, inx) in item.data" :key="inx"  @click="clickBrandCar(ite)">
+                                <image :src="ite.thumb"></image><text>{{ite.title}}</text>
+                            </view>
+                        </block>
+                    </view>
+                </view>
+            </scroll-view>
+            <!-- 城市选择索引-->
+            <view class="city-indexs-view">
+                <view class="city-indexs">
+                    <block  v-for="(item, index) in brandArr_car" :key="index" >
+                        <view @click="cityindexCar(item.name)" v-if="item.data.length">
+                            {{item.name === 'hot' ? '#' : item.name}}
+                        </view>
+                    </block>
+                </view>
+            </view>
+        </view>
     </view>
 </template>
 
@@ -98,7 +134,7 @@
     export default {
         data() {
             return {
-                chooseWho:1,// 1=分类，2=品牌
+                chooseWho:1,// 1=分类，2=品牌  3=摩登汽车
 
                 searchVal: '',//搜索的内容
 
@@ -365,6 +401,10 @@
                 //     }
                 // ],
                 right_scroll: 0, //滑动值
+
+                // 摩登汽车
+                brandArr_car: [],
+                right_scroll_car: 0, //滑动值
             }
         },
         onLoad() {
@@ -379,10 +419,20 @@
             })
 
             // 获取品牌
-            this.$minApi.getBrand().then(res => {
+            this.$minApi.getBrand({type: 1}).then(res => {
                 console.log('获取品牌：', res)
                 if (res.code === 200) {
                     this.brandArr =  res.data
+                }
+            }).catch(err => {
+                console.log(err)
+            })
+
+            // 摩登汽车
+            this.$minApi.getBrand({type: 2}).then(res => {
+                console.log('获取品牌：', res)
+                if (res.code === 200) {
+                    this.brandArr_car =  res.data
                 }
             }).catch(err => {
                 console.log(err)
@@ -419,13 +469,44 @@
                 setTimeout(() => {
                     query.select('#city-letter-' + id).boundingClientRect(data => {
                         console.log("得到布局位置信息" + JSON.stringify(data));
-                        // console.log("节点离页面顶部的距离为" + data.top);
-                        that.right_scroll = data.top
+                        let statusbarHeight = 0;
+                        //APP内还要计算状态栏高度
+                        // #ifdef APP-PLUS
+                        statusbarHeight = plus.navigator.getStatusbarHeight()
+                        // #endif
+                        let headerHeight = uni.upx2px(90);
+                        that.right_scroll = data.top - headerHeight - statusbarHeight;
+                    }).exec();
+                }, 100);
+            },
+            //品牌被点击
+            clickBrand(item){
+                console.log(item)
+                this._goPage('goods_search', {brand: item.id, title: item.title})
+            },
+
+            // 品牌 索引点击
+            cityindexCar(id) {
+                //创建节点查询器
+                const query = uni.createSelectorQuery().in(this);
+                let that = this;
+                that.right_scroll_car = 0;
+                //滑动到指定位置(解决方法:重置到顶部，重新计算，影响:页面会闪一下)
+                setTimeout(() => {
+                    query.select('#city-letter-car-' + id).boundingClientRect(data => {
+                        console.log("得到布局位置信息" + JSON.stringify(data));
+                        let statusbarHeight = 0;
+                        //APP内还要计算状态栏高度
+                        // #ifdef APP-PLUS
+                        statusbarHeight = plus.navigator.getStatusbarHeight()
+                        // #endif
+                        let headerHeight = uni.upx2px(90);
+                        that.right_scroll_car = data.top - headerHeight - statusbarHeight;
                     }).exec();
                 }, 0);
             },
             //品牌被点击
-            clickBrand(item){
+            clickBrandCar(item){
                 console.log(item)
                 this._goPage('goods_search', {brand: item.id, title: item.title})
             },

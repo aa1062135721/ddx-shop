@@ -63,8 +63,7 @@
         },
         methods: {
             selectImg1 : function() {
-                _self.$wx.ready(() => {
-                    _self.$wx.chooseImage({
+                _self.$wx.chooseImage({
                         count: 1,
                         needResult: 1,
                         sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
@@ -92,7 +91,6 @@
                         fail: function (res) {
                             console.log(res)
                         }
-                    })
                 })
             },
             selectImg2 : function() {

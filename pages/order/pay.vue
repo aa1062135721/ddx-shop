@@ -7,7 +7,7 @@
         <form @submit="formSubmit" :report-submit="true">
             <view class="box">
                 <radio-group @change="radioChange">
-                    <label class="item">
+                    <label class="item" @click="radioChange({target:{value: '3'}})">
                         <view>
                             <view>钱包</view>
                             <view class="has-money">可用余额（包括已激活的限时余额）：¥{{userInfo.usable_money}}</view>
@@ -26,7 +26,7 @@
                                 </div>
                             </view>
                     </view>
-                    <label class="item">
+                    <label class="item" @click="radioChange({target:{value: '1'}})">
                         <view>
                             <view>微信支付</view>
                         </view>
@@ -63,6 +63,8 @@
                 if(!(uni.getStorageSync('refresh'))){
                     uni.setStorageSync('refresh', "ios进入支付页面需要强制刷新一波")
                     location.reload();
+                } else {
+                    uni.removeStorageSync('refresh');
                 }
             }
 
@@ -85,6 +87,7 @@
                 this.$openPage({name:url, query})
             },
             radioChange(evt) {
+                console.log(evt)
                 switch (evt.target.value) {
                     case '3':
                         console.log("支付方式（钱包）: ",evt.target.value)

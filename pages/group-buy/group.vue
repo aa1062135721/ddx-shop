@@ -22,7 +22,7 @@
             <view class="follow-official-account-alert">
                 <view class="box">
                     <view>
-                        <image class="img" src="../../static/images/main-qr-code.jpg" ></image>
+                        <image class="img" :src="qrCodeUrl"></image>
                     </view>
                     <view>
                         长按识别二维码
@@ -134,6 +134,7 @@
     let myTimer = null
     import uniPopup from '@/components/uni-popup/uni-popup.vue'
     import { mapState, mapMutations } from 'vuex'
+    import * as Constant from '../../utils/constant'
 
     export default {
         data() {
@@ -179,6 +180,7 @@
 
                 // 分享到好友，引导箭头是否显示
                 isShowShareH5: false,
+                qrCodeUrl: Constant[Constant.NODE_ENV].qrCodeUrl, // 微信公众号二维码
             }
         },
         methods: {

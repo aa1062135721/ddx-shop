@@ -37,6 +37,7 @@
 		},
 		data(){
         	return {
+        		isChoosesAddress: false,
 				list:[
 					// {
 					// 	id: 2,    //id
@@ -54,6 +55,12 @@
 		onLoad() {
 			// 解析路由参数
 			console.log("带过来的参数",this.$parseURL())
+		},
+		onUnload(){
+        	if (!this.isChoosesAddress){
+        		console.log('没有选择任何地址')
+				this.$eventHub.$emit('address', {})
+			}
 		},
 		onShow(){
 			this.loadData()
@@ -73,6 +80,7 @@
 				})
 			},
 			choosesAddress(address) {
+            	this.isChoosesAddress = true
             	console.log('您选择的收货地址是：', address)
 				let _this = this
 				uni.navigateBack({

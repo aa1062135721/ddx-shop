@@ -18,11 +18,11 @@
             </view>
         </view>
         <!-- 关注公众号 弹窗，弹出二维码 -->
-        <uni-popup ref="followOfficialAccountAlert" type="center" :custom="true" v-if="!subscribe">
+        <uni-popup ref="followOfficialAccountAlert" type="center" :custom="true">
             <view class="follow-official-account-alert">
                 <view class="box">
                     <view>
-                        <image class="img" src="../../static/images/main-qr-code.jpg" ></image>
+                        <image class="img" :src="qrCodeUrl" ></image>
                     </view>
                     <view>
                         长按识别二维码
@@ -509,6 +509,7 @@
     import uniNumberBox from "@/components/uni-number-box/uni-number-box.vue"
     import uniPopup from '@/components/uni-popup/uni-popup.vue'
     import { mapState, mapMutations } from 'vuex'
+    import * as Constant from '../../utils/constant'
 
     export default {
         name: "detail",
@@ -604,6 +605,7 @@
 
                 //h5的分享引导显示与否
                 isShowShareH5: false,
+                qrCodeUrl: Constant[Constant.NODE_ENV].qrCodeUrl, // 微信公众号二维码
             }
         },
         methods: {

@@ -8,7 +8,7 @@
             <button class="seed-msg" size="mini" plain :class="{'on': canGetCode}" :disabled="!canGetCode" @click="getCode">获取验证码</button>
         </view>
         <view>
-            <view class="btn" :class="{'on': (!canGetCode) || (code.length === 0)}" @click="login">登录</view>
+            <view class="btn" @click="login">登录</view>
         </view>
     </view>
 </template>

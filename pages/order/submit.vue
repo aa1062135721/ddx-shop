@@ -237,8 +237,11 @@
                                                     _that._goPage('address_chooses')
                                                 }
                                                 if (res.code === 208) { // 您当前存在未支付的秒杀订单,请先支付，需跳转到支付界面，返回的data为订单信息,order_id":3812,"amount":"119.00
-                                                    _that._goPage('order_pay', {
-                                                        amount: res.data.amount,      //总金额
+                                                    // _that._goPage('order_pay', {
+                                                    //     amount: res.data.amount,      //总金额
+                                                    //     order_id: res.data.order_id      //订单id
+                                                    // })
+                                                    _that._goPage('order_detail', {
                                                         order_id: res.data.order_id      //订单id
                                                     })
                                                 }
@@ -275,8 +278,11 @@
                                                     _that._goPage('address_chooses')
                                                 }
                                                 if (res.code === 208) { // 您当前存在未支付的秒杀订单,请先支付，需跳转到支付界面，返回的data为订单信息,order_id":3812,"amount":"119.00
-                                                    _that._goPage('order_pay', {
-                                                        amount: res.data.amount,      //总金额
+                                                    // _that._goPage('order_pay', {
+                                                    //     amount: res.data.amount,      //总金额
+                                                    //     order_id: res.data.order_id      //订单id
+                                                    // })
+                                                    _that._goPage('order_detail', {
                                                         order_id: res.data.order_id      //订单id
                                                     })
                                                 }
@@ -314,8 +320,11 @@
                                                     _that._goPage('address_chooses')
                                                 }
                                                 if (res.code === 208) { // 您当前存在未支付的秒杀订单,请先支付，需跳转到支付界面，返回的data为订单信息,order_id":3812,"amount":"119.00
-                                                    _that._goPage('order_pay', {
-                                                        amount: res.data.amount,      //总金额
+                                                    // _that._goPage('order_pay', {
+                                                    //     amount: res.data.amount,      //总金额
+                                                    //     order_id: res.data.order_id      //订单id
+                                                    // })
+                                                    _that._goPage('order_detail', {
                                                         order_id: res.data.order_id      //订单id
                                                     })
                                                 }
@@ -352,8 +361,11 @@
                                                     _that._goPage('address_chooses')
                                                 }
                                                 if (res.code === 208) { // 您当前存在未支付的秒杀订单,请先支付，需跳转到支付界面，返回的data为订单信息,order_id":3812,"amount":"119.00
-                                                    _that._goPage('order_pay', {
-                                                        amount: res.data.amount,      //总金额
+                                                    // _that._goPage('order_pay', {
+                                                    //     amount: res.data.amount,      //总金额
+                                                    //     order_id: res.data.order_id      //订单id
+                                                    // })
+                                                    _that._goPage('order_detail', {
                                                         order_id: res.data.order_id      //订单id
                                                     })
                                                 }

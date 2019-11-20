@@ -41,7 +41,7 @@
                         下单时间：{{item.order_info.add_time}}
                     </view>
                 </view>
-                <view class="order-item-content" v-for="(goods, goods_index) in item.item_list" :key="goods_index">
+                <view class="order-item-content" v-for="(goods, goods_index) in item.order_info.item_list" :key="goods_index">
                     <view class="goods-image">
                         <image class="img" :src="goods.pic"></image>
                     </view>

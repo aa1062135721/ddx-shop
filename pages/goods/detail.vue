@@ -44,9 +44,9 @@
 				<view class="middle">
 					<view v-for="(anchor,index) in anchorlist" :class="[selectAnchor==index ?'on':'']" :key="index" @tap="toAnchor(index)">{{anchor.name}}</view>
 				</view>
-				<view class="icon-btn" @click="openShareH5"><!-- openShare 微信小程序的分享功能--->
-					<view class="icon iconfont icon-ddx-shop-share"></view>
-				</view>
+<!--				<view class="icon-btn" @click="openShareH5">-->
+<!--					<view class="icon iconfont icon-ddx-shop-share"></view>-->
+<!--				</view>-->
 			</view>
 		</view>
 		<!-- 商品主图轮播 -->
@@ -75,8 +75,14 @@
 				</view>
 			</view>
 			<view class="title">
-				<text class="tag" v-if="goodsInfo.mold">{{goodsInfo.mold}}</text>
-				{{goodsInfo.title}}
+				<div class="title-left">
+					<text class="tag" v-if="goodsInfo.mold">{{goodsInfo.mold}}</text>
+					{{goodsInfo.title}}
+				</div>
+				<div class="title-right" @click="openShareH5">
+					<span class="iconfont icon-ddx-shop-share"></span>
+					<span class="share-money" v-show="goodsInfo.ratio !== '0.00'">赚{{goodsInfo.ratio}}</span>
+				</div>
 			</view>
 			<!-- 子标题  承诺  -->
 			<view class="sub-title" v-if="goodsInfo.subtitle">

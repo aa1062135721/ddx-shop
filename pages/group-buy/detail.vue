@@ -43,9 +43,9 @@
 				<view class="middle">
 					<view v-for="(anchor,index) in anchorlist" :class="[selectAnchor==index ?'on':'']" :key="index" @tap="toAnchor(index)">{{anchor.name}}</view>
 				</view>
-				<view class="icon-btn" @click="openShareH5">
-					<view class="icon iconfont icon-ddx-shop-share"></view>
-				</view>
+<!--				<view class="icon-btn" @click="openShareH5">-->
+<!--					<view class="icon iconfont icon-ddx-shop-share"></view>-->
+<!--				</view>-->
 			</view>
 		</view>
 		<!-- 商品主图轮播 -->
@@ -122,8 +122,14 @@
 		<!-- 标题 -->
 		<view class="info-box goods-info">
 			<view class="title">
-				<text class="tag" v-if="goodsInfo.item.mold_id">{{goodsInfo.item.mold}}</text>
-				{{goodsInfo.item.title}}
+				<div class="title-left">
+					<text class="tag" v-if="goodsInfo.item.mold_id">{{goodsInfo.item.mold}}</text>
+					{{goodsInfo.item.title}}
+				</div>
+				<div class="title-right" @click="openShareH5">
+					<span class="iconfont icon-ddx-shop-share"></span>
+					<span class="share-money" v-show="goodsInfo.item.ratio !== '0.00'">赚{{goodsInfo.item.ratio}}</span>
+				</div>
 			</view>
 			<!-- 子标题  承诺  -->
 			<view class="sub-title" v-if="goodsInfo.item.subtitle">
@@ -490,7 +496,7 @@
 				</view>
 				<view class="buy my-vam" @click="open()" v-if="goodsInfo.status === 1">
 						<block v-if="choosesGoodsInfo.assemble_list_id">一键参团</block>
-						<block v-else>一键拼团</block>
+						<block v-else>一键开团</block>
 				</view>
 				<view class="buy my-vam" v-if="goodsInfo.status === 2"  style="background:#F9A13A;">
 						待开始

@@ -76,12 +76,12 @@
                                 localId: data.localIds[0], // 需要上传的图片的本地ID，由chooseImage接口获得
                                 isShowProgressTips: 1, // 默认为1，显示进度提示
                                 success: async function (res) {
-                                    await _self.$minApi.getFileFromWeChat({media_id: res.serverId}).then(res => {
-                                        if (res.code === 200){
-                                            _self.responseData.idCard1 = res.data.key
+                                    await _self.$minApi.getFileFromWeChat({media_id: res.serverId}).then(res1 => {
+                                        if (res1.code === 200){
+                                            _self.responseData.idCard1 = res1.data.key
                                         }
-                                    }).catch(err => {
-                                        console.log(err)
+                                    }).catch(err1 => {
+                                        console.log(err1)
                                     })
                                 },
                                 fail: function (error) {
@@ -96,7 +96,6 @@
                 })
             },
             selectImg2 : function() {
-                _self.$wx.ready(() => {
                     _self.$wx.chooseImage({
                         count: 1,
                         needResult: 1,
@@ -109,12 +108,12 @@
                                 localId: data.localIds[0], // 需要上传的图片的本地ID，由chooseImage接口获得
                                 isShowProgressTips: 1, // 默认为1，显示进度提示
                                 success: async function (res) {
-                                    await _self.$minApi.getFileFromWeChat({media_id: res.serverId}).then(res => {
-                                        if (res.code === 200){
-                                            _self.responseData.idCard2 = res.data.key
+                                    await _self.$minApi.getFileFromWeChat({media_id: res.serverId}).then(res1 => {
+                                        if (res1.code === 200){
+                                            _self.responseData.idCard2 = res1.data.key
                                         }
-                                    }).catch(err => {
-                                        console.log(err)
+                                    }).catch(err1 => {
+                                        console.log(err1)
                                     })
                                 },
                                 fail: function (error) {
@@ -126,7 +125,6 @@
                             console.log(res)
                         }
                     })
-                })
             },
             previewImg1 : function(){
                 if ( this.idCard1 !== '../static/idcard1.png' ){

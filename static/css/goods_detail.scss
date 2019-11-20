@@ -215,14 +215,38 @@
   .title {
     @extend %overflow-2-line;
     text-align: justify;
+    display: flex;
+    justify-content: space-between;
     color: $color-primary-plain;
     font-size: $uni-font-size-lg;
-    .tag{
-      background: $color-primary;
-      color: #ffffff;
-      padding: 0 8upx;
-      margin-right: $uni-spacing-row-base;
-      border-radius: $uni-border-radius-sm;
+    width: 100%;
+    .title-left{
+      max-width: 85%;
+      .tag{
+        background: $color-primary;
+        font-size: $uni-font-size-base;
+        color: #ffffff;
+        padding: 0 8upx;
+        margin-right: $uni-spacing-row-base;
+        border-radius: $uni-border-radius-sm;
+      }
+    }
+    .title-right{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 10%;
+      color: #DB9F0F;
+      .iconfont{
+        font-size: $uni-font-size-sm * 2;
+        color: #DB9F0F;
+      }
+      .share-money{
+        white-space: nowrap;
+        font-size: $uni-font-size-sm;
+        color: #DB9F0F;
+      }
     }
   }
   /* 子标题 */

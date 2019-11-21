@@ -48,6 +48,8 @@
         name: "order_evaluate",
         data(){
           return {
+              // 多图上传 临时保存
+              picList: [],
               goodsList:[]
           }
         },
@@ -94,25 +96,8 @@
                         sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
                         success: async function (data) {
                             // 返回选定照片的本地ID列表，data.localIds[0]可以作为img标签的src属性显示图片
-                            data.localIds.map(async (item) => {
-                                // 上传背面
-                                await _self.$wx.uploadImage({
-                                    localId: item, // 需要上传的图片的本地ID，由chooseImage接口获得
-                                    isShowProgressTips: 0, // 默认为1，显示进度提示
-                                    success: async function (res) {
-                                        await _self.$minApi.getFileFromWeChat({media_id: res.serverId}).then(res => {
-                                            if (res.code === 200){
-                                                _self.goodsList[index].requestData.pics.push(res.data.url)
-                                            }
-                                        }).catch(err => {
-                                            console.log(err)
-                                        })
-                                    },
-                                    fail: function (error) {
-                                        console.log(error)
-                                    }
-                                })
-                            })
+                            _self.picList = data.localIds
+                            _self.myUploadImg(index)
                         },
                         fail: function (res) {
                             console.log(res)
@@ -120,6 +105,31 @@
                     })
                 })
             },
+            //多图上传
+            async myUploadImg(index) {
+                let _self = this
+                let localId = _self.picList.pop();
+                // 上传背面
+                await _self.$wx.uploadImage({
+                        localId: localId, // 需要上传的图片的本地ID，由chooseImage接口获得
+                        isShowProgressTips: 0, // 默认为1，显示进度提示
+                        success: async function (res) {
+                            await _self.$minApi.getFileFromWeChat({media_id: res.serverId}).then(res => {
+                                if (res.code === 200){
+                                    _self.goodsList[index].requestData.pics.push(res.data.url)
+                                }
+                                _self.myUploadImg(index)
+                            }).catch(err => {
+                                console.log(err)
+                                _self.myUploadImg(index)
+                            })
+                        },
+                        fail: function (error) {
+                            console.log(error)
+                        }
+                    })
+            },
+
             delImg(index, sIndex){
                 console.log("下标：",index,sIndex)
                 this.goodsList[index].requestData.pics.splice(sIndex,1)
@@ -129,9 +139,9 @@
                 console.log('curStar:', e.curStar)
                 this.goodsList[index].requestData.level = e.curStar
             },
-            mySubmit(){
-                console.log(this.goodsList)
+           async mySubmit(){
                 let requestData = []
+
                 this.goodsList.map((item) => {
                     let oRequest = {
                         level:0,//评分
@@ -142,8 +152,9 @@
                         pic:'',//图片地址，用逗号相隔
                     }
 
-                    if (!item.requestData.level) {
+                    if (item.requestData.level === 0) {
                         this.msg(`【${item.subtitle}】商品没有评分`)
+                        return
                     }
                     oRequest.level = item.requestData.level
 
@@ -160,19 +171,17 @@
                     requestData.push(oRequest)
                 })
 
-                if (requestData.length === this.goodsList.length){
-                    console.log("要提交的数据",requestData)
-                    requestData.map((item, index)=> {
-                        this.$minApi.addGoodsComment(item).then(res => {
-                            console.log(res)
-                            if (index + 1 === requestData.length){
-                                setTimeout(()=>{ uni.navigateBack() }, 1000)
-                            }
-                        })
+                await requestData.map(async (item)=> {
+                    await this.$minApi.addGoodsComment(item).then(res => {
+                        console.log(res)
+                    }).catch(err => {
+                        console.log(err)
                     })
-                } else {
-                    console.log("请完善数据后在提交")
-                }
+                })
+
+                setTimeout(()=> {
+                   uni.navigateBack()
+                }, 400)
             },
         },
         components: {

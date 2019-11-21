@@ -216,7 +216,7 @@ exports.install = function (Vue, options) {
         await that.$minApi.getWxConfig({url}).then(async res => {
             if (res.code === 200) {
                 that.$wx.config({
-                    debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来
+                    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来
                     appId: res.data.appid, // 必填，公众号的唯一标识
                     timestamp: res.data.timestamp, // 必填，生成签名的时间戳
                     nonceStr: res.data.noncestr, // 必填，生成签名的随机串

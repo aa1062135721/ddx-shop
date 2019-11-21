@@ -69,7 +69,7 @@
                         sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
                         sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
                         success: async function (data) {
-                            _self.idCard1 = data.localIds[0];   // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                            // _self.idCard1 = data.localIds[0];   // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
                             // 上传背面
                             await _self.$wx.uploadImage({
                                 localId: data.localIds[0], // 需要上传的图片的本地ID，由chooseImage接口获得
@@ -77,6 +77,7 @@
                                 success: async function (res) {
                                     await _self.$minApi.getFileFromWeChat({media_id: res.serverId}).then(res1 => {
                                         if (res1.code === 200){
+                                            _self.idCard1 = res1.data.url
                                             _self.responseData.idCard1 = res1.data.key
                                         }
                                     }).catch(err1 => {
@@ -100,14 +101,15 @@
                         sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
                         sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
                         success: async function (data) {
-                            _self.idCard2 = data.localIds[0]   // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-                            // 上传背面
+                            // _self.idCard2 = data.localIds[0]   // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                            // // 上传背面
                             await _self.$wx.uploadImage({
                                 localId: data.localIds[0], // 需要上传的图片的本地ID，由chooseImage接口获得
                                 isShowProgressTips: 1, // 默认为1，显示进度提示
                                 success: async function (res) {
                                     await _self.$minApi.getFileFromWeChat({media_id: res.serverId}).then(res1 => {
                                         if (res1.code === 200){
+                                            _self.idCard2 = res1.data.url
                                             _self.responseData.idCard2 = res1.data.key
                                         }
                                     }).catch(err1 => {

@@ -110,6 +110,9 @@
         name: "order_return_refund",
         data(){
             return {
+                // 多图上传 临时保存
+                picList: [],
+
                 orderGoodsData:{
                     attr_name: "",
                     deliver: "",
@@ -172,26 +175,8 @@
                         sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
                         sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
                         success: async function (data) {
-                          // 返回选定照片的本地ID列表，data.localIds[0]可以作为img标签的src属性显示图片
-                            data.localIds.map(async (item) => {
-                                // 上传背面
-                                await _self.$wx.uploadImage({
-                                    localId: item, // 需要上传的图片的本地ID，由chooseImage接口获得
-                                    isShowProgressTips: 0, // 默认为1，显示进度提示
-                                    success: async function (res) {
-                                        await _self.$minApi.getFileFromWeChat({media_id: res.serverId}).then(res => {
-                                            if (res.code === 200){
-                                                _self.requestData.pics.push(res.data.url)
-                                            }
-                                        }).catch(err => {
-                                            console.log(err)
-                                        })
-                                    },
-                                    fail: function (error) {
-                                        console.log(error)
-                                    }
-                                })
-                            })
+                            // 返回选定照片的本地ID列表，data.localIds[0]可以作为img标签的src属性显示图片
+                            _self.picList = data.localIds
                         },
                         fail: function (res) {
                             console.log(res)
@@ -199,6 +184,32 @@
                     })
                 })
             },
+
+            //多图上传
+            async myUploadImg() {
+                let _self = this
+                let localId = _self.picList.pop()
+                // 上传背面
+                await _self.$wx.uploadImage({
+                        localId: localId, // 需要上传的图片的本地ID，由chooseImage接口获得
+                        isShowProgressTips: 0, // 默认为1，显示进度提示
+                        success: async function (res) {
+                            await _self.$minApi.getFileFromWeChat({media_id: res.serverId}).then(res1 => {
+                                if (res1.code === 200){
+                                    _self.requestData.pics.push(res1.data.url)
+                                }
+                                _self.myUploadImg() // 调用自己
+                            }).catch(err => {
+                                console.log(err)
+                                _self.myUploadImg()  // 调用自己
+                            })
+                        },
+                        fail: function (error) {
+                            console.log(error)
+                        }
+                })
+            },
+
             //删除图片
             delImg(sIndex){
                 this.requestData.pics.splice(sIndex,1)

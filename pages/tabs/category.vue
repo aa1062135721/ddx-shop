@@ -523,10 +523,14 @@
     }
 </script>
 
-<style lang="scss">
-
+<style lang="scss" scoped>
+    page{
+        background-color: #F2F2F2;
+    }
     .my-tabs{
         width: 100%;
+        height: 90upx;
+        z-index: 9999;
         background: #ffffff;
         position: fixed;
         top: 0;
@@ -670,7 +674,6 @@
         top: 90upx;
         width: 100vw;
         height: calc(100vh - 90upx);
-        background: #F6F5FA;
         //宽度转换vw
         @function vww($number) {
             @return ($number / 375)*750+rpx;
@@ -683,8 +686,8 @@
 
         .city-select-main {
             position: relative;
-            // overflow: scroll;
-            // -webkit-overflow-scrolling: touch;
+            /*overflow: scroll;*/
+            /*-webkit-overflow-scrolling: touch;*/
             width: 100%;
             height: 100%;
             /* #ifdef H5 */

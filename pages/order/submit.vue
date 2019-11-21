@@ -48,11 +48,11 @@
             <view class="section">
                 <view class="shop-name" style="border: none;">
                     <view>商品金额</view>
-                    <view style="color: #dd524d;">￥{{sumMoney}}</view>
+                    <view style="color: #dd524d;">￥{{sumMoney | moneyToFixed}}</view>
                 </view>
                 <view class="shop-name" style="border: none;">
                     <view>运费</view>
-                    <view>￥{{freight}}</view>
+                    <view>￥{{freight | moneyToFixed}}</view>
                 </view>
             </view>
         </view>

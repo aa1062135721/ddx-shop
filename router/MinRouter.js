@@ -72,17 +72,11 @@ function openPage(args) {
                     this.$store.dispatch('asyncGetUserInfo')//获取用户数据 并存vuex 临时存储
                 } else {
                     this.loginWithOfficalAccount()
+                    throw new Error(`跳转登录流程`)
                 }
             } else {
                 this.msg('请在微信浏览器中打开')
-                console.log('跳转回首页')
-                return new Promise((resolve, reject) => {
-                    uni.navigateTo({
-                        url: `/pages/tabs/home`,
-                        success: resolve,
-                        fail: reject
-                    })
-                })
+                throw new Error(`请在微信浏览器中打开`)
             }
         }
     }

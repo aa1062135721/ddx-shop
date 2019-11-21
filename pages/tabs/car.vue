@@ -3,7 +3,7 @@
         <view class="car-list">
 
             <view class="section" v-for="(item, key) in myResponseData" :key="key">
-                <view class="shop-name">
+                <view class="shop-name" v-if="item.data.length">
                     <view class="name" @click="choosesCatgrayGoods(key)">
                         <view class="iconfont icon-ddx-shop-xuanze icon-color" v-if="item.is_checked"></view>
                         <view class="iconfont icon-ddx-shop-circle" v-else></view>
@@ -11,34 +11,52 @@
                     </view>
                     <view @click="deleteShop(key)"><i class="iconfont icon-ddx-shop-del"></i></view>
                 </view>
-                <view class="goods" v-for="(goods, goods_key) in item.data" :key="goods_key">
-                    <view class="chooses">
-                        <i class="iconfont icon-ddx-shop-xuanze icon-color" v-if="goods.is_checked" @click="choosesGoods(key,goods_key)"></i>
-                        <i class="iconfont icon-ddx-shop-circle" v-else @click="choosesGoods(key,goods_key)"></i>
-                    </view>
-                    <view class="goods-img" @click="_goPage('goods_detail', {id: goods.item_id})">
-                        <image class="img"  :src="goods.pic"></image>
-                        <view class="mask" v-if="goods.status !== 1"></view>
-                        <view class="tips" v-if="goods.status === 0">已下架</view>
-                        <view class="tips" v-if="goods.status === 3">已失效</view>
-                    </view>
-                    <view class="other">
-                        <view class="title-specification">
-                            <view class="title">{{goods.title}}</view>
-                            <view class="specification" v-if="goods.key_name">
-                                规格:
-                                <text v-for="(category, category_key) in goods.categoryArr" :key="category_key">{{category}} </text>
+            <block v-if="item.data.length">
+                <uni-swipe-action v-for="(goods, goods_key) in item.data" :key="goods_key">
+                    <uni-swipe-action-item
+                            :auto-close="false"
+                            :show="goods.isShowDel"
+                            @change="change($event, key, goods_key)"
+                            :options="[
+                                 {
+                                     text: '删除',
+                                     key:key,
+                                     goods_key:goods_key,
+                                      style: {
+                                          backgroundColor: '#FC5A5A'
+                                      }
+                                 }
+                            ]" @click="delOneCar" class="goods">
+                            <view class="chooses">
+                                <i class="iconfont icon-ddx-shop-xuanze icon-color" v-if="goods.is_checked" @click="choosesGoods(key,goods_key)"></i>
+                                <i class="iconfont icon-ddx-shop-circle" v-else @click="choosesGoods(key,goods_key)"></i>
                             </view>
-                        </view>
-                        <view class="money">
-                            <view class="money-num">￥{{goods.price}}</view>
-                            <view>
-                                <uni-number-box v-if="goods.store === -1" :min="1"  :step="1" :value="goods.num" @change="changeStock($event, key, goods_key)"></uni-number-box>
-                                <uni-number-box v-else :min="1" :max="goods.store" :step="1" :value="goods.num" @change="changeStock($event, key, goods_key)"></uni-number-box>
+                            <view class="goods-img" @click="_goPage('goods_detail', {id: goods.item_id})">
+                                <image class="img"  :src="goods.pic"></image>
+                                <view class="mask" v-if="goods.status !== 1"></view>
+                                <view class="tips" v-if="goods.status === 0">已下架</view>
+                                <view class="tips" v-if="goods.status === 3">已失效</view>
                             </view>
-                        </view>
-                    </view>
-                </view>
+                            <view class="other">
+                                <view class="title-specification">
+                                    <view class="title">{{goods.title}}</view>
+                                    <view class="specification" v-if="goods.key_name">
+                                        规格:
+                                        <text v-for="(category, category_key) in goods.categoryArr" :key="category_key">{{category}} </text>
+                                    </view>
+                                </view>
+                                <view class="money">
+                                    <view class="money-num">￥{{goods.price}}</view>
+                                    <view>
+                                        <uni-number-box v-if="goods.store === -1" :min="1"  :step="1" :value="goods.num" @change="changeStock($event, key, goods_key)"></uni-number-box>
+                                        <uni-number-box v-else :min="1" :max="goods.store" :step="1" :value="goods.num" @change="changeStock($event, key, goods_key)"></uni-number-box>
+                                    </view>
+                                </view>
+                            </view>
+                    </uni-swipe-action-item>
+                </uni-swipe-action>
+            </block>
+
             </view>
             <uni-load-more :status="moreStatus" v-if="myResponseData.length !== 0"></uni-load-more>
         </view>
@@ -70,6 +88,8 @@
 <script>
     import uniNumberBox from "@/components/uni-number-box/uni-number-box.vue"
     import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue'
+    import uniSwipeAction from '@/components/uni-swipe-action/uni-swipe-action.vue'
+    import uniSwipeActionItem from '@/components/uni-swipe-action-item/uni-swipe-action-item.vue'
     import { mapState } from 'vuex'
 
     export default {
@@ -107,6 +127,28 @@
             await this.loadData()
         },
         methods:{
+            // 删除购物车
+            async delOneCar(e){
+                console.log(e)
+                let requestData = {
+                    id: this.myResponseData[e.content.key].data[e.content.goods_key].id
+                }
+                await this.$minApi.carDel(requestData).then(res => {
+                    if (res.code === 200){
+                        this.myResponseData[e.content.key].data.splice(e.content.goods_key, 1)
+                        if (this.myResponseData[e.content.key].data.length === 0) {
+                            this.myResponseData.splice(e.content.key, 1)
+                        }
+                        this.getSumData()
+                        this.$forceUpdate()
+                    }
+                })
+            },
+            change(open, key, goods_key){
+                console.log(open, key, goods_key)
+                this.myResponseData[key].data[goods_key].isShowDel = open
+                this.$forceUpdate()
+            },
             async loadData(){
                 this.moreStatus = "loading"
                 let data = {
@@ -176,20 +218,12 @@
                     this.msg('没有选择商品哦')
                 }
             },
+            // 单击删除 一个分类 显示出部分 这个分类 下的所有商品的删除按钮
             async deleteShop(key){
-                let arr_ids = this.myResponseData[key].data.map((item) => {
-                    return item.id
+                this.myResponseData[key].data.map((item) => {
+                   item.isShowDel = true
                 })
-                let data = {
-                    id: arr_ids.join(','),
-                }
-                console.log("下标: ",key , '要删除的ids', arr_ids)
-                await this.$minApi.carDel(data).then(res => {
-                    if (res.code === 200){
-                        this.myResponseData.splice(key,1)
-                        this.getSumData()
-                    }
-                })
+                this.$forceUpdate()
             },
             //全选一个类型的商品
             choosesCatgrayGoods(key){
@@ -294,9 +328,10 @@
             _myResponseData(){
                 let map = {}, dest = []
                 for(let i = 0; i < this.responseData.length; i++){
-                    let ai = this.responseData[i]
-                    ai.is_checked = false
-                    ai.categoryArr = this.responseData[i].key_name.length ? this.responseData[i].key_name.split('_') : []
+                    let ai = this.responseData[i] // 一个分类下的一个子商品
+                    ai.is_checked = false // 一个分类下的一个子商品 是否被选中
+                    ai.isShowDel = false  // 一个分类下的一个子商品 是否显示删除按钮
+                    ai.categoryArr = this.responseData[i].key_name.length ? this.responseData[i].key_name.split('_') : [] // 一个分类下的一个子商品 规格
                     if(!map[ai.mold_id]){
                         dest.push({
                             is_checked: false,//是否全选一个分类
@@ -372,11 +407,16 @@
         computed:{
             ...mapState(['userInfo']),
         },
-        components: {uniNumberBox,uniLoadMore,}
+        components: {
+            uniNumberBox,
+            uniLoadMore,
+            uniSwipeAction,
+            uniSwipeActionItem,
+        }
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .container{
         .car-list{
             padding-bottom: $uni-spacing-col-lg * 4;
@@ -402,28 +442,27 @@
                 .goods{
                     display: flex;
                     justify-content: space-between;
-                    padding: $uni-spacing-row-sm;
+                    align-items: center;
                     width: 100%;
-                    height: 23.5%;
                     .chooses{
+                        padding:0 $uni-spacing-row-sm;
                         display: flex;
                         align-items:center;
-                        margin-right: $uni-spacing-row-sm;
                     }
                     .goods-img{
+                        padding:$uni-spacing-row-sm $uni-spacing-row-sm $uni-spacing-row-sm 0;
                         position: relative;
-                        margin-right: $uni-spacing-row-sm;
                         .img{
-                            width: 200upx;
-                            height: 200upx;
-                            border-radius: $uni-border-radius-sm;
+                            width: 180upx;
+                            height: 180upx;
+                            border-radius: 4px;
                         }
                         .mask{
                             position: absolute;
                             top: 0;
                             left: 0;
-                            width: 200upx;
-                            height: 200upx;
+                            width: 180upx;
+                            height: 180upx;
                             background: #FFFFFF;
                             opacity: 0.5;
                         }
@@ -446,6 +485,7 @@
                     }
                     .other{
                         width: 57%;
+                        padding: $uni-spacing-row-sm 0;
                         display: flex;
                         flex-direction:column;
                         justify-content: space-between;

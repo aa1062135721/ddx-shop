@@ -235,6 +235,8 @@ exports.install = function (Vue, options) {
                         'checkJsApi',
                     ]
                 })
+                /*
+
                 that.$wx.ready(function () {
                     that.$wx.checkJsApi({
                         jsApiList: [
@@ -257,6 +259,8 @@ exports.install = function (Vue, options) {
                 that.$wx.error((res) => {
                     that.msg(res)
                 })
+
+                 */
             }
         })
     }

@@ -788,10 +788,6 @@
                     title: this.choosesGoodsInfo.specs.item_name,// "测试2",//商品标题
                 }
                 myResponseData[0].data.push(goods)
-                if (this.goodsInfo.attributes !== this.choosesGoodsInfo.specs.specs_names){
-                    this.msg('请选择规格')
-                    return
-                }
                 this._goPage('order_submit', {
                     myResponseData,//购买的商品数据
                     sumNum,//件数

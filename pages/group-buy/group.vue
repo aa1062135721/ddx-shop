@@ -82,6 +82,9 @@
                     <image src="../../static/images/help.png" class="img no-img"></image>
                 </view>
             </view>
+            <div class="qr-code">
+                <canvas canvas-id="myCanvas" id="canvas"/>
+            </div>
             <view class="btns">
                 <button class="btn active" v-if="responseData.status === 1 && responseData.r_num !== 0 && is_show_order" @click="shareGroup" open-type="share">已参团，邀请好友参团</button>
                 <view class="btn plain" v-if="responseData.status === 2" @click="_goPage('group_buy')">去开一团</view>
@@ -135,6 +138,7 @@
     import uniPopup from '@/components/uni-popup/uni-popup.vue'
     import { mapState, mapMutations } from 'vuex'
     import * as Constant from '../../utils/constant'
+    import Qrcode from '../../utils/qrcode/qrcode.js'
 
     export default {
         data() {
@@ -330,6 +334,12 @@
                     })
                 }
             })
+
+            let qrcode = new Qrcode({
+                'level': 'L',
+                'size': 160
+            });
+            qrcode.draw('myCanvas', url)
         },
         onUnload(){
             clearInterval(myTimer);
@@ -424,7 +434,7 @@
                     color: $color-primary;
                 }
                 .time{
-                    color: #000;
+                    color: $color-primary;
                 }
             }
             .heads{
@@ -432,7 +442,8 @@
                 width: 100%;
                 display: flex;
                 flex-wrap: wrap;
-                justify-content: flex-start;
+                justify-content: center;
+                align-items: center;
                 margin-bottom: 38upx;
                 .head{
                     position: relative;
@@ -461,6 +472,17 @@
                         color: #ffffff;
                         border-radius: 14upx;
                     }
+                }
+            }
+            .qr-code{
+                display: flex;
+                padding: 20upx;
+                justify-content: center;
+                #canvas{
+                    border: 1px solid #F2F2F2;
+                    height: 160px;
+                    width: 160px;
+                    border-radius: 4px;
                 }
             }
             .btns{

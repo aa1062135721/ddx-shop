@@ -945,11 +945,11 @@
 					if ((await this.getPlatform()).isAndroid){
 						await this.wxConfig()
 					}
-					let url = ''
+					let url = this.currentUrlDelParam('user_id')
+					url = this.urlDelParam(url, 'code')
+					url = this.urlDelParam(url, 'state')
 					if(this.userInfo.id) {
 						url = window.location.href + '&user_id=' + this.userInfo.id
-					} else {
-						url = window.location.href
 					}
 					this.$nextTick(() => {
 						this.calcAnchor();//计算锚点高度，页面数据是ajax加载时，请把此行放在数据渲染完成事件中执行以保证高度计算正确

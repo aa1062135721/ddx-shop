@@ -886,11 +886,11 @@
                     if ((await this.getPlatform()).isAndroid){
                         await this.wxConfig()
                     }
-                    let url = ''
+                    let url = this.currentUrlDelParam('user_id')
+                    url = this.urlDelParam(url, 'code')
+                    url = this.urlDelParam(url, 'state')
                     if(this.userInfo.id) {
                         url = window.location.href + '&user_id=' + this.userInfo.id
-                    } else {
-                        url = window.location.href
                     }
                     await this.$nextTick(async () => {
                         //设置定时器 每一秒执行一次

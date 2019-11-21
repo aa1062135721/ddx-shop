@@ -274,4 +274,54 @@ exports.install = function (Vue, options) {
             await that.$wx.updateTimelineShareData(param2)
         }, 400)
     }
+
+
+    /**
+     * 删除当前项目url中的某个参数
+     * @param name
+     * @returns {string}
+     */
+    Vue.prototype.currentUrlDelParam = (name) => {
+        let loca = window.location
+        let baseUrl = loca.origin + loca.pathname + "?"
+        let query = loca.search.substr(1)
+        if (query.indexOf(name) > -1) {
+            let obj = {}
+            let arr = query.split("&")
+            for (let i = 0; i < arr.length; i++) {
+                arr[i] = arr[i].split("=")
+                obj[arr[i][0]] = arr[i][1]
+            }
+            delete obj[name]
+            let url = baseUrl + JSON.stringify(obj).replace(/[\"\{\}]/g,"").replace(/\:/g,"=").replace(/\,/g,"&")
+            return url
+        }else{
+            return window.location.href
+        }
+    }
+
+    /**
+     * 删除给定url中某个参数
+     * @param url
+     * @param name
+     * @returns {string|*}
+     */
+    Vue.prototype.urlDelParam = (url, name) => {
+        let urlArr = url.split('?')
+        if(urlArr.length > 1 && urlArr[1].indexOf(name)>-1){
+            let query = urlArr[1]
+            let obj = {}
+            let arr = query.split("&")
+            for (let i = 0; i < arr.length; i++) {
+                arr[i] = arr[i].split("=")
+                obj[arr[i][0]] = arr[i][1]
+            }
+            delete obj[name]
+            let urlte = urlArr[0] +'?'+ JSON.stringify(obj).replace(/[\"\{\}]/g,"").replace(/\:/g,"=").replace(/\,/g,"&")
+            return urlte
+        }else{
+            return url
+        }
+    }
+
 }

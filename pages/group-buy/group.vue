@@ -260,11 +260,11 @@
             if (this.getPlatform().isAndroid){
                 await this.wxConfig()
             }
-            let url = ''
+            let url = this.currentUrlDelParam('user_id')
+            url = this.urlDelParam(url, 'code')
+            url = this.urlDelParam(url, 'state')
             if(this.userInfo.id) {
                 url = window.location.href + '&user_id=' + this.userInfo.id
-            } else {
-                url = window.location.href
             }
 
             let requestData = {

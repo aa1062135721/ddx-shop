@@ -77,12 +77,19 @@
 					<span class="old-price">
 						￥{{goodsInfo.item.old_price}}
 					</span>
-					<span class="mei-ren-xian-gou">每人限购:{{goodsInfo.people_num}}件</span>
+					<span class="mei-ren-xian-gou">每人限购:
+						<block v-if="goodsInfo.people_num === -1">
+                            不限购
+                        </block>
+                        <block v-else>
+                        {{goodsInfo.people_num}}件
+                        </block>
+					</span>
 					<span class="mei-ren-xian-gou" v-if="goodsInfo.item_specs.length === 1">
-                        已秒杀{{choosesGoodsInfo.specs.already_num}}件,剩余
-                        <block v-if="choosesGoodsInfo.specs.over_num === -1">99<sup>+</sup></block>
-                        <block v-else>{{choosesGoodsInfo.specs.over_num}}</block>
-                        件
+						已拼{{choosesGoodsInfo.specs.already_num}}件
+						<block v-if="choosesGoodsInfo.specs.over_num !== -1">
+                            ,剩余{{choosesGoodsInfo.specs.over_num}}件
+                        </block>
                     </span>
 				</view>
 			</view>

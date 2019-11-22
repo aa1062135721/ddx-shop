@@ -67,10 +67,10 @@
                 <!-- status  //1 拼团中 2拼团成功 3拼团失败' -->
                 <text v-if="responseData.status === 1">
                     <text v-if="responseData.r_num">仅剩<text class="num">{{responseData.r_num}}</text>个名额，</text>
-                    <text class="time"><block v-if="timer.d">{{timer.d + "天 "}}</block>{{timer.h + ":" + timer.m + ":" + timer.s }}</text>后结束
+                    <text class="time"><block v-if="timer.d">{{timer.d + "天 "}}</block>{{timer.h + ":" + timer.m + ":" + timer.s }}</text> 后结束
                 </text>
-                <text v-if="responseData.status === 2">拼团成功</text>
-                <text v-if="responseData.status === 3">拼团失败，原因：{{responseData.reason}}</text>
+                <text v-if="responseData.status === 2" style="color: #FC5A5A;">拼团成功</text>
+                <text v-if="responseData.status === 3" style="color: #FC5A5A;">拼团失败，原因：{{responseData.reason}}</text>
             </view>
             <view class="heads">
                 <view class="head" v-for="(item, index) in responseData.info" :key="index">
@@ -82,12 +82,12 @@
                     <image src="../../static/images/help.png" class="img no-img"></image>
                 </view>
             </view>
-            <div class="qr-code">
+            <div class="qr-code" v-show="[1, 3].indexOf(responseData.status) !== -1">
                 <canvas canvas-id="myCanvas" id="canvas"/>
             </div>
             <view class="btns">
-                <button class="btn active" v-if="responseData.status === 1 && responseData.r_num !== 0 && is_show_order" @click="shareGroup" open-type="share">已参团，邀请好友参团</button>
-                <view class="btn plain" v-if="responseData.status === 2" @click="_goPage('group_buy')">去开一团</view>
+                <view class="btn active" v-if="responseData.status === 1 && responseData.r_num !== 0 && is_show_order" @click="shareGroup">已参团，邀请好友参团</view>
+                <view class="btn active" v-if="responseData.status === 2" @click="_goPage('group_buy')">去开一团</view>
                 <view class="btn active" @click="addGroup" v-if="user_ids.indexOf(userInfo.id) === -1 && responseData.status === 1">加入拼团</view>
             </view>
         </view>
@@ -164,7 +164,7 @@
                     price: 0,       //金额
                     end_time: 0,  //结束时间
                     reason: null, //如果失败，为失败原因
-                    status: 1,    //1 拼团中 2拼团成功 3拼团失败',
+                    status: 0,    //1 拼团中 2拼团成功 3拼团失败',
                     r_num: 1, //还差几人
                     old_price: 0,   //原价
                     num: 3,   //几人团
@@ -315,6 +315,17 @@
                         }, 1000)//设置定时器 每一秒执行一次
 
                         /**
+                         *  绘制二维码
+                         */
+                        if (res.data.status !== 2) {
+                            let qrcode = new Qrcode({
+                                'level': 'L',
+                                'size': 160
+                            });
+                            qrcode.draw('myCanvas', url)
+                        }
+
+                        /**
                          * 分享
                          */
                         let param1 = {
@@ -334,12 +345,6 @@
                     })
                 }
             })
-
-            let qrcode = new Qrcode({
-                'level': 'L',
-                'size': 160
-            });
-            qrcode.draw('myCanvas', url)
         },
         onUnload(){
             clearInterval(myTimer);
@@ -486,8 +491,12 @@
                 }
             }
             .btns{
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
                 .btn{
-                    width: 100%;
+                    width: 80%;
                     text-align: center;
                     line-height: 88upx;
                     height: 88upx;

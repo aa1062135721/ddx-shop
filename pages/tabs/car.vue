@@ -440,10 +440,12 @@
                     }
                 }
                 .goods{
+                    @extend %border-color-solid-botton;
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
                     width: 100%;
+                    box-sizing: border-box;
                     .chooses{
                         padding:0 $uni-spacing-row-sm;
                         display: flex;

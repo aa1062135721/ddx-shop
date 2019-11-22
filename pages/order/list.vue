@@ -72,7 +72,19 @@
                         </view>
                     </view>
 
-                    <uni-load-more :status="tabItem.loadingType" style="margin-bottom: 20upx;"></uni-load-more>
+                    <view class="no-car-list" v-if="tabItem.orderList.length === 0">
+                        <view>
+                            <image src="../../static/images/car_empty.png" class="img"></image>
+                        </view>
+                        <view>您还没有相关的订单信息!</view>
+                        <view class="btn">
+                            <text @click="goPage('home')">
+                                去逛逛
+                            </text>
+                        </view>
+                    </view>
+
+                    <uni-load-more :status="tabItem.loadingType" v-if="tabItem.orderList.length !== 0" style="margin-bottom: 20upx;"></uni-load-more>
 
                 </scroll-view>
             </swiper-item>
@@ -513,6 +525,28 @@
                     }
                 }
             }
+        }
+    }
+
+    .no-car-list{
+        padding: $uni-spacing-row-base;
+        font-size: $uni-font-size-base;
+        color: #AFAFAF;
+        text-align: center;
+        .img{
+            width: 369upx;
+            height: 316upx;
+        }
+        .btn{
+            margin-top: 50upx;
+            text{
+                color: #fff;
+                background: $color-primary;
+                text-align: center;
+                padding: $uni-spacing-col-base $uni-spacing-row-lg;
+                border-radius: 4upx;
+            }
+
         }
     }
 </style>

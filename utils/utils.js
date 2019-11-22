@@ -15,7 +15,7 @@ exports.install = function (Vue, options) {
 
     //全局函数，判断是否位手机号码
     Vue.prototype.isPoneAvailable = (mobile, flag = false) => {
-        if (!/^[1][3,4,5,7,8,9][0-9]{9}$/.test(mobile)) {
+        if (!/^[1][3,4,5,6,7,8,9][0-9]{9}$/.test(mobile)) {
             if (flag) {
                 Vue.prototype.msg('手机号码格式有误')
             }

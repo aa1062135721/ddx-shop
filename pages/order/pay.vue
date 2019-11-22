@@ -53,7 +53,7 @@
                     order_id: 0      //订单id
                 },
 
-                payWay: '1',//支付方式：1微信支付，3钱包支付
+                payWay: '0',//支付方式：1微信支付，3钱包支付
                 disabledMoney: false,//禁用余额支付按钮
             }
         },
@@ -70,12 +70,14 @@
 
             console.log("其他页面带过来的参数：", this.$parseURL())
             this.orderData = this.$parseURL()
-            if (parseFloat(this.$parseURL().amount) <= parseFloat(this.userInfo.usable_money)){
-                this.payWay = '3'
-            } else {
-                this.disabledMoney = true
-                this.payWay = '1'
-            }
+            setTimeout(() => {
+                if (parseFloat(this.$parseURL().amount) <= parseFloat(this.userInfo.usable_money)){
+                    this.payWay = '3'
+                } else {
+                    this.disabledMoney = true
+                    this.payWay = '1'
+                }
+            }, 500)
 
             // 如果是安卓平台 每次进入商品详情页面就会调用微信配置，自定义分享商品
             if (this.getPlatform().isAndroid){

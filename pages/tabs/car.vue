@@ -91,6 +91,7 @@
     import uniSwipeAction from '@/components/uni-swipe-action/uni-swipe-action.vue'
     import uniSwipeActionItem from '@/components/uni-swipe-action-item/uni-swipe-action-item.vue'
     import { mapState } from 'vuex'
+    import { _debounce } from "@/utils/mUtils"
 
     export default {
         name: "car",
@@ -309,20 +310,22 @@
                 this.getSumData()
             },
             // 改变购买数量
-            async changeStock(value,key,goods_key){
-                console.log('输入框的值：',value,"下标：", key,goods_key)
-                let data = {
-                    id: this.myResponseData[key].data[goods_key].id,
-                    num: value
-                }
-                await this.$minApi.carEdit(data).then(res => {
-                    console.log(res)
-                    if (res.code === 200){
-                        this.myResponseData[key].data[goods_key].num = value
-                        this.$forceUpdate()
-                        this.getSumData()
+            async changeStock(value1,key1,goods_key1){
+                console.log('输入框的值：',value1,"下标：", key1,goods_key1)
+                // 防抖
+                _debounce((value = value1, key = key1, goods_key = goods_key1, _that = this) => {
+                    let requestData = {
+                        id: _that.myResponseData[key].data[goods_key].id,
+                        num: value
                     }
-                })
+                    _that.$minApi.carEdit(requestData).then(res => {
+                        if (res.code === 200){
+                            _that.myResponseData[key].data[goods_key].num = value
+                            _that.$forceUpdate()
+                            _that.getSumData()
+                        }
+                    })
+                }, 1000)
             },
             //组合数据为想要的格式
             _myResponseData(){

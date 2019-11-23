@@ -357,7 +357,6 @@
 <style lang="scss" scoped>
     page, .content{
         height: 100%;
-        background-color: #FFFFFF;
     }
     .swiper-box{
         height: calc(100% - 40px);

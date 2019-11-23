@@ -32,7 +32,7 @@
 		{
 			"path": "pages/user/feedback",
 			"style": {
-				"navigationBarTitleText": "意见反馈"
+				"navigationBarTitleText": "捣蛋熊商城-意见反馈"
 			}
 		},
 
@@ -45,64 +45,64 @@
 		{
 			"path": "pages/public/login-with-mobile",
 			"style": {
-				"navigationBarTitleText": "登录"
+				"navigationBarTitleText": "捣蛋熊商城-登录"
 			}
 		},
 		{
 			"path": "pages/public/login-with-mobile-public",
 			"style": {
-				"navigationBarTitleText": "登录"
+				"navigationBarTitleText": "捣蛋熊商城-登录"
 			}
 		},
 		{
 			"path": "pages/public/search-with-hot-history",
 			"style": {
-				"navigationBarTitleText": "搜索"
+				"navigationBarTitleText": "捣蛋熊商城-搜索商品"
 			}
 		},
 
 		{
 			"path": "pages/order/submit",
 			"style": {
-				"navigationBarTitleText": "提交订单"
+				"navigationBarTitleText": "捣蛋熊商城-提交订单"
 			}
 		},
 		{
 			"path": "pages/order/result",
 			"style": {
 				"navigationStyle": "custom",
-				"navigationBarTitleText": "支付结果"
+				"navigationBarTitleText": "捣蛋熊商城-支付结果"
 			}
 		},
 		{
 			"path": "pages/order/list",
 			"style": {
-				"navigationBarTitleText": "我的订单"
+				"navigationBarTitleText": "捣蛋熊商城-我的订单"
 			}
 		},
 		{
 			"path": "pages/order/detail",
 			"style": {
-				"navigationBarTitleText": "订单详情"
+				"navigationBarTitleText": "捣蛋熊商城-订单详情"
 			}
 		},
 		{
 			"path": "pages/order/evaluate",
 			"style": {
-				"navigationBarTitleText": "发表评价"
+				"navigationBarTitleText": "捣蛋熊商城-发表评价"
 			}
 		},
 		{
 			"path": "pages/order/pay",
 			"style": {
-				"navigationBarTitleText": "确认付款"
+				"navigationBarTitleText": "捣蛋熊商城-确认付款"
 			}
 		},
 
 		{
 			"path": "pages/goods/search",
 			"style": {
-				"navigationBarTitleText": "搜索"
+				"navigationBarTitleText": "捣蛋熊商城-搜索商品"
 			}
 		},
 		{
@@ -115,22 +115,22 @@
 		{
 			"path" : "pages/goods/evaluate",
 			"style": {
-				"navigationBarTitleText": "商品评价"
+				"navigationBarTitleText": "捣蛋熊商城-商品评价"
 			}
 		},
 
 		{
 			"path": "pages/web-view/web-view",
 			"style": {
-				"navigationStyle": "custom",
-				"navigationBarTitleText": "网页"
+				"navigationStyle": "custom"
+//				"navigationBarTitleText": "网页"
 			}
 		},
 		{
 			"path": "pages/web-view/rich-text",
 			"style": {
-				"navigationStyle": "custom",
-				"navigationBarTitleText": "富文本"
+				"navigationStyle": "custom"
+//				"navigationBarTitleText": "富文本"
 			}
 		},
 
@@ -138,7 +138,7 @@
 			"path": "pages/group-buy/group-buy",
 			"style": {
 				"navigationStyle": "custom",
-				"navigationBarTitleText": "今日必团"
+				"navigationBarTitleText": "捣蛋熊商城-今日必团"
 			}
 		},
 		{
@@ -151,14 +151,14 @@
 		{
 			"path": "pages/group-buy/group",
 			"style": {
-				"navigationBarTitleText": "查看拼团"
+				"navigationBarTitleText": "捣蛋熊商城-查看拼团"
 			}
 		},
 
 		{
 			"path": "pages/spike/list",
 			"style": {
-				"navigationBarTitleText": "每日秒杀",
+				"navigationBarTitleText": "捣蛋熊商城-每日秒杀",
 				"navigationStyle": "custom"
 			}
 		},
@@ -174,13 +174,13 @@
 			"path": "pages/newcomer/newcomer",
 			"style": {
 				"navigationStyle": "custom",
-				"navigationBarTitleText": "新人专享"
+				"navigationBarTitleText": "捣蛋熊商城-新人专享"
 			}
 		},
 		{
 			"path": "pages/double11/double11",
 			"style": {
-				"navigationBarTitleText": "怡思丁专场"
+				"navigationBarTitleText": "捣蛋熊商城-怡思丁专场"
 			}
 		}
 	],
@@ -191,121 +191,121 @@
 				{
 					"path": "user/fans",
 					"style": {
-					  "navigationBarTitleText": "我的粉丝"
+					  "navigationBarTitleText": "捣蛋熊商城-我的粉丝"
 					}
 				},
 				{
 					"path": "user/id-card-authentication",
 					"style": {
-						"navigationBarTitleText": "实名认证"
+						"navigationBarTitleText": "捣蛋熊商城-实名认证"
 					}
 			  	},
 				{
 					"path": "user/id-card-authentication-detail",
 					"style": {
-						"navigationBarTitleText": "实名认证"
+						"navigationBarTitleText": "捣蛋熊商城-实名认证"
 					}
 				},
 				{
 					"path": "user/setting",
 					"style": {
-					  "navigationBarTitleText": "设置"
+					  "navigationBarTitleText": "捣蛋熊商城-设置"
 					}
 				},
 				{
 					"path": "user/money",
 					"style": {
 						"navigationStyle": "custom",
-					  	"navigationBarTitleText": "我的钱包"
+					  	"navigationBarTitleText": "捣蛋熊商城-我的钱包"
 					}
 				},
 				{
 					"path": "user/record",
 					"style": {
-					  "navigationBarTitleText": "提现记录"
+					  "navigationBarTitleText": "捣蛋熊商城-提现记录"
 					}
 				},
 				{
 					"path": "user/expenses-record",
 					"style": {
-						"navigationBarTitleText": "消费记录"
+						"navigationBarTitleText": "捣蛋熊商城-消费记录"
 					}
 				},
 				{
 					"path": "user/modify-mobile",
 					"style": {
-					  "navigationBarTitleText": "修改手机号码"
+					  "navigationBarTitleText": "捣蛋熊商城-修改手机号码"
 					}
 				},
 				{
 					"path": "user/invite-fans",
 					"style": {
-					  "navigationBarTitleText": "邀请好友"
+					  "navigationBarTitleText": "捣蛋熊商城-邀请好友"
 					}
 				},
 				{
 					"path": "user/distribution",
 					"style": {
 						"navigationStyle": "custom",
-						"navigationBarTitleText": "分销中心"
+						"navigationBarTitleText": "捣蛋熊商城-分销中心"
 					}
 				},
 				{
 					"path": "user/distribution/sum-customer",
 					"style": {
-						"navigationBarTitleText": "我的客户"
+						"navigationBarTitleText": "捣蛋熊商城-我的客户"
 					}
 				},
 				{
 					"path": "user/distribution/sum-order",
 					"style": {
-						"navigationBarTitleText": "累计订单"
+						"navigationBarTitleText": "捣蛋熊商城-累计订单"
 					}
 				},
 
 				{
 					"path": "logistics/view",
 					"style": {
-						"navigationBarTitleText": "查看物流"
+						"navigationBarTitleText": "捣蛋熊商城-查看物流"
 					}
 				},
 
 				{
 					"path": "order_return/refund",
 					"style": {
-						"navigationBarTitleText": "填写退款信息"
+						"navigationBarTitleText": "捣蛋熊商城-填写退款信息"
 					}
 				},
 				{
 					"path": "order_return/status",
 					"style": {
-						"navigationBarTitleText": "退款详情"
+						"navigationBarTitleText": "捣蛋熊商城-退款详情"
 					}
 				},
 				{
 					"path": "order_return/apply",
 					"style": {
-						"navigationBarTitleText": "申请退款"
+						"navigationBarTitleText": "捣蛋熊商城-申请退款"
 					}
 				},
 
 				{
 					"path": "address/list",
 					"style": {
-						"navigationBarTitleText": "我的收货地址"
+						"navigationBarTitleText": "捣蛋熊商城-我的收货地址"
 					}
 				},
 				{
 					"path": "address/chooses",
 					"style": {
 						"navigationStyle": "custom",
-						"navigationBarTitleText": "选择收货地址"
+						"navigationBarTitleText": "捣蛋熊商城-选择收货地址"
 					}
 				},
 				{
 					"path": "address/add",
 					"style": {
-						"navigationBarTitleText": "新增收货地址"
+						"navigationBarTitleText": "捣蛋熊商城-新增收货地址"
 					}
 				}
 

@@ -894,6 +894,7 @@
 									.img{
 										width:152upx;
 										height: 152upx;
+										border-radius: 4upx;
 									}
 									margin-bottom: 15upx;
 								}
@@ -1022,7 +1023,7 @@
 						.item{
 							width:218upx;
 							height:300upx;
-							background:rgba(255,241,242,1);
+							background:#FFFFFF;
 							border-radius:8upx;
 							position: relative;
 							overflow: hidden;
@@ -1032,6 +1033,7 @@
 								left: 0;
 								width: 218upx;
 								height: 218upx;
+								border-radius: 4upx;
 							}
 							.goods-tag{
 								position: absolute;
@@ -1075,7 +1077,7 @@
 							width:328upx;
 							height:178upx;
 							padding: 14upx 10upx;
-							background:rgba(255,242,245,1);
+							background:#FFFFFF;
 							border-radius:6upx;
 							margin: 0 13upx 13upx 0;
 							&:nth-child(2n){
@@ -1122,6 +1124,7 @@
 								.img{
 									height: 134upx;
 									width: 134upx;
+									border-radius: 4upx;
 								}
 							}
 						}

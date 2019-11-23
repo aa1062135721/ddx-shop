@@ -525,7 +525,7 @@
 
 <style lang="scss" scoped>
     page{
-        background-color: #F2F2F2;
+        /*background-color: #FFFFFF;*/
     }
     .my-tabs{
         width: 100%;
@@ -693,7 +693,7 @@
             /* #ifdef H5 */
             height: calc(100% - var(--window-bottom));
             /* #endif */
-            background: #F6F5FA;
+            /*background: #FFFFFF;*/
             // overflow-y: auto;
 
             /*热门品牌*/

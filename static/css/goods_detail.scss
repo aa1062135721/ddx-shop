@@ -310,15 +310,17 @@
     justify-content: space-between;
     margin: 0 0 30upx 0;
     .text {
-      font-size: 30upx;
+      color: $color-primary-plain;
+      font-size: $uni-font-size-base;
     }
     .arrow {
       font-size: 28upx;
       color: #cccccc;
       .show {
+        color:  #808080;
+        font-size: $uni-font-size-sm;
         display: flex;
         align-items: center;
-        font-size: 28upx;
         .iconfont {
           margin-left: 8upx;
           font-size:$uni-font-size-sm;

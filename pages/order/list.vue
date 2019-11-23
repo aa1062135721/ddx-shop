@@ -74,7 +74,7 @@
 
                     <view class="no-car-list" v-if="tabItem.orderList.length === 0">
                         <view>
-                            <image src="../../static/images/car_empty.png" class="img"></image>
+                            <image src="../../static/images/order_empty.png" class="img"></image>
                         </view>
                         <view>您还没有相关的订单信息!</view>
                         <view class="btn">
@@ -354,9 +354,10 @@
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     page, .content{
         height: 100%;
+        background-color: #FFFFFF;
     }
     .swiper-box{
         height: calc(100% - 40px);

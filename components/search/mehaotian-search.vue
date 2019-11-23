@@ -80,7 +80,8 @@ export default {
 			this.isFocus = true;
 		},
 		search() {
-			if (!this.inputVal) return;
+			// if (!this.inputVal) return;
+			if (this.searchName === '取消') return
 			console.log(this.inputVal);
 			this.$emit('search', this.inputVal);
 		}

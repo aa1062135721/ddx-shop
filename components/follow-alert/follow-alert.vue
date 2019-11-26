@@ -10,7 +10,7 @@
             <view class="qr-code">
                 <image class="qr-code-img" :src="qrCodeUrl"></image>
             </view>
-            <view class="footer-font">
+            <view class="footer-font" style="font-size: 26upx;">
                 长按识别二维码关注公众号
             </view>
         </view>

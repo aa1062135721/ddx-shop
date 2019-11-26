@@ -1,38 +1,5 @@
 <template>
     <view class="container">
-        <!-- 关注公众号 -->
-        <view class="follow-official-account" v-if="!subscribe">
-            <view class="box">
-                <view class="left">
-                    <view class="follow-logo">
-                        <image class="img" src="../../static/images/pandalogo1.png" model="widthFill"></image>
-                    </view>
-                    <view class="follow-text">
-                        <view class="follow-text-title">捣蛋熊猫</view>
-                        <view>关注一下，万千豪礼敬情相送</view>
-                    </view>
-                </view>
-                <view class="right">
-                    <view @click="openFollowOfficialAccount">关注</view>
-                </view>
-            </view>
-        </view>
-        <!-- 关注公众号 弹窗，弹出二维码 -->
-        <uni-popup ref="followOfficialAccountAlert" type="center" :custom="true">
-            <view class="follow-official-account-alert">
-                <view class="box">
-                    <view>
-                        <image class="img" :src="qrCodeUrl"></image>
-                    </view>
-                    <view>
-                        长按识别二维码
-                    </view>
-                    <view>
-                        关注公众号
-                    </view>
-                </view>
-            </view>
-        </uni-popup>
 
         <view class="goods-info">
             <view class="goods-info-img">
@@ -184,7 +151,6 @@
 
                 // 分享到好友，引导箭头是否显示
                 isShowShareH5: false,
-                qrCodeUrl: Constant[Constant.NODE_ENV].qrCodeUrl, // 微信公众号二维码
             }
         },
         methods: {
@@ -230,11 +196,6 @@
             shareGroup(){
                 this.isShowShareH5 = true
             },
-            //打开关注公众号二维码弹框follow-official-account
-            openFollowOfficialAccount(){
-                this.$refs.followOfficialAccountAlert.open()
-            },
-
 
             //加入拼团
             addGroup(){

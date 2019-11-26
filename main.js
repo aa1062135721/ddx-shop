@@ -79,3 +79,8 @@ const app = new Vue({
     minRequest,
 })
 app.$mount()
+
+/* 是否关注公众号，如果没有关注则强制关注 */
+import followAlert from './components/follow-alert/follow-alert'
+let myFollowAlert = Vue.component('follow-alert',followAlert)
+document.body.appendChild(new myFollowAlert().$mount().$el)

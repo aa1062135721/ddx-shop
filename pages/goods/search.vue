@@ -3,7 +3,10 @@
 
 		<view class="navbar">
 			<view class="search">
-				<mSearch v-model="requestData.searchVal" :show="true"  @search="searchValue"></mSearch>
+				<view class="icon-btn-left" @click="_goBack">
+					<view class="icon iconfont icon-ddx-shop-content_arrows"></view>
+				</view>
+				<mSearch v-model="requestData.searchVal" :show="true" @search="searchValue"></mSearch>
 			</view>
 			<view class="items">
 				<view class="nav-item" :class="{current: filterIndex === 0}" @click="tabClick(0)">
@@ -59,6 +62,11 @@
 			_goPage(url, query = {}){
 				this.$openPage({name:url, query})
 			},
+			// 返回按钮
+			_goBack() {
+				uni.navigateBack()
+			},
+
 			// 去到商品详情/限时购详情/拼团详情
 			goGoodsDetails(goods){
 				console.log('商品信息：', goods)
@@ -188,7 +196,7 @@
 		left: 0;
 		top: 0;
 		/* #ifdef H5 */
-		top: 44px;
+		/*top: 44px;*/
 		/* #endif */
 		display: flex;
 		flex-direction: column;
@@ -200,6 +208,20 @@
 			height: 90upx;
 			width: 100%;
 			border-bottom: none;
+			padding:0 $uni-spacing-row-base;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			.icon-btn-left {
+				height: 90upx;
+				line-height: 90upx;
+				display: flex;
+				justify-content: flex-start;
+				.iconfont{
+					color: #828282;
+					transform:rotate(180deg);
+				}
+			}
 		}
 		.items{
 			height: 80upx;

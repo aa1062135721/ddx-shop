@@ -57,6 +57,7 @@
 		{
 			"path": "pages/public/search-with-hot-history",
 			"style": {
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "捣蛋熊商城-搜索商品"
 			}
 		},
@@ -102,6 +103,7 @@
 		{
 			"path": "pages/goods/search",
 			"style": {
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "捣蛋熊商城-搜索商品"
 			}
 		},

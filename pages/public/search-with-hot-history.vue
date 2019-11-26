@@ -1,6 +1,9 @@
 <template>
     <view class="container">
         <view class="search">
+            <view class="icon-btn-left" @click="_goBack">
+                <view class="icon iconfont icon-ddx-shop-content_arrows"></view>
+            </view>
             <mSearch v-model="searchVal" :show="true" @search="goSearch"></mSearch>
         </view>
         <view class="my-content">
@@ -60,6 +63,11 @@
             _goPage(url, query = {}){
                 this.$openPage({name:url, query})
             },
+            // 返回按钮
+            _goBack() {
+                uni.navigateBack()
+            },
+
             clickTag(val){
                 console.log("选中",val)
                 this.searchVal = val
@@ -107,6 +115,20 @@
         width: 100%;
         .search{
             border-bottom: none!important;
+            padding: 0 $uni-spacing-row-base;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            .icon-btn-left {
+                height: 90upx;
+                line-height: 90upx;
+                display: flex;
+                justify-content: flex-start;
+                .iconfont{
+                    color: #828282;
+                    transform:rotate(180deg);
+                }
+            }
         }
         .my-content{
             padding: $uni-spacing-row-base;

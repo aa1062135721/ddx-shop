@@ -46,11 +46,11 @@
                     <view class="tag" v-if="item.status === 0 && item.commander === 0">待支付</view>
                 </view>
                 <view class="head" v-for="index in responseData.r_num">
-                    <image src="../../static/images/help.png" class="img no-img"></image>
+                    <image src="../../static/images/help.png" class="img no-img" :alt="index"></image>
                 </view>
             </view>
-            <div class="qr-code" v-show="[1, 3].indexOf(responseData.status) !== -1">
-                <canvas canvas-id="myCanvas" id="canvas"/>
+            <div class="qr-code" v-if="responseData.status !== 0 && responseData.status !== 2">
+                <canvas canvas-id="myCanvas" id="myCanvas" />
             </div>
             <view class="btns">
                 <view class="btn active" v-if="responseData.status === 1 && responseData.r_num !== 0 && is_show_order" @click="shareGroup">已参团，邀请好友参团</view>
@@ -444,7 +444,7 @@
                 display: flex;
                 padding: 20upx;
                 justify-content: center;
-                #canvas{
+                #myCanvas{
                     border: 1px solid #F2F2F2;
                     height: 160px;
                     width: 160px;

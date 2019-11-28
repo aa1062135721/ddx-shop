@@ -4,9 +4,9 @@ import { NODE_ENV } from './utils/constant'
 
 // 微信公众号开发 调试工具
 import  VConsole from 'vconsole'
-if (NODE_ENV === 'development') { // 如果是开发环境，调用控制台打印功能
+// if (NODE_ENV === 'development') { // 如果是开发环境，调用控制台打印功能
     new VConsole()
-}
+// }
 
 // 引入路由文件
 import MinRouter from './router/MinRouter'

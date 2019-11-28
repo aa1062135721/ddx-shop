@@ -132,6 +132,11 @@
         },
         watch: {
             userInfo: function(newVal, oldVal) {
+                // 如果没有登录
+                if (!newVal.id){
+                    // 打开上面的地址进行授权
+                    this.loginWithOfficalAccount()
+                }
                 // 是分销员 直接去到分销中心
                 if (newVal.retail === 1){
                     this._goPage('user_distribution_redirect')

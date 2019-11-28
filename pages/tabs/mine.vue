@@ -117,7 +117,7 @@
                     </view>
                 </view>
                 <view class="box">
-                    <view class="item" style="width: 25%;" @click="goPage('user_distribution')">
+                    <view class="item" style="width: 25%;" @click="goDistribution()">
                         <view>
                             <image src="../../static/icon/distribution.png"></image>
                         </view>
@@ -192,6 +192,20 @@
             ...mapActions(['asyncGetUserInfo']),
             goPage(url,query = {}){
                 this.$openPage({name: url, query: query})
+            },
+            // 去分销中心，如果不是分销员，先到 成为分销员 页面
+            goDistribution(){
+                // 是分销员
+                if (this.userInfo.retail === 1){
+                    this.goPage('user_distribution')
+                    return
+                }
+                // 不是分销员
+                if (this.userInfo.retail === 0){
+                    this.goPage('user_distributor')
+                    return
+                }
+                console.log('点击了分销中心')
             },
             login(){
                 this.loginWithOfficalAccount()

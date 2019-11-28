@@ -271,6 +271,12 @@ const router = new MinRouter({
 			login: true
 		},
 		{
+			path: "pages2/user/distribution",
+			type: 'redirectTo',
+			name: 'user_distribution_redirect',
+			login: true
+		},
+		{
 			path: "pages2/user/distribution/sum-customer",
 			type: 'navigateTo',
 			name: 'user_distribution_sum_customer',
@@ -280,6 +286,18 @@ const router = new MinRouter({
 			path: "pages2/user/distribution/sum-order",
 			type: 'navigateTo',
 			name: 'user_distribution_sum_order',
+			login: true
+		},
+		{
+			path: "pages2/user/distributor",
+			type: 'navigateTo',
+			name: 'user_distributor',
+			login: true
+		},
+		{
+			path: "pages2/user/distribution/invite-friends",
+			type: 'navigateTo',
+			name: 'user_invite_distributor',
 			login: true
 		},
 
@@ -331,13 +349,6 @@ const router = new MinRouter({
 			type: 'navigateTo',
 			name: 'newcomer',
 			login: true
-		},
-		// 双十一专场
-		{
-			path: "pages/double11/double11",
-			type: 'navigateTo',
-			name: 'double11',
-			login: false
 		},
 	]
 })

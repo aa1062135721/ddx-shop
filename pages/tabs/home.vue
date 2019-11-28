@@ -441,13 +441,13 @@
 							title: '捣蛋熊商城', // 分享标题
 							desc: '高品质、一站式服务平台', // 分享描述
 							link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-							imgUrl: `${window.location.origin + window.location.pathname}/static/images/pandalogo.png`, // 分享图标
+							imgUrl: `${window.location.origin}/h5/static/images/pandalogo.png`, // 分享图标
 							success: function () {}
 						},
 						param2 = {
 							title: '捣蛋熊商城', // 分享标题
 							link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-							imgUrl: `${window.location.origin + window.location.pathname}/static/images/pandalogo.png`, // 分享图标
+							imgUrl: `${window.location.origin}/h5/static/images/pandalogo.png`, // 分享图标
 							success: function () {}
 						}
 				await this.wxConigShareGoods(param1, param2)
@@ -532,10 +532,6 @@
 
 						break
 					case 2:
-						if (this.swiperList[key].value === 'double11'){
-							this._goPage('double11')
-							return
-						}
 						this._goPage('web_view',{url: this.swiperList[key].value})
 						break
 					case 3:

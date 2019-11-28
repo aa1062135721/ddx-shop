@@ -65,6 +65,13 @@
                 </view>
             </view>
         </view>
+
+        <div class="btn-item-box">
+            <div class="item" @click="_goPage('user_invite_distributor')">
+                <div>邀请好友</div>
+                <i class="iconfont icon-ddx-shop-content_arrows"></i>
+            </div>
+        </div>
     </view>
 </template>
 
@@ -76,16 +83,16 @@
         data(){
           return {
             responseData:{
-                accumulated_income: "0.00",       //累积收益
-                sales_volume: "0.00",             //团队累积销售额
+                accumulated_income: "0",       //累积收益
+                sales_volume: "0",             //团队累积销售额
                 cumulative_order: "0",        //累计订单
                 cumulative_member: "0",       //累计客户
-                balance_accounts: "0.00",     //待结算收益
-                can_use_amount: "0.00",       //可提现金额
-                use_amount: "0.00",           //已提现金额
-                today_estimated_revenue: "0.00",      //今日预估收益
-                today_order: "0.00",      //今日订单
-                today_member: "0.00"      //今日新增客户
+                balance_accounts: "0",     //待结算收益
+                can_use_amount: "0",       //可提现金额
+                use_amount: "0",           //已提现金额
+                today_estimated_revenue: "0",      //今日预估收益
+                today_order: "0",      //今日订单
+                today_member: "0"      //今日新增客户
             }
           }
         },
@@ -222,6 +229,23 @@
                     &:nth-child(3){
                         border-left: 1px solid #efefef;
                     }
+                }
+            }
+        }
+
+        .btn-item-box{
+            background-color: #FFFFFF;
+            font-size: $uni-font-size-base;
+            .item{
+                @extend %border-color-solid-botton;
+                padding: $uni-spacing-row-base;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                color: #333333;
+                .iconfont{
+                    color: #DADADA;
+                    font-size: $uni-font-size-sm;
                 }
             }
         }

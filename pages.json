@@ -35,6 +35,20 @@
 				"navigationBarTitleText": "捣蛋熊商城-意见反馈"
 			}
 		},
+		{
+			"path": "pages2/user/distributor",
+			"style": {
+				"navigationBarTitleText": "捣蛋熊商城-成为分销员",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages2/user/distribution/invite-friends",
+			"style": {
+				"navigationBarTitleText": "捣蛋熊商城-邀请分销员",
+				"navigationStyle": "custom"
+			}
+		},
 
 		{
 			"path": "pages/public/login",
@@ -125,14 +139,12 @@
 			"path": "pages/web-view/web-view",
 			"style": {
 				"navigationStyle": "custom"
-//				"navigationBarTitleText": "网页"
 			}
 		},
 		{
 			"path": "pages/web-view/rich-text",
 			"style": {
 				"navigationStyle": "custom"
-//				"navigationBarTitleText": "富文本"
 			}
 		},
 
@@ -177,12 +189,6 @@
 			"style": {
 				"navigationStyle": "custom",
 				"navigationBarTitleText": "捣蛋熊商城-新人专享"
-			}
-		},
-		{
-			"path": "pages/double11/double11",
-			"style": {
-				"navigationBarTitleText": "捣蛋熊商城-怡思丁专场"
 			}
 		}
 	],

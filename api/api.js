@@ -677,5 +677,12 @@ export default {
       return minRequest.post('/order/assemble_doPost1', data)
     },
 
+    /**
+     * 成为分销员
+     */
+    becomeADistributor(data) {
+      return minRequest.post('/User/retail_message', data)
+    },
+
   }
 }

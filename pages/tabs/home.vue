@@ -1,18 +1,20 @@
 <template>
 	<view class="container">
+		<div class="search-and-tabs">
 			<!-- 首页的搜索框 -->
-				<view class="my-search-box">
-					<view class="my-search-input" @click="_goPage('search_with_hot_history')">
-						<text class="iconfont icon-ddx-shop-hot"></text>
-						<text>万千商品，等你来采购</text>
-					</view>
+			<view class="my-search-box">
+				<view class="my-search-input" @click="_goPage('search_with_hot_history')">
+					<text class="iconfont icon-ddx-shop-hot"></text>
+					<text>万千商品，等你来采购</text>
 				</view>
+			</view>
 
 			<!-- 一级tab栏 -->
 			<wuc-tab :tab-list="tabList" :textFlex="true" :tabCur.sync="TabCur" tab-class="tabs"  @change="tabChange"
 					 style="position: fixed;left: 0;width: 100%;z-index: 999;"
 					 :style="style"
 			></wuc-tab>
+		</div>
 
 			<!--	站位符	-->
 			<view class="my-block"></view>
@@ -29,12 +31,8 @@
 				<!-- 推荐 -- 小图标-->
 				<view class="limited-time" v-if="iconArr.length">
 					<view class="item" v-for="(item, index) in iconArr" :key="index" @click="_clickIcon(item)">
-						<view>
-							<image :src="item.thumb" :lazy-load="true"></image>
-						</view>
-						<view>
-							<text>{{item.title}}</text>
-						</view>
+						<image :src="item.thumb" :lazy-load="true" class="image"></image>
+						<span class="text">{{item.title}}</span>
 					</view>
 				</view>
 
@@ -687,49 +685,52 @@
 
 <style lang="scss">
 	.container{
-		.my-search-box{
-			display: flex;
-			justify-content: flex-start;
-			align-items: center;
+		.search-and-tabs{
+			width: 100%;
+			height: calc( 80upx + 90upx);
+			overflow: hidden;
+			background-image: url('~@/static/images/double12-home/1.png');
+			background-repeat: no-repeat;
+			background-size: 100% 100%;
 			position: fixed;
 			top: 0;
 			left: 0;
-			background: #ffffff;
-			z-index: 9999;
-			padding: $uni-spacing-row-base;
-			width: 100%;
-			.my-search-input{
-				border: 1upx solid #efefef;
-				color: #999999;
-				font-size: $uni-font-size-base;
-				background: #fff;
-				height: 60upx;
-				width: 100%;
-				padding: 0 10upx;
-				border-radius:30upx;
+			z-index: 999999;
+			/* 搜索框 */
+			.my-search-box{
 				display: flex;
-				flex-direction: row;
 				justify-content: flex-start;
 				align-items: center;
-				overflow: hidden;
-				.iconfont{
-					margin-right: 6upx;
+				padding: $uni-spacing-row-base $uni-spacing-row-base 0 $uni-spacing-row-base ;
+				width: 100%;
+				.my-search-input{
+					border: 1upx solid #efefef;
+					color: #999999;
+					font-size: $uni-font-size-base;
+					background: #fff;
+					height: 60upx;
+					width: 100%;
+					padding: 0 10upx;
+					border-radius:30upx;
+					display: flex;
+					flex-direction: row;
+					justify-content: flex-start;
+					align-items: center;
+					overflow: hidden;
+					.iconfont{
+						margin-right: 6upx;
+					}
 				}
 			}
-		}
 
-		.tabs{
-			background: #ffffff;
-			color: $color-primary-plain;
-			font-size: $uni-font-size-base;
-			text-align: center;
-			width: 100%;
-			position: fixed;
-			z-index: 999;
-			top: 80upx;
-			left: 0;
+			/* tab栏 */
+			.tabs{
+				color: #FFFFFF;
+				font-size: $uni-font-size-base;
+				text-align: center;
+				width: 100%;
+			}
 		}
-
 		.my-block{
 			width: 100%;
 			height: calc( 80upx + 90upx);
@@ -740,8 +741,12 @@
 				padding: 10upx $uni-spacing-row-sm;
 				width: 100%;
 				height: auto;
-				border-radius: 10upx;
+				/*border-radius: 10upx;*/
 				background: #fff;
+				background-image: url('~@/static/images/double12-home/2.png');
+				background-repeat: no-repeat;
+				background-size: 100% 100%;
+				padding-bottom: 300upx;
 				overflow: hidden;
 				.swiper-item{
 					width: 100%;
@@ -771,12 +776,12 @@
 					align-items: center;
 					width: 20%;
 					padding: $uni-spacing-col-sm 0;
-					image{
+					.image,image{
 						width:98upx;
 						height: 98upx;
 					}
-					text{
-						font-size: $uni-font-size-base;
+					.text,text{
+						font-size: $uni-font-size-sm;
 						color: $color-primary-plain;
 					}
 				}
@@ -784,6 +789,7 @@
 
 			/* 新人专享 */
 			.newcomer{
+				margin-bottom: 20upx;
 				.img{
 					width: 100%;
 				}

@@ -944,10 +944,10 @@
 								if (showModalRes.confirm) {
 									console.log('用户点击确定');
 									// _that._goPage('order_pay', {
-									// 	order_id: this.goodsInfo.order_info.order_id,
-									// 	amount: this.goodsInfo.order_info.order_amount,
+									// 	order_id: _that.goodsInfo.order_info.order_id,
+									// 	amount: _that.goodsInfo.order_info.order_amount,
 									// })
-									_that._goPage('group_buy_group', {id: this.goodsInfo.order_info.order_id})
+									_that._goPage('group_buy_group', {id: _that.goodsInfo.order_info.order_id})
 								} else if (showModalRes.cancel) {
 									console.log('用户点击取消');
 								}
@@ -961,7 +961,7 @@
 							success: function (showModalRes) {
 								if (showModalRes.confirm) {
 									console.log('用户点击确定');
-									_that._goPage('group_buy_group', {id: this.goodsInfo.order_info.order_id})
+									_that._goPage('group_buy_group', {id: _that.goodsInfo.order_info.order_id})
 								} else if (showModalRes.cancel) {
 									console.log('用户点击取消');
 								}

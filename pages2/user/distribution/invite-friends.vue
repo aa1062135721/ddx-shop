@@ -64,9 +64,10 @@
 
 <style scoped lang="scss">
     .invite-friends{
+        width: 100vw;
         height: 100vh;
-        width: 100vm;
-        background-size: cover;
         background-repeat: no-repeat;
+        background-position: 0px 0px;
+        background-size: 100% 100%;
     }
 </style>

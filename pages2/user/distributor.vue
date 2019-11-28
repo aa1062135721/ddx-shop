@@ -102,7 +102,7 @@
                 await this.$minApi.becomeADistributor({
                     mobile: this.mobile,
                     name: this.username,
-                    user_id: uni.getStorageSync('shareID'),
+                    user_id: (this.inviter !== '无') ?  uni.getStorageSync('shareID') : 0,
                 }).then(res => {
                     if (res.code === 200){
                         this.msg(res.msg)

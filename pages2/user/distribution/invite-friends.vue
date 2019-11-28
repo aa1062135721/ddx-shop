@@ -1,8 +1,9 @@
 <template>
-    <div class="invite-friends" :style="{backgroundImage: 'url(' + bgImg + ')'}">
+    <div class="invite-friends">
         <!-- #ifdef H5 -->
         <div id="my-h5-back" @click="_goBack"></div>
         <!-- #endif -->
+        <img :src="bgImg" alt="" style="width: 100%;height: 100%;">
     </div>
 </template>
 
@@ -76,8 +77,6 @@
     .invite-friends{
         width: 100vw;
         height: 100vh;
-        background-repeat: no-repeat;
-        background-position: 0px 0px;
-        background-size: 100% 100%;
+       overflow: hidden;
     }
 </style>

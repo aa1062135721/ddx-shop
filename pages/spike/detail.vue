@@ -464,7 +464,7 @@
             <view class="share-goods-h5">
                 <view class="share-title-h5-box">
                     <view class="share-title-h5-box-titles" v-show="goodsInfo.item.ratio !== '0.00'">
-                        分享后预计最高可赚取佣金¥{{goodsInfo.ratio}}
+                        分享后预计最高可赚取佣金¥{{goodsInfo.item.ratio}}
                     </view>
                     <view class="share-title-h5-box-sub-title">
                         朋友通过你分享的页面成功购买后，你可获得对应的佣金。佣金可“我的-分销中心”里查看

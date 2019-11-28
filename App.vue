@@ -35,8 +35,12 @@
                this.wxConfig()
             }
 
+            // this.setToken('6fe97b44cb77d3752655625151e6ed3834081524f71c1953b0e5d4f566bf83c5')
+		},
+		onShow: function() {
+			console.log('App Show')
+
             try {
-                // this.setToken('6fe97b44cb77d3752655625151e6ed3834081524f71c1953b0e5d4f566bf83c5')
                 const token = uni.getStorageSync('token')
                 if (token) {
                     this.setToken(token)
@@ -88,9 +92,7 @@
                 this.setSubscribe() // 清空用户是否关注公众号数据
                 this.setShopID() // 清空保存的门店数据
             }
-		},
-		onShow: function() {
-			console.log('App Show')
+
             if (this.userInfo.id) {
                 _AIHECONG('update',{ entId : '15463', uniqueId : this.userInfo.id });
             }

@@ -110,7 +110,11 @@
             },
             // 返回按钮
             _goBack() {
-                uni.navigateBack()
+                if (getCurrentPages().length === 1) {
+                    this._goPage('home')
+                } else {
+                    uni.navigateBack()
+                }
             },
         },
         computed: {

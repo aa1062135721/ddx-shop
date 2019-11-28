@@ -66,7 +66,7 @@
 </template>
 
 <script>
-    import { mapMutations, } from 'vuex'
+    import { mapState, mapMutations, } from 'vuex'
 
     export default {
         name: "distributor", // 成为分销员
@@ -84,7 +84,11 @@
             },
             // 返回按钮
             _goBack() {
-                uni.navigateBack()
+                if (getCurrentPages().length === 1) {
+                    this._goPage('home')
+                } else {
+                    uni.navigateBack()
+                }
             },
 
             // 点击成为分销员
@@ -120,7 +124,16 @@
                 console.log(param)
             }
             console.log('其他页面带过来的参数 ：', this.$parseURL())
+
+            // 是分销员 直接去到分销中心
+            if (this.userInfo.retail === 1){
+                this._goPage('user_distribution_redirect')
+                return
+            }
         },
+        computed: {
+            ...mapState(['userInfo']),
+        }
     }
 </script>
 

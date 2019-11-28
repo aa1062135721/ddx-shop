@@ -1,5 +1,5 @@
 <template>
-    <div class="invite-friends" style="background-image: url('https://img.wowoqq.com/allimg/190313/1-1Z31311513bA.jpg')">
+    <div class="invite-friends" :style="{backgroundImage: 'url(' + bgImg + ')'}">
         <!-- #ifdef H5 -->
         <div id="my-h5-back" @click="_goBack"></div>
         <!-- #endif -->
@@ -13,7 +13,7 @@
         name: "invite-friends", // 邀请好友成为分销员
         data() {
             return {
-
+                bgImg: '', //背景图片地址
             }
         },
         methods: {
@@ -26,6 +26,12 @@
             },
         },
         onLoad() {
+            this.$minApi.becomeADistributorGetBackGroundImg().then(res => {
+                this.bgImg = res
+            }).catch(err => {
+                console.log(err)
+            })
+
             // 如果是安卓平台 每次进入商品详情页面就会调用微信配置，自定义分享商品
             if ((this.getPlatform()).isAndroid){
                 this.wxConfig()

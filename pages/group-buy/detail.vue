@@ -714,7 +714,11 @@
 			},
 			// 返回按钮
 			_goBack() {
-				uni.navigateBack()
+				if (getCurrentPages().length === 1) {
+					this._goPage('home')
+				} else {
+					uni.navigateBack()
+				}
 			},
 			//轮播图放大预览
 			previewImg(src,urls){

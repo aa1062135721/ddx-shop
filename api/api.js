@@ -684,5 +684,13 @@ export default {
       return minRequest.post('/User/retail_message', data)
     },
 
+    /**
+     * 邀请别人成为分销员邀请页面图片
+     */
+    becomeADistributorGetBackGroundImg(data){
+      return minRequest.get('/user/shareRetailFriend', data)
+    },
+
+
   }
 }

@@ -19,7 +19,7 @@
 		<!-- 商品主图轮播 -->
 		<view class="swiper-box">
 			<swiper circular="true" :indicator-dots="true" indicator-active-color="#FC8A8A" @change="swiperHandle">
-				<swiper-item style="background: #000;vertical-align: center;margin: auto;" v-if="goodsInfo.video">
+				<swiper-item style="display: flex;flex-direction: column;justify-content: center;background: #000;" v-if="goodsInfo.video">
 					<video id="myVideo" :src="goodsInfo.video"
 						   controls
 						   style="width: 100%;"
@@ -560,7 +560,11 @@
 			},
 			// 返回按钮
 			_goBack() {
-				uni.navigateBack()
+				if (getCurrentPages().length === 1) {
+					this._goPage('home')
+				} else {
+					uni.navigateBack()
+				}
 			},
 			//轮播图放大预览
 			previewImg(src,urls){

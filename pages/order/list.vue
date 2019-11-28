@@ -74,7 +74,7 @@
 
                     <view class="no-car-list" v-if="tabItem.orderList.length === 0">
                         <view>
-                            <image src="../../static/images/order_empty.png" class="img"></image>
+                            <img src="../../static/images/order_empty.png" class="img">
                         </view>
                         <view>您还没有相关的订单信息!</view>
                         <view class="btn">
@@ -535,7 +535,6 @@
         text-align: center;
         .img{
             width: 369upx;
-            height: 316upx;
         }
         .btn{
             margin-top: 50upx;

@@ -1,5 +1,5 @@
 {
-    "name" : "捣蛋熊猫",
+    "name" : "捣蛋熊商场",
     "appid" : "__UNI__1E98B0A",
     "description" : "",
     "versionName" : "1.0.0",
@@ -82,6 +82,7 @@
         "router" : {
             "mode" : "history",
             "base" : "/h5/"
-        }
+        },
+        "title" : "捣蛋熊商场"
     }
 }

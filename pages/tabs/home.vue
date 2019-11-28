@@ -38,17 +38,6 @@
 					</view>
 				</view>
 
-				<!-- 通知栏 -->
-				<view class="global-notice" v-if="notice.length">
-					<view class="box">
-						<view class="notice-img">
-							<image class="img" src="../../static/images/notice-img.png"></image>
-						</view>
-						<view class="hot-spot">热点</view>
-						<view class="notice-content">{{notice[0].title}}</view>
-					</view>
-				</view>
-
 				<!--	新人专享 	-->
 				<view class="newcomer" @click="_goPage('newcomer')">
 					<img class="img" src="../../static/images/newcomer.gif" />
@@ -56,6 +45,16 @@
 
 				<!-- 超级拼团 限时秒杀 童装童鞋 境外购-->
 				<view class="goods-category">
+					<!-- 通知栏 -->
+					<view class="global-notice" v-if="notice.length">
+						<view class="box">
+							<view class="notice-img">
+								<image class="img" src="../../static/images/notice-img.png"></image>
+							</view>
+							<view class="hot-spot">热点</view>
+							<view class="notice-content">{{notice[0].title}}</view>
+						</view>
+					</view>
 					<view class="all-goods">
 						<view class="item">
 							<view class="title-box" @click="_goPage('group_buy')">
@@ -783,41 +782,6 @@
 				}
 			}
 
-			/*通知栏*/
-			.global-notice{
-				background: #fff;
-				overflow: hidden;
-				padding:0 $uni-spacing-row-base;
-				.box{
-					height: 80upx;
-					border-top: 1px solid #efefef;
-					display: flex;
-					align-items: center;
-					.notice-img{
-						margin-right: 14upx;
-						.img{
-							width:154upx;
-							height:30upx;
-						}
-					}
-					.hot-spot{
-						color: $color-primary;
-						border: 1px solid $color-primary;
-						font-size: 14upx;
-						width:50upx;
-						text-align: center;
-						line-height: 26upx;
-						border-radius:11upx;
-						margin-right: 14upx;
-					}
-					.notice-content{
-						color: #666666;
-						font-size: $uni-font-size-sm;
-					}
-				}
-
-			}
-
 			/* 新人专享 */
 			.newcomer{
 				.img{
@@ -829,10 +793,45 @@
 			.goods-category{
 				padding: 0 $uni-spacing-row-sm;
 				margin-bottom: 20upx;
+				/*通知栏*/
+				.global-notice{
+					background: #fff;
+					overflow: hidden;
+					padding:0 $uni-spacing-row-base;
+					@extend %border-color-solid-botton;
+					border-radius:8upx 8upx 0 0;
+					.box{
+						height: 80upx;
+						display: flex;
+						align-items: center;
+						.notice-img{
+							margin-right: 14upx;
+							.img{
+								width:154upx;
+								height:30upx;
+							}
+						}
+						.hot-spot{
+							color: $color-primary;
+							border: 1px solid $color-primary;
+							font-size: 14upx;
+							width:50upx;
+							text-align: center;
+							line-height: 26upx;
+							border-radius:11upx;
+							margin-right: 14upx;
+						}
+						.notice-content{
+							color: #666666;
+							font-size: $uni-font-size-sm;
+						}
+					}
+
+				}
 				.all-goods{
 					margin: auto;
 					background: #FFFFFF;
-					border-radius:8upx;
+					border-radius:0 0 8upx 8upx;
 					width: 710upx;
 					display: flex;
 					flex-wrap: wrap;

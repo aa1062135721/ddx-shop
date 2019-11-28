@@ -124,11 +124,13 @@
                 console.log(param)
             }
             console.log('其他页面带过来的参数 ：', this.$parseURL())
-
-            // 是分销员 直接去到分销中心
-            if (this.userInfo.retail === 1){
-                this._goPage('user_distribution_redirect')
-                return
+        },
+        watch: {
+            userInfo: function(newVal, oldVal) {
+                // 是分销员 直接去到分销中心
+                if (newVal.retail === 1){
+                    this._goPage('user_distribution_redirect')
+                }
             }
         },
         computed: {

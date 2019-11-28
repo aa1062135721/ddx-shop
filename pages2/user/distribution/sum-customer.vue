@@ -26,7 +26,11 @@
                     </view>
                 </view>
                 <view class="right">
-                    <view class='user-name'>{{item.nickname}}</view>
+                    <view class='user-name'>
+                        {{item.nickname}}
+                        <span class="my-tag" v-if="item.type === 1">直属分销员</span>
+                        <span class="my-tag" v-if="item.type === 2">二级分销员</span>
+                    </view>
                     <view class='sum-data'>
                         成交额：<text>{{item.money}}</text>
                         订单数：<text>{{item.count}}</text>
@@ -206,6 +210,14 @@
                 .user-name{
                     color: $color-primary-plain;
                     margin-bottom: 20upx;
+                    .my-tag{
+                        background-color: $color-primary;
+                        color: #FFFFFF;
+                        font-size: 16upx;
+                        padding: 4upx 20upx;
+                        margin-left: 10px;
+                        border-radius: 19upx;
+                    }
                 }
                 .sum-data{
                     margin-bottom: 20upx;

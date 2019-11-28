@@ -72,7 +72,8 @@
         name: "distributor", // 成为分销员
         data() {
           return {
-                inviter: '无', // 邀请者
+                inviter: '无', // 邀请者昵称
+                user_id: 0,// 邀请者id
                 username: '',
                 mobile: '',
           }
@@ -102,15 +103,18 @@
                 await this.$minApi.becomeADistributor({
                     mobile: this.mobile,
                     name: this.username,
-                    user_id: (this.inviter !== '无') ?  uni.getStorageSync('shareID') : 0,
+                    user_id: this.user_id,
                 }).then(res => {
                     if (res.code === 200){
                         this.msg(res.msg)
                         setTimeout(()=>{
                             this._goPage('user_distribution_redirect')
                         }, 1500)
+                    } else {
+                        this.msg(res.msg)
                     }
                 }).catch(err => {
+                    this.msg('服务器繁忙，请稍后重试!')
                     console.log(err)
                 })
             },
@@ -121,6 +125,7 @@
             }
             if (param.user_id){
                 this.setShareID(param.user_id)
+                this.user_id = param.user_id
                 console.log(param)
             }
             console.log('其他页面带过来的参数 ：', this.$parseURL())

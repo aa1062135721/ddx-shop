@@ -410,9 +410,10 @@
 		"backgroundColor": "#ccc"
 	},
 	"tabBar": {
-		"color": "#B2B2B2",
+		"color": "#6b6b6b",
 		"selectedColor": "#FC5A5A",
 		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
 		"list": [
 			{
 				"pagePath": "pages/tabs/home",

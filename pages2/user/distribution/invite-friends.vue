@@ -1,8 +1,9 @@
 <template>
-    <div class="invite-friends" :style="{backgroundImage: 'url(' + bgImg + ')'}">
+    <div class="invite-friends">
         <!-- #ifdef H5 -->
         <div id="my-h5-back" @click="_goBack"></div>
         <!-- #endif -->
+        <img :src="bgImg" alt="" style="width: 100%;height: 100%;">
     </div>
 </template>
 
@@ -26,6 +27,16 @@
             },
         },
         onLoad() {
+            // 如果是ios 强制刷新一波
+            if (this.getPlatform().isIOS){
+                if(!(uni.getStorageSync('refresh'))){
+                    uni.setStorageSync('refresh', "ios进入支付页面需要强制刷新一波")
+                    location.reload();
+                } else {
+                    uni.removeStorageSync('refresh');
+                }
+            }
+
             this.$minApi.becomeADistributorGetBackGroundImg().then(res => {
                 this.bgImg = res
             }).catch(err => {
@@ -64,9 +75,8 @@
 
 <style scoped lang="scss">
     .invite-friends{
+        width: 100vw;
         height: 100vh;
-        width: 100vm;
-        background-size: cover;
-        background-repeat: no-repeat;
+       overflow: hidden;
     }
 </style>

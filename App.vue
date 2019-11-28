@@ -80,7 +80,7 @@
                             console.log('服务器返回的数据！', err)
                             this.setToken() // 清空用户token
                             this.setUserInfo() // 清空用户数据
-                            this.setSubscribe() // 清空用户是否关注公众号数据
+                            //this.setSubscribe() // 清空用户是否关注公众号数据
                             this.setShopID() // 清空保存的门店数据
                         })
                     }
@@ -89,7 +89,7 @@
                 console.log(e)
                 this.setToken() // 清空用户token
                 this.setUserInfo() // 清空用户数据
-                this.setSubscribe() // 清空用户是否关注公众号数据
+                //this.setSubscribe() // 清空用户是否关注公众号数据
                 this.setShopID() // 清空保存的门店数据
             }
 

@@ -52,7 +52,7 @@
                 </view>
                 <view class="shop-name" style="border: none;">
                     <view>运费</view>
-                    <view>￥{{freight | moneyToFixed}}</view>
+                    <view style="color: #dd524d;">￥{{freight | moneyToFixed}}</view>
                 </view>
             </view>
         </view>
@@ -84,7 +84,8 @@
               freight: 0.0, // 运费
 
               //提交订单，或者是获取运费需要上传的数据
-              requestData: null
+              requestData: null,
+              isDisableSubmitOrder: false,// 是否禁用  提交订单按钮
           }
         },
         async onLoad(){
@@ -204,6 +205,7 @@
                     }
                     // 仅限新人购买
                     if (res.code === 403) {
+                        this.isDisableSubmitOrder = true // 禁用下单按钮
                         setTimeout(() => {
                             uni.navigateBack()
                         }, 2500)
@@ -212,6 +214,9 @@
             },
             //提交订单
             async submitOrder(){
+                if (this.isDisableSubmitOrder) {
+                    return
+                }
                 if (!this.address.id) {
                     this.msg('未选择收货地址')
                     return

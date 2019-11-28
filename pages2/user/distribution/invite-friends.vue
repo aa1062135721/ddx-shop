@@ -26,6 +26,16 @@
             },
         },
         onLoad() {
+            // 如果是ios 强制刷新一波
+            if (this.getPlatform().isIOS){
+                if(!(uni.getStorageSync('refresh'))){
+                    uni.setStorageSync('refresh', "ios进入支付页面需要强制刷新一波")
+                    location.reload();
+                } else {
+                    uni.removeStorageSync('refresh');
+                }
+            }
+
             this.$minApi.becomeADistributorGetBackGroundImg().then(res => {
                 this.bgImg = res
             }).catch(err => {

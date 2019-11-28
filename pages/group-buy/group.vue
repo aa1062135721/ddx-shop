@@ -49,12 +49,12 @@
                     <image src="../../static/images/help.png" class="img no-img" :alt="index"></image>
                 </view>
             </view>
-            <div class="qr-code" v-if="responseData.status !== 0 && responseData.status !== 2">
+            <div class="qr-code" ref="shareQrCode">
                 <canvas canvas-id="myCanvas" id="myCanvas" />
             </div>
             <view class="btns">
                 <view class="btn active" v-if="responseData.status === 1 && responseData.r_num !== 0 && is_show_order" @click="shareGroup">已参团，邀请好友参团</view>
-                <view class="btn active" v-if="responseData.status === 2" @click="_goPage('group_buy')">去开一团</view>
+                <view class="btn active" v-if="responseData.status === 2" @click="_goPage('group_buy_detail', {assemble_id: responseData.assemble_id, item_id: responseData.item_id})">去开一团</view>
                 <view class="btn active" @click="addGroup" v-if="user_ids.indexOf(userInfo.id) === -1 && responseData.status === 1">加入拼团</view>
             </view>
         </view>
@@ -278,12 +278,15 @@
                         /**
                          *  绘制二维码
                          */
-                        if (res.data.status !== 2) {
-                            let qrcode = new Qrcode({
-                                'level': 'L',
-                                'size': 160
-                            });
-                            qrcode.draw('myCanvas', url)
+                        let qrcode = new Qrcode({
+                            'level': 'L',
+                            'size': 160
+                        });
+                        qrcode.draw('myCanvas', url)
+                        if (res.data.status !== 0 && res.data.status !== 2) {
+                            this.$refs.shareQrCode.style.display = 'flex'
+                        } else {
+                            this.$refs.shareQrCode.style.display = 'none'
                         }
 
                         /**

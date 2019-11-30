@@ -143,7 +143,7 @@
                         if (requestData.page === 1) {
                             this.responseData.list = res.data
                         } else {
-                            this.responseData.list(...res.data)
+                            this.responseData.list.push(...res.data)
                         }
                         if (res.data.length < requestData.limit){
                             this.requestData.moreStatus = 'noMore'

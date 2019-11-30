@@ -270,10 +270,13 @@
 
                     this.responseData = res.data
                     this.$nextTick(()=>{
-                        myTimer = setInterval(()=>{
-                            this.responseData.time ++
-                            this.getRTime()
-                        }, 1000)//设置定时器 每一秒执行一次
+                        // 只有在拼团活动进行中才能 进行拼团倒计时操作
+                        if (res.data.status === 1){
+                            myTimer = setInterval(()=>{
+                                this.responseData.time ++
+                                this.getRTime()
+                            }, 1000)//设置定时器 每一秒执行一次
+                        }
 
                         /**
                          *  绘制二维码

@@ -307,13 +307,6 @@ exports.install = function (Vue, options) {
      */
     Vue.prototype.wxConigShareGoods = async (param1 = {}, param2 = {}) => {
         let that = new Vue()
-        // 显示分享到朋友 和 分享到朋友圈
-        that.$wx.showMenuItems({
-            menuList: [
-                'menuItem:share:appMessage', //发送给朋友
-                'menuItem:share:timeline', //分享到朋友圈
-            ]
-        })
 
         await setTimeout(async () => {
             //分享到朋友

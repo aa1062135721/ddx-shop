@@ -56,6 +56,7 @@ const actions = {
             console.log('vuex中利用actions，去异步获取用户信息，并存到vuex里', res)
             if (res.code === 200) {
                 await commit('setUserInfo', res.data)
+                await commit('setSubscribe', 1)
             }
         }).catch(e => {
             console.log('vuex中利用actions，去异步获取用户信息，并存到vuex里', e)

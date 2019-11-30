@@ -45,13 +45,9 @@
                 if (token) {
                     this.setToken(token)
                     this.asyncGetUserInfo()
-                    this.setSubscribe(1)
                 } else {
                     let code = this.getUrlParam("code") //是否存在code
-                    if (code == null || code === "") {
-                        //不存在就打开上面的地址进行授权
-                        this.loginWithOfficalAccount()
-                    } else {
+                    if (code){
                         //存在则通过code传向后台
                         let data = { code: code, }
                         this.$minApi.getToken(data).then(res => {
@@ -80,16 +76,15 @@
                             console.log('服务器返回的数据！', err)
                             this.setToken() // 清空用户token
                             this.setUserInfo() // 清空用户数据
-                            //this.setSubscribe() // 清空用户是否关注公众号数据
+                            this.setSubscribe() // 清空用户是否关注公众号数据
                             this.setShopID() // 清空保存的门店数据
                         })
                     }
                 }
             } catch (e) {
-                console.log(e)
                 this.setToken() // 清空用户token
                 this.setUserInfo() // 清空用户数据
-                //this.setSubscribe() // 清空用户是否关注公众号数据
+                this.setSubscribe() // 清空用户是否关注公众号数据
                 this.setShopID() // 清空保存的门店数据
             }
 

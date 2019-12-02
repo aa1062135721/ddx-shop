@@ -871,16 +871,16 @@
                         await this.calcAnchor();//计算锚点高度，页面数据是ajax加载时，请把此行放在数据渲染完成事件中执行以保证高度计算正确
 
                         let param1 = {
-                                title: `捣蛋熊商城-${this.goodsInfo.item.title}`, // 分享标题
-                                desc: `原价${this.goodsInfo.item.old_price}，现价仅需${this.goodsInfo.item.price}，先到先得`, // 分享描述
+                                title: `捣蛋熊商城-${res.data.item.title}`, // 分享标题
+                                desc: `原价${res.data.item.old_price}，现价仅需${res.data.item.price}，先到先得`, // 分享描述
                                 link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                                imgUrl: this.goodsInfo.item.pics[0], // 分享图标
+                                imgUrl: res.data.item.pics[0], // 分享图标
                                 success: function () {}
                             },
                             param2 = {
-                                title: `捣蛋熊商城-${this.goodsInfo.title}`, // 分享标题
+                                title: `捣蛋熊商城-${res.data.item.title}`, // 分享标题
                                 link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                                imgUrl: this.goodsInfo.item.pics[0], // 分享图标
+                                imgUrl: res.data.item.pics[0], // 分享图标
                                 success: function () {}
                             }
                         await this.wxConigShareGoods(param1, param2)

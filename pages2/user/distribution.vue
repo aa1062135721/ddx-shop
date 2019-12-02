@@ -47,11 +47,11 @@
                     <view class="num">{{responseData.balance_accounts}}</view>
                     <view class="text">待结算收益（元）</view>
                 </view>
-                <view class="item" @click="_goPage('user_money')">
+                <view class="item" @click="_goPage('user_withdrawal_amount')">
                     <view class="num">{{responseData.can_use_amount}}</view>
                     <view class="text">可提现金额（元）</view>
                 </view>
-                <view class="item" @click="_goPage('user_record')">
+                <view class="item" @click="_goPage('user_withdrawal_amount', {choosesWho: 2})">
                     <view class="num">{{responseData.use_amount}}</view>
                     <view class="text">已提现金额（元）</view>
                 </view>

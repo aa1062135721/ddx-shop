@@ -255,18 +255,6 @@
 					}
 				},
 				{
-					"path": "user/record",
-					"style": {
-					  "navigationBarTitleText": "捣蛋熊商城-提现记录"
-					}
-				},
-				{
-					"path": "user/expenses-record",
-					"style": {
-						"navigationBarTitleText": "捣蛋熊商城-消费记录"
-					}
-				},
-				{
 					"path": "user/modify-mobile",
 					"style": {
 					  "navigationBarTitleText": "捣蛋熊商城-修改手机号码"
@@ -355,14 +343,6 @@
 			"packages": ["__APP__"]
 		},
 		"pages2/user/money": {
-			"network": "all",
-			"packages": ["__APP__"]
-		},
-		"pages2/user/record": {
-			"network": "all",
-			"packages": ["__APP__"]
-		},
-		"pages2/user/expenses-record": {
 			"network": "all",
 			"packages": ["__APP__"]
 		},

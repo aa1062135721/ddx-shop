@@ -235,18 +235,6 @@ const router = new MinRouter({
 			login: true
 		},
 		{
-			path: "pages2/user/record",
-			type: 'navigateTo',
-			name: 'user_record',
-			login: true
-		},
-		{
-			path: "pages2/user/expenses-record",
-			type: 'navigateTo',
-			name: 'user_expenses_record',
-			login: true
-		},
-		{
 			path: "pages2/user/modify-mobile",
 			type: 'navigateTo',
 			name: 'user_modify_mobile',

@@ -91,6 +91,12 @@
               money: '', // 提现金额
           }
         },
+        onLoad(){
+          console.log('其他页面带过来的参数：', this.$parseURL())
+            if (this.$parseURL().choosesWho){
+                this.choosesWho = this.$parseURL().choosesWho
+            }
+        },
         methods:{
             _goPage(url, query = {}){
                 this.$openPage({name:url, query})

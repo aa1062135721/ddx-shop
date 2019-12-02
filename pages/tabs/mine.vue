@@ -9,7 +9,6 @@
                 <view class="name">
                     <text class="one" v-if="userInfo.id">{{userInfo.nickname}}</text>
                     <text class="one" v-else @click="login">未登录</text>
-<!--                    <text class="two" v-if="userInfo.id" @click="goPage('user_fans')">粉丝 {{userInfo.fans_num}}</text>-->
                 </view>
             </view>
             <view class="setting" @click="goPage('setting')">
@@ -140,12 +139,6 @@
                             <image src="../../static/icon/location.png"></image>
                         </view>
                         <text class="text">收货地址</text>
-                    </view>
-                    <view class="item" style="width: 25%;display: none;" @click="goPage('user_invite_fans')">
-                        <view>
-                            <image src="../../static/icon/invite-friend.png"></image>
-                        </view>
-                        <text class="text">邀请好友</text>
                     </view>
                     <view class="item" style="width: 25%;display: none;">
                         <view>

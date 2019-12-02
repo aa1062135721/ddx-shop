@@ -358,6 +358,12 @@
 	import {mapState, mapMutations} from 'vuex'
 
 	export default {
+		onTabItemTap(e){
+			console.log(e)
+			if (e.index === 0) {
+				this.TabCur = 0
+			}
+		},
 		data() {
 			return {
 				//首页tab栏

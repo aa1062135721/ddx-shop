@@ -522,7 +522,7 @@
             background: #fff;
             font-size: $uni-font-size-base;
             color: #808080;
-            margin-bottom: $uni-spacing-col-lg * 6;
+            padding-bottom: $uni-spacing-col-lg * 6;
             view{
                 width: 100%;
                 text-align: left;

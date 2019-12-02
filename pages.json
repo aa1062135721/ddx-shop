@@ -49,6 +49,40 @@
 				"navigationStyle": "custom"
 			}
 		},
+		{
+			"path": "pages2/user/money/recharge",
+			"style": {
+				"navigationBarTitleText": "捣蛋熊商城-充值中心",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages2/user/money/time-money",
+			"style": {
+				"navigationBarTitleText": "捣蛋熊商城-限时余额",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages2/user/money/available-balance",
+			"style": {
+				"navigationBarTitleText": "捣蛋熊商城-可用金额",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages2/user/money/withdrawal-amount",
+			"style": {
+				"navigationBarTitleText": "捣蛋熊商城-可提现金额",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages2/user/distribution/sum-fans",
+			"style": {
+				"navigationBarTitleText": "捣蛋熊商城-累计粉丝"
+			}
+		},
 
 		{
 			"path": "pages/public/login",
@@ -197,12 +231,6 @@
 			"root": "pages2",
 			"pages": [
 				{
-					"path": "user/fans",
-					"style": {
-					  "navigationBarTitleText": "捣蛋熊商城-我的粉丝"
-					}
-				},
-				{
 					"path": "user/id-card-authentication",
 					"style": {
 						"navigationBarTitleText": "捣蛋熊商城-实名认证"
@@ -223,7 +251,6 @@
 				{
 					"path": "user/money",
 					"style": {
-						"navigationStyle": "custom",
 					  	"navigationBarTitleText": "捣蛋熊商城-我的钱包"
 					}
 				},
@@ -246,12 +273,6 @@
 					}
 				},
 				{
-					"path": "user/invite-fans",
-					"style": {
-					  "navigationBarTitleText": "捣蛋熊商城-邀请好友"
-					}
-				},
-				{
 					"path": "user/distribution",
 					"style": {
 						"navigationStyle": "custom",
@@ -261,7 +282,7 @@
 				{
 					"path": "user/distribution/sum-customer",
 					"style": {
-						"navigationBarTitleText": "捣蛋熊商城-我的客户"
+						"navigationBarTitleText": "捣蛋熊商城-累计分销员"
 					}
 				},
 				{
@@ -321,10 +342,6 @@
 		}
     ],
     "preloadRule": {
-		"pages2/user/fans": {
-			"network": "all",
-			"packages": ["__APP__"]
-		},
 		"pages2/user/id-card-authentication": {
 			"network": "all",
 			"packages": ["__APP__"]
@@ -350,10 +367,6 @@
 			"packages": ["__APP__"]
 		},
 		"pages2/user/modify-mobile": {
-			"network": "all",
-			"packages": ["__APP__"]
-		},
-		"pages2/user/invite-fans": {
 			"network": "all",
 			"packages": ["__APP__"]
 		},

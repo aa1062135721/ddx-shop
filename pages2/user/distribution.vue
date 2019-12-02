@@ -15,7 +15,7 @@
                 </view>
             </view>
         </view>
-        <view class="section1">
+        <view class="section1" style="margin-bottom: 0;">
             <view class="item" @click="_goPage('user_distribution_sum_order',{whichState: 1, whichDate: 1})">
                 <view class="num">{{responseData.accumulated_income}}</view>
                 <view class="text">累计收益（元）</view>
@@ -24,13 +24,21 @@
                 <view class="num">{{responseData.sales_volume}}</view>
                 <view class="text">团队累计销售额（元）</view>
             </view>
-            <view class="item" @click="_goPage('user_distribution_sum_order')">
-                <view class="num">{{responseData.cumulative_order}}</view>
-                <view class="text">累计订单</view>
-            </view>
-            <view class="item" @click="_goPage('user_distribution_sum_customer')">
-                <view class="num">{{responseData.cumulative_member}}</view>
-                <view class="text">累计客户</view>
+        </view>
+        <view class="section2">
+            <view class="box" style="padding-top:0;padding-bottom: 0;">
+                <view class="item" @click="_goPage('user_distribution_sum_fans')">
+                    <view class="num">0</view>
+                    <view class="text">累计粉丝</view>
+                </view>
+                <view class="item" @click="_goPage('user_distribution_sum_customer')">
+                    <view class="num">{{responseData.cumulative_member}}</view>
+                    <view class="text">累计分销员</view>
+                </view>
+                <view class="item" @click="_goPage('user_distribution_sum_order')">
+                    <view class="num">{{responseData.cumulative_order}}</view>
+                    <view class="text">累计订单</view>
+                </view>
             </view>
         </view>
         <view class="section2">

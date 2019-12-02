@@ -1,8 +1,8 @@
 <template>
     <view>
         <div class="my-tabs">
-            <div class="item" :class="{'active' : requestData.choosesWho === 1}" @click="requestData.choosesWho = 1;requestData.page = 1;btnIndex = 1;loadData()">直属分销员</div>
-            <div class="item" :class="{'active' : requestData.choosesWho === 2}" @click="requestData.choosesWho = 2;requestData.page = 1;btnIndex = 1;loadData()">二级分销员</div>
+            <div class="item" :class="{'active' : requestData.choosesWho === 1}" @click="requestData.choosesWho = 1;requestData.page = 1;btnIndex = 1;loadData()">全部</div>
+            <div class="item" :class="{'active' : requestData.choosesWho === 2}" @click="requestData.choosesWho = 2;requestData.page = 1;btnIndex = 1;loadData()">失效</div>
         </div>
         <view class="title-bar">
             <view class="btns">
@@ -32,8 +32,8 @@
                 <view class="right">
                     <view class='user-name'>
                         <span class="user-name-name">{{item.nickname}}</span>
-                        <span class="my-tag" v-if="item.type === 1">直属分销员</span>
-                        <span class="my-tag" v-if="item.type === 2">二级分销员</span>
+                        <span class="my-tag" v-if="item.type === 1">粉丝</span>
+                        <span class="my-tag" v-if="item.type === 2">失效</span>
                     </view>
                     <view class='sum-data'>
                         成交额：<text>{{item.money}}</text>
@@ -56,7 +56,7 @@
     import MxDatePicker from "@/components/mx-datepicker/mx-datepicker.vue" // 日期时间选择器
 
     export default {
-        name: "sum-customer", // 累计客户
+        name: "sum-fans", // 累计粉丝
         data() {
             return {
                 showPicker: false, //日期选择器是否显示

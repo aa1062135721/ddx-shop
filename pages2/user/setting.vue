@@ -72,11 +72,6 @@
             },
             ...mapMutations(['setToken', 'setUserInfo', 'setShopID'])
         },
-        filters: {
-            filterMobile(mobile){
-                return   mobile.replace(mobile.substring(3,7), "****")
-            },
-        },
         computed:{
             ...mapState(['userInfo'])
         }

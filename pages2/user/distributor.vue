@@ -16,13 +16,18 @@
             </div>
         </div>
         <div class="user-info">
-            <div class="user-info-item">
-                <div class="user-info-item-label">姓名</div>
-                <input class="input" type="text" placeholder="请填写真实姓名，便于结算" v-model="username">
-            </div>
+<!--            <div class="user-info-item">-->
+<!--                <div class="user-info-item-label">姓名</div>-->
+<!--                <input class="input" type="text" placeholder="请填写真实姓名，便于结算" v-model="username">-->
+<!--            </div>-->
             <div class="user-info-item">
                 <div class="user-info-item-label">手机号</div>
                 <input class="input" type="text" placeholder="请填写手机号码，方便联系" maxlength="11" v-model="mobile">
+                <div class="my-code" @click="getCode">获取验证码</div>
+            </div>
+            <div class="user-info-item">
+                <div class="user-info-item-label">验证码</div>
+                <input class="input" type="text" placeholder="请填写验证码" maxlength="11" v-model="code">
             </div>
         </div>
 
@@ -62,6 +67,10 @@
                 </div>
             </div>
         </div>
+
+        <div class="my-footer">
+            最终解释权归重庆捣蛋熊科技有限公司所有
+        </div>
     </div>
 </template>
 
@@ -76,6 +85,7 @@
                 user_id: 0,// 邀请者id
                 username: '',
                 mobile: '',
+                code: '', // 验证码
           }
         },
         methods: {
@@ -97,13 +107,17 @@
                 if (!this.isPoneAvailable(this.mobile, true)) {
                     return
                 }
-                if (!this.isEmpty(this.username, '请输入姓名')) {
+                // if (!this.isEmpty(this.username, '请输入姓名')) {
+                //     return
+                // }
+                if (!this.isEmpty(this.code, '请输入验证码')) {
                     return
                 }
                 await this.$minApi.becomeADistributor({
                     mobile: this.mobile,
                     name: this.username,
                     user_id: this.user_id,
+                    code: this.code,
                 }).then(res => {
                     if (res.code === 200){
                         this.msg(res.msg)
@@ -116,6 +130,23 @@
                 }).catch(err => {
                     this.msg('服务器繁忙，请稍后重试!')
                     console.log(err)
+                })
+            },
+
+            /**
+             * 获取验证码
+             */
+            async getCode(){
+                if (!this.isPoneAvailable(this.mobile, true)) {
+                    return
+                }
+                await this.$minApi.loginSendCode({
+                    mobile: this.mobile,
+                    agreement: 1
+                }).then(res => {
+                    if (res.code === 200) {
+                        this.msg(res.msg)
+                    }
                 })
             },
         },
@@ -198,6 +229,14 @@
                     width: 60%;
                     font-size: $uni-font-size-base;
                 }
+                .my-code{
+                    color: $color-primary;
+                    font-size: 18upx;
+                    padding:8upx 14upx;
+                    text-align: center;
+                    border:1px solid $color-primary;
+                    border-radius:4px;
+                }
             }
         }
 
@@ -244,6 +283,13 @@
                     }
                 }
             }
+        }
+
+        .my-footer{
+            color: #999999;
+            padding: 38upx 0;
+            text-align: center;
+            width: 100%;
         }
     }
 

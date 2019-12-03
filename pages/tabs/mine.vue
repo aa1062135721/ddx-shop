@@ -49,7 +49,7 @@
                         </view>
                         <text class="text" style="margin-top: 6upx;">优惠券</text>
                     </view>
-                    <view class="item">
+                    <view class="item" @click="goPage('user_card_list')">
                         <view>
                             <view class="icon-text">
                                 0<text class="unit">张</text>

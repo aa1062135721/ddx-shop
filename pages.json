@@ -83,6 +83,12 @@
 				"navigationBarTitleText": "捣蛋熊商城-累计粉丝"
 			}
 		},
+		{
+			"path": "pages2/user/card/list",
+			"style": {
+				"navigationBarTitleText": "捣蛋熊商城-我的卡包"
+			}
+		},
 
 		{
 			"path": "pages/public/login",

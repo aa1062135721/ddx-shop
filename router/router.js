@@ -306,6 +306,12 @@ const router = new MinRouter({
 			name: 'user_distribution_sum_fans',
 			login: true
 		},
+		{
+			path: "pages2/user/card/list",
+			type: 'navigateTo',
+			name: 'user_card_list',
+			login: true
+		},
 
 		//spike 秒杀详情
 		{

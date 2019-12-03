@@ -9,6 +9,7 @@
 
 <script>
     import { mapState } from 'vuex'
+    import * as Constant from '../../../utils/constant'
 
     export default {
         name: "invite-friends", // 邀请好友成为分销员
@@ -37,9 +38,9 @@
             if ((this.getPlatform()).isAndroid){
                 this.wxConfig()
             }
-            let url = 'https://www.ddxm661.com/h5/pages2/user/distributor'
+            let url = Constant[Constant.NODE_ENV].inviteFriends // 分享地址
             if(this.userInfo.id) {
-                url += `?&user_id=${this.userInfo.id}&user_name=${this.userInfo.nickname}`
+                url += `?user_id=${this.userInfo.id}&user_name=${this.userInfo.nickname}`
             }
 
             let param1 = {

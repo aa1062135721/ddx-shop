@@ -225,31 +225,32 @@
             if (this.getPlatform().isAndroid){
                 await this.wxConfig()
             }
-            let url = this.currentUrlDelParam('user_id')
-            url = this.urlDelParam(url, 'code')
-            url = this.urlDelParam(url, 'state')
-            if(this.userInfo.id) {
-                url = window.location.href + '&user_id=' + this.userInfo.id
-            }
 
             let requestData = {
                 id: 0
             }
+            let url = Constant[Constant.NODE_ENV].shareGroupOrderDetail // 分享地址
 
-            if (param.user_id){
-                this.setShareID(param.user_id)
-            }
             if (param.id) {
                 requestData.id = param.id
                 this.id = param.id
-                console.log("通过分享带进来的参数：", param)
+                if (param.user_id){
+                    this.setShareID(param.user_id)
+                }
+                url += `?id=${param.id}`
+                console.log("通过分享进入 带过来的参数：", param)
+            } else {
+                if (this.$parseURL().id){
+                    requestData.id = this.$parseURL().id
+                    this.id = this.$parseURL().id
+                    url += `?id=${this.$parseURL().id}`
+                    console.log("其他页面带过来的参数：", this.$parseURL())
+                }
             }
 
-
-            if (this.$parseURL().id){
-                console.log("其他页面带过来的参数：", this.$parseURL())
-                requestData.id = this.$parseURL().id
-                this.id = this.$parseURL().id
+            // 如果用户登录了，把自己的唯一id也分享出去
+            if(this.userInfo.id) {
+                url += `&user_id=${this.userInfo.id}`
             }
 
             await this.$minApi.groupBuyDetail(requestData).then(async res => {

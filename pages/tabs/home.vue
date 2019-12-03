@@ -354,7 +354,7 @@
 	import mGoods from '@/components/goods/goods.vue'
 	import WlmTab from '@/components/wlm-tab/wlm-tab.vue'
 	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue' //可选值：more（loading前）、loading（loading中）、noMore（没有更多了）
-
+	import * as Constant from '../../utils/constant'
 	import {mapState, mapMutations} from 'vuex'
 
 	export default {
@@ -426,15 +426,9 @@
 			if ((await this.getPlatform()).isAndroid){
 				await this.wxConfig()
 			}
-			let url = this.currentUrlDelParam('user_id')
-			url = this.urlDelParam(url, 'code')
-			url = this.urlDelParam(url, 'state')
+			let url = Constant[Constant.NODE_ENV].projectUrl
 			if(this.userInfo.id) {
-				if (window.location.href.indexOf('?') !== -1){
-					url = window.location.href + '&user_id=' + this.userInfo.id
-				} else {
-					url = window.location.href + '?user_id=' + this.userInfo.id
-				}
+				url += `?user_id=${this.userInfo.id}`
 			}
 			this.$nextTick(async () => {
 				let param1 = {

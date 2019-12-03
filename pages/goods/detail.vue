@@ -874,18 +874,26 @@
 			let requestData = {
 				id:0,
 			}
-			console.log("带过来的参数1:", param)
+			let url = Constant[Constant.NODE_ENV].shareGoodsDetail // 分享地址
 			if (param.id){
 				requestData.id = param.id
+				if (param.user_id){
+					this.setShareID(param.user_id)
+				}
+				url += `?id=${param.id}`
+				console.log("通过分享进入 带过来的参数:", param)
+			} else {
+				if (this.$parseURL().id){
+					requestData.id = this.$parseURL().id
+					url += `?id=${this.$parseURL().id}`
+					console.log("其他页面带过来的参数:",this.$parseURL())
+				}
 			}
-			if (param.user_id){
-				this.setShareID(param.user_id)
+			// 如果用户登录了，把自己的唯一id也分享出去
+			if(this.userInfo.id) {
+				url += `&user_id=${this.userInfo.id}`
 			}
 
-			console.log("带过来的参数2:",this.$parseURL())
-			if (this.$parseURL().id){
-				requestData.id = this.$parseURL().id
-			}
 			await this.$minApi.goodsDetail(requestData).then(async res => {
 				console.log("商品详情：", res)
 				if (res.code === 200){
@@ -909,12 +917,7 @@
 					if ((await this.getPlatform()).isAndroid){
 						await this.wxConfig()
 					}
-					let url = this.currentUrlDelParam('user_id')
-					url = this.urlDelParam(url, 'code')
-					url = this.urlDelParam(url, 'state')
-					if(this.userInfo.id) {
-						url = window.location.href + '&user_id=' + this.userInfo.id
-					}
+
 					this.$nextTick(() => {
 						this.calcAnchor();//计算锚点高度，页面数据是ajax加载时，请把此行放在数据渲染完成事件中执行以保证高度计算正确
 						let param1 = {

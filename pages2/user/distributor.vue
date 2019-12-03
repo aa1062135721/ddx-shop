@@ -126,9 +126,8 @@
             if (param.user_id){
                 this.setShareID(param.user_id)
                 this.user_id = param.user_id
-                console.log(param)
+                console.log("通过分享进入 带过来的参数:", param)
             }
-            console.log('其他页面带过来的参数 ：', this.$parseURL())
         },
         watch: {
             userInfo: function(newVal, oldVal) {

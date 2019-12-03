@@ -316,6 +316,15 @@
 					</view>
 				</view>
 
+				<view style="padding: 10px 10px 0 10px;color: #000000;font-size: 20px;font-weight: bold;">
+					好物精选
+				</view>
+				<!-- 推荐页面的上拉无限加载商品 -->
+				<view class="guess-you-like">
+					<view class="goods-list">
+						<mGoods v-for="(item, index) in tabList[TabCur].goodsList" :key="index" :goodsInfo="item" @click.native="goGoodsDetails(item)"></mGoods>
+					</view>
+				</view>
 			</view>
 			<!-- 其他tab栏里的数据 -->
 			<view class="content" v-if="TabCur !== 0">
@@ -358,6 +367,7 @@
 		onTabItemTap(e){
 			console.log(e)
 			if (e.index === 0) {
+				uni.pageScrollTo({scrollTop: 0,duration: 200});
 				this.TabCur = 0
 			}
 		},
@@ -375,7 +385,7 @@
 							limit:10,
 							moreStatus: 'loading',
 						},
-						goodsList:[],
+						goodsList:[],// 推荐页 无限下拉加载商品
 					},
 				],
 				//首页 非推荐里的tab栏，二级tab
@@ -416,14 +426,15 @@
 			if (param.shop_id) {
 				this.setShopID(param.shop_id)
 			}
-			await this._getCategory()
-			await this._getBanner()
-			await this._getIcon()
+			this._getCategory()
+			this._getBanner()
+			this._getIcon()
 
-			await this._getNotice()
-			await this._getCombination()
-			await this._getExplosion()
-			await this._getCategoryGoodsList()
+			this._getNotice()
+			this._getCombination()
+			this._getExplosion()
+			this._getCategoryGoodsList()
+			this._getUnlimitedGoods()
 
 			// 如果是安卓平台 每次进入商品详情页面就会调用微信配置，自定义分享商品
 			if ((await this.getPlatform()).isAndroid){
@@ -462,7 +473,7 @@
 			}
 			this.tabList[this.TabCur].requestData.page ++
 			if (this.TabCur === 0) {
-
+				await this._getUnlimitedGoods()
 			} else {
 				await this._getGoodsList()
 			}
@@ -591,7 +602,6 @@
 					console.log("获取推荐tab中的六个板块数据：",res)
 					if (res.code === 200){
 						this.categoryGoodsList = res.data
-						this.tabList[0].requestData.moreStatus = 'noMore'
 					}
 				})
 			},
@@ -601,7 +611,6 @@
 					console.log("获取推荐tab中的公告：",res)
 					if (res.code === 200){
 						this.notice = res.data
-						this.tabList[0].requestData.moreStatus = 'noMore'
 					}
 				})
 			},
@@ -611,7 +620,6 @@
 					console.log("获取推荐tab中的 超级拼团 限时秒杀 童装童鞋 境外购：",res)
 					if (res.code === 200){
 						this.combination = res.data
-						this.tabList[0].requestData.moreStatus = 'noMore'
 					}
 				})
 			},
@@ -621,7 +629,28 @@
 					console.log("hot sale 人气爆款数据：",res)
 					if (res.code === 200){
 						this.explosion = res.data
-						this.tabList[0].requestData.moreStatus = 'noMore'
+					}
+				})
+			},
+			// 推荐里的无限下拉加载更多商品
+			async _getUnlimitedGoods(){
+				this.tabList[0].requestData.moreStatus = 'loading'
+				let data = {
+					page: this.tabList[0].requestData.page,
+					limit: this.tabList[0].requestData.limit,
+				}
+				await this.$minApi.searchGoods(data).then(res => {
+					if (res.code === 200){
+						if (data.page === 1) {
+							this.tabList[0].goodsList = res.data
+						} else {
+							this.tabList[0].goodsList.push(...res.data)
+						}
+						if (res.data.length <  this.tabList[0].requestData.limit) {
+							this.tabList[0].requestData.moreStatus = 'noMore'
+						} else {
+							this.tabList[0].requestData.moreStatus = 'more'
+						}
 					}
 				})
 			},

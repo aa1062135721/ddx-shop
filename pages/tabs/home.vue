@@ -55,7 +55,7 @@
 				</view>
 
 				<!-- 超级拼团 限时秒杀 童装童鞋 境外购-->
-				<view class="goods-category">
+<!--				<view class="goods-category">
 					<view class="all-goods">
 						<view class="item">
 							<view class="title-box" @click="_goPage('group_buy')">
@@ -145,7 +145,55 @@
 						</view>
 					</view>
 				</view>
-
+-->
+				<!--	天天秒杀			-->
+				<view class="tiantianmiaosha"  v-show="seckill_list.length !== 0">
+					<view class="top-banner" @click="_goPage('spike_list')"></view>
+					<view class="body-content">
+						<scroll-view  scroll-x="true">
+							<view class="all-goods">
+								<view class="goods" v-for="(item, index) in seckill_list" :key="index" @click="_goPage('spike_detail', {item_id: item.item_id, seckill_id: item.id})">
+									<view class="goods-header">
+										<image class="img" :src="item.pic" :lazy-load="true"></image>
+									</view>
+									<div class="goods-footer">
+										<div class="goods-title">{{item.item_name}}</div>
+										<div class="goods-price">
+											<span class="old-price">￥{{item.old_price}}</span>
+											<span class="now-price">￥{{item.price}}</span>
+										</div>
+										<div class="btn-box">
+											<div class="btn">立即抢购</div>
+										</div>
+									</div>
+								</view>
+							</view>
+						</scroll-view>
+					</view>
+				</view>
+				<!--	拼团特惠			-->
+				<view class="pintuantehui" v-show="assemble_list.length !== 0">
+					<view class="top-banner" @click="_goPage('group_buy')"></view>
+					<view class="body-content">
+						<scroll-view  scroll-x="true">
+							<view class="all-goods">
+								<view class="goods" v-for="(item, index) in assemble_list" :key="index" @click="_goPage('group_buy_detail', {assemble_id: item.id, item_id: item.item_id})">
+									<view class="goods-header">
+										<image class="img" :src="item.pic" :lazy-load="true"></image>
+										<div class="flag">{{item.assemble_num}}人团</div>
+									</view>
+									<div class="goods-footer">
+										<div class="goods-title">{{item.item_name}}</div>
+										<div class="goods-price">
+											<span class="old-price">￥{{item.old_price}}</span>
+											<span class="now-price">￥{{item.price}}</span>
+										</div>
+									</div>
+								</view>
+							</view>
+						</scroll-view>
+					</view>
+				</view>
 				<!-- HOT SALE-->
 				<!---
 
@@ -404,6 +452,10 @@
 						data:[],
 					},
 				},
+				// 限时秒杀列表
+				seckill_list: [],
+				// 获取拼团列表
+				assemble_list: [],
 			}
 		},
 		async onLoad(param) {
@@ -418,7 +470,8 @@
 			await this._getIcon()
 
 			await this._getNotice()
-			await this._getCombination()
+			// await this._getCombination()
+			this._getSpikeList()
 			await this._getExplosion()
 			await this._getCategoryGoodsList()
 
@@ -609,6 +662,21 @@
 					if (res.code === 200){
 						this.combination = res.data
 						this.tabList[0].requestData.moreStatus = 'noMore'
+					}
+				})
+			},
+			/**
+			 * 获取10个秒杀商品 和 10 拼团
+			 */
+			async _getSpikeList(){
+				await this.$minApi.getSeckillList().then(res => {
+					if (res.code === 200) {
+						this.seckill_list = res.data
+					}
+				})
+				await this.$minApi.getAssembleList().then(res => {
+					if (res.code === 200) {
+						this.assemble_list = res.data
 					}
 				})
 			},
@@ -820,6 +888,7 @@
 
 			/* 新人专享 */
 			.newcomer{
+				background: #FFFFFF;
 				.img{
 					width: 100%;
 				}
@@ -1184,6 +1253,181 @@
 									font-size: $uni-font-size-sm;
 									color: $color-primary;
 									text-align: center;
+								}
+							}
+						}
+					}
+				}
+			}
+
+			/* 天天秒杀 */
+			.tiantianmiaosha{
+				background: #ffff;
+				padding: 0 $uni-spacing-row-sm;
+				padding-bottom: 40upx;
+				.top-banner{
+					background-image:url("~@/static/images/tab-home/spike-banner.png");
+					height:88upx;
+					background-size: 100% 100%;
+					background-repeat: no-repeat;
+				}
+				.body-content{
+					height:358upx;
+					background:rgba(250,229,229,1);
+					border-radius:0 0 8upx 8upx;
+					width: 100%;
+					padding:0 24upx;
+					display: flex;
+					align-items: center;
+
+					.all-goods{
+						height: 100%;
+						width: 100%;
+						display: flex;
+						flex-wrap: nowrap;
+
+						.goods{
+							margin-right: 20upx;
+							width: 178upx;
+							height: 300upx;
+							display: flex;
+							flex-direction: column;
+							justify-content: space-between;
+							.goods-header{
+								height: 178upx;
+								width: 178upx;
+								.img{
+									height: 178upx;
+									width: 178upx;
+									border-radius:6upx;
+								}
+							}
+							.goods-footer{
+								width: 100%;
+								height: 100upx;
+								display: flex;
+								flex-direction: column;
+								justify-content: space-between;
+								.goods-title{
+									@extend %overflow-1-line;
+									color: $color-primary-plain;
+									font-size: 22upx;
+								}
+								.goods-price{
+									font-size: $uni-font-size-sm;
+									display: flex;
+									justify-content: space-around;
+									align-items: flex-end;
+									.old-price{
+										font-size: 20upx;
+										color: #999999;
+										text-decoration: line-through;
+									}
+									.now-price{
+										color: $color-primary;
+									}
+								}
+								.btn-box{
+									display: flex;
+									justify-content: center;
+									.btn{
+										padding: 0 20upx;
+										height:32upx;
+										font-size:20upx;
+										font-weight:400;
+										color:rgba(255,255,255,1);
+										line-height:32upx;
+										background:linear-gradient(-45deg,rgba(252,69,60,1) 0%,rgba(252,123,178,1) 100%);
+										border-radius:16upx;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			/* 拼团特惠 */
+			.pintuantehui{
+				background-image: linear-gradient(#fff, #f2f2f2);
+				padding: 0 $uni-spacing-row-sm;
+				margin-bottom: 20upx;
+				.top-banner{
+					background-image:url("~@/static/images/tab-home/group-banner.png");
+					height:110upx;
+					background-size: 100% 100%;
+					background-repeat: no-repeat;
+				}
+				.body-content{
+					height:358upx;
+					background:linear-gradient(-68deg,rgba(251,79,88,1),rgba(250,199,121,1));
+					border-radius:0 0 8upx 8upx;
+					width: 100%;
+					padding:0 24upx;
+					display: flex;
+					align-items: center;
+
+					.all-goods{
+						height: 100%;
+						width: 100%;
+						display: flex;
+						flex-wrap: nowrap;
+						align-items: center;
+						background: #FFFFFF;
+						border-radius:10upx;
+						padding: 20upx;
+						.goods{
+							margin-right: 20upx;
+							width: 178upx;
+							height: 278upx;
+							display: flex;
+							flex-direction: column;
+							justify-content: space-around;
+							.goods-header{
+								height: 178upx;
+								width: 178upx;
+								position: relative;
+								.img{
+									height: 178upx;
+									width: 178upx;
+									border-radius:6upx;
+								}
+								.flag{
+									position: absolute;
+									background: #FB4F58;
+									font-size: 18upx;
+									text-align: center;
+									width:60upx;
+									height:60upx;
+									color: #FFFFFF;
+									line-height: 60upx;
+									border-radius: 50%;
+									left: 0;
+									bottom: 0;
+								}
+							}
+							.goods-footer{
+								width: 100%;
+								display: flex;
+								flex-direction: column;
+								justify-content: space-between;
+								.goods-title{
+									@extend %overflow-1-line;
+									color: $color-primary-plain;
+									font-size: 22upx;
+								}
+								.goods-price{
+									font-size: $uni-font-size-sm;
+									display: flex;
+									justify-content: space-around;
+									align-items: flex-end;
+									.old-price{
+										font-size: 20upx;
+										color: #999999;
+										text-decoration: line-through;
+									}
+									.now-price{
+										color: $color-primary;
+									}
 								}
 							}
 						}

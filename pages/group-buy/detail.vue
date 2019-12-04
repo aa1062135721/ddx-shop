@@ -1032,21 +1032,13 @@
 				_AIHECONG('showChat')
 			},
 		},
-		async onLoad(param) {
+		async onLoad() {
 			let requestData = {
-				assemble_id:0,
-				item_id:0,
-			}
-			let url = Constant[Constant.NODE_ENV].shareGroupGoodsDetail // 分享地址
-			if (param.item_id && requestData.assemble_id){
-				requestData.item_id = param.item_id
-				requestData.assemble_id = param.assemble_id
-				if (param.user_id){
-					this.setShareID(param.user_id)
-				}
-				url += `?item_id=${param.item_id}&assemble_id=${param.assemble_id}`
-				console.log("通过分享进入 带过来的参数:", param)
-			} else {
+					assemble_id:0,
+					item_id:0,
+				},
+				url = Constant[Constant.NODE_ENV].shareGroupGoodsDetail // 分享地址
+
 				if (this.$parseURL().item_id && this.$parseURL().assemble_id){
 					requestData.item_id = this.$parseURL().item_id // 商品id
 					requestData.assemble_id = this.$parseURL().assemble_id // 拼团活动id
@@ -1056,7 +1048,7 @@
 					url += `?item_id=${this.$parseURL().item_id}&assemble_id=${this.$parseURL().assemble_id}`
 					console.log("其他页面带过来的参数：",this.$parseURL())
 				}
-			}
+
 			// 如果用户登录了，把自己的唯一id也分享出去
 			if(this.userInfo.id) {
 				url += `&user_id=${this.userInfo.id}`

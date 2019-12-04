@@ -406,13 +406,7 @@
 				},
 			}
 		},
-		async onLoad(param) {
-			if (param.user_id){
-				this.setShareID(param.user_id)
-			}
-			if (param.shop_id) {
-				this.setShopID(param.shop_id)
-			}
+		async onLoad() {
 			await this._getCategory()
 			await this._getBanner()
 			await this._getIcon()

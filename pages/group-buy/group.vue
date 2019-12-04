@@ -227,26 +227,16 @@
             }
 
             let requestData = {
-                id: 0
-            }
-            let url = Constant[Constant.NODE_ENV].shareGroupOrderDetail // 分享地址
+                    id: 0
+                },
+                url = Constant[Constant.NODE_ENV].shareGroupOrderDetail // 分享地址
 
-            if (param.id) {
-                requestData.id = param.id
-                this.id = param.id
-                if (param.user_id){
-                    this.setShareID(param.user_id)
-                }
-                url += `?id=${param.id}`
-                console.log("通过分享进入 带过来的参数：", param)
-            } else {
                 if (this.$parseURL().id){
                     requestData.id = this.$parseURL().id
                     this.id = this.$parseURL().id
                     url += `?id=${this.$parseURL().id}`
                     console.log("其他页面带过来的参数：", this.$parseURL())
                 }
-            }
 
             // 如果用户登录了，把自己的唯一id也分享出去
             if(this.userInfo.id) {

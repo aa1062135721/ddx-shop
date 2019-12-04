@@ -28,8 +28,24 @@
 			...mapMutations(['setToken', 'setSubscribe', 'setUserInfo', 'setShopID']),
             ...mapActions(['asyncGetUserInfo']),
 		},
-		onLaunch: function() {
+		onLaunch: function(param) {
 			console.log('App Launch')
+            if ((Object.keys(param.query)).length !== 0){
+                uni.setStorageSync('pagesParam', param.query)
+                /**
+                 * 如果是别人推荐的
+                 */
+                if (param.query.user_id){
+                    this.setShareID(param.query.user_id)
+                }
+                /**
+                 * 如果是门店推荐的
+                 */
+                if (param.query.shop_id) {
+                    this.setShopID(param.query.shop_id)
+                }
+                console.log('通过分享进入 且携带的参数为：', param)
+            }
             // ios 进入应用就要配置微信sdk
             if(this.getPlatform().isIOS){
                this.wxConfig()

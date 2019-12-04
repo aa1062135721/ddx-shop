@@ -1032,28 +1032,26 @@
 				_AIHECONG('showChat')
 			},
 		},
-		async onLoad(param) {
+		async onLoad() {
 			let requestData = {
-				assemble_id:0,
-				item_id:0,
-			}
+					assemble_id:0,
+					item_id:0,
+				},
+				url = Constant[Constant.NODE_ENV].shareGroupGoodsDetail // 分享地址
 
-			if (param.user_id){
-				this.setShareID(param.user_id)
-			}
-			if (param.item_id){
-				requestData.item_id = param.item_id
-				requestData.assemble_id = param.assemble_id
-				console.log("通过分享进入页面，带过来的参数:", param)
-			}
-
-			if (this.$parseURL().item_id){
-				requestData.item_id = this.$parseURL().item_id // 商品id
-				requestData.assemble_id = this.$parseURL().assemble_id // 拼团活动id
-				if (this.$parseURL().assemble_list_id) { // 别人通过的分享，参团的团组 id
-					this.choosesGoodsInfo.assemble_list_id = this.$parseURL().assemble_list_id
+				if (this.$parseURL().item_id && this.$parseURL().assemble_id){
+					requestData.item_id = this.$parseURL().item_id // 商品id
+					requestData.assemble_id = this.$parseURL().assemble_id // 拼团活动id
+					if (this.$parseURL().assemble_list_id) { // 别人通过的分享，参团的团组 id
+						this.choosesGoodsInfo.assemble_list_id = this.$parseURL().assemble_list_id
+					}
+					url += `?item_id=${this.$parseURL().item_id}&assemble_id=${this.$parseURL().assemble_id}`
+					console.log("其他页面带过来的参数：",this.$parseURL())
 				}
-				console.log("其他页面带过来的参数：",this.$parseURL())
+
+			// 如果用户登录了，把自己的唯一id也分享出去
+			if(this.userInfo.id) {
+				url += `&user_id=${this.userInfo.id}`
 			}
 
 			await this.$minApi.assembleInfo(requestData).then(async res => {
@@ -1074,12 +1072,6 @@
 					// 如果是安卓平台 每次进入商品详情页面就会调用微信配置，自定义分享商品
 					if (await(this.getPlatform()).isAndroid){
 						await this.wxConfig()
-					}
-					let url = this.currentUrlDelParam('user_id')
-					url = this.urlDelParam(url, 'code')
-					url = this.urlDelParam(url, 'state')
-					if(this.userInfo.id) {
-						url  += '&user_id=' + this.userInfo.id
 					}
 
 					this.$nextTick(async ()=>{

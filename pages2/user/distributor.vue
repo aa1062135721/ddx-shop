@@ -119,16 +119,13 @@
                 })
             },
         },
-        onLoad(param) {
-            if (param.user_name){
-                this.inviter = param.user_name
+        onLoad() {
+            if (this.$parseURL().user_id) {
+                this.user_id = this.$parseURL().user_id
+                if (this.$parseURL().user_name){
+                    this.inviter = this.$parseURL().user_name
+                }
             }
-            if (param.user_id){
-                this.setShareID(param.user_id)
-                this.user_id = param.user_id
-                console.log(param)
-            }
-            console.log('其他页面带过来的参数 ：', this.$parseURL())
         },
         watch: {
             userInfo: function(newVal, oldVal) {

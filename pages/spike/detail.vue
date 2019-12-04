@@ -823,26 +823,23 @@
                 _AIHECONG('showChat')
             },
         },
-        async onLoad(param){
+        async onLoad(){
             let requestData = {
-                item_id: 0,
-                seckill_id: 0
-            }
-            if (param.item_id){
-                requestData.item_id = param.item_id
-            }
-            if (param.seckill_id){
-                requestData.seckill_id = param.seckill_id
-            }
-            if (param.user_id){ // 保存分享人
-                this.setShareID(param.user_id)
-                console.log("通过分享进入 带过来的参数:", param)
-            }
+                    item_id: 0,
+                    seckill_id: 0
+                },
+                url = Constant[Constant.NODE_ENV].shareSpikeGoodsDetail // 分享地址
 
-            if (this.$parseURL().item_id){
-                requestData.item_id = this.$parseURL().item_id
-                requestData.seckill_id = this.$parseURL().seckill_id
-                console.log("其他页面带过来的参数：",this.$parseURL())
+                if (this.$parseURL().item_id && this.$parseURL().seckill_id){
+                    requestData.item_id = this.$parseURL().item_id
+                    requestData.seckill_id = this.$parseURL().seckill_id
+                    url += `?item_id=${this.$parseURL().item_id}&seckill_id=${this.$parseURL().seckill_id}`
+                    console.log("其他页面带过来的参数：",this.$parseURL())
+                }
+
+            // 如果用户登录了，把自己的唯一id也分享出去
+            if(this.userInfo.id) {
+                url += `&user_id=${this.userInfo.id}`
             }
 
             await this.$minApi.seckill_info(requestData).then(async res => {
@@ -856,12 +853,7 @@
                     if ((await this.getPlatform()).isAndroid){
                         await this.wxConfig()
                     }
-                    let url = this.currentUrlDelParam('user_id')
-                    url = this.urlDelParam(url, 'code')
-                    url = this.urlDelParam(url, 'state')
-                    if(this.userInfo.id) {
-                        url = window.location.href + '&user_id=' + this.userInfo.id
-                    }
+
                     await this.$nextTick(async () => {
                         //设置定时器 每一秒执行一次
                         myTimer = setInterval(()=> {

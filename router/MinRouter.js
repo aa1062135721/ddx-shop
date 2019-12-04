@@ -32,11 +32,14 @@ function openPage(args) {
     }
 
     if (isObject(query)) {
+        uni.setStorageSync('pagesParam', query)
+/**
         // queryStr = encodeURIComponent(JSON.stringify(query))
         queryStr = JSON.stringify(query)
         queryStr=queryStr.replace(/\%/g,"%25");
         queryStr=queryStr.replace(/\#/g,"%23");
         queryStr=queryStr.replace(/\&/g,"%26");
+ */
     } else {
         throw new Error('query数据必须是Object')
     }
@@ -83,7 +86,8 @@ function openPage(args) {
 
     return new Promise((resolve, reject) => {
         uni[type]({
-            url: `/${path}?query=${queryStr}`,
+            // url: `/${path}?query=${queryStr}`,
+            url: `/${path}`,
             success: resolve,
             fail: reject
         })
@@ -91,6 +95,8 @@ function openPage(args) {
 }
 
 function parseURL() {
+    return uni.getStorageSync('pagesParam')
+    /**
     const query = this.$root.$mp.query.query
     if (query) {
         // return JSON.parse(decodeURIComponent(query))
@@ -98,6 +104,7 @@ function parseURL() {
     } else {
         return {}
     }
+*/
 }
 
 function install(Vue) {

@@ -128,6 +128,8 @@ exports.install = function (Vue, options) {
     Vue.prototype.loginWithOfficalAccount = () => {
         let appId = Constant[Constant.NODE_ENV].appId
         let local = window.location.href //回调地址
+        local = Vue.prototype.urlDelParam(local, 'code')
+        local = Vue.prototype.urlDelParam(local, 'state')
         window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${encodeURIComponent(local)}&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect`
     }
 

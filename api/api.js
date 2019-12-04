@@ -691,6 +691,22 @@ export default {
       return minRequest.get('/user/shareRetailFriend', data)
     },
 
+    /**
+     * 通过code判断是否注册或者或者已经成为分销商
+     * 'code':200  //状态码：100获取openid失败，333表示此用户已经是分销员则直接用返回的token跳转到分销中心,200不是分销员,让用户填写数据
+     * 'is_retail':1;      //是否注册，1已注册0未注册  ：已注册不需要填写手机号，未注册则必须填写手机号
+     * 'openid'    ://获取的openid,提交时必须返回此参数
+     * 'token' :   //token：当为分销员是返回的token
+     */
+    codeJudgeOpenid(data){
+      return minRequest.get('/login/judgeOpenid', data)
+    },
+    /**
+     * 分销分享：用户填写完资料之后提交 成为分销商
+     */
+    becomeADistributor2(data){
+      return minRequest.post('/login/retailMessage', data)
+    },
 
   }
 }

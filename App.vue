@@ -25,7 +25,7 @@
             _goPage(url, query = {}){
                 this.$openPage({name:url, query})
             },
-			...mapMutations(['setToken', 'setSubscribe', 'setUserInfo', 'setShopID']),
+			...mapMutations(['setToken', 'setSubscribe', 'setUserInfo', 'setShopID', 'setShareID']),
             ...mapActions(['asyncGetUserInfo']),
 		},
 		onLaunch: function(param) {
@@ -51,11 +51,7 @@
                this.wxConfig()
             }
 
-            // this.setToken('6fe97b44cb77d3752655625151e6ed3834081524f71c1953b0e5d4f566bf83c5')
-		},
-		onShow: function() {
-			console.log('App Show')
-
+            // this.setToken('50377b7bdb615a0c6a73abab8a566244592526b1e8d6728c9bf2eab91b3420e9')
             try {
                 const token = uni.getStorageSync('token')
                 if (token) {
@@ -64,10 +60,7 @@
                     this.setSubscribe(1)
                 } else {
                     let code = this.getUrlParam("code") //是否存在code
-                    if (code == null || code === "") {
-                        //不存在就打开上面的地址进行授权
-                        this.loginWithOfficalAccount()
-                    } else {
+                    if (code && param.path && param.path !== 'pages2/user/distributor'){ //用户自己的登录操作，不是系统自己调用的，只有在 pages2/user/distributor下 系统可能会自己调用获取code
                         //存在则通过code传向后台
                         let data = { code: code, }
                         this.$minApi.getToken(data).then(res => {
@@ -75,7 +68,9 @@
                             /**
                              *  把用户是否关注公众号保存下来，在商品详情
                              */
-                            this.setSubscribe(res.data.subscribe)
+                            if (res.data.subscribe === 0 || res.data.subscribe === 1){
+                                this.setSubscribe(res.data.subscribe)
+                            }
                             /**
                              * 用户绑定手机号，能获取到用户信息，这时候用户登录成功了
                              */
@@ -92,12 +87,6 @@
                                 res.data.subscribe === 1) {
                                 this._goPage('login-with-mobile-public', {member: res.data.member})
                             }
-                        }).catch(err => {
-                            console.log('服务器返回的数据！', err)
-                            this.setToken() // 清空用户token
-                            this.setUserInfo() // 清空用户数据
-                            //this.setSubscribe() // 清空用户是否关注公众号数据
-                            this.setShopID() // 清空保存的门店数据
                         })
                     }
                 }
@@ -105,9 +94,12 @@
                 console.log(e)
                 this.setToken() // 清空用户token
                 this.setUserInfo() // 清空用户数据
-                //this.setSubscribe() // 清空用户是否关注公众号数据
+                this.setSubscribe() // 清空用户是否关注公众号数据
                 this.setShopID() // 清空保存的门店数据
             }
+		},
+		onShow: function() {
+			console.log('App Show')
 
             if (this.userInfo.id) {
                 _AIHECONG('update',{ entId : '15463', uniqueId : this.userInfo.id });

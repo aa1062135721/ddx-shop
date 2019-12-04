@@ -172,28 +172,31 @@
 					</view>
 				</view>
 				<!--	拼团特惠			-->
-				<view class="pintuantehui" v-show="assemble_list.length !== 0">
-					<view class="top-banner" @click="_goPage('group_buy')"></view>
-					<view class="body-content">
-						<scroll-view  scroll-x="true">
-							<view class="all-goods">
-								<view class="goods" v-for="(item, index) in assemble_list" :key="index" @click="_goPage('group_buy_detail', {assemble_id: item.id, item_id: item.item_id})">
-									<view class="goods-header">
-										<image class="img" :src="item.pic" :lazy-load="true"></image>
-										<div class="flag">{{item.assemble_num}}人团</div>
-									</view>
-									<div class="goods-footer">
-										<div class="goods-title">{{item.item_name}}</div>
-										<div class="goods-price">
-											<span class="old-price">￥{{item.old_price}}</span>
-											<span class="now-price">￥{{item.price}}</span>
+				<div class="pintuantehui-box-big-div">
+					<view class="pintuantehui" v-show="assemble_list.length !== 0">
+						<view class="top-banner" @click="_goPage('group_buy')"></view>
+						<view class="body-content">
+							<scroll-view  scroll-x="true" style="background: #FFFFFF;border-radius:10upx;padding:0 20upx;">
+								<view class="all-goods">
+									<view class="goods" v-for="(item, index) in assemble_list" :key="index" @click="_goPage('group_buy_detail', {assemble_id: item.id, item_id: item.item_id})">
+										<view class="goods-header">
+											<image class="img" :src="item.pic" :lazy-load="true"></image>
+											<div class="flag">{{item.assemble_num}}人团</div>
+										</view>
+										<div class="goods-footer">
+											<div class="goods-title">{{item.item_name}}</div>
+											<div class="goods-price">
+												<span class="old-price">￥{{item.old_price}}</span>
+												<span class="now-price">￥{{item.price}}</span>
+											</div>
 										</div>
-									</div>
+									</view>
 								</view>
-							</view>
-						</scroll-view>
+							</scroll-view>
+						</view>
 					</view>
-				</view>
+				</div>
+
 				<!-- HOT SALE-->
 				<!---
 
@@ -1274,7 +1277,7 @@
 				.body-content{
 					height:358upx;
 					background:rgba(250,229,229,1);
-					border-radius:0 0 8upx 8upx;
+					border-radius:0 0 10upx 10upx;
 					width: 100%;
 					padding:0 24upx;
 					display: flex;
@@ -1314,12 +1317,12 @@
 									font-size: 22upx;
 								}
 								.goods-price{
-									font-size: $uni-font-size-sm;
+									font-size: 20upx;
 									display: flex;
 									justify-content: space-around;
 									align-items: flex-end;
 									.old-price{
-										font-size: 20upx;
+										font-size: 18upx;
 										color: #999999;
 										text-decoration: line-through;
 									}
@@ -1347,86 +1350,89 @@
 				}
 			}
 			/* 拼团特惠 */
-			.pintuantehui{
-				background-image: linear-gradient(#fff, #f2f2f2);
+			.pintuantehui-box-big-div{
+				height: 400upx;
 				padding: 0 $uni-spacing-row-sm;
+				background-image: linear-gradient(#fff, #f2f2f2);
 				margin-bottom: 20upx;
-				.top-banner{
-					background-image:url("~@/static/images/tab-home/group-banner.png");
-					height:110upx;
+				.pintuantehui{
+					background-image:url("~@/static/images/tab-home/group-bg.png");
 					background-size: 100% 100%;
 					background-repeat: no-repeat;
-				}
-				.body-content{
-					height:358upx;
-					background:linear-gradient(-68deg,rgba(251,79,88,1),rgba(250,199,121,1));
-					border-radius:0 0 8upx 8upx;
-					width: 100%;
-					padding:0 24upx;
-					display: flex;
-					align-items: center;
-
-					.all-goods{
-						height: 100%;
+					padding: 0 $uni-spacing-row-sm;
+					.top-banner{
+						height:80upx;
+						background-size: 100% 100%;
+						background-repeat: no-repeat;
+					}
+					.body-content{
+						height:320upx;
+						border-radius:10upx 0 10upx 10upx;
 						width: 100%;
 						display: flex;
-						flex-wrap: nowrap;
 						align-items: center;
-						background: #FFFFFF;
-						border-radius:10upx;
-						padding: 20upx;
-						.goods{
-							margin-right: 20upx;
-							width: 178upx;
-							height: 278upx;
+						.all-goods{
+							height: 280upx;
+							width: 100%;
 							display: flex;
-							flex-direction: column;
-							justify-content: space-around;
-							.goods-header{
-								height: 178upx;
+							flex-wrap: nowrap;
+							align-items: center;
+							padding: 20upx 0;
+							overflow: hidden;
+							overflow-x: auto;
+							.goods{
+								margin-right: 20upx;
 								width: 178upx;
-								position: relative;
-								.img{
-									height: 178upx;
-									width: 178upx;
-									border-radius:6upx;
-								}
-								.flag{
-									position: absolute;
-									background: #FB4F58;
-									font-size: 18upx;
-									text-align: center;
-									width:60upx;
-									height:60upx;
-									color: #FFFFFF;
-									line-height: 60upx;
-									border-radius: 50%;
-									left: 0;
-									bottom: 0;
-								}
-							}
-							.goods-footer{
-								width: 100%;
+								height: 278upx;
 								display: flex;
 								flex-direction: column;
-								justify-content: space-between;
-								.goods-title{
-									@extend %overflow-1-line;
-									color: $color-primary-plain;
-									font-size: 22upx;
-								}
-								.goods-price{
-									font-size: $uni-font-size-sm;
-									display: flex;
-									justify-content: space-around;
-									align-items: flex-end;
-									.old-price{
-										font-size: 20upx;
-										color: #999999;
-										text-decoration: line-through;
+								justify-content: space-around;
+								.goods-header{
+									height: 178upx;
+									width: 178upx;
+									position: relative;
+									.img{
+										height: 178upx;
+										width: 178upx;
+										border-radius:6upx;
 									}
-									.now-price{
-										color: $color-primary;
+									.flag{
+										position: absolute;
+										background: #FB4F58;
+										font-size: 18upx;
+										text-align: center;
+										width:60upx;
+										height:60upx;
+										color: #FFFFFF;
+										line-height: 60upx;
+										border-radius: 50%;
+										left: 0;
+										bottom: 0;
+									}
+								}
+								.goods-footer{
+									width: 100%;
+									display: flex;
+									flex-direction: column;
+									justify-content: space-between;
+									.goods-title{
+										@extend %overflow-1-line;
+										color: $color-primary-plain;
+										font-size: 22upx;
+									}
+									.goods-price{
+										font-size: 20upx;
+										display: flex;
+										justify-content: space-around;
+										align-items: flex-end;
+										.old-price{
+											font-size: 18upx;
+											color: #999999;
+											text-decoration: line-through;
+										}
+										.now-price{
+											color: $color-primary;
+										}
 									}
 								}
 							}

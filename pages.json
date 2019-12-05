@@ -49,6 +49,12 @@
 				"navigationStyle": "custom"
 			}
 		},
+		{
+			"path": "pages2/user/distribution/sum-fans",
+			"style": {
+				"navigationBarTitleText": "捣蛋熊商城-累计粉丝"
+			}
+		},
 
 		{
 			"path": "pages/public/login",

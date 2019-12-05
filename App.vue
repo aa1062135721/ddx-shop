@@ -44,6 +44,50 @@
                 if (param.query.shop_id) {
                     this.setShopID(param.query.shop_id)
                 }
+                /**
+                 * 用户推荐别人购买
+                 */
+                if(param.query.user_id){
+                    let saveData = {
+                        path: param.path, // 分享进来的页面路径
+                        type: '',
+                        data: {},
+                    }
+                    // 普通商品分享
+                    if (param.query.id){
+                        saveData.type = 'buy_now'
+                        saveData.data = {
+                            id: param.query.id
+                        }
+                    }
+                    // 秒杀商品
+                    if (param.query.seckill_id){
+                        saveData.type = 'spike'
+                        saveData.data = {
+                            seckill_id: param.query.seckill_id,
+                            item_id: param.query.item_id,
+                        }
+                    }
+                    // 拼团商品
+                    if (param.query.assemble_id){
+                        saveData.type = 'group'
+                        // 直接邀请拼团商品
+                        saveData.data = {
+                            assemble_id: param.query.assemble_id,
+                            item_id: param.query.item_id,
+                        }
+                        // 邀请加入拼团
+                        if (param.query.assemble_list_id) {
+                            saveData.data.assemble_list_id = param.query.assemble_list_id
+                        }
+                    }
+
+                    if (saveData.type){
+                        saveData.data.share_id = param.query.user_id
+                        // 邀请购买 得提成
+                        uni.setStorageSync('inviteBuy', saveData)
+                    }
+                }
                 console.log('通过分享进入 且携带的参数为：', param)
             }
             // ios 进入应用就要配置微信sdk
@@ -51,7 +95,7 @@
                this.wxConfig()
             }
 
-            // this.setToken('50377b7bdb615a0c6a73abab8a566244592526b1e8d6728c9bf2eab91b3420e9')
+            // this.setToken('dcdba1125a39fc948aea39d80dfd156b373e91ce5da71a01a0e6d20ba8df9fe9')
             try {
                 const token = uni.getStorageSync('token')
                 if (token) {

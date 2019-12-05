@@ -89,7 +89,25 @@ function openPage(args) {
             // url: `/${path}?query=${queryStr}`,
             url: `/${path}`,
             success: resolve,
-            fail: reject
+            fail: reject,
+            complete:()=>{
+                const pages = getCurrentPages()
+                const curPage = pages[pages.length-1]
+                if (
+                    [
+                        '/',
+                        '/pages/goods/detail', // 普通商品
+                        '/pages/spike/detail', // 抢购
+                        '/pages/group-buy/detail', // 团购
+                        '/pages/order/submit', //提交订单页面
+                        '/pages2/address/chooses', // 选择收货地址页面
+                        '/pages2/address/add', // 新增收货地址页面
+                    ].indexOf(curPage.$route.path) === -1
+                ) {
+                    console.log('清空')
+                    uni.removeStorageSync('inviteBuy')
+                }
+            }
         })
     })
 }

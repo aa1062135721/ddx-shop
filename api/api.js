@@ -708,5 +708,12 @@ export default {
       return minRequest.post('/login/retailMessage', data)
     },
 
+    /**
+     * 我的粉丝列表
+     */
+    getMemberFans(data){
+      return minRequest.get('/Retail/memberFans', data)
+    },
+
   }
 }

@@ -15,7 +15,7 @@
                 </view>
             </view>
         </view>
-        <view class="section1">
+        <view class="section1" style="margin-bottom: 0;">
             <view class="item" @click="_goPage('user_distribution_sum_order',{whichState: 1, whichDate: 1})">
                 <view class="num">{{responseData.accumulated_income}}</view>
                 <view class="text">累计收益（元）</view>
@@ -24,13 +24,21 @@
                 <view class="num">{{responseData.sales_volume}}</view>
                 <view class="text">团队累计销售额（元）</view>
             </view>
-            <view class="item" @click="_goPage('user_distribution_sum_order')">
-                <view class="num">{{responseData.cumulative_order}}</view>
-                <view class="text">累计订单</view>
-            </view>
-            <view class="item" @click="_goPage('user_distribution_sum_customer')">
-                <view class="num">{{responseData.cumulative_member}}</view>
-                <view class="text">累计客户</view>
+        </view>
+        <view class="section2">
+            <view class="box" style="padding-top:0;padding-bottom: 0;">
+                <view class="item" @click="_goPage('user_distribution_sum_fans')">
+                    <view class="num">{{responseData.fans_num}}</view>
+                    <view class="text">累计粉丝</view>
+                </view>
+                <view class="item" @click="_goPage('user_distribution_sum_customer')">
+                    <view class="num">{{responseData.cumulative_member}}</view>
+                    <view class="text">累计分销员</view>
+                </view>
+                <view class="item" @click="_goPage('user_distribution_sum_order')">
+                    <view class="num">{{responseData.cumulative_order}}</view>
+                    <view class="text">累计订单</view>
+                </view>
             </view>
         </view>
         <view class="section2">
@@ -81,28 +89,29 @@
     export default {
         name: "distribution",
         data(){
-          return {
-            responseData:{
-                accumulated_income: "0",       //累积收益
-                sales_volume: "0",             //团队累积销售额
-                cumulative_order: "0",        //累计订单
-                cumulative_member: "0",       //累计客户
-                balance_accounts: "0",     //待结算收益
-                can_use_amount: "0",       //可提现金额
-                use_amount: "0",           //已提现金额
-                today_estimated_revenue: "0",      //今日预估收益
-                today_order: "0",      //今日订单
-                today_member: "0"      //今日新增客户
+           return {
+                responseData:{
+                    accumulated_income: "0",       //累积收益
+                    sales_volume: "0",             //团队累积销售额
+                    cumulative_order: "0",        //累计订单
+                    cumulative_member: "0",       //累计客户
+                    balance_accounts: "0",     //待结算收益
+                    can_use_amount: "0",       //可提现金额
+                    use_amount: "0",           //已提现金额
+                    today_estimated_revenue: "0",      //今日预估收益
+                    today_order: "0",      //今日订单
+                    today_member: "0",      //今日新增客户
+                    fans_num: "0", // 粉丝数量
+                }
             }
-          }
         },
         onLoad(){
-          this.$minApi.distribution().then(res => {
-              console.log('后台传出来的分销数据：', res)
-              if (res.code === 200) {
-                  this.responseData = res.data
-              }
-          })
+            this.$minApi.distribution().then(res => {
+                console.log('后台传出来的分销数据：', res)
+                if (res.code === 200) {
+                    this.responseData = res.data
+                }
+            })
         },
         methods: {
             _goPage(url, query = {}){

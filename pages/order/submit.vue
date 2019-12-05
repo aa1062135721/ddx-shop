@@ -102,6 +102,7 @@
             this.sumSum = this.$parseURL().sumSum
             this.sumMoney = this.$parseURL().sumMoney
 
+            const inviteBuy =  uni.getStorageSync('inviteBuy')
             //根据当前订单类型 来获取运费，或者提交订单 普通/拼团/秒杀订单
             let goodsData = []
             switch (this.$parseURL().createOrderType) {
@@ -119,6 +120,12 @@
                         address_id: this.address.id,// 收货地址id
                         order_distinguish: 0, //普通订单
                         item: goodsData
+                    }
+                    if (
+                        inviteBuy.type === 'buy_now' &&
+                        inviteBuy.data.id == goodsData[0].id
+                    ) {
+                        this.requestData.share_id = inviteBuy.data.share_id
                     }
                     break
                 case "car":
@@ -156,6 +163,25 @@
                         assemble_list_id: this.$parseURL().assemble_list_id,//如果上 参团，这个上参团的id
                         item: goodsData,
                     }
+                    if (inviteBuy.type === 'group'){
+                        if (inviteBuy.data.assemble_list_id){
+                            if (
+                                inviteBuy.data.assemble_list_id == this.requestData.assemble_list_id &&
+                                inviteBuy.data.assemble_id == this.requestData.activity_id &&
+                                inviteBuy.data.item_id == goodsData[0].id
+                            ) {
+                                this.requestData.share_id = inviteBuy.data.share_id
+                            }
+                        } else {
+                            if (
+                                inviteBuy.data.assemble_id == this.requestData.activity_id &&
+                                inviteBuy.data.item_id == goodsData[0].id
+                            ) {
+                                this.requestData.share_id = inviteBuy.data.share_id
+                            }
+                        }
+                    }
+
                     break
                 case "spike":
                     this.$parseURL().myResponseData.forEach((item1, index1) => {
@@ -172,6 +198,13 @@
                         activity_id: this.$parseURL().seckill_id, //秒杀或者限时购 id
                         order_distinguish: 2, //秒杀或者限时购订单
                         item: goodsData,
+                    }
+                    if (
+                        inviteBuy.type === 'spike' &&
+                        inviteBuy.data.seckill_id == this.requestData.activity_id &&
+                        inviteBuy.data.item_id == goodsData[0].id
+                    ) {
+                        this.requestData.share_id = inviteBuy.data.share_id
                     }
                     break
             }

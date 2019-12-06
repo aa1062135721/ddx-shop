@@ -35,7 +35,7 @@
                this.wxConfig()
             }
 
-            // this.setToken('6fe97b44cb77d3752655625151e6ed3834081524f71c1953b0e5d4f566bf83c5')
+            this.setToken('0c53cb1113d17c2dd779274fee7d2f9808454001c3212a7fca29c5580b06505c')
 		},
 		onShow: function() {
 			console.log('App Show')

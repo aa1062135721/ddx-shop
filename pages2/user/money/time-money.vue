@@ -7,11 +7,11 @@
         <div class="banner banner-image">
             <div class="banner-money-box">
                 <span class="fh">￥</span>
-                <div class="box-money">451.18</div>
+                <div class="box-money">{{moneyObj.money}}</div>
             </div>
             <div class="footer-time">
-                过期时间：2019-12-24 12:24:56
-                <div class="btn" @click="openActiveTimeMoney">激活</div>
+                <text>{{moneyObj.status==0?'':'过期时间：'}}</text>{{moneyObj.expire_time}}
+                <div class="btn" @click="openActiveTimeMoney" v-if="moneyObj.status==0">激活</div>
             </div>
             <img src="./images/cloud.png" alt="" class="footer-img">
         </div>
@@ -20,7 +20,16 @@
             余额明细
         </div>
         <div class="record-box">
-            <div class="item">
+            <div class="item" v-for="(item,index) in logList" :key="index">
+                <div>
+                    <div class="title">{{item.title}}</div>
+                    <div class="sub-title">{{item.create_time}}</div>
+                </div>
+                <div>
+                    <div class="price">{{item.money}}</div>
+                </div>
+            </div>
+            <!-- <div class="item">
                 <div>
                     <div class="title">申请提现</div>
                     <div class="sub-title">2019-11-11 11:11:11</div>
@@ -37,16 +46,7 @@
                 <div>
                     <div class="price">100.00</div>
                 </div>
-            </div>
-            <div class="item">
-                <div>
-                    <div class="title">申请提现</div>
-                    <div class="sub-title">2019-11-11 11:11:11</div>
-                </div>
-                <div>
-                    <div class="price">100.00</div>
-                </div>
-            </div>
+            </div> -->
         </div>
 
         <uni-load-more :status="moreStatus" :show-icon="true"></uni-load-more>
@@ -82,7 +82,18 @@
         data(){
           return {
               moreStatus: 'more',
+              page:1,
+              moneyObj:{},
+              logList:[]
           }
+        },
+        onLoad(){
+            this._getExpireLog();
+        },
+        onReachBottom(){
+            this.page++;
+            this._getExpireLog();
+            console.log(this.page)
         },
         methods:{
             _goPage(url, query = {}){
@@ -91,6 +102,24 @@
             // 返回按钮
             _goBack() {
                 uni.navigateBack()
+            },
+            //获取日志
+            _getExpireLog(){
+                let id = this.$parseURL().id
+                let data={
+                    id,
+                    page:this.page,
+                    limit:'2'
+                }
+                this.$minApi.getExpireLog(data).then(res=>{
+                    if(res.code===200){
+                        this.moneyObj=res.data.expireInfo;
+                        this.logList=res.data.list;
+                        console.log(res.data)
+                    }
+                    let length = this.logList.length;
+                    this.moreStatus=length<res.count?'more':'noMore';
+                })
             },
             // 打开激活限时余额  弹框
             openActiveTimeMoney(){

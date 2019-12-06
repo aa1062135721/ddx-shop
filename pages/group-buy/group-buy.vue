@@ -7,45 +7,57 @@
       <view class="banner">
          <img src="../../static/images/tab-group.png" style="width: 100%;">
       </view>
-      <view class="group-buy">
 
-         <view class="item" v-for="(item, index) in groupBuyList" :key="index" @click="_goPage('group_buy_detail', {assemble_id: item.id, item_id: item.item_id})">
+      <view class="spike-list-content">
+         <view class="spike-list-content-box" v-for="(item, index) in groupBuyList" :key="index" @click="_goPage('group_buy_detail', {assemble_id: item.id, item_id: item.item_id})">
             <view class="left">
-               <image :src="item.pic" class="img"></image>
+               <image :src="item.pic" class="img" :lazy-load="true"></image>
             </view>
             <view class="right">
-                  <view class="top">
-                     <view class="title">
-                        {{item.item_name}}
-                     </view>
-                     <view class="specifications">
-                     <!-- 规格：X 红色-->
+               <view class="top">
+                  <view class="title">
+                     {{item.item_name}}
+                  </view>
+                  <view class="specifications" v-if="item.status === 1">
+                     已拼{{item.already_num}}件
+                  </view>
+               </view>
+               <view class="bottom">
+                  <view class="left-info">
+                     <span class="price">￥{{item.price}}</span>
+                     <span class="old-price">￥{{item.old_price}}</span>
+                  </view>
+                  <view class="right-info" v-show="item.status === 1 && item.is_over === 1">
+                     <view class="btn on">去拼团</view>
+                     <view class="tips-time">
+                        <text class="text">距结束</text>
+                        <block v-if="item.timer.d">{{item.timer.d}}天</block> {{item.timer.h}}:{{item.timer.m}}:{{item.timer.s}}
                      </view>
                   </view>
-                  <view class="bottom">
-                     <view class="num">
-                        <view class="show-people">
-                           {{item.assemble_num}}人团
-                        </view>
-                        <view class="show-num" v-if="item.status === 1">
-                           已拼{{item.already_num}}件
-                        </view>
-                     </view>
-                     <view class="money-btn">
-                        <view class="money">
-                           <view class="new-money">￥{{item.price}}</view>
-                           <view class="old-money">￥{{item.old_price}}</view>
-                        </view>
-                        <view>
-                           <view class="btn">
-                              去拼团
-                           </view>
-                        </view>
+                  <view class="right-info" v-show="item.status === 1 && item.is_over === 2">
+                     <view class="btn over">已拼完</view>
+                     <view class="tips-time" style="opacity: 0;">
+                        <text class="text">已拼完</text>
+                        0天00:00:00
                      </view>
                   </view>
+                  <view class="right-info" v-show="item.status === 2">
+                     <view class="btn">还未开始</view>
+                     <view class="tips-time">
+                        <text class="text">距开始</text>
+                        <block v-if="item.timer.d">{{item.timer.d}}天</block> {{item.timer.h}}:{{item.timer.m}}:{{item.timer.s}}
+                     </view>
+                  </view>
+                  <view class="right-info" v-show="item.status === 3">
+                     <view class="btn over">拼团结束</view>
+                     <view class="tips-time" style="opacity: 0;">
+                        <text class="text">拼团结束</text>
+                        0天00:00:00
+                     </view>
+                  </view>
+               </view>
             </view>
          </view>
-
       </view>
       <uni-load-more :status="requestData.moreStatus" :show-icon="true" color="#fff"></uni-load-more>
    </view>
@@ -55,6 +67,7 @@
    import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue' //可选值：more（loading前）、loading（loading中）、noMore（没有更多了）
    import * as Constant from '../../utils/constant'
    import { mapState } from 'vuex'
+   let myTimer = null  //计时器，控制开关
 
     export default {
         name: "group-buy", // list 拼团列表
@@ -102,6 +115,13 @@
           }
          await this._assembleList()
           this.$nextTick(()=>{
+             if (this.groupBuyList.length){
+                // 10个人的组团倒计时
+                myTimer = setInterval(() => {
+                   this.groupBuyList[0].now_time ++
+                   this.timeStrChange()
+                }, 1000);//设置定时器 每一秒执行一次
+             }
              let param1 = {
                         title: `捣蛋熊商城-今日必团`, // 分享标题
                         desc: `拼团狂欢，嗨翻抢！`, // 分享描述
@@ -139,6 +159,14 @@
               await this.$minApi.getAssembleList(data).then(res => {
                  console.log("拼团商品列表",res)
                  if (res.code === 200) {
+                    res.data.map(goods => {
+                       goods.timer = {
+                          d: 0,
+                          h: '00',
+                          m: '00',
+                          s: '00',
+                       }
+                    })
                     if (data.page === 1) {
                        this.groupBuyList = res.data
                     } else {
@@ -152,7 +180,52 @@
                  }
               })
            },
+           // 倒计时 多个商品
+           timeStrChange(){
+              this.groupBuyList.map((item,index)=> {
+                 let time_distance = 0
+                 if (item.status === 1) {  // 正在秒杀
+                    time_distance = item.end_time * 1000 - this.groupBuyList[0].now_time * 1000;
+                    if (time_distance <= 0) { //秒杀已结束
+                       item.status = 3
+                    }
+                 } else if (item.status === 2){  // 未开始
+                    time_distance = item.start_time * 1000 - this.groupBuyList[0].now_time * 1000;
+                    if (time_distance <= 0) { // 秒杀开始了
+                       item.status = 1
+                    }
+                 }
+
+                 let int_day,int_hour,int_minute,int_second
+                 // 天时分秒换算
+                 int_day = Math.floor(time_distance/86400000)
+                 time_distance -= int_day * 86400000;
+                 int_hour = Math.floor(time_distance/3600000)
+                 time_distance -= int_hour * 3600000;
+                 int_minute = Math.floor(time_distance/60000)
+                 time_distance -= int_minute * 60000;
+                 int_second = Math.floor(time_distance/1000)
+
+                 // 时分秒为单数时、前面加零站位
+                 if(int_hour < 10)
+                    int_hour = "0" + int_hour;
+                 if(int_minute < 10)
+                    int_minute = "0" + int_minute;
+                 if(int_second < 10)
+                    int_second = "0" + int_second;
+                 item.timer =  {
+                    d: int_day,
+                    h: int_hour,
+                    m: int_minute,
+                    s: int_second,
+                 }
+              })
+           },
         },
+       onUnload(){
+          clearInterval(myTimer)
+          myTimer = null
+       },
        async onReachBottom() {
           if (this.requestData.moreStatus === 'noMore') {
              return
@@ -173,106 +246,112 @@
    }
    .container{
       background:linear-gradient(180deg,rgba(255,27,40,1) 0%,rgba(255,175,48,1) 100%);
-      .group-buy{
-         padding: $uni-spacing-row-base;
-         display: flex;
-         flex-direction: column;
-         justify-content: center;
-         .item{
-            margin-top: 24upx;
-            padding: 20upx;
-            width:100%;
-            height:auto;
-            background: #fff;
-            box-shadow:0px 0px 20px 0px rgba(183,183,183,0.3);
-            border-radius:4upx;
-            display: flex;
-            justify-content: space-between;
-            .left{
-               width: 188upx;
-               height: 188upx;
-               .img{
-                  border-radius:8upx;
-                  width:188upx;
-                  height: 188upx;
-               }
-            }
-            .right{
-               width: calc(100% - 218upx);
-               height: 188upx;
-               font-size: $uni-font-size-base;
+
+      .spike-list-content{
+            padding: 0 $uni-spacing-row-sm;
+            .spike-list-content-box{
+               background: #FFFFFF;
+               border-radius:4upx;
+               box-shadow:0 0 10upx 0 #B7B7B7;
+               width:100%;
+               height:228upx;
+               margin-bottom: 24upx;
+               padding: 6upx 10upx;
                display: flex;
-               flex-direction: column;
+               align-items: center;
                justify-content: space-between;
-               .top{
-                  width: 100%;
-                  .title{
-                     @extend %overflow-2-line;
-                     color: #1A1A1A;
-                  }
-                  .specifications{
-                     @extend %overflow-2-line;
-                     color: #808080;
-                     font-size: $uni-font-size-sm;
+               .left{
+                  width: 188upx;
+                  height: 188upx;
+                  .img{
+                     border-radius:8upx;
+                     width:188upx;
+                     height: 188upx;
                   }
                }
-               .bottom{
-                  width: 100%;
+               .right{
+                  width: calc(100% - 218upx);
+                  height: 188upx;
+                  font-size: $uni-font-size-base;
                   display: flex;
                   flex-direction: column;
-                  .num{
-                     display: flex;
-                     justify-content: space-between;
-                     .show-people{
-                        font-size: 20upx;
-                        color: $color-primary;
-                        padding: 2upx 8upx;
-                        border: 1px solid $color-primary;
-                        border-radius: 4upx;
+                  justify-content: space-between;
+                  .top{
+                     width: 100%;
+                     .title{
+                        @extend %overflow-2-line;
+                        color: #1A1A1A;
+                        font-size: $uni-font-size-sm;
                      }
-                     .show-num{
-                        min-width:118upx;
-                        text-align: center;
+                     .specifications{
+                        @extend %overflow-1-line;
                         color: #808080;
                         font-size: 20upx;
                      }
                   }
-                  .money-btn{
+                  .bottom{
+                     margin-top: 15upx;
+                     width: 100%;
                      display: flex;
-                     flex-direction: row;
                      justify-content: space-between;
-                     .money{
+                     .left-info{
                         display: flex;
-                        flex-direction: row;
-                        justify-content: flex-start;
-                        align-items: center;
-                        .new-money{
+                        align-items: flex-end;
+                        .price{
+                           margin-right: 10upx;
+                           color: #FC2D2D;
                            font-size: $uni-font-size-base;
-                           margin-right: 6upx;
-                           color: #F83D3D;
                         }
-                        .old-money{
-                           font-size: $uni-font-size-sm;
-                           color: #808080;
+                        .old-price{
+                           color: #999999;
                            text-decoration: line-through;
+                           font-size: 20upx;
                         }
                      }
-
-                     .btn{
-                        color: #ffffff;
+                     .right-info{
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
                         font-size: $uni-font-size-sm;
-                        width:118upx;
-                        height:48upx;
-                        line-height: 48upx;
-                        text-align: center;
-                        background:linear-gradient(90deg,#FE8181 0%,#F93939 100%);
-                        border-radius:24px;
+                        color: #999999;
+                        position: relative;
+                        .btn{
+                           width: 126upx;
+                           line-height: 44upx;
+                           text-align: center;
+                           border-radius:22upx;
+                           border: 1px solid #FC2D2D;
+                           color: #FC2D2D;
+                           background: #fff;
+                           font-size: 20upx;
+                           margin-bottom: 15upx;
+                           &.on{
+                              background: #FC2D2D;
+                              color: #FFFFFF;
+                           }
+                           &.over{
+                              position: absolute;
+                              top: 10%;
+                              background: #D2D2D2;
+                              color: #FFFFFF;
+                              border-color: #D2D2D2;
+                           }
+                        }
+                        .tips-time{
+                           color: #FC2D2D;
+                           display:flex;
+                           align-items: center;
+                           .text{
+                              font-size: 20upx;
+                              color: #999999;
+                              margin-right: 6upx;
+                           }
+                        }
                      }
                   }
                }
-
             }
          }
-      }
    }
 </style>

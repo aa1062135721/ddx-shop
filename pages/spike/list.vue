@@ -307,7 +307,6 @@
                             position: relative;
                             .btn{
                                 width: 126upx;
-                                height: 44upx;
                                 line-height: 44upx;
                                 text-align: center;
                                 border-radius: 6upx;

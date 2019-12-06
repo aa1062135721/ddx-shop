@@ -25,7 +25,7 @@
             _goPage(url, query = {}){
                 this.$openPage({name:url, query})
             },
-			...mapMutations(['setToken', 'setSubscribe', 'setUserInfo', 'setShopID', 'setShareID']),
+			...mapMutations(['setToken', 'setSubscribe', 'setUserInfo', 'setShopID', 'setShareID', 'setPageChangeParam']),
             ...mapActions(['asyncGetUserInfo']),
 		},
 		onLaunch: function(param) {
@@ -35,7 +35,14 @@
                 this._goPage('home')
             }
             if ((Object.keys(param.query)).length !== 0){
-                console.log('通过分享进入  且携带的参数为：', param)
+                if (param.query.query){
+                    console.log("刷新页面：")
+                    this.setPageChangeParam(JSON.parse(decodeURIComponent(param.query.query)))
+                } else {
+                    console.log("通过分享进入：")
+                    this.setPageChangeParam(param.query)
+                }
+                console.log(param)
                 /**
                  * 如果是别人推荐的
                  */

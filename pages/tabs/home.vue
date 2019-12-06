@@ -163,7 +163,8 @@
 											<span class="now-price">￥{{item.price}}</span>
 										</div>
 										<div class="btn-box">
-											<div class="btn">立即抢购</div>
+											<div class="btn" v-show="item.status === 1">立即抢购</div>
+											<div class="btn not-now" v-show="item.status === 2">还未开始</div>
 										</div>
 									</div>
 								</view>
@@ -760,6 +761,9 @@
 			mGoods,
 			WlmTab,
 			uniLoadMore,
+		},
+		onShow(){
+			this._getSpikeList()
 		},
 		computed: {
 			...mapState(['userInfo']),
@@ -1371,6 +1375,11 @@
 										line-height:32upx;
 										background:linear-gradient(-45deg,rgba(252,69,60,1) 0%,rgba(252,123,178,1) 100%);
 										border-radius:16upx;
+										&.not-now{
+											color: $color-primary;
+											background: none;
+											border: 1px solid $color-primary;
+										}
 									}
 								}
 							}

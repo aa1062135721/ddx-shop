@@ -9,6 +9,7 @@ const state = {
     shareID: '',//分享者id，如果小程序被张某分享（商品分享和邀请好友）给陈某，陈某打开小程序，注册时带上王某的唯一shareID，陈某就是王某的粉丝 // 永久存储
     subscribe: 1,//是否关注公众号标识 0是未关注 1是关注  临时存储
     shopID: '',// 注册时，成为该门店的会员 永久存储
+    pageChangeParam: {},// 页面之间切换，把参数也存到vuex里
 }
 
 const mutations = {
@@ -41,6 +42,9 @@ const mutations = {
         } catch (e) {
             console.log("vuex保存门店id报错", e)
         }
+    },
+    setPageChangeParam(state, saveData = {}){
+        state.pageChangeParam = saveData
     },
 }
 

@@ -30,8 +30,12 @@
 		},
 		onLaunch: function(param) {
 			console.log('App Launch')
+            // 没有找到页面跳转到首页
+            if (!param.path){
+                this._goPage('home')
+            }
             if ((Object.keys(param.query)).length !== 0){
-                uni.setStorageSync('pagesParam', param.query)
+                console.log('通过分享进入  且携带的参数为：', param)
                 /**
                  * 如果是别人推荐的
                  */
@@ -88,14 +92,13 @@
                         uni.setStorageSync('inviteBuy', saveData)
                     }
                 }
-                console.log('通过分享进入 且携带的参数为：', param)
             }
             // ios 进入应用就要配置微信sdk
             if(this.getPlatform().isIOS){
                this.wxConfig()
             }
 
-            // this.setToken('dcdba1125a39fc948aea39d80dfd156b373e91ce5da71a01a0e6d20ba8df9fe9')
+            // this.setToken('4c0862ca0c9c677fb24c243ce386fa400f4c00c267c4328c26f6ebbbba38a5cd')
             try {
                 const token = uni.getStorageSync('token')
                 if (token) {

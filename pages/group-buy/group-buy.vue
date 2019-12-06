@@ -53,6 +53,8 @@
 
 <script>
    import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue' //可选值：more（loading前）、loading（loading中）、noMore（没有更多了）
+   import * as Constant from '../../utils/constant'
+   import { mapState } from 'vuex'
 
     export default {
         name: "group-buy", // list 拼团列表
@@ -85,8 +87,36 @@
              ],
           }
         },
+       computed:{
+          ...mapState(['userInfo'])
+       },
        async onLoad(){
+          // 如果是安卓平台 每次进入商品详情页面就会调用微信配置，自定义分享商品
+          if ((await this.getPlatform()).isAndroid){
+             await this.wxConfig()
+          }
+          let url = Constant[Constant.NODE_ENV].groupBuyList // 分享地址
+          // 如果用户登录了，把自己的唯一id也分享出去
+          if(this.userInfo.id) {
+             url += `?user_id=${this.userInfo.id}`
+          }
          await this._assembleList()
+          this.$nextTick(()=>{
+             let param1 = {
+                        title: `捣蛋熊商城-今日必团`, // 分享标题
+                        desc: `拼团狂欢，嗨翻抢！`, // 分享描述
+                        link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                        imgUrl: `${window.location.origin}/h5/static/images/share-group-banner.jpg`, // 分享图标
+                        success: function () {}
+                     },
+                     param2 = {
+                        title: `捣蛋熊商城-今日必团。拼团狂欢，嗨翻抢！`, // 分享标题
+                        link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                        imgUrl: `${window.location.origin}/h5/static/images/share-group-banner.jpg`, // 分享图标
+                        success: function () {}
+                     }
+             this.wxConigShareGoods(param1, param2)
+          })
        },
         methods:{
            _goPage(url = '', query = {}){
@@ -94,7 +124,11 @@
            },
            // 返回按钮
            _goBack() {
-              uni.navigateBack()
+              if (getCurrentPages().length === 1) {
+                 this._goPage('home')
+              } else {
+                 uni.navigateBack()
+              }
            },
            async _assembleList(){
               this.requestData.moreStatus = 'loading'

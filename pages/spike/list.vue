@@ -66,6 +66,8 @@
 <script>
     import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue' //可选值：more（loading前）、loading（loading中）、noMore（没有更多了）
     let myTimer = null  //计时器，控制开关
+    import * as Constant from '../../utils/constant'
+    import { mapState } from 'vuex'
 
     export default {
         name: "list",
@@ -79,7 +81,19 @@
             goodsData:[]
           }
         },
+        computed:{
+          ...mapState(['userInfo'])
+        },
         async onLoad(){
+            // 如果是安卓平台 每次进入商品详情页面就会调用微信配置，自定义分享商品
+            if ((await this.getPlatform()).isAndroid){
+                await this.wxConfig()
+            }
+            let url = Constant[Constant.NODE_ENV].spikeList // 分享地址
+            // 如果用户登录了，把自己的唯一id也分享出去
+            if(this.userInfo.id) {
+                url += `?user_id=${this.userInfo.id}`
+            }
             await this.loadData()
             this.$nextTick(()=>{
                 if (this.goodsData.length){
@@ -89,6 +103,20 @@
                         this.timeStrChange()
                     }, 1000);//设置定时器 每一秒执行一次
                 }
+                let param1 = {
+                        title: `捣蛋熊商城-每日秒杀`, // 分享标题
+                        desc: `限时秒杀，疯狂嗨购！`, // 分享描述
+                        link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                        imgUrl: `${window.location.origin}/h5/static/images/share-spike-banner.jpg`, // 分享图标
+                        success: function () {}
+                    },
+                    param2 = {
+                        title: `捣蛋熊商城-每日秒杀。限时秒杀，疯狂嗨购！`, // 分享标题
+                        link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                        imgUrl: `${window.location.origin}/h5/static/images/share-spike-banner.jpg`, // 分享图标
+                        success: function () {}
+                    }
+                this.wxConigShareGoods(param1, param2)
             })
         },
 
@@ -98,7 +126,11 @@
             },
             // 返回按钮
             _goBack() {
-                uni.navigateBack()
+                if (getCurrentPages().length === 1) {
+                    this._goPage('home')
+                } else {
+                    uni.navigateBack()
+                }
             },
             // 获取秒杀商品列表
             async loadData() {

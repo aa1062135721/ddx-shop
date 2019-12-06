@@ -195,6 +195,10 @@
             },
             // 去分销中心，如果不是分销员，先到 成为分销员 页面
             goDistribution(){
+                // 用户未登录 调用登录接口
+                if (!this.userInfo.id){
+                    this.login()
+                }
                 // 是分销员
                 if (this.userInfo.retail === 1){
                     this.goPage('user_distribution')

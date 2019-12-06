@@ -1,7 +1,7 @@
 <template>
     <view>
         <div class="my-tabs">
-            <div class="item" :class="{'active' : requestData.choosesWho === 1}" @click="requestData.choosesWho = 1;requestData.page = 1;btnIndex = 1;loadData()">粉丝</div>
+            <div class="item" :class="{'active' : requestData.choosesWho === 1}" @click="requestData.choosesWho = 1;requestData.page = 1;btnIndex = 1;loadData()">正常</div>
             <div class="item" :class="{'active' : requestData.choosesWho === 2}" @click="requestData.choosesWho = 2;requestData.page = 1;btnIndex = 1;loadData()">失效</div>
         </div>
         <view class="title-bar">

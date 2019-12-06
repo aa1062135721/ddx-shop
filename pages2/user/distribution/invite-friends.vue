@@ -28,16 +28,17 @@
             },
         },
         onLoad() {
+            // 如果是安卓平台 每次进入商品详情页面就会调用微信配置，自定义分享商品
+            if ((this.getPlatform()).isAndroid){
+                this.wxConfig()
+            }
+
             this.$minApi.becomeADistributorGetBackGroundImg().then(res => {
                 this.bgImg = res
             }).catch(err => {
                 console.log(err)
             })
 
-            // 如果是安卓平台 每次进入商品详情页面就会调用微信配置，自定义分享商品
-            if ((this.getPlatform()).isAndroid){
-                this.wxConfig()
-            }
             let url = Constant[Constant.NODE_ENV].inviteFriends // 分享地址
             if(this.userInfo.id) {
                 url += `?user_id=${this.userInfo.id}&user_name=${this.userInfo.nickname}`

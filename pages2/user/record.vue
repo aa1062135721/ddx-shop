@@ -28,14 +28,14 @@
                 requestData: {
                     page:1,
                     limit:10,
-                    moreStatus: 'loading',
+                    moreStatus: 'noMore',
                 },
                 list:[],
             }
         },
         onLoad(){
             console.log("其他页面带过来的参数：",this.$parseURL())
-            this.loadData()
+            // this.loadData()
         },
         methods:{
             async loadData(){

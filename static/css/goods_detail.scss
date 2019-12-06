@@ -548,7 +548,7 @@
   }
   .specification{
     width: 100%;
-    height: 550upx;
+    max-height: 550upx;
     overflow: auto;
     padding:0 $uni-spacing-col-base;
     .main{

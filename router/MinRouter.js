@@ -32,14 +32,7 @@ function openPage(args) {
     }
 
     if (isObject(query)) {
-        uni.setStorageSync('pagesParam', query)
-/**
-        // queryStr = encodeURIComponent(JSON.stringify(query))
-        queryStr = JSON.stringify(query)
-        queryStr=queryStr.replace(/\%/g,"%25");
-        queryStr=queryStr.replace(/\#/g,"%23");
-        queryStr=queryStr.replace(/\&/g,"%26");
- */
+        queryStr = encodeURIComponent(JSON.stringify(query))
     } else {
         throw new Error('query数据必须是Object')
     }
@@ -86,8 +79,7 @@ function openPage(args) {
 
     return new Promise((resolve, reject) => {
         uni[type]({
-            // url: `/${path}?query=${queryStr}`,
-            url: `/${path}`,
+            url: `/${path}?query=${queryStr}`,
             success: resolve,
             fail: reject,
             complete:()=>{
@@ -104,7 +96,6 @@ function openPage(args) {
                         '/pages2/address/add', // 新增收货地址页面
                     ].indexOf(curPage.$route.path) === -1
                 ) {
-                    console.log('清空')
                     uni.removeStorageSync('inviteBuy')
                 }
             }
@@ -113,16 +104,12 @@ function openPage(args) {
 }
 
 function parseURL() {
-    return uni.getStorageSync('pagesParam')
-    /**
     const query = this.$root.$mp.query.query
     if (query) {
-        // return JSON.parse(decodeURIComponent(query))
-        return JSON.parse(query)
+        return JSON.parse(decodeURIComponent(query))
     } else {
         return {}
     }
-*/
 }
 
 function install(Vue) {

@@ -20,6 +20,8 @@ export const production = {
     shareGroupOrderDetail: 'https://www.ddxm661.com/h5/pages/group-buy/group', // 分享团购下单后邀请参团 别人打开的url
     shareSpikeGoodsDetail: 'https://www.ddxm661.com/h5/pages/spike/detail', // 分享秒杀商品 别人打开的url
     inviteFriends: 'https://www.ddxm661.com/h5/pages2/user/distributor', // 邀请别人成为分销员 别人打开的url
+    spikeList: 'https://www.ddxm661.com/h5/pages/spike/list', // 秒杀列表分享 别人打开的url
+    groupBuyList: 'https://www.ddxm661.com/h5/pages/group-buy/group-buy', // 拼团列表分享 别人打开的url
 
 }
 
@@ -39,5 +41,7 @@ export const development = {
     shareGroupOrderDetail: 'https://ddxm661.com/h5/pages/group-buy/group', // 分享团购下单后邀请参团 别人打开的url
     shareSpikeGoodsDetail: 'https://ddxm661.com/h5/pages/spike/detail', // 分享秒杀商品 别人打开的url
     inviteFriends: 'https://ddxm661.com/h5/pages2/user/distributor', // 邀请别人成为分销员 别人打开的url
+    spikeList: 'https://ddxm661.com/h5/pages/spike/list', // 秒杀列表分享 别人打开的url
+    groupBuyList: 'https://ddxm661.com/h5/pages/group-buy/group-buy', // 拼团列表分享 别人打开的url
 
 }

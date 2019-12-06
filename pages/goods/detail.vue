@@ -355,7 +355,7 @@
 						</view>
 					</view>
 				</view>
-				<view class="specification">
+				<view class="specification" v-show="goodsInfo.specs_list.length !== 0">
 					<view class="main" v-for="(item, index) in goodsInfo.specs_list" :key="index">
 						<view class="title">
 							{{item.tname}}

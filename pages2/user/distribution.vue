@@ -69,7 +69,7 @@
                 </view>
                 <view class="item" @click="_goPage('user_distribution_sum_customer', {whichDate: 2})">
                     <view class="num">{{responseData.today_member}}</view>
-                    <view class="text">今日新增客户</view>
+                    <view class="text">今日新增分销员</view>
                 </view>
             </view>
         </view>

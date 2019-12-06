@@ -2,8 +2,8 @@
     "name" : "捣蛋熊商场",
     "appid" : "__UNI__1E98B0A",
     "description" : "",
-    "versionName" : "1.0.0",
-    "versionCode" : "100",
+    "versionName" : "2.0.0",
+    "versionCode" : 200,
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
@@ -83,6 +83,7 @@
             "mode" : "history",
             "base" : "/h5/"
         },
-        "title" : "捣蛋熊商城"
+        "title" : "捣蛋熊商城",
+        "domain" : "https://ddxm661.com"
     }
 }

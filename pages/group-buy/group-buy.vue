@@ -12,6 +12,7 @@
          <view class="spike-list-content-box" v-for="(item, index) in groupBuyList" :key="index" @click="_goPage('group_buy_detail', {assemble_id: item.id, item_id: item.item_id})">
             <view class="left">
                <image :src="item.pic" class="img" :lazy-load="true"></image>
+               <view class="flag">{{item.assemble_num}}人团</view>
             </view>
             <view class="right">
                <view class="top">
@@ -267,6 +268,19 @@
                      border-radius:8upx;
                      width:188upx;
                      height: 188upx;
+                  }
+                  position: relative;
+                  .flag{
+                     background: #FFFFFF;
+                     position: absolute;
+                     left: 0;
+                     bottom: 0;
+                     padding: 0 14upx;
+                     line-height: 30upx;
+                     font-size: 20upx;
+                     color: $color-primary;
+                     border:1px solid $color-primary;
+                     border-radius:4upx;
                   }
                }
                .right{

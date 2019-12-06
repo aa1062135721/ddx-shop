@@ -403,7 +403,7 @@ export default {
      * 申请提现
      */
     applyMoney(data){
-      return minRequest.post('/User/applyOutMoney', data)
+      return minRequest.post('/Userinfo/applyOutMoney', data)
     },
 
     /**
@@ -691,6 +691,39 @@ export default {
       return minRequest.get('/user/shareRetailFriend', data)
     },
 
+    /**
+     * 限时余额列表
+     */
+    getExpireList(data){
+      return minRequest.get('/userinfo/expireList',data)
+    },
 
+    /**
+     * 提现页面
+     */
+    getProfitList(data){
+      return minRequest.get('/Userinfo/getProfitList',data)
+    },
+
+    /**
+     * 限时余额使用记录
+     */
+    getExpireLog(data){
+      return minRequest.get('/userinfo/expireLog',data)
+    },
+
+    /**
+     * 可用余额
+     */
+    getMoney(data){
+      return minRequest.get('/userinfo/canMoney',data)
+    },
+
+    /**
+     * 会员充值接口
+     */
+    investMoney(data){
+      return minRequest.post('/cz/invest_money',data)
+    }
   }
 }

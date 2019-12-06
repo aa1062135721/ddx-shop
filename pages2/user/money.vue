@@ -18,22 +18,38 @@
                 </div>
                 <div class="footer">
                     <div class="time"></div>
-                    <div class="btn" @click="_goPage('user_recharge')">充值</div>
+                    <div class="btn" @click.stop="_goPage('user_recharge')">充值</div>
                 </div>
             </div>
 
-            <div class="item blue" v-for="(item, index) in userInfo.expireList" :key="index" @click="_goPage('user_time_money', {money: item})">
+            <div class="item" 
+            v-for="(item, index) in expireList" :key="index" 
+            @click="_goPage('user_time_money',item)"
+            :class="item.status==2?'grey expired':'blue'">
                 <div class="header">
                     <div class="title">限时金额</div>
                     <div class="money">{{item.price | moneyToFixed }}元</div>
                 </div>
                 <div class="footer">
                     <div class="time">
-                        <block v-show="item.status === 1">过期时间：{{item.expire_time}}</block>
+                        <block v-show="item.status === 1"><text>{{item.status==0?'':'过期时间：'}}</text>{{item.expire_time}}</block>
                     </div>
                     <div class="btn" v-show="item.status === 0" @click.stop="openActiveTimeMoney">激活</div>
                 </div>
+                <div class="expired-img" v-if="item.status==2"></div>
             </div>
+
+            <!-- <div class="item grey expired">
+                <div class="header">
+                    <div class="title">限时金额</div>
+                    <div class="money">3000.99元</div>
+                </div>
+                <div class="footer">
+                    <div class="time">过期时间：2019-11-12 12:50:20</div>
+                </div>
+                <div class="expired-img"></div>
+            </div>
+            -->
 
             <!--
             <div class="item blue">
@@ -56,9 +72,9 @@
                 </div>
                 <div class="expired-img"></div>
             </div>
-            --->
+            -->
 
-            <uni-load-more status="more" :show-icon="true"></uni-load-more>
+            <uni-load-more :status="haveMore?'more':'nomore'" :show-icon="true"></uni-load-more>
         </div>
 
         <!-- 申请提现弹框 输入提现金额 -->
@@ -110,7 +126,18 @@
         data(){
             return{
                 money: '',
+                expireList:[],
+                page:1,//初始页码为1
+                haveMore:''//用来判断是否还有更多的数据
             }
+        },
+        onLoad(){
+            this._getExpireList();
+        },
+        onReachBottom(){
+            this.page++;
+            this._getExpireList();
+            console.log(this.page)
         },
         methods:{
             _goPage(url, query = {}){
@@ -154,6 +181,23 @@
                 })
                 this.close()
             },
+            
+            // 限时余额接口封装
+            _getExpireList(){
+                let data = {
+                    limit:'2',
+                    page:this.page
+                }
+                this.$minApi.getExpireList(data).then(res=>{
+                    if(res.code===200){
+                        let arr = this.expireList;
+                        this.expireList = arr.concat(res.data)
+                        console.log(this.expireList)
+                    }
+                    let length=this.expireList.length;
+                    this.haveMore=length<res.count?true:false;
+                })
+            }
         },
         computed: {
             ...mapState(['userInfo'])
@@ -172,7 +216,7 @@
         display: flex;
         flex-direction: column;
         .item{
-            height: 250upx;
+            height: 212upx;
             font-size: $uni-font-size-lg;
             color: #FFFFFF;
             display: flex;
@@ -203,15 +247,14 @@
                 color: #333333;
             }
             .expired-img{
-                width:160upx;
-                height:160upx;
+                width:115upx;
+                height:115upx;
                 background-repeat: no-repeat;
                 background-size: cover;
                 background-image: url(./money/images/money-expired.png);
                 position: absolute;
-                left: 50%;
-                top: 50%;
-                margin: -100upx 0 0 -80upx;
+                left: 551upx;
+                top: 78upx;
             }
 
 
@@ -228,8 +271,11 @@
                     color: #333333;
                 }
                 .btn{
+                    width: 126upx;
+                    line-height: 48upx;
+                    text-align: center;
                     background: #FFFFFF;
-                    font-size:  $uni-font-size-sm;
+                    font-size:  $uni-font-size-lg;
                     color: #333333;
                     border-radius: 4upx;
                     padding: 4upx 16upx;

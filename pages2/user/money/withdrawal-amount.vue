@@ -56,7 +56,7 @@
             </div> -->
         </div>
 
-        <uni-load-more :status="haveMore?'more':'nomore'" :show-icon="true"></uni-load-more>
+        <uni-load-more :status="moreStatus" :show-icon="true"></uni-load-more>
 
         <!-- 申请提现弹框 输入提现金额 -->
         <uni-popup ref="getMoneyToWx" type="center" :custom="true">
@@ -91,8 +91,10 @@
               choosesWho:1, // 1收益明细  ,0提现明细
               money: '', // 提现金额
               logList:[], //记录列表
-              page:1,
-              haveMore:''//用来判断是否还有更多的数据
+              requestData:{
+                  page:1,
+                  limit:10
+              }
           }
         },
 
@@ -103,11 +105,15 @@
             }
 
             //请求调用
-            this._getProfitList(1);
+            this._getProfitList();
         },
 
         onReachBottom(){
-            this._getProfitList(2);
+            if (this.requestData.loadStatus === 'noMore') {
+                return
+            }
+            this.requestData.page++
+            this._getProfitList();
         },
 
         methods:{
@@ -155,34 +161,26 @@
             },
 
             //加载请求封装
-            _getProfitList(num){
-                 if(num==2){
-                    this.page++;
-                }else{
-                    this.page=1;
-                }
-                let data={
+            _getProfitList(){
+                this.moreStatus = 'loading'
+                let requestData = {
                     type:this.choosesWho,
-                    limit:'4',
-                    page:this.page
+                    page: this.requestData.page,
+                    limit: this.requestData.limit
                 }
-
-
-                this.$minApi.getProfitList(data).then(res=>{
-                    console.log(res)
-
+                this.$minApi.getProfitList(requestData).then(res=>{
                     if(res.code === 200){
-                        // 传2 拼接数组 
-                        if(num == 2){
-                            let arr = this.logList;
-                            this.logList = arr.concat(res.data);
-                        }else{
-                            this.logList = res.data;
+                        if (requestData.page === 1) {
+                            this.expireList = res.data
+                        } else {
+                            this.expireList.push(...res.data)
+                        }
+                        if (res.data.length < requestData.limit){
+                            this.moreStatus = 'noMore'
+                        } else {
+                            this.moreStatus = 'more'
                         }
                     }
-
-                    let length=this.logList.length;
-                    this.haveMore=length<res.count?true:false;
                 })
             },
 

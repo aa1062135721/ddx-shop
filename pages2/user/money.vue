@@ -74,7 +74,7 @@
             </div>
             -->
 
-            <uni-load-more :status="haveMore?'more':'nomore'" :show-icon="true"></uni-load-more>
+            <uni-load-more :status="requestData.loadStatus" :show-icon="true"></uni-load-more>
         </div>
 
         <!-- 申请提现弹框 输入提现金额 -->
@@ -127,17 +127,22 @@
             return{
                 money: '',
                 expireList:[],
-                page:1,//初始页码为1
-                haveMore:''//用来判断是否还有更多的数据
+                requestData:{
+                    page:1,//初始页码为1
+                    limit:10,
+                    loadStatus: 'noMore'//状态
+                }
             }
         },
         onLoad(){
             this._getExpireList();
         },
         onReachBottom(){
-            this.page++;
+            if (this.requestData.loadStatus === 'noMore') {
+                return
+            }
+            this.requestData.page ++
             this._getExpireList();
-            console.log(this.page)
         },
         methods:{
             _goPage(url, query = {}){
@@ -184,18 +189,26 @@
             
             // 限时余额接口封装
             _getExpireList(){
-                let data = {
-                    limit:'2',
-                    page:this.page
+                this.requestData.loadStatus = 'loading'
+                let requestData = {
+                    page: this.requestData.page,
+                    limit: this.requestData.limit
                 }
-                this.$minApi.getExpireList(data).then(res=>{
+                this.$minApi.getExpireList(requestData).then(res=>{
                     if(res.code===200){
-                        let arr = this.expireList;
-                        this.expireList = arr.concat(res.data)
-                        console.log(this.expireList)
+                        if (requestData.page === 1) {
+                            this.expireList = res.data
+                        } else {
+                            this.expireList.push(...res.data)
+                        }
+                        if (res.data.length < requestData.limit){
+                            this.requestData.loadStatus = 'noMore'
+                        } else {
+                            this.requestData.loadStatus = 'more'
+                        }
                     }
-                    let length=this.expireList.length;
-                    this.haveMore=length<res.count?true:false;
+                }).catch(err=>{
+                    this.requestData.loadStatus = 'noMore'
                 })
             }
         },

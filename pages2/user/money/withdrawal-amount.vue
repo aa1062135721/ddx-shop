@@ -6,8 +6,7 @@
 
         <div class="banner banner-image">
             <div class="banner-money-box">
-                <span class="fh">￥</span>
-                <div class="box-money">{{userInfo.out_money}}</div>
+                <div class="box-money">￥{{userInfo.out_money}}</div>
             </div>
             <div class="footer-time">
                 <div class="btn" @click="open">申请提现</div>
@@ -16,7 +15,7 @@
         </div>
 
         <div class="tabs-btn">
-            <div class="box" style="border:1px solid rgba(255,72,96,1);color: #FC5A5A;">
+            <div class="box" style="box-shadow: 0 0 4upx rgba(255,72,96,1);color: #FC5A5A;">
 
                 <div class="item" :class="{'active tabs-btn-active' : choosesWho === 1 }" @click="changeNum(1)" >收益明细</div>
                 <div class="item" :class="{'active tabs-btn-active' : choosesWho === 0 }" @click="changeNum(0)">提现明细</div>
@@ -56,7 +55,7 @@
             </div> -->
         </div>
 
-        <uni-load-more :status="haveMore?'more':'nomore'" :show-icon="true"></uni-load-more>
+        <uni-load-more :status="requestData.moreStatus" :show-icon="true"></uni-load-more>
 
         <!-- 申请提现弹框 输入提现金额 -->
         <uni-popup ref="getMoneyToWx" type="center" :custom="true">
@@ -87,13 +86,13 @@
         name: "available-balance", // 可提现金额
         data(){
           return {
-              moreStatus: 'more',
               choosesWho:1, // 1收益明细  ,0提现明细
               money: '', // 提现金额
               logList:[], //记录列表
               requestData:{
                   page:1,
-                  limit:10
+                  limit:10,
+                  moreStatus: '',
               }
           }
         },
@@ -109,11 +108,11 @@
         },
 
         onReachBottom(){
-            if (this.requestData.loadStatus === 'noMore') {
+            if (this.requestData.moreStatus === 'noMore') {
                 return
             }
-            this.requestData.page++
-            this._getProfitList();
+            this.requestData.page ++
+            this._getProfitList()
         },
 
         methods:{
@@ -134,8 +133,9 @@
 
             //改变chooseWho
             changeNum(num){
-                this.choosesWho=num;
-                this._getProfitList(1);
+                this.choosesWho = num
+                this.requestData.page = 1
+                this._getProfitList()
             },
             async getMoney(){
                 if (this.money === ''){
@@ -164,21 +164,21 @@
             _getProfitList(){
                 this.moreStatus = 'loading'
                 let requestData = {
-                    type:this.choosesWho,
+                    state:this.choosesWho,
                     page: this.requestData.page,
                     limit: this.requestData.limit
                 }
                 this.$minApi.getProfitList(requestData).then(res=>{
                     if(res.code === 200){
                         if (requestData.page === 1) {
-                            this.expireList = res.data
+                            this.logList = res.data
                         } else {
-                            this.expireList.push(...res.data)
+                            this.logList.push(...res.data)
                         }
                         if (res.data.length < requestData.limit){
-                            this.moreStatus = 'noMore'
+                            this.requestData.moreStatus = 'noMore'
                         } else {
-                            this.moreStatus = 'more'
+                            this.requestData.moreStatus  = 'more'
                         }
                     }
                 })

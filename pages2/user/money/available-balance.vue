@@ -6,8 +6,7 @@
 
         <div class="banner banner-image">
             <div class="banner-money-box">
-                <span class="fh">￥</span>
-                <div class="box-money">{{userInfo.money}}</div>
+                <div class="box-money">￥{{userInfo.money}}</div>
             </div>
             <div class="footer-time">
                <div class="btn" @click="_goPage('user_recharge')">立即充值</div>
@@ -34,7 +33,7 @@
             </div>
         </div>
 
-        <uni-load-more :status="haveMore?'more':'nomore'" :show-icon="true"></uni-load-more>
+        <uni-load-more :status="requestData.moreStatus" :show-icon="true"></uni-load-more>
     </div>
 </template>
 
@@ -46,13 +45,13 @@
         name: "available-balance", // 可用金额
         data(){
           return {
-                moreStatus: 'more',
                 choosesWho: 1, //1 使用明细 2 充值明细
                 logList:[], //记录列表
                 requestData:{
-                  page:1,
-                  limit:10
-              }
+                    moreStatus: 'more',
+                    page:1,
+                    limit:10
+                },
           }
         },
 
@@ -64,8 +63,8 @@
             if (this.requestData.loadStatus === 'noMore') {
                 return
             }
-            this.requestData.page++
-            this._getMoney();
+            this.requestData.page ++
+            this._getMoney()
         },
 
         methods:{
@@ -78,15 +77,16 @@
             },
 
             changeNum(num){
-                this.choosesWho=num;
-                this._getMoney();
+                this.choosesWho = num
+                this.requestData.page = 1
+                this._getMoney()
             },
 
             //请求封装
             _getMoney(){
-                this.moreStatus = 'loading'
+                this.requestData.moreStatus = 'loading'
                 let requestData = {
-                    type:this.choosesWho,
+                    type: this.choosesWho,
                     page: this.requestData.page,
                     limit: this.requestData.limit
                 }
@@ -98,9 +98,9 @@
                             this.logList.push(...res.data)
                         }
                         if (res.data.length < requestData.limit){
-                            this.moreStatus = 'noMore'
+                            this.requestData.moreStatus = 'noMore'
                         } else {
-                            this.moreStatus = 'more'
+                            this.requestData.moreStatus = 'more'
                         }
                     }
                 })

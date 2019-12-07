@@ -235,6 +235,12 @@ const router = new MinRouter({
 			login: true
 		},
 		{
+			path: "pages2/user/money",
+			type: 'redirectTo',
+			name: 'user_money_redirect',
+			login: true
+		},
+		{
 			path: "pages2/user/modify-mobile",
 			type: 'navigateTo',
 			name: 'user_modify_mobile',

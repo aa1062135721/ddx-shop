@@ -22,10 +22,10 @@
                 </div>
             </div>
 
-            <div class="item" 
-            v-for="(item, index) in expireList" :key="index" 
-            @click="_goPage('user_time_money',item)"
-            :class="item.status==2?'grey expired':'blue'">
+            <div class="item"
+                 v-for="(item, index) in expireList" :key="index"
+                 @click="_goPage('user_time_money',item)"
+                :class="item.status==2?'grey expired':'blue'">
                 <div class="header">
                     <div class="title">限时金额</div>
                     <div class="money">{{item.price | moneyToFixed }}元</div>
@@ -34,45 +34,10 @@
                     <div class="time">
                         <block v-show="item.status === 1"><text>{{item.status==0?'':'过期时间：'}}</text>{{item.expire_time}}</block>
                     </div>
-                    <div class="btn" v-show="item.status === 0" @click.stop="openActiveTimeMoney">激活</div>
+                    <div class="btn" v-show="item.status === 0" @click.stop="openActiveTimeMoney(item)">激活</div>
                 </div>
                 <div class="expired-img" v-if="item.status==2"></div>
             </div>
-
-            <!-- <div class="item grey expired">
-                <div class="header">
-                    <div class="title">限时金额</div>
-                    <div class="money">3000.99元</div>
-                </div>
-                <div class="footer">
-                    <div class="time">过期时间：2019-11-12 12:50:20</div>
-                </div>
-                <div class="expired-img"></div>
-            </div>
-            -->
-
-            <!--
-            <div class="item blue">
-                <div class="header">
-                    <div class="title">限时金额</div>
-                    <div class="money">3000.99元</div>
-                </div>
-                <div class="footer">
-                    <div class="time"></div>
-                    <div class="btn">激活</div>
-                </div>
-            </div>
-            <div class="item grey expired">
-                <div class="header">
-                    <div class="title">限时金额</div>
-                    <div class="money">3000.99元</div>
-                </div>
-                <div class="footer">
-                    <div class="time">过期时间：2019-11-12 12:50:20</div>
-                </div>
-                <div class="expired-img"></div>
-            </div>
-            -->
 
             <uni-load-more :status="requestData.loadStatus" :show-icon="true"></uni-load-more>
         </div>
@@ -103,12 +68,12 @@
                         为了您的账户信息安全，请验证{{userInfo.mobile | filterMobile}}的验证码
                     </view>
                     <view class="input-box">
-                        <input type="number" class="input" focus placeholder="请输入验证码" />
-                        <view class="btn">获取验证码</view>
+                        <input type="number" class="input" focus placeholder="请输入验证码"  v-model="code"/>
+                        <view class="btn" @click.stop="getCode">获取验证码</view>
                     </view>
                     <view class="footer">
                         <view class="btn" @click="closeActiveTimeMoney" style="background: #999;">取消</view>
-                        <view class="btn">激活</view>
+                        <view class="btn" @click="activeTimeMoney">激活</view>
                     </view>
                 </view>
             </view>
@@ -131,26 +96,21 @@
                     page:1,//初始页码为1
                     limit:10,
                     loadStatus: 'noMore'//状态
-                }
+                },
+                code: '',// 激活限时余额 验证码
+                tempActiveTimeMoney:null, //激活限时余额中间参数
             }
         },
-        onLoad(){
-            this._getExpireList();
+        onShow(){
+          this.requestData.page = 1
+            this._getExpireList()
         },
         onReachBottom(){
             if (this.requestData.loadStatus === 'noMore') {
                 return
             }
             this.requestData.page ++
-            this._getExpireList();
-        },
-        onLoad(){
-            this._getExpireList();
-        },
-        onReachBottom(){
-            this.page++;
-            this._getExpireList();
-            console.log(this.page)
+            this._getExpireList()
         },
         methods:{
             _goPage(url, query = {}){
@@ -166,12 +126,18 @@
             close(){
                 this.$refs.getMoneyToWx.close()
             },
-            openActiveTimeMoney(){
+            openActiveTimeMoney(item){
+                console.log(item)
+                this.tempActiveTimeMoney = item
                 this.$refs.activeTimeMoney.open()
             },
             closeActiveTimeMoney(){
                 this.$refs.activeTimeMoney.close()
             },
+            /**
+             * 申请提现
+             * @returns {Promise<void>}
+             */
             async getMoney(){
                 if (this.money === ''){
                     this.close()
@@ -189,12 +155,45 @@
                 await this.$minApi.applyMoney(data).then(res => {
                     if (res.code === 200) {
                         this.close()
+                        this.money = ''
                         this.msg('申请成功')
                     }
+                }).catch(err => {
+                    this.close()
                 })
-                this.close()
             },
-            
+
+            /**
+             * 激活限时余额
+             */
+            async getCode(){
+                await this.$minApi.loginSendCode({
+                    mobile: this.userInfo.mobile,
+                    agreement: 1
+                }).then(res => {
+                    if (res.code === 200) {
+                        this.msg(res.msg)
+                    }
+                })
+            },
+            activeTimeMoney(){
+                let requestData = {
+                    id: this.tempActiveTimeMoney.id,
+                    code: this.code,
+                    mobile: this.userInfo.mobile,
+                }
+                this.$minApi.activeTimeMoney(requestData).then(res => {
+                    if (res.code === 200){
+                        this.closeActiveTimeMoney()
+                        this.msg(res.msg)
+                        this.requestData.page = 1
+                        this._getExpireList()
+                    }
+                }).catch(err => {
+                    this.closeActiveTimeMoney()
+                    this.msg('服务器繁忙，请稍后重试！')
+                })
+            },
             // 限时余额接口封装
             _getExpireList(){
                 this.requestData.loadStatus = 'loading'
@@ -268,8 +267,8 @@
                 color: #333333;
             }
             .expired-img{
-                width:115upx;
-                height:115upx;
+                width:120upx;
+                height:120upx;
                 background-repeat: no-repeat;
                 background-size: cover;
                 background-image: url(./money/images/money-expired.png);

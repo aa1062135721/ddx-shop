@@ -6,8 +6,7 @@
 
         <div class="banner banner-image">
             <div class="banner-money-box">
-                <span class="fh">￥</span>
-                <div class="box-money">{{moneyObj.money}}</div>
+                <div class="box-money">￥{{moneyObj.money}}</div>
             </div>
             <div class="footer-time">
                 <text>{{moneyObj.status==0?'':'过期时间：'}}</text>{{moneyObj.expire_time}}
@@ -29,27 +28,9 @@
                     <div class="price">{{item.money}}</div>
                 </div>
             </div>
-            <!-- <div class="item">
-                <div>
-                    <div class="title">申请提现</div>
-                    <div class="sub-title">2019-11-11 11:11:11</div>
-                </div>
-                <div>
-                    <div class="price">100.00</div>
-                </div>
-            </div>
-            <div class="item">
-                <div>
-                    <div class="title">申请提现</div>
-                    <div class="sub-title">2019-11-11 11:11:11</div>
-                </div>
-                <div>
-                    <div class="price">100.00</div>
-                </div>
-            </div> -->
         </div>
 
-        <uni-load-more :status="moreStatus" :show-icon="true"></uni-load-more>
+        <uni-load-more :status="requestData.moreStatus" :show-icon="true"></uni-load-more>
 
         <!-- 限时余额激活弹框 -->
         <uni-popup ref="activeTimeMoney" type="center" :custom="true">
@@ -59,12 +40,12 @@
                         为了您的账户信息安全，请验证{{userInfo.mobile | filterMobile}}的验证码
                     </view>
                     <view class="input-box">
-                        <input type="number" class="input" focus placeholder="请输入验证码" />
-                        <view class="btn">获取验证码</view>
+                        <input type="number" class="input" focus placeholder="请输入验证码" v-model="requestData.code" />
+                        <view class="btn" @click.stop="getCode">获取验证码</view>
                     </view>
                     <view class="footer">
                         <view class="btn" @click="closeActiveTimeMoney" style="background: #999;">取消</view>
-                        <view class="btn">激活</view>
+                        <view class="btn" @click="activeTimeMoney">激活</view>
                     </view>
                 </view>
             </view>
@@ -81,19 +62,27 @@
         name: "time-money", // 限时余额查看详情
         data(){
           return {
-              moreStatus: 'more',
-              page:1,
+              requestData: {
+                  id: 0,
+                  page:1,
+                  limit: 10,
+                  moreStatus: 'loading',
+                  code: '', // 激活限时余额需要的验证码
+              },
               moneyObj:{},
               logList:[]
           }
         },
         onLoad(){
-            this._getExpireLog();
+            this.requestData.id = this.$parseURL().id
+            this._getExpireLog()
         },
         onReachBottom(){
-            this.page++;
-            this._getExpireLog();
-            console.log(this.page)
+            if (this.requestData.moreStatus === 'noMore') {
+                return
+            }
+            this.requestData.page ++
+            this._getExpireLog()
         },
         methods:{
             _goPage(url, query = {}){
@@ -105,20 +94,29 @@
             },
             //获取日志
             _getExpireLog(){
-                let id = this.$parseURL().id
+                this.requestData.moreStatus = 'loading'
                 let data={
-                    id,
-                    page:this.page,
-                    limit:'2'
+                    id: this.requestData.id,
+                    page: this.requestData.page,
+                    limit: this.requestData.limit,
                 }
                 this.$minApi.getExpireLog(data).then(res=>{
-                    if(res.code===200){
-                        this.moneyObj=res.data.expireInfo;
-                        this.logList=res.data.list;
-                        console.log(res.data)
+                    if(res.code===200) {
+                        this.moneyObj = res.data.expireInfo
+                        if (data.page === 1) {
+                            this.logList = res.data.list
+                        } else {
+                            this.logList.push(...res.data.list)
+                        }
+                        if (res.data.list.length < data.limit){
+                            this.requestData.moreStatus = 'noMore'
+                        } else {
+                            this.requestData.moreStatus = 'more'
+                        }
                     }
-                    let length = this.logList.length;
-                    this.moreStatus=length<res.count?'more':'noMore';
+                }).catch(err => {
+                    console.log(err)
+                    this.requestData.moreStatus = 'noMore'
                 })
             },
             // 打开激活限时余额  弹框
@@ -127,6 +125,37 @@
             },
             closeActiveTimeMoney(){
                 this.$refs.activeTimeMoney.close()
+            },
+            /**
+             * 激活限时余额
+             */
+            async getCode(){
+                await this.$minApi.loginSendCode({
+                    mobile: this.userInfo.mobile,
+                    agreement: 1
+                }).then(res => {
+                    if (res.code === 200) {
+                        this.msg(res.msg)
+                    }
+                })
+            },
+            activeTimeMoney(){
+                let requestData = {
+                    id: this.requestData.id,
+                    code: this.requestData.code,
+                    mobile: this.userInfo.mobile,
+                }
+                this.$minApi.activeTimeMoney(requestData).then(res => {
+                    if (res.code === 200){
+                        this.closeActiveTimeMoney()
+                        this.msg(res.msg)
+                        this.requestData.page = 1
+                        this._getExpireLog()
+                    }
+                }).catch(err => {
+                    this.closeActiveTimeMoney()
+                    this.msg('服务器繁忙，请稍后重试！')
+                })
             },
         },
         computed: {

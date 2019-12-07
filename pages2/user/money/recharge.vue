@@ -73,10 +73,10 @@
         </div>
         <div class="recharge">
             <div class="privilege">
-                <div class="privilege-title">
+                <div class="privilege-title" style="color: #666;">
                     活动细节
                 </div>
-                <div class="privilege-box">
+                <div class="privilege-box" style="color: #666;">
                     <div class="privilege-box-item">
                         <div class="right">
                             1. 本活动预存金额仅限捣蛋熊猫线上商城消费使用，消费时长无限制；
@@ -109,7 +109,8 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex'
+    import { mapState, mapActions } from 'vuex'
+
     export default {
         name: "recharge", //充值页面
         data(){
@@ -117,38 +118,73 @@
               money: '',
           }
         },
+        onLoad(){
+            // 如果是ios 强制刷新一波
+            if (this.getPlatform().isIOS){
+                if(!(uni.getStorageSync('refresh'))){
+                    uni.setStorageSync('refresh', "ios进入支付页面需要强制刷新一波")
+                    location.reload()
+                } else {
+                    uni.removeStorageSync('refresh')
+                }
+            }
+        },
         methods:{
+            ...mapActions(['asyncGetUserInfo']),
             _goPage(url, query = {}){
                 this.$openPage({name:url, query})
             },
             // 返回按钮
             _goBack() {
-                uni.navigateBack()
+                if (getCurrentPages().length === 1) {
+                    this._goPage('user_money_redirect')
+                } else {
+                    uni.navigateBack()
+                }
             },
             inputMoney(money = 0) {
                 this.money = money
             },
             _investMoney(){
-                let data={
-                    money:this.money
+                if (this.money === '') {
+                    this.msg('请输入充值金额')
+                    return
                 }
+                let data={
+                        money: this.money
+                    },
+                    _that = this
                 this.$minApi.investMoney(data).then(res=>{
-                    if(res.code==200){
-                        let data=JSON.parse(res.data)
-                        console.log(data)
-                        this.$wx.ready(()=>{
-                            this.$wx.chooseWXPay({
+                    console.log(data)
+                    if(res.code === 200){
+                        let data = JSON.parse(res.data)
+                        _that.$wx.ready(()=>{
+                            _that.$wx.chooseWXPay({
                                 timestamp: data.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
                                 nonceStr: data.nonceStr, // 支付签名随机串，不长于 32 位
                                 package: data.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
                                 signType: data.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
                                 paySign: data.paySign, // 支付签名
-                                succuess:(succuess)=>{
-                                    console.log(succuess)
+                                success: async (success) => {
+                                    console.log("用户支付成功：", success)
+                                    _that._goPage('user_money_redirect')
+                                },
+                                fail: async (fail) => {
+                                   console.log("支付失败：",fail)
+                                },
+                                cancel: async (cancel) => {
+                                    console.log("用户取消支付：",cancel)
+                                },
+                                complete: async (complete) => {
+                                    console.log("无论支付结果为是成功/失败/取消：",complete)
+                                    _that.asyncGetUserInfo()
                                 }
                             })
                         })
                     }
+                }).catch(err => {
+                    console.log(err)
+                    this.msg('服务器繁忙，请稍后重试。')
                 })
             }
         },

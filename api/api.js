@@ -748,6 +748,13 @@ export default {
      */
     investMoney(data){
       return minRequest.post('/cz/invest_money',data)
-    }
+    },
+
+    /**
+     * 限时余额激活
+     */
+    activeTimeMoney(data){
+      return minRequest.post('/userinfo/activationExpire',data)
+    },
   }
 }

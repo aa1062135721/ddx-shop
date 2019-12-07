@@ -34,7 +34,7 @@
             </div>
         </div>
 
-        <uni-load-more :status="moreStatus" :show-icon="true"></uni-load-more>
+        <uni-load-more :status="haveMore?'more':'nomore'" :show-icon="true"></uni-load-more>
     </div>
 </template>
 

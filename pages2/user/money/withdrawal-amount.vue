@@ -56,7 +56,7 @@
             </div> -->
         </div>
 
-        <uni-load-more :status="moreStatus" :show-icon="true"></uni-load-more>
+        <uni-load-more :status="haveMore?'more':'nomore'" :show-icon="true"></uni-load-more>
 
         <!-- 申请提现弹框 输入提现金额 -->
         <uni-popup ref="getMoneyToWx" type="center" :custom="true">

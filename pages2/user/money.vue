@@ -144,6 +144,14 @@
             this.requestData.page ++
             this._getExpireList();
         },
+        onLoad(){
+            this._getExpireList();
+        },
+        onReachBottom(){
+            this.page++;
+            this._getExpireList();
+            console.log(this.page)
+        },
         methods:{
             _goPage(url, query = {}){
                 this.$openPage({name:url, query})

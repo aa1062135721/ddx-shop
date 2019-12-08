@@ -9,7 +9,7 @@
                     我的余额
                 </div>
                 <div class="my-money-num">
-                    ￥{{userInfo.usable_money}}
+                    ￥{{userInfo.money | moneyToFixed}}
                 </div>
             </div>
 

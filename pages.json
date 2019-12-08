@@ -321,6 +321,24 @@
 					"style": {
 						"navigationBarTitleText": "捣蛋熊商城-新增收货地址"
 					}
+				},
+				{
+					"path": "user/pre_store/details",
+					"style": {
+						"navigationBarTitleText": "活动专用水育卡-详情"
+					}
+				},
+				{
+					"path": "user/pre_store/rule",
+					"style": {
+						"navigationBarTitleText": "捣蛋熊商城-活动规则"
+					}
+				},
+				{
+					"path": "user/pre_store/main",
+					"style": {
+						"navigationBarTitleText": "预存享福利 累消获惊喜"
+					}
 				}
 
 			]

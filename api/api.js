@@ -714,6 +714,27 @@ export default {
     getMemberFans(data){
       return minRequest.get('/Retail/memberFans', data)
     },
+    
 
+    /**
+     * 会员服务卡列表
+     */
+    getCardList(data){
+      return minRequest.get('/Card/cardList',data)
+    },
+	
+	/**
+	 * 会员卡使用请求
+	 */
+	useCard(data){
+		return minRequest.post('/Card/use_ticket',data)
+	},
+	
+	/**
+	 * 会员卡领取请求
+	 */
+	activeCard(data){
+		return minRequest.post('/Card/active',data)
+	}
   }
 }

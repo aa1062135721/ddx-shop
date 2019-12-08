@@ -356,6 +356,30 @@ const router = new MinRouter({
 			name: 'newcomer',
 			login: true
 		},
+
+		//预存享福利活动规则
+		{
+			path:"pages2/user/pre_store/rule",
+			type:'navigateTo',
+			name:'rule',
+			login:true
+		},
+		
+		//卡片详情
+		{
+			path:"pages2/user/pre_store/details",
+			type:'navigateTo',
+			name:'detail',
+			login:true
+		},
+		
+		//预存享福利首页
+		{
+			path:"pages2/user/pre_store/main",
+			type:'navigateTo',
+			name:'pre_store',
+			login:true
+		},
 	]
 })
 

@@ -60,7 +60,8 @@
                     </view>
                 </view>
             </view>
-            <view class="card">
+            <view class="ad" @click="goPage('pre_store')"></view>
+			<view class="card">
                 <view class="title-bar">
                     <view class="left">
                         <text>我的订单</text>
@@ -275,6 +276,12 @@
     .card-box{
         margin-top: -130upx;
         padding: $uni-spacing-row-base;
+		.ad{
+			margin: 26upx auto;
+			height: 170upx;
+			background: url(../../static/images/ad.png) no-repeat center center;
+			background-size: cover;
+		}
         .card{
             margin: 20upx auto;
             width:100%;

@@ -26,7 +26,7 @@
 
             <div class="money-input-box">
                 <div class="title">
-                    充值金额
+                    充值金额 <span style="font-size: 28upx;color: #666;">（充值金额仅限微信商城使用）</span>
                 </div>
                 <div class="input">
                     <span class="fh">￥</span>
@@ -36,8 +36,9 @@
 
         </div>
         <div class="my-btn">
-            <div class="btn" @click="_investMoney">充值</div>
+            <div class="btn" @click="addMoney">充值</div>
         </div>
+        <!--
         <div class="recharge">
             <div class="privilege">
                 <div class="privilege-title">
@@ -105,18 +106,19 @@
                 </div>
             </div>
         </div>
+        -->
     </div>
 </template>
 
 <script>
     import { mapState, mapActions } from 'vuex'
+    import { _debounce } from "@/utils/mUtils"
 
     export default {
         name: "recharge", //充值页面
         data(){
           return {
               money: '',
-              isCanPay: true, // 是否支付按钮 防止重复提交
           }
         },
         onLoad(){
@@ -146,15 +148,17 @@
             inputMoney(money = 0) {
                 this.money = money
             },
+            /* 防抖 */
+            addMoney(){
+                _debounce((_that = this) => {
+                    _that._investMoney()
+                }, 1000)
+            },
             _investMoney(){
                 if (this.money === '') {
                     this.msg('请输入充值金额')
                     return
                 }
-                if (!this.isCanPay) {
-                    return
-                }
-                this.isCanPay = false
                 let data={
                         money: this.money
                     },
@@ -178,7 +182,6 @@
                                    console.log("支付失败：",fail)
                                 },
                                 cancel: async (cancel) => {
-                                    _that.isCanPay = true
                                     console.log("用户取消支付：",cancel)
                                 },
                                 complete: async (complete) => {

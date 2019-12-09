@@ -1053,7 +1053,7 @@
 			if(this.userInfo.id) {
 				url += `&user_id=${this.userInfo.id}`
 			}
-
+			url = Constant[Constant.NODE_ENV].shareRedirectURL + encodeURIComponent(url)
 			await this.$minApi.assembleInfo(requestData).then(async res => {
 				console.log("拼团详情：",res)
 				if (res.code === 200){

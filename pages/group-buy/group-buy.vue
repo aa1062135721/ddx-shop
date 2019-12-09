@@ -114,6 +114,7 @@
           if(this.userInfo.id) {
              url += `?user_id=${this.userInfo.id}`
           }
+          url = Constant[Constant.NODE_ENV].shareRedirectURL + encodeURIComponent(url)
          await this._assembleList()
           this.$nextTick(()=>{
              if (this.groupBuyList.length){

@@ -14,7 +14,7 @@
             <div class="item yellow" @click="_goPage('user_available-balance')">
                 <div class="header">
                     <div class="title">可用金额</div>
-                    <div class="money">{{userInfo.money | moneyToFixed}}元</div>
+                    <div class="money">{{userInfo.usable_money | moneyToFixed}}元</div>
                 </div>
                 <div class="footer">
                     <div class="time"></div>

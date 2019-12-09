@@ -197,22 +197,24 @@
 
             //取消订单
             async cancelFormSubmit(e) {
-                // 推送模板消息所需的数据
-                let sendTemplateMessageData = {
-                    form_id: e.detail.formId,//模板id
-                    page: `pages/order/detail?order_id=${this.responseData.id}`,//模板消息推送后可以跳转的页面
-                    oid: `${this.responseData.id}`,//订单id
-                    state: 2,//订单状态，0 未支付 1：支付成功；2：订单取消
-                }
-
                 let requestData = {
-                    order_id: this.responseData.id
-                }
-                await this.$minApi.cancelOrder(requestData).then(res => {
-                    if (res.code === 200) {
-                        this.msg('取消成功')
-                        this.loadData()
-                        this.$minApi.sendTemplateMessage(sendTemplateMessageData).then()
+                        order_id: this.responseData.id
+                    },
+                    _that = this
+                uni.showModal({
+                    title: '提示',
+                    content: "是否取消订单？",
+                    success: function (showModalRes) {
+                        if (showModalRes.confirm) {
+                            _that.$minApi.cancelOrder(requestData).then(res => {
+                                if (res.code === 200) {
+                                    _that.msg('取消成功')
+                                    _that.loadData()
+                                }
+                            })
+                        } else if (showModalRes.cancel) {
+
+                        }
                     }
                 })
             },
@@ -220,12 +222,23 @@
             //确认收货
             async overOrder(){
                 let requestData = {
-                    order_id: this.responseData.id
-                }
-                await this.$minApi.overOrder(requestData).then(res => {
-                    if (res.code === 200) {
-                        this.msg('确认收货成功')
-                        this.loadData()
+                        order_id: this.responseData.id
+                    },
+                    _that = this
+                uni.showModal({
+                    title: '提示',
+                    content: "是否确认收货？",
+                    success: function (showModalRes) {
+                        if (showModalRes.confirm) {
+                            _that.$minApi.overOrder(requestData).then(res => {
+                                if (res.code === 200) {
+                                    _that.msg('确认收货成功')
+                                    _that.loadData()
+                                }
+                            })
+                        } else if (showModalRes.cancel) {
+
+                        }
                     }
                 })
             },
@@ -233,12 +246,23 @@
             // 删除订单
             async delOrder(){
                 let requestData = {
-                    order_id: this.responseData.id
-                }
-                await this.$minApi.delOrder(requestData).then(res => {
-                    if (res.code === 200) {
-                        this.msg('删除成功')
-                        uni.navigateBack({})
+                        order_id: this.responseData.id
+                    },
+                    _that = this
+                uni.showModal({
+                    title: '提示',
+                    content: "是否删除订单？",
+                    success: function (showModalRes) {
+                        if (showModalRes.confirm) {
+                            _that.$minApi.delOrder(requestData).then(res => {
+                                if (res.code === 200) {
+                                    _that.msg('删除成功')
+                                    uni.navigateBack()
+                                }
+                            })
+                        } else if (showModalRes.cancel) {
+
+                        }
                     }
                 })
             },

@@ -337,6 +337,7 @@
 				{
 					"path": "user/pre_store/main",
 					"style": {
+						"navigationStyle": "custom",
 						"navigationBarTitleText": "预存享福利 累消获惊喜"
 					}
 				}

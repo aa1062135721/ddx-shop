@@ -88,28 +88,29 @@
 		name:'pre_store',
 		data(){
 			return{
-				loadStaus:'more',
-				navList:['全部','待领取','待使用','已过期'],
-				num:0,
+				loadStaus:'more', //加载状态
+				navList:['全部','待领取','待使用','已过期'],//导航列表
+				num:0, //判断导航active的数字
 				money:0,//消费金额
 				code:0,//核销码
-				cardList:[],
-				requestData:{
+				cardList:[],//卡片列表
+				requestData:{  //列表请求对象
 					page:1,
-					limit:3
+					limit:10
+				},
+				idData:{
+					card_id:0  //卡片操作请求对象
 				}
 			}
 		},
 		onLoad() {
-			this._getCardList()  //初始加载 传1 加载全部
+			this._getCardList()  
 		},
 		methods:{
 			
 			useCard(id){
-				let data ={
-					card_id:id
-				}
-				this.$minApi.useCard(data).then(res=>{
+				this.idData.card_id = id
+				this.$minApi.useCard(this.idData).then(res=>{
 					// console.log(res)
 					if(res.code==200){
 						this.code=res.data.code;
@@ -119,15 +120,15 @@
 			},
 			
 			activeCard(id){
-				let data ={
-					card_id:id
-				}
-				this.$minApi.activeCard(data).then(res=>{
+				this.idData.card_id = id
+				this.$minApi.activeCard(this.idData).then(res=>{
 					if(res.code==200){
 						this.$refs.successBox.open();
 						setTimeout(()=>{
 							this.$refs.successBox.close();
-							this._goPage('pre_store');
+							// this._goPage('pre_store');
+							this.requestData.page=1;
+							this._getCardList();
 						},1000)
 					}
 				})
@@ -170,7 +171,6 @@
 			onReachBottom(){
 				this.requestData.page++;
 				this._getCardList()
-				console.log(this.page)
 			},
 			
 			changeList(idx){

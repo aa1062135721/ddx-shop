@@ -1,5 +1,8 @@
 <template>
   <view>
+	  <!-- #ifdef H5 -->
+	  <div id="my-h5-back" @click="_goBack"></div>
+	  <!-- #endif -->
       <view class="topBox">
           <view class="bg">
               <view class="cardBox">
@@ -136,6 +139,10 @@
 			
 			_goPage(url, query = {}){
 				this.$openPage({name:url, query})
+			},
+			
+			_goBack(){
+				uni.navigateBack()
 			},
 			
 			_getCardList(num,idx){

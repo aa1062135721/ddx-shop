@@ -235,11 +235,47 @@ exports.install = function (Vue, options) {
                         'getLocalImgData',
                         'downloadImage',
                         'checkJsApi',
+                        'hideAllNonBaseMenuItem', // 隐藏所有非基础按钮接口
+                        'showAllNonBaseMenuItem', //显示所有功能按钮接口
+                        'hideMenuItems', // 批量隐藏功能按钮接口
+                        'showMenuItems', // 批量显示功能按钮接口
                     ]
                 })
-                /*
 
                 that.$wx.ready(function () {
+
+                    /**
+                    that.$wx.hideAllNonBaseMenuItem() // 只能隐藏 传播类 和 保护类
+                     **/
+
+                    /**
+                    //用这个或者下面的 二者都是全部隐藏 传播类 和 保护类
+                    that.$wx.hideMenuItems({
+                        menuList: [
+                            // 传播类
+                            'menuItem:share:appMessage', //发送给朋友
+                            'menuItem:share:timeline', //分享到朋友圈
+                            'menuItem:share:qq',//分享到QQ
+                            'menuItem:share:weiboApp',//分享到Weibo
+                            'menuItem:favorite',//收藏
+                            'menuItem:share:facebook',//分享到FB
+                            'menuItem:share:QZone',//分享到 QQ空间
+
+                            //保护类
+                            'menuItem:editTag', //编辑标签
+                            'menuItem:delete', //删除
+                            'menuItem:copyUrl', //复制链接
+                            'menuItem:originPage', //原网页
+                            'menuItem:readMode', //阅读模式
+                            'menuItem:openWithQQBrowser', //在QQ浏览器中打开
+                            'menuItem:openWithSafari', //在Safari中打开
+                            'menuItem:share:email', //邮件
+                            'menuItem:share:brand', //一些特殊公众号
+                        ]
+                    })
+                    **/
+
+                    /**
                     that.$wx.checkJsApi({
                         jsApiList: [
                             'updateTimelineShareData', //1.4.0的 分享到朋友圈
@@ -257,12 +293,12 @@ exports.install = function (Vue, options) {
                             console.log(res)
                         }
                     })
+                     **/
                 })
                 that.$wx.error((res) => {
                     that.msg(res)
                 })
 
-                 */
             }
         })
     }
@@ -273,6 +309,7 @@ exports.install = function (Vue, options) {
      */
     Vue.prototype.wxConigShareGoods = async (param1 = {}, param2 = {}) => {
         let that = new Vue()
+
         await setTimeout(async () => {
             //分享到朋友
             await that.$wx.updateAppMessageShareData(param1)

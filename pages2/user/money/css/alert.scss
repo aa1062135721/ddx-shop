@@ -1,0 +1,52 @@
+/* 激活限时余额弹框   申请提现弹框 */
+.active-time-money{
+  position: relative;
+  width:650upx;
+  padding: $uni-spacing-col-base;
+  background: #ffffff;
+  border-radius:8px;
+  font-size: $uni-font-size-base;
+  .title{
+    font-size: $uni-font-size-lg;
+    text-align: justify;
+  }
+  .input-box{
+    margin: 20upx 0 50upx 0;
+    display: flex;
+    justify-content: space-between;
+    .input{
+      border: 1px solid #FC5A5A;
+      border-right: none;
+      box-sizing: border-box;
+      width: 70%;
+      height:60upx;
+      line-height: 60upx;
+      font-size: $uni-font-size-base;
+      border-radius: 3px 0 0 3px;
+      padding-left: 8upx;
+    }
+    .btn{
+      width: 30%;
+      height:60upx;
+      line-height: 60upx;
+      text-align: center;
+      font-size: $uni-font-size-base;
+      background: $color-primary;
+      color: #ffffff;
+      border-radius: 0 8upx 8upx 0;
+    }
+  }
+  .footer{
+    display: flex;
+    justify-content: space-between;
+    .btn{
+      width: 45%;
+      height:60upx;
+      line-height: 60upx;
+      border-radius: 8upx;
+      text-align: center;
+      background: $color-primary;
+      color: #ffffff;
+    }
+  }
+}

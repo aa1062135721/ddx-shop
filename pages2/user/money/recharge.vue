@@ -116,6 +116,7 @@
         data(){
           return {
               money: '',
+              isCanPay: true, // 是否支付按钮 防止重复提交
           }
         },
         onLoad(){
@@ -150,11 +151,15 @@
                     this.msg('请输入充值金额')
                     return
                 }
+                if (!this.isCanPay) {
+                    return
+                }
+                this.isCanPay = false
                 let data={
                         money: this.money
                     },
                     _that = this
-                this.$minApi.investMoney(data).then(res=>{
+                _that.$minApi.investMoney(data).then(res=>{
                     console.log(data)
                     if(res.code === 200){
                         let data = JSON.parse(res.data)
@@ -173,6 +178,7 @@
                                    console.log("支付失败：",fail)
                                 },
                                 cancel: async (cancel) => {
+                                    _that.isCanPay = true
                                     console.log("用户取消支付：",cancel)
                                 },
                                 complete: async (complete) => {

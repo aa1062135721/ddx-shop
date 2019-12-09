@@ -43,7 +43,7 @@
             if(this.userInfo.id) {
                 url += `?user_id=${this.userInfo.id}&user_name=${this.userInfo.nickname}`
             }
-
+            url = Constant[Constant.NODE_ENV].shareRedirectURL + encodeURIComponent(url)
             let param1 = {
                     title: `捣蛋熊商城-邀请你成为分销员`, // 分享标题
                     desc: `高品质、一站式服务平台`, // 分享描述

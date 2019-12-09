@@ -94,6 +94,7 @@
             if(this.userInfo.id) {
                 url += `?user_id=${this.userInfo.id}`
             }
+            url = Constant[Constant.NODE_ENV].shareRedirectURL + encodeURIComponent(url)
             await this.loadData()
             this.$nextTick(()=>{
                 if (this.goodsData.length){

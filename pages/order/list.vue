@@ -261,45 +261,78 @@
 
             //订单操作
             async cancelFormSubmit(e) {
-                console.log('form发生了submit事件，携带数据为：',e)
-                // 推送模板消息所需的数据
-                let sendTemplateMessageData = {
-                    form_id: e.detail.formId,//模板id
-                    page: `pages/order/detail?order_id=${e.detail.value.orderId}`,//模板消息推送后可以跳转的页面
-                    oid: `${e.detail.value.orderId}`,//订单id
-                    state: 2,//订单状态，0 未支付 1：支付成功；2：订单取消
-                }
-                await this.$minApi.cancelOrder({order_id: e.detail.value.orderId}).then(res => {
-                    console.log(res)
-                    if (res.code === 200) {
-                        this.msg('取消成功')
-                        this.navList[this.tabCurrentIndex].requestData.page = 1
-                        this.loadData()
-                        this.$minApi.sendTemplateMessage(sendTemplateMessageData).then(res=>{
-                            console.log(res)
-                        })
+                /**
+                 * 小程序推送模板消息
+                 */
+                // console.log('form发生了submit事件，携带数据为：',e)
+                // // 推送模板消息所需的数据
+                // let sendTemplateMessageData = {
+                //     form_id: e.detail.formId,//模板id
+                //     page: `pages/order/detail?order_id=${e.detail.value.orderId}`,//模板消息推送后可以跳转的页面
+                //     oid: `${e.detail.value.orderId}`,//订单id
+                //     state: 2,//订单状态，0 未支付 1：支付成功；2：订单取消
+                // }
+                // this.$minApi.sendTemplateMessage(sendTemplateMessageData).then(res=>{
+                //     console.log(res)
+                // })
+                let _that = this
+                uni.showModal({
+                    title: '提示',
+                    content: "是否取消订单？",
+                    success: function (showModalRes) {
+                        if (showModalRes.confirm) {
+                            _that.$minApi.cancelOrder({order_id: e.detail.value.orderId}).then(res => {
+                                if (res.code === 200) {
+                                    _that.msg('取消成功')
+                                    _that.navList[_that.tabCurrentIndex].requestData.page = 1
+                                    _that.loadData()
+                                }
+                            })
+                        } else if (showModalRes.cancel) {
+                            console.log('用户点击取消');
+                        }
                     }
                 })
-
-
             },
             async overOrder(order_id){ //确认收货
                 console.log(order_id)
-                await this.$minApi.overOrder({order_id}).then(res => {
-                    if (res.code === 200) {
-                        this.msg('确认收货成功')
-                        this.navList[this.tabCurrentIndex].requestData.page = 1
-                        this.loadData()
+                let _that = this
+                uni.showModal({
+                    title: '提示',
+                    content: '是否确认收货？',
+                    success: function (showModalRes) {
+                        if (showModalRes.confirm) {
+                            _that.$minApi.overOrder({order_id}).then(res => {
+                                if (res.code === 200) {
+                                    _that.msg('确认收货成功')
+                                    _that.navList[_that.tabCurrentIndex].requestData.page = 1
+                                    _that.loadData()
+                                }
+                            })
+                        } else if (showModalRes.cancel) {
+                            console.log('用户点击取消')
+                        }
                     }
                 })
             },
             async delOrder(order_id){ // 删除订单
                 console.log(order_id)
-                await this.$minApi.delOrder({order_id}).then(res => {
-                    if (res.code === 200) {
-                        this.msg('删除成功')
-                        this.navList[this.tabCurrentIndex].requestData.page = 1
-                        this.loadData()
+                let _that = this
+                uni.showModal({
+                    title: '提示',
+                    content: "是否删除订单？",
+                    success: function (showModalRes) {
+                        if (showModalRes.confirm) {
+                            _that.$minApi.delOrder({order_id}).then(res => {
+                                if (res.code === 200) {
+                                    _that.msg('删除成功')
+                                    _that.navList[_that.tabCurrentIndex].requestData.page = 1
+                                    _that.loadData()
+                                }
+                            })
+                        } else if (showModalRes.cancel) {
+                            console.log('用户点击取消')
+                        }
                     }
                 })
             },

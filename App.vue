@@ -30,19 +30,17 @@
 		},
 		onLaunch: function(param) {
 			console.log('App Launch')
+            console.log("携带参数：", param)
             // 没有找到页面跳转到首页
             if (!param.path){
                 this._goPage('home')
             }
             if ((Object.keys(param.query)).length !== 0){
                 if (param.query.query){
-                    console.log("刷新页面：")
                     this.setPageChangeParam(JSON.parse(decodeURIComponent(param.query.query)))
                 } else {
-                    console.log("通过分享进入：")
                     this.setPageChangeParam(param.query)
                 }
-                console.log(param)
                 /**
                  * 如果是别人推荐的
                  */
@@ -105,7 +103,7 @@
                this.wxConfig()
             }
 
-            // this.setToken('4c0862ca0c9c677fb24c243ce386fa400f4c00c267c4328c26f6ebbbba38a5cd')
+            // this.setToken('c5b4b6f2f974a8d509a50b4a70930c990c9d2aef735e6bcfea50da292a963718')
             try {
                 const token = uni.getStorageSync('token')
                 if (token) {

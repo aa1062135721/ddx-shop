@@ -841,7 +841,7 @@
             if(this.userInfo.id) {
                 url += `&user_id=${this.userInfo.id}`
             }
-
+            url = Constant[Constant.NODE_ENV].shareRedirectURL + encodeURIComponent(url)
             await this.$minApi.seckill_info(requestData).then(async res => {
                 console.log('秒杀详情：', res)
                 if (res.code === 200) {

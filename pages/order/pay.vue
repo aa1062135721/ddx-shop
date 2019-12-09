@@ -16,16 +16,6 @@
                             <radio value="3" :checked="payWay === '3'" :disabled="disabledMoney" color="#FC5A5A" />
                         </view>
                     </label>
-                    <view class="item" v-for="(item, index) in userInfo.expireList" :key="index" style="padding: 10upx 0;flex-direction: column;align-items: flex-start;">
-                            <view>限时余额</view>
-                            <view class="has-money" style="display: flex;justify-content: space-between;width: 100%;">
-                                <div>¥{{item.price}}</div>
-                                <div>
-                                    <block v-if="item.status === 1">{{item.expire_time}} 后过期</block>
-                                    <block v-if="item.status === 0">未激活</block>
-                                </div>
-                            </view>
-                    </view>
                     <label class="item" @click="radioChange({target:{value: '1'}})">
                         <view>
                             <view>微信支付</view>
@@ -42,7 +32,7 @@
 </template>
 
 <script>
-    import { mapState, } from 'vuex'
+    import { mapState, mapActions} from 'vuex'
 
     export default {
         name: "order_pay",
@@ -84,7 +74,13 @@
                 this.wxConfig()
             }
         },
+        onShow(){
+            if (this.userInfo.id){
+                this.asyncGetUserInfo()
+            }
+        },
         methods: {
+            ...mapActions(['asyncGetUserInfo']),
             _goPage(url, query = {}){
                 this.$openPage({name:url, query})
             },

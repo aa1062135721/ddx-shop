@@ -776,5 +776,13 @@ export default {
 	activeCard(data){
 		return minRequest.post('/Card/active',data)
 	},
+
+	/**
+	 * 会员卡详情请求
+	 */
+	cardInfo(data){
+		return minRequest.get('/Card/cardInfo',data)
+	},
+
   }
 }

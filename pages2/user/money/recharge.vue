@@ -131,6 +131,10 @@
                     uni.removeStorageSync('refresh')
                 }
             }
+            // 如果是安卓平台 每次调用微信配置
+            if (this.getPlatform().isAndroid){
+                this.wxConfig()
+            }
         },
         methods:{
             ...mapActions(['asyncGetUserInfo']),

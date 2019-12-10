@@ -236,13 +236,14 @@
         display: flex;
         flex-direction: column;
         .item{
+            margin-bottom: 40upx;
             height: 212upx;
             font-size: $uni-font-size-lg;
             color: #FFFFFF;
             display: flex;
             flex-direction: column;
             justify-content: space-around;
-            padding: $uni-spacing-row-lg;
+            padding: 0 $uni-spacing-row-lg;
             border-radius:10upx;
             background-image:linear-gradient(90deg,rgba(255,111,137,1),rgba(255,72,96,1));
             background-repeat: no-repeat;
@@ -283,7 +284,6 @@
                 justify-content: space-between;
             }
             .footer{
-                margin-bottom: 60upx;
                 display: flex;
                 justify-content: space-between;
                 .time{
@@ -295,10 +295,9 @@
                     line-height: 48upx;
                     text-align: center;
                     background: #FFFFFF;
-                    font-size:  $uni-font-size-lg;
+                    font-size:  $uni-font-size-base;
                     color: #333333;
                     border-radius: 4upx;
-                    padding: 4upx 16upx;
                 }
             }
         }

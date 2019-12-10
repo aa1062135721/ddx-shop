@@ -105,6 +105,7 @@
             <view v-if="responseData.status !== 1 && responseData.status !== -1">付款时间：{{responseData.paytime}}</view>
             <view v-if="responseData.status === 3 || responseData.status === 4 ||  responseData.status === 5">发货时间：{{responseData.sendtime}}</view>
         </view>
+        <view class="block"></view>
         <!--操作按钮-->
         <view class="fixed-btns">
 <!--            <button @click="call">手机客服</button>-->
@@ -546,13 +547,17 @@
             background: #fff;
             font-size: $uni-font-size-base;
             color: #808080;
-            padding-bottom: $uni-spacing-col-lg * 6;
+            margin-bottom: 20upx;
             view{
                 width: 100%;
                 text-align: left;
                 height: $uni-font-size-base * 2;
                 line-height: $uni-font-size-base * 2;
             }
+        }
+        .block{
+            height: 110upx;
+            padding: $uni-spacing-col-lg 0;
         }
         .fixed-btns{
             z-index: 99;

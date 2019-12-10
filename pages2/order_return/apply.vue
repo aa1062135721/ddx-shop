@@ -15,7 +15,7 @@
             <view class="item-type" @click="requestData.type = 1">
                 <view class="one">
                     <view class="my-head">
-                        <image src="../static/order_return_money.png" class="img"></image>
+                        <image src="../../static/images/order_return_money.png" class="img"></image>
                     </view>
                     <view class="my-body">
                         <view class="title">我要退款(无需退货）</view>
@@ -29,7 +29,7 @@
             <view class="item-type" @click="requestData.type = 2">
                 <view class="one">
                     <view class="my-head">
-                        <image src="../static/order_return_return.png" class="img"></image>
+                        <image src="../../static/images/order_return_return.png" class="img"></image>
                     </view>
                     <view class="my-body">
                         <view class="title">我要退款退货</view>
@@ -43,7 +43,7 @@
             <view class="item-type" @click="requestData.type = 3">
                 <view class="one">
                     <view class="my-head">
-                        <image src="../static/order_return_change.png" class="img"></image>
+                        <image src="../../static/images/order_return_change.png" class="img"></image>
                     </view>
                     <view class="my-body">
                         <view class="title">换货</view>

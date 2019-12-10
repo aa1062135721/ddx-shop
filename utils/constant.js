@@ -13,14 +13,14 @@ export const production = {
     appId: 'wxb5ee49b69efc2429', // 捣蛋熊猫商场
     appSecret: 'f775096b8d02d3a34761ccef9796c8f4',
     oldShareholderDataUrl: 'https://www.ddxm661.com/frontend/public/dist/#/home/mall',
-    newShareholderDataUrl: 'https://www.ddxm661.com/frontend/public/dist#/shareholder?mobile=',
+    newShareholderDataUrl: 'https://www.ddxm661.com/frontend/public/dist/#/shareholder?mobile=',
     shareRedirectURL: 'https://www.ddxm661.com/h5/static/html/redirect.html?app3Redirect=', // vue路由hash模式 微信分享之后会截取#号后面的数据，所以使用一次重定向
     projectUrl: 'https://www.ddxm661.com/h5/#/', //商城首页
     shareGoodsDetail: 'https://www.ddxm661.com/h5/#/pages/goods/detail', // 分享普通商品 别人打开的url
     shareGroupGoodsDetail: 'https://www.ddxm661.com/h5/#/pages/group-buy/detail', // 分享团购商品 别人打开的url
     shareGroupOrderDetail: 'https://www.ddxm661.com/h5/#/pages/group-buy/group', // 分享团购下单后邀请参团 别人打开的url
     shareSpikeGoodsDetail: 'https://www.ddxm661.com/h5/#/pages/spike/detail', // 分享秒杀商品 别人打开的url
-    inviteFriends: 'https://www.ddxm661.com/h5/pages2/#/user/distributor', // 邀请别人成为分销员 别人打开的url
+    inviteFriends: 'https://www.ddxm661.com/h5/#/pages2/user/distributor', // 邀请别人成为分销员 别人打开的url
     spikeList: 'https://www.ddxm661.com/h5/#/pages/spike/list', // 秒杀列表分享 别人打开的url
     groupBuyList: 'https://www.ddxm661.com/h5/#/pages/group-buy/group-buy', // 拼团列表分享 别人打开的url
 

@@ -468,6 +468,12 @@
                         color: #cccccc!important;
                     }
                 }
+                .icon-ddx-shop-location{
+                    font-size: $uni-font-size-sm * 2;
+                }
+                .icon-ddx-shop-content_arrows{
+                    font-size: $uni-font-size-lg;
+                }
             }
         }
         .car-list{

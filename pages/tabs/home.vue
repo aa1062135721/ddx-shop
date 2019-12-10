@@ -37,9 +37,9 @@
 				</view>
 
 				<!--	新人专享 	-->
-				<view class="newcomer" @click="_goPage('newcomer')">
-					<img class="img" src="../../static/images/newcomer.gif" />
-				</view>
+<!--				<view class="newcomer" @click="_goPage('newcomer')">-->
+<!--					<img class="img" src="../../static/images/newcomer.gif" />-->
+<!--				</view>-->
 
 				<!-- 超级拼团 限时秒杀 童装童鞋 境外购-->
 <!--
@@ -638,7 +638,8 @@
 						this._goPage('spike_list')
 						break
 					case 6:
-						this._goPage('newcomer')
+						this.msg('功能正在完善中，请敬请期待！')
+						// this._goPage('newcomer')
 						break
                 }
 			},

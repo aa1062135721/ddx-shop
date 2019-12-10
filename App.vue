@@ -131,6 +131,10 @@
                                 res.data.isbindMobile === 1){
                                 this.setToken(res.data.token) //保存用户token，并存vuex，永久存储
                                 this.asyncGetUserInfo() //获取用户数据 并存vuex 临时存储
+                                // 微信那边授权跳转回来的，携带了code
+                                // https://ddxm661.com/h5/?code=23412341asdfasdf1341d&state=1#/pages/goods/detail?id=1140
+                                // 把用户token存好了后，重定向一下，解决地址栏中有code, 支付出现页面未注册的情况。
+                                window.location.href = window.location.href.substring(0, window.location.href.indexOf('h5/') + 3) + window.location.href.substring(window.location.href.indexOf('#/'), window.location.href.length)
                             }
                             /**
                              * 用户关注了公众号，没有绑定手机号，能获取到用户信息，这时候需要跳转到绑定手机号页面

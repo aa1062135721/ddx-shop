@@ -172,7 +172,7 @@
                     agreement: 1
                 }).then(res => {
                     if (res.code === 200) {
-                        this.msg(res.msg)
+                        this.msg("发送成功")
                     }
                 })
             },

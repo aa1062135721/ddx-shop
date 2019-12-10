@@ -10,7 +10,8 @@
                     <view class="text">单击查看大图</view>
                 </view>
                 <view class="grace-idcard-preview">
-                    <image :src="idCard1" @click="previewImg1"></image>
+                    <img class="img" v-if="!idCard1" src="../../static/images/idcard1.png">
+                    <img class="img" v-else :src="idCard1"  @click="previewImg1">
                 </view>
             </view>
             <view class="grace-idcard-text">
@@ -22,7 +23,8 @@
                     <view class="text">单击查看大图</view>
                 </view>
                 <view class="grace-idcard-preview">
-                    <image :src="idCard2" @click="previewImg2"></image>
+                    <img class="img" v-if="!idCard2" src="../../static/images/idcard2.png">
+                    <img class="img" v-else :src="idCard2" @click="previewImg2">
                 </view>
             </view>
         </view>
@@ -34,8 +36,8 @@
         name: 'id-card-authentication',
         data() {
             return {
-                idCard1 : '../static/idcard1.png',
-                idCard2 : '../static/idcard2.png'
+                idCard1 : '',
+                idCard2 : ''
             }
         },
         onLoad:function(){
@@ -54,18 +56,14 @@
                 uni.navigateBack()
             },
             previewImg1 : function(){
-                if ( this.idCard1 !== '../static/idcard1.png' ){
                     uni.previewImage({
                         urls:[_self.idCard1]
                     });
-                }
             },
             previewImg2 : function(){
-                if (this.idCard2 !== '../static/idcard2.png'){
                     uni.previewImage({
                         urls:[_self.idCard2]
                     });
-                }
             },
         },
     }

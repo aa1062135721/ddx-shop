@@ -184,12 +184,14 @@
                 }
                 this.$minApi.activeTimeMoney(requestData).then(res => {
                     if (res.code === 200){
+                        this.code = ''
                         this.closeActiveTimeMoney()
                         this.msg(res.msg)
                         this.requestData.page = 1
                         this._getExpireList()
                     }
                 }).catch(err => {
+                    this.code = ''
                     this.closeActiveTimeMoney()
                     this.msg('服务器繁忙，请稍后重试！')
                 })

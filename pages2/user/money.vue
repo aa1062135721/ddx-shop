@@ -189,6 +189,10 @@
                         this.msg(res.msg)
                         this.requestData.page = 1
                         this._getExpireList()
+                    } else {
+                        this.code = ''
+                        this.closeActiveTimeMoney()
+                        this.msg('验证码有误')
                     }
                 }).catch(err => {
                     this.code = ''

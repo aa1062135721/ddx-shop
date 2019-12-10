@@ -1,0 +1,109 @@
+.banner{
+  width: 100%;
+  height:388upx;
+  background-color: #FFFFFF;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  .banner-money-box{
+    margin: 20upx;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    color: #FFFFFF;
+    .box-money{
+      font-size: $uni-font-size-lg * 2;
+    }
+  }
+  .footer-time{
+    margin: 20upx;
+    font-size: $uni-font-size-base;
+    color: #333333;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    .btn{
+      background: #FFFFFF;
+      width:186upx;
+      text-align: center;
+      height: 54upx;
+      line-height: 54upx;
+      border-radius: 4upx;
+    }
+  }
+  .footer-img{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+  }
+}
+
+/* 切换按钮 */
+.tabs-btn{
+  margin: 40upx 0;
+  padding: 0 $uni-spacing-row-lg;
+  .box{
+    //border: 1px solid rgba(255,140,31,1);
+    background: #FFFFFF;
+    box-shadow: 0 0 4upx rgba(255,140,31,1);
+    height:76upx;
+    border-radius:38upx;
+    display: flex;
+    justify-content: space-between;
+
+    color: #FF7C00;
+    .item{
+      width: 50%;
+      text-align: center;
+      line-height: 78upx;
+      z-index: 99;
+      font-size: $uni-font-size-base;
+      &.active{
+        color: #FFFFFF;
+        border-radius:38upx;
+        background:linear-gradient(90deg,rgba(255,187,21,1),rgba(255,140,31,1));
+      }
+    }
+  }
+
+
+
+}
+
+/* 使用记录 充值记录 …… */
+.record-box{
+  background: #FFFFFF;
+  width: 100%;
+  .item{
+    font-size: $uni-font-size-base;
+    color: $color-primary-plain;
+    padding: 20upx $uni-spacing-row-base;
+    display: flex;
+    justify-content: space-between;
+    @extend %border-color-solid-botton;
+    &:last-child{
+      border: none;
+    }
+    .title{
+      margin: 10upx 0;
+    }
+    .sub-title{
+      margin: 10upx 0;
+      font-size: $uni-font-size-sm;
+      color: #808080;
+    }
+    .price{
+      margin: 10upx 0;
+    }
+    .sub-price{
+      margin: 10upx 0;
+      font-size: $uni-font-size-sm;
+      color: #808080;
+      &.on{
+        color: $color-primary-plain;
+      }
+    }
+  }
+}

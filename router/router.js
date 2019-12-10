@@ -229,39 +229,21 @@ const router = new MinRouter({
 			login: true
 		},
 		{
-			path: "pages2/user/fans",
-			type: 'navigateTo',
-			name: 'user_fans',
-			login: true
-		},
-		{
 			path: "pages2/user/money",
 			type: 'navigateTo',
 			name: 'user_money',
 			login: true
 		},
 		{
-			path: "pages2/user/record",
-			type: 'navigateTo',
-			name: 'user_record',
-			login: true
-		},
-		{
-			path: "pages2/user/expenses-record",
-			type: 'navigateTo',
-			name: 'user_expenses_record',
+			path: "pages2/user/money",
+			type: 'redirectTo',
+			name: 'user_money_redirect',
 			login: true
 		},
 		{
 			path: "pages2/user/modify-mobile",
 			type: 'navigateTo',
 			name: 'user_modify_mobile',
-			login: true
-		},
-		{
-			path: "pages2/user/invite-fans",
-			type: 'navigateTo',
-			name: 'user_invite_fans',
 			login: true
 		},
 		{
@@ -301,9 +283,39 @@ const router = new MinRouter({
 			login: true
 		},
 		{
+			path: "pages2/user/money/recharge",
+			type: 'navigateTo',
+			name: 'user_recharge',
+			login: true
+		},
+		{
+			path: "pages2/user/money/time-money",
+			type: 'navigateTo',
+			name: 'user_time_money',
+			login: true
+		},
+		{
+			path: "pages2/user/money/available-balance",
+			type: 'navigateTo',
+			name: 'user_available-balance',
+			login: true
+		},
+		{
+			path: "pages2/user/money/withdrawal-amount",
+			type: 'navigateTo',
+			name: 'user_withdrawal_amount',
+			login: true
+		},
+		{
 			path: "pages2/user/distribution/sum-fans",
 			type: 'navigateTo',
 			name: 'user_distribution_sum_fans',
+			login: true
+		},
+		{
+			path: "pages2/user/card/list",
+			type: 'navigateTo',
+			name: 'user_card_list',
 			login: true
 		},
 
@@ -355,6 +367,30 @@ const router = new MinRouter({
 			type: 'navigateTo',
 			name: 'newcomer',
 			login: true
+		},
+
+		//预存享福利活动规则
+		{
+			path:"pages2/user/pre_store/rule",
+			type:'navigateTo',
+			name:'rule',
+			login:true
+		},
+		
+		//卡片详情
+		{
+			path:"pages2/user/pre_store/details",
+			type:'navigateTo',
+			name:'detail',
+			login:true
+		},
+		
+		//预存享福利首页
+		{
+			path:"pages2/user/pre_store/main",
+			type:'navigateTo',
+			name:'pre_store',
+			login:true
 		},
 	]
 })

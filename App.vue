@@ -30,19 +30,17 @@
 		},
 		onLaunch: function(param) {
 			console.log('App Launch')
+            console.log("携带参数：", param)
             // 没有找到页面跳转到首页
             if (!param.path){
                 this._goPage('home')
             }
             if ((Object.keys(param.query)).length !== 0){
                 if (param.query.query){
-                    console.log("刷新页面：")
                     this.setPageChangeParam(JSON.parse(decodeURIComponent(param.query.query)))
                 } else {
-                    console.log("通过分享进入：")
                     this.setPageChangeParam(param.query)
                 }
-                console.log(param)
                 /**
                  * 如果是别人推荐的
                  */
@@ -105,7 +103,7 @@
                this.wxConfig()
             }
 
-            // this.setToken('4c0862ca0c9c677fb24c243ce386fa400f4c00c267c4328c26f6ebbbba38a5cd')
+            // this.setToken('c5b4b6f2f974a8d509a50b4a70930c990c9d2aef735e6bcfea50da292a963718')
             try {
                 const token = uni.getStorageSync('token')
                 if (token) {
@@ -133,6 +131,10 @@
                                 res.data.isbindMobile === 1){
                                 this.setToken(res.data.token) //保存用户token，并存vuex，永久存储
                                 this.asyncGetUserInfo() //获取用户数据 并存vuex 临时存储
+                                // 微信那边授权跳转回来的，携带了code
+                                // https://ddxm661.com/h5/?code=23412341asdfasdf1341d&state=1#/pages/goods/detail?id=1140
+                                // 把用户token存好了后，重定向一下，解决地址栏中有code, 支付出现页面未注册的情况。
+                                window.location.href = window.location.href.substring(0, window.location.href.indexOf('h5/') + 3) + window.location.href.substring(window.location.href.indexOf('#/'), window.location.href.length)
                             }
                             /**
                              * 用户关注了公众号，没有绑定手机号，能获取到用户信息，这时候需要跳转到绑定手机号页面

@@ -53,3 +53,10 @@ export const orderStatusToString = (status) => {
   }
   return sStatus
 }
+
+/**
+ * 将手机号码中间4位设置为*号
+ */
+export const filterMobile = (mobile = '18888888888') => {
+  return mobile.replace(mobile.substring(3,7), "****")
+}

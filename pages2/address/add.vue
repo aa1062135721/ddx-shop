@@ -32,7 +32,7 @@
 				<view class="name">
 					详细地址
 				</view>
-				<view class="value">
+				<view class="value" style="width: 70%;">
 					<input type="text" placeholder="请输入详细地址" v-model="address.address">
 				</view>
 			</view>
@@ -243,6 +243,10 @@
 </script>
 
 <style scoped lang="scss">
+	*{
+		font-size: $uni-font-size-base;
+		overflow: hidden;
+	}
 	.container{
 		font-size: $uni-font-size-base;
 		.address{
@@ -261,8 +265,8 @@
 				justify-content: flex-start;
 				align-items: center;
 				width:100%;
-				height:150upx;
-				line-height: 150upx;
+				height:100upx;
+				line-height: 100upx;
 				.name{
 					width: 30%;
 				}
@@ -306,11 +310,20 @@
 				background: $color-primary;
 				color: #FFFFFF;
 				margin-bottom: 20upx;
+				height: 80upx;
+				line-height: 80upx;
+				text-align: center;
+				font-size: $uni-font-size-base;
 			}
 			.del{
 				background: #FFFFFF;
 				color: $color-primary;
 				border: 1upx solid $color-primary;
+				box-sizing: border-box;
+				height: 80upx;
+				line-height: 80upx;
+				text-align: center;
+				font-size: $uni-font-size-base;
 			}
 		}
 	}

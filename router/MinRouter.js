@@ -107,10 +107,8 @@ function openPage(args) {
 function parseURL() {
     const query = this.$root.$mp.query.query
     if (query) {
-        console.log("从地址栏里取数据：")
         return JSON.parse(decodeURIComponent(query))
     } else {
-        console.log("从vuex里取数据：")
         return  this.$store.state.pageChangeParam
     }
 }

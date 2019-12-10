@@ -242,7 +242,7 @@
             if(this.userInfo.id) {
                 url += `&user_id=${this.userInfo.id}`
             }
-
+            url = Constant[Constant.NODE_ENV].shareRedirectURL + encodeURIComponent(url)
             await this.$minApi.groupBuyDetail(requestData).then(async res => {
                 if (res.code === 200){
 
@@ -277,7 +277,7 @@
                             'size': 160
                         });
                         qrcode.draw('myCanvas', url)
-                        if (res.data.status !== 0 && res.data.status !== 2) {
+                        if (res.data.status === 1) {
                             this.$refs.shareQrCode.style.display = 'flex'
                         } else {
                             this.$refs.shareQrCode.style.display = 'none'

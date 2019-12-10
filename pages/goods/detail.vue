@@ -447,7 +447,7 @@
 					</view>
 				</view>
 				<view class="share-goto-btn-box">
-					<view class="btn" @click="_goPage('user_distribution')">分销中心</view>
+					<view class="btn" @click="goDistribution()">分销中心</view>
 				</view>
 
 				<view class="share-btn-h5-box" @click="closeShareH5">
@@ -859,6 +859,21 @@
 				}
 				_AIHECONG('showChat')
 			},
+			// 去分销中心，如果不是分销员，先到 成为分销员 页面
+			goDistribution(){
+				// 用户未登录 调用登录接口
+				if (!this.userInfo.id){
+					this.loginWithOfficalAccount()
+				}
+				// 是分销员
+				if (this.userInfo.retail === 1){
+					this._goPage('user_distribution')
+				}
+				// 不是分销员
+				if (this.userInfo.retail === 0){
+					this._goPage('user_distributor')
+				}
+			},
 		},
 		// 分享到朋友
 		onShareAppMessage(res) {
@@ -884,7 +899,7 @@
 			if(this.userInfo.id) {
 				url += `&user_id=${this.userInfo.id}`
 			}
-
+			url = Constant[Constant.NODE_ENV].shareRedirectURL + encodeURIComponent(url)
 			await this.$minApi.goodsDetail(requestData).then(async res => {
 				console.log("商品详情：", res)
 				if (res.code === 200){

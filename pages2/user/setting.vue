@@ -35,7 +35,7 @@
                     </view>
                 </view>
             </view>
-            <view class="item">
+            <view class="item" style="display: none;">
                 <view class="left">
                     <view class="title">退出登录</view>
                     <view class="value">注销登录</view>
@@ -71,11 +71,6 @@
                 this._goPage('mine')
             },
             ...mapMutations(['setToken', 'setUserInfo', 'setShopID'])
-        },
-        filters: {
-            filterMobile(mobile){
-                return   mobile.replace(mobile.substring(3,7), "****")
-            },
         },
         computed:{
             ...mapState(['userInfo'])

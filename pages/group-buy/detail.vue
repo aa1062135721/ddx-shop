@@ -563,7 +563,7 @@
 					</view>
 				</view>
 				<view class="share-goto-btn-box">
-					<view class="btn" @click="_goPage('user_distribution')">分销中心</view>
+					<view class="btn" @click="goDistribution()">分销中心</view>
 				</view>
 
 				<view class="share-btn-h5-box" @click="closeShareH5">
@@ -1030,6 +1030,21 @@
 					})
 				}
 				_AIHECONG('showChat')
+			},
+			// 去分销中心，如果不是分销员，先到 成为分销员 页面
+			goDistribution(){
+				// 用户未登录 调用登录接口
+				if (!this.userInfo.id){
+					this.loginWithOfficalAccount()
+				}
+				// 是分销员
+				if (this.userInfo.retail === 1){
+					this._goPage('user_distribution')
+				}
+				// 不是分销员
+				if (this.userInfo.retail === 0){
+					this._goPage('user_distributor')
+				}
 			},
 		},
 		async onLoad() {

@@ -16,7 +16,7 @@
 						<text v-if='userInfo.id'>{{userInfo.nickname}}</text>
                         <text v-else>未登录</text>
                       </view>
-                      <view class="text">截止今日 当月消费</view>
+                      <view class="text">截止今日 当月消费<text class="icon-ddx-shop-wenhao iconfont" @click.stop="question"></text></view>
                       <view class="money">{{money}}元</view>
                   </view>
               </view>
@@ -37,8 +37,9 @@
                   <view class="time">{{item.start_time}}-{{item.end_time}}</view>
               </view>
               <view class="itemBtn receive" v-if="item.status==0" @click.stop="activeCard(item.id)">立即领取</view>
-			  <view class="itemBtn receive" style="opacity:0;" v-if="item.status==3">立即领取</view>
+			  <view class="itemBtn receive" style="opacity:0;" v-if="item.status==3||item.status==2">占位按钮</view>
               <view class="itemBtn use" v-show='item.status==1' @click.stop="useCard(item.id)">立即使用</view>
+			  <view class="icon use" v-if="item.status==2"></view>
 			  <view class="icon" v-if="item.status==3"></view>
           </view>
           <!-- <view class="item">
@@ -80,6 +81,35 @@
 				<text>领取成功</text>
 			</view>
 		</uni-popup>
+		
+		<!-- 问号弹出框 -->
+		<uni-popup ref='questionBox' type="center" style="padding:none;">
+			<view class="qsBox">
+				<view class="qsTitle">
+					截止今日，当月消费
+				</view>
+				<view class="caption">
+					<view>
+						特别说明：
+					</view>
+					<view>
+						本次累消活动的计量单位"当月",并非自然月
+					</view>
+				</view>
+				<view class="example">
+					<view>
+						例如：
+					</view>
+					<view>
+						<view>初次购物时间为1月3日；</view>
+						<view>第1个当月累计消费时段为：1月3日——2月3日；</view>
+						<view>第2个当月累计消费时段从2月3日后的第一次购物开始计算。</view>
+					</view>
+				</view>
+				<view class="sl">......</view>
+				<view class="btm">以此类推</view>
+			</view>
+		</uni-popup>
   </view>
 </template>
 
@@ -92,7 +122,7 @@
 		data(){
 			return{
 				loadStaus:'more', //加载状态
-				navList:['全部','待领取','待使用','已过期'],//导航列表
+				navList:['全部','待领取','待使用','已用完','已过期'],//导航列表
 				num:0, //判断导航active的数字
 				money:0,//消费金额
 				code:0,//核销码
@@ -110,7 +140,7 @@
 			this._getCardList()  
 		},
 		methods:{
-			
+			//使用卡片接口函数
 			useCard(id){
 				this.idData.card_id = id
 				this.$minApi.useCard(this.idData).then(res=>{
@@ -121,7 +151,7 @@
 					}
 				})
 			},
-			
+			//领取卡片接口函数
 			activeCard(id){
 				this.idData.card_id = id
 				this.$minApi.activeCard(this.idData).then(res=>{
@@ -157,20 +187,19 @@
 				this.$minApi.getCardList(this.requestData).then(res=>{
 					this.loadStaus='loading';
 					if(res.code==200){
-						if(this.cardList.length<res.count){
-							this.loadStaus='more';
-						}else{
-							this.loadStaus='noMore';
-						}
-						this.money=res.accumulative_total;
-						console.log(res.data)
+						console.log(res)
 						if(this.requestData.page==1){
 							this.cardList=res.data;
 						}else{
 							let list = this.cardList
 							this.cardList=list.concat(res.data)
 						}
-						
+						if(this.cardList.length<res.count){
+							this.loadStaus='more';
+						}else{
+							this.loadStaus='noMore';
+						}
+						this.money=res.accumulative_total;
 					}
 				})
 			},
@@ -181,15 +210,19 @@
 			},
 			
 			changeList(idx){
-				// 0 待领取 1待使用 ，3已过期，不传表示全部
+				// 0 待领取 1待使用,2已用完，3已过期，不传表示全部
 				this.num=idx;
 				this.requestData.page=1;
 				if(idx==0){
-					this._getCardList(1)  //如果下标是0  传1 请求全部卡片
+					this._getCardList(1)  //如果下标是0  请求全部卡片
 				}else{
 					this._getCardList(0,idx) // 传0 请求data里带上status 并把下标传过去
 				}
 			},
+			
+			question(){
+				this.$refs.questionBox.open()
+			}
 		},
 		computed:{
 			...mapState(['userInfo']),
@@ -220,7 +253,7 @@
                 height: 323upx;
                 margin:0 auto;
                 margin-top: 92upx;
-                padding: 29upx 31upx;
+                padding: 16upx 31upx;
                 color: #EFDEB3;
                 text-align: center;
                 .rule{
@@ -244,6 +277,27 @@
                 .text{
                     font-size: 24upx;
                     margin-top: 36upx;
+					position: relative;
+					.icon-ddx-shop-wenhao{
+						color: #EFDEB3;
+						font-size: 30upx;
+						margin-left: 10upx;
+						position:absolute;
+						top: 2upx;
+						right: 170upx;
+					}
+					/* .question{
+						display: inline-block;
+						width:24upx;
+						height: 24upx;
+						line-height: 24upx;
+						text-align: center;
+						border-radius: 50%;
+						border: 1px solid #FFFFFF;
+						font-size: 20upx;
+						color: #FFFFFF;
+						margin-left: 10upx;
+					} */
                 }
                 .money{
                     font-size: 64upx;
@@ -293,6 +347,10 @@
             right: 0;
             background: url(./images/expired.png) no-repeat center center;
             background-size: cover;
+			&.use{
+				background: url(./images/used.png) no-repeat center center;
+				background-size: cover;
+			}
         }
         .itemImg{
             width: 100upx;
@@ -364,5 +422,46 @@
 	color: #333333;
 	background-color: #FFFFFF;
 	font-size: 42upx;
+}
+
+.qsBox{
+	color: #333333;
+	height: 530upx;
+	.qsTitle{
+		text-align: center;
+		font-size: 30upx;
+		margin-bottom: 38upx;
+	}
+	.caption{
+		display: flex;
+		justify-content: space-between;
+		font-size: 26upx;
+		& :first-child{
+			white-space: nowrap;
+		}
+	}
+	.example{
+		font-size: 26upx;
+		color: #999999;
+		margin-top: 29upx;
+		margin-bottom: 35upx;
+		display: flex;
+		justify-content: space-between;
+		& :first-child{
+			white-space: nowrap;
+		}
+	}
+	.sl{
+		width: 35upx;
+		margin:23upx auto;
+		transform: rotate(-90deg);
+		font-size: 26upx;
+		color: #999999;
+	}
+	.btm{
+		color: #999999;
+		font-size: 26upx;
+		text-align: center;
+	}
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="recharge">
     <div class="privilege">
-      <div class="privilege-title">活动介绍</div>
+      <div class="privilege-title" style='color: #333333;'>活动介绍</div>
       <div class="privilege-box">
         <div class="privilege-box-item">
           <div class="left">

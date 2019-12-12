@@ -351,24 +351,24 @@
 
 				<!-- 六个分类，内容部分可以向左滑动-->
 				<view class="some-category" v-if="categoryGoodsList.length" v-for="(item, index) in categoryGoodsList" :key="index">
-					<view class="some-category-banner" @click="_goPage('goods_search', {title: item.cname, id: item.category_id})">
+					<div class="some-category-banner" @click="_goPage('goods_search', {title: item.cname, id: item.category_id})">
 						<img class="img" :src="item.thumb">
-					</view>
-					<view class="some-category-box">
+					</div>
+					<div class="some-category-box">
 						<scroll-view  scroll-x="true">
-							<view class="all-goods">
-								<view class="goods" v-for="(subItem, subIndex) in item.items" :key="subIndex" @click="_goPage('goods_detail', {id: subItem.id})">
-									<view class="goods-header">
+							<div class="all-goods">
+								<div class="goods" v-for="(subItem, subIndex) in item.items" :key="subIndex" @click="_goPage('goods_detail', {id: subItem.id})">
+									<div class="goods-header">
 										<image class="img" :src="subItem.pic" :lazy-load="true"></image>
-									</view>
-									<view class="goods-footer">
-										<view class="goods-title">{{subItem.title}}</view>
-										<view class="goods-price">￥{{subItem.min_price}}</view>
-									</view>
-								</view>
-							</view>
+									</div>
+									<div class="goods-footer">
+										<div class="goods-title">{{subItem.title}}</div>
+										<div class="goods-price">￥{{subItem.min_price}}</div>
+									</div>
+								</div>
+							</div>
 						</scroll-view>
-					</view>
+					</div>
 				</view>
 
 				<view style="padding: 10px 10px 0 10px;color: #000000;font-size: 20px;font-weight: bold;">
@@ -1114,7 +1114,7 @@
 				.goods-share-no-stop-box{
 					background-image: url("~@/static/images/goods-share-no-stop.png");
 					height: 1166upx;
-					background-size: cover;
+					background-size: 100% 100%;
 					background-repeat: no-repeat;
 					.goods-top{
 						padding: $uni-spacing-row-sm;
@@ -1250,7 +1250,6 @@
 				.some-category-box{
 					border-radius:0 0 8upx 8upx;
 					background: #FFFFFF;
-					width: 100%;
 					height: 320upx;
 					padding: 10upx;
 
@@ -1277,10 +1276,10 @@
 							}
 							.goods-footer{
 								width: 100%;
-								height: 100upx;
+								height: calc(100% - 178upx);
 								display: flex;
 								flex-direction: column;
-								justify-content: space-between;
+								justify-content: flex-end;
 								.goods-title{
 									@extend %overflow-2-line;
 									color: $color-primary-plain;

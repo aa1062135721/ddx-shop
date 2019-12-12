@@ -171,6 +171,7 @@ export default {
       & .uni-popup__wrapper-box {
         padding: 30upx;
         background: #fff;
+		border-radius: 10upx;
       }
 
       &.center {

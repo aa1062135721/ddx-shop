@@ -333,14 +333,14 @@
                         position: relative;
                         .btn{
                            width: 126upx;
-                           line-height: 44upx;
+                           line-height: 40upx;
                            text-align: center;
-                           border-radius:22upx;
+                           border-radius:6upx;
                            border: 1px solid #FC2D2D;
                            color: #FC2D2D;
                            background: #fff;
-                           font-size: 20upx;
-                           margin-bottom: 15upx;
+                           font-size: 18upx;
+                           margin-bottom: 5upx;
                            &.on{
                               background: #FC2D2D;
                               color: #FFFFFF;

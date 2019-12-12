@@ -756,5 +756,13 @@ export default {
     activeTimeMoney(data){
       return minRequest.post('/userinfo/activationExpire',data)
     },
+
+    /**
+     * 第三期 秒杀时间段
+     */
+    spikeTimeList(data){
+      return minRequest.get('/Assemble/seckill_time', data)
+    },
+
   }
 }

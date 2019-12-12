@@ -4,9 +4,18 @@
         <div id="my-h5-back" @click="_goBack"></div>
         <!-- #endif -->
 
-        <view class="bg-image">
-            <img class="img" src="./bg.png" alt="">
-        </view>
+        <img class="bg-image" src="../../static/images/spike-banner.png" alt="">
+
+        <div class="time-list">
+            <wlm-tab :tab-list="tabList2" :tabCur.sync="TabCur2"  @change="tabChange2"
+                     tabStyle="background:#F64228;"
+                     titleStyle="color:#fff;"
+                     subTitleStyle="color:#fff;"
+                     selectTitleStyle="color:#F64228;background:#FFFF00;border-radius:16px;padding:0 4px;"
+                     selectSubTitleStyle="color:#FFD800;"
+            ></wlm-tab>
+        </div>
+        <div style="height: 20upx;width: 100%;"></div>
         <view class="spike-list-content">
             <view class="spike-list-content-box" v-for="(item, index) in goodsData" :key="index" @click="_goPage('spike_detail', {item_id: item.item_id, seckill_id: item.id})">
                 <view class="left">
@@ -64,8 +73,10 @@
 </template>
 
 <script>
+    import wlmTab from '@/components/wlm-tab/wlm-tab.vue'
     import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue' //可选值：more（loading前）、loading（loading中）、noMore（没有更多了）
     let myTimer = null  //计时器，控制开关
+    let myTimerTimeList = null  //计时器，控制时间段的开关
     import * as Constant from '../../utils/constant'
     import { mapState } from 'vuex'
 
@@ -73,6 +84,16 @@
         name: "list",
         data(){
           return {
+              TabCur2: 0,
+              tabList2: [
+                  // {
+                  //     "start_time": 1576029600,   //开始的具体时间
+                  //     "title": "十点秒杀3个(21点结算)",   //标题暂时没用
+                  //     "start_title": "10:00",     //开始的时间点
+                  //     "status": 1,        //状态：1正在秒杀,2即将开始
+                  //     "now_time": 1576053368, //当前时间
+                  // },
+              ],
             requestData: {
                 page: 1,
                 limit: 10,
@@ -95,15 +116,10 @@
                 url += `?user_id=${this.userInfo.id}`
             }
             url = Constant[Constant.NODE_ENV].shareRedirectURL + encodeURIComponent(url)
-            await this.loadData()
+            await this.getSpikeTimeList() // 获取秒杀时间段
+            await this.loadData() // 根据秒杀时间段获取 该段下面的秒杀商品
+
             this.$nextTick(()=>{
-                if (this.goodsData.length){
-                    // 10个人的组团倒计时
-                    myTimer = setInterval(() => {
-                        this.goodsData[0].now_time ++
-                        this.timeStrChange()
-                    }, 1000);//设置定时器 每一秒执行一次
-                }
                 let param1 = {
                         title: `捣蛋熊商城-每日秒杀`, // 分享标题
                         desc: `限时秒杀，疯狂嗨购！`, // 分享描述
@@ -139,6 +155,7 @@
                 let requestData = {
                     page: this.requestData.page,
                     limit: this.requestData.limit,
+                    start_time: this.tabList2[this.TabCur2].start_time
                 }
                 await this.$minApi.getSeckillList(requestData).then(res => {
                     console.log(res)
@@ -153,6 +170,14 @@
                         })
                         if (requestData.page === 1) {
                             this.goodsData = res.data
+                            this.$nextTick(() => {
+                                if (this.goodsData.length){
+                                    myTimer = setInterval(() => {
+                                        this.goodsData[0].now_time ++
+                                        this.timeStrChange()
+                                    }, 1000) // 设置定时器 每一秒执行一次
+                                }
+                            })
                         } else {
                             this.goodsData.push(...res.data)
                         }
@@ -208,6 +233,50 @@
                     }
                 })
             },
+
+            // 倒计时 获取时间段
+            async getSpikeTimeList(){
+                await this.$minApi.spikeTimeList().then(res => {
+                    if (res.code === 200) {
+                        this.tabList2 = res.data
+                        this.$nextTick(() => {
+                            if (res.data.length) {
+                                myTimerTimeList = setInterval(()=>{
+                                    this.$set(this.tabList2[0], 'now_time', this.tabList2[0].now_time + 1)
+                                    this.getRTime()
+                                }, 1000) //设置定时器 每一秒执行一次
+                            }
+                        })
+                    }
+                })
+            },
+
+            // 秒杀时间段 tab切换
+            tabChange2(index) {
+                this.TabCur2 = index
+                this.requestData.page = 1
+                this.goodsData = []
+                clearInterval(myTimer)
+                myTimer = null
+                this.loadData()
+            },
+            //秒杀倒计时
+            getRTime(){
+                //1：正在抢购，2即将开始，3已结束
+                for(let i = 0; i < this.tabList2.length; i++){
+                    if (this.tabList2[i].start_time  > this.tabList2[0].now_time) {
+                        this.$set(this.tabList2[i], 'begin', 2)
+                    }
+
+                    if ( this.tabList2[i].start_time  <= this.tabList2[0].now_time && this.tabList2[0].now_time <=  this.tabList2[i].end_time) {
+                        this.$set(this.tabList2[i], 'begin', 1)
+                    }
+
+                    if (this.tabList2[i].end_time  < this.tabList2[0].now_time) {
+                        this.$set(this.tabList2[i], 'begin', 3)
+                    }
+                }
+            },
         },
         async onReachBottom() {
             if (this.requestData.loadStatus === 'noMore') {
@@ -219,23 +288,28 @@
         onUnload(){
             clearInterval(myTimer)
             myTimer = null
+            clearInterval(myTimerTimeList)
+            myTimerTimeList = null
         },
         components:{
             uniLoadMore,
+            wlmTab,
         },
     }
 </script>
 
 <style scoped lang="scss">
     page {
-        background: #CE00F2;
+        background: #FE5B50;
     }
-
+    .time-list{
+        background:#F64228;
+        padding: 0 $uni-spacing-row-sm;
+    }
     .spike-list-container{
         .bg-image{
-            .img{
-                width: 100%;
-            }
+            display: block;
+            width: 100%;
         }
         .spike-list-content{
             padding: 0 $uni-spacing-row-sm;
@@ -308,14 +382,14 @@
                             position: relative;
                             .btn{
                                 width: 126upx;
-                                line-height: 44upx;
+                                line-height: 40upx;
                                 text-align: center;
                                 border-radius: 6upx;
                                 border: 1px solid #FC2D2D;
                                 color: #FC2D2D;
                                 background: #fff;
-                                font-size: 20upx;
-                                margin-bottom: 15upx;
+                                font-size: 18upx;
+                                margin-bottom: 5upx;
                                 &.on{
                                     background: #FC2D2D;
                                     color: #FFFFFF;

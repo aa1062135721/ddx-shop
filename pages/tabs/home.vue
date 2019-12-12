@@ -1114,7 +1114,7 @@
 				.goods-share-no-stop-box{
 					background-image: url("~@/static/images/goods-share-no-stop.png");
 					height: 1166upx;
-					background-size: cover;
+					background-size: 100% 100%;
 					background-repeat: no-repeat;
 					.goods-top{
 						padding: $uni-spacing-row-sm;

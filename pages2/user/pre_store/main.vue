@@ -36,7 +36,7 @@
                   <view class="title">{{item.card_name}}</view>
                   <view class="time">{{item.start_time}}-{{item.end_time}}</view>
               </view>
-              <view class="itemBtn receive" v-if="item.status==0" @click.stop="activeCard(item.id)">立即领取</view>
+              <view class="itemBtn receive" v-if="item.status==0" @click.stop="open(item.id)">立即领取</view>
 			  <view class="itemBtn receive" style="opacity:0;" v-if="item.status==3||item.status==2">占位按钮</view>
               <view class="itemBtn use" v-show='item.status==1' @click.stop="useCard(item.id)">立即使用</view>
 			  <view class="icon use" v-if="item.status==2"></view>
@@ -79,7 +79,18 @@
 		<!-- 领取成功弹框 -->
 		<uni-popup ref="successBox" type="center">
 			<view class="success">
-				<text>领取成功</text>
+				<view class="remind">领取提醒</view>
+				<view class="content">
+					点击《同意并领取》后将在领取后的一个月到期，请到附近门店及时使用，领取的赠送服务卡不退换，不暂停。
+				</view>
+				<view class="btn-box">
+					<view class="btn close" @click="close">
+						取消
+					</view>
+					<view class="btn yes" @click="activeCard">
+						同意并领取
+					</view>
+				</view>
 			</view>
 		</uni-popup>
 		
@@ -129,6 +140,7 @@
 				money:0,//消费金额
 				code:0,//核销码
 				cardList:[],//卡片列表
+				item_id:0,
 				requestData:{  //列表请求对象
 					page:1,
 					limit:10
@@ -154,11 +166,10 @@
 				})
 			},
 			//领取卡片接口函数
-			activeCard(id){
-				this.idData.card_id = id
+			activeCard(){
+				this.idData.card_id = this.item_id
 				this.$minApi.activeCard(this.idData).then(res=>{
 					if(res.code==200){
-						this.$refs.successBox.open();
 						setTimeout(()=>{
 							this.$refs.successBox.close();
 							// this._goPage('pre_store');
@@ -223,11 +234,16 @@
 			},
 			
 			question(){
-				this.$refs.questionBox.open()
+				this.$refs.questionBox.open();
+			},
+			open(id){
+				this.item_id=id;
+				this.$refs.successBox.open();
 			},
 			close(){
 				this.$refs.questionBox.close()
 				this.$refs.codeBox.close()
+				this.$refs.successBox.close()
 			}
 		},
 		computed:{
@@ -250,7 +266,7 @@
         .cardBox{
             width: 100%;
             height: 100%;
-            padding: 0 30upx;
+            padding: 10upx 30upx;
             background: url(./images/cardBg.png) no-repeat center center;
             background-size: cover;
             overflow: hidden;
@@ -426,13 +442,40 @@
 }
 
 .success{
-	width: 488upx;
-	line-height: 200upx;
-	border-radius: 20upx;
-	text-align: center;
+	width: 515upx;
+	height: 290upx;
 	color: #333333;
 	background-color: #FFFFFF;
 	font-size: 42upx;
+	.remind{
+		text-align: center;
+		font-size: 34upx;
+		margin-bottom: 20upx;
+	}
+	.content{
+		font-size: 20upx;
+		margin-bottom: 100upx;
+	}
+	.btn-box{
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		.btn{
+			width: 192upx;
+			line-height: 60upx;
+			text-align: center;
+			color: #FFFFFF;
+			font-size: 20upx;
+			border-radius: 5upx;
+			&.close{
+				background-color: #ccc;
+			}
+			&.yes{
+				background-color: $color-primary;
+				border: 1px solid $color-primary;
+			}
+		}
+	}
 }
 .qsBox{
 	color: #333333;

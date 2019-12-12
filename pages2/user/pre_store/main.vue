@@ -69,6 +69,7 @@
 		<!-- 核销码展示弹框 -->
         <uni-popup ref="codeBox" type="center">
             <view class="code-box">
+				<view class="icon-ddx-shop-close iconfont" @click.stop="close"></view>
                 <view class="code-title">核销码</view>
                 <view class="code">{{code}}</view>
                 <view class="code-word">请将此码出示给工作人员</view>
@@ -83,8 +84,9 @@
 		</uni-popup>
 		
 		<!-- 问号弹出框 -->
-		<uni-popup ref='questionBox' type="center" style="padding:none;">
+		<uni-popup ref='questionBox' type="center">
 			<view class="qsBox">
+				<view class="icon-ddx-shop-close iconfont" @click.stop="close"></view>
 				<view class="qsTitle">
 					截止今日，当月消费
 				</view>
@@ -222,6 +224,10 @@
 			
 			question(){
 				this.$refs.questionBox.open()
+			},
+			close(){
+				this.$refs.questionBox.close()
+				this.$refs.codeBox.close()
 			}
 		},
 		computed:{
@@ -253,7 +259,7 @@
                 height: 323upx;
                 margin:0 auto;
                 margin-top: 92upx;
-                padding: 16upx 31upx;
+                padding: 10upx 31upx;
                 color: #EFDEB3;
                 text-align: center;
                 .rule{
@@ -395,8 +401,13 @@
 .code-box{
     width: 488upx;
     height: 398upx;
-    border-radius: 20upx;
     text-align: center;
+	position: relative;
+	.icon-ddx-shop-close{
+		position: absolute;
+		top: -10upx;
+		right:-10upx ;
+	}
     .code-title{
         font-size: 30upx;
     }
@@ -423,10 +434,16 @@
 	background-color: #FFFFFF;
 	font-size: 42upx;
 }
-
 .qsBox{
 	color: #333333;
 	height: 530upx;
+	position: relative;
+	border-radius: 10upx;
+	.icon-ddx-shop-close{
+		position: absolute;
+		top: -10upx;
+		right:-10upx ;
+	}
 	.qsTitle{
 		text-align: center;
 		font-size: 30upx;

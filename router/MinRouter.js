@@ -32,7 +32,17 @@ function openPage(args) {
     }
 
     if (isObject(query)) {
-        queryStr = encodeURIComponent(JSON.stringify(query))
+        let temp = JSON.stringify(query)
+        temp=temp.replace(/\%/g,"%25");
+        temp=temp.replace(/\#/g,"%23");
+        temp=temp.replace(/\&/g,"%26");
+        temp=temp.replace(/\=/g,"%3D");
+        queryStr = encodeURIComponent(temp)
+
+        // queryStr = encodeURIComponent(JSON.stringify(query))
+        // queryStr=queryStr.replace(/\%/g,"%25");
+        // queryStr=queryStr.replace(/\#/g,"%23");
+        // queryStr=queryStr.replace(/\&/g,"%26");
         this.$store.commit('setPageChangeParam', query)
     } else {
         throw new Error('query数据必须是Object')

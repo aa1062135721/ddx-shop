@@ -2,9 +2,9 @@
     <scroll-view  scroll-x="true" :scroll-left="scrollLeft" :style="tabStyle">
         <div class="tab">
             <block  v-for="(item,index) in tabList" :key="index" :id="index">
-            <div class="item" @tap="tabSelect(index,$event)" >
-                <span :style="tabCur === index ? selectTitleStyle : ''" class="title" :class="titleClass">{{item.start}}</span>
-                <span :style="tabCur === index ? selectSubTitleStyle : ''" class="sub-title" :class="subTitleClass">{{item.begin | statusToString}}</span>
+            <div class="item" @click="tabSelect(index,$event)" >
+                <span :style="tabCur === index ? selectTitleStyle : titleStyle" class="title">{{item.start_title}}</span>
+                <span :style="tabCur === index ? selectSubTitleStyle : subTitleStyle" class="sub-title">{{item.status | statusToString}}</span>
             </div>
             </block>
         </div>
@@ -27,19 +27,19 @@
                     return 0;
                 }
             },
-            titleClass: {
-                type: String,
-                default: ''
-            },
-            subTitleClass: {
-                type: String,
-                default: ''
-            },
             selectTitleStyle: {
                 type: String,
                 default: ''
             },
             selectSubTitleStyle: {
+                type: String,
+                default: ''
+            },
+            titleStyle:{
+                type: String,
+                default: ''
+            },
+            subTitleStyle:{
                 type: String,
                 default: ''
             },
@@ -95,6 +95,7 @@
         white-space: nowrap;
         height: 100upx;
         display: flex;
+        justify-content: space-between;
         width: 100%;
         .item{
             width: 20%;
@@ -106,9 +107,14 @@
             justify-content: center;
             margin: 0 10upx;
             padding: 0 20upx;
+            &:first-child{
+                margin: 0;
+                padding: 0;
+            }
             .title{
                 font-size: $uni-font-size-base;
                 color: #C0E8FB;
+                margin-bottom: 6upx;
             }
             .sub-title{
                 font-size: $uni-font-size-sm - 2upx;

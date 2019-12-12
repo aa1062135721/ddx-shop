@@ -784,5 +784,12 @@ export default {
 		return minRequest.get('/Card/cardInfo',data)
 	},
 
+    /**
+     * 第三期 秒杀时间段
+     */
+    spikeTimeList(data){
+      return minRequest.get('/Assemble/seckill_time', data)
+    },
+
   }
 }

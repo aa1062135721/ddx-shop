@@ -1,24 +1,24 @@
 <template>
-	<view class="a-goods">
-		<view class="image">
+	<div class="a-goods">
+		<div class="image">
 			<image :src="goodsInfo.pic" :lazy-load="true"></image>
-			<view class="mask" v-if="goodsInfo.status !== 1"></view>
-			<view class="tips" v-if="goodsInfo.status !== 1">已下架</view>
-			<view class="left-flag" v-if="goodsInfo.activity_id && goodsInfo.activity_type === 4">限时抢购</view>
-		</view>
-		<view class="info">
-			<view class="title">
+			<div class="mask" v-if="goodsInfo.status !== 1"></div>
+			<div class="tips" v-if="goodsInfo.status !== 1">已下架</div>
+			<div class="left-flag" v-if="goodsInfo.activity_id && goodsInfo.activity_type === 4">限时抢购</div>
+		</div>
+		<div class="info">
+			<div class="title">
 				{{goodsInfo.title}}
-			</view>
-			<view class="price">
-				<text class="all-price">
-					<text class="now-price">¥{{goodsInfo.min_price}}</text>
-					<text class="old-price">¥{{goodsInfo.max_price}}</text>
-				</text>
-				<text class="sales">已售{{goodsInfo.sales}}件</text>
-			</view>
-		</view>
-	</view>
+			</div>
+			<div class="price">
+				<span class="all-price">
+					<span class="now-price">¥{{goodsInfo.min_price}}</span>
+					<span class="old-price">¥{{goodsInfo.max_price}}</span>
+				</span>
+				<span class="sales">已售{{goodsInfo.sales}}件</span>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>
@@ -110,24 +110,24 @@
 	.info{
 		display: flex;
 		flex-direction: column;
-		justify-content: space-between;
+		justify-content: space-around;
 		width:344upx;
 		height: 174upx;
-		padding-bottom: 30upx;
 		.title{
 			@extend %overflow-2-line;
 			padding: $uni-spacing-row-sm $uni-spacing-row-sm 0 $uni-spacing-row-sm;
 			font-size: $uni-font-size-base;
 			height: auto;
-			width: 100%;
 			overflow: hidden;
 		}
 		.price{
 			padding: 0 $uni-spacing-row-sm;
 			display: flex;
-			align-items: flex-end;
+			align-items: center;
 			justify-content: space-between;
 			.all-price{
+				display: flex;
+				align-items: center;
 				.now-price{
 					font-size: $uni-font-size-base;
 					color: $color-primary;

@@ -336,7 +336,7 @@
                            line-height: 40upx;
                            text-align: center;
                            border-radius:20upx;
-                           color: #FC2D2D;
+                           color: #fff;
                            background: #CCCCCC;
                            font-size: 18upx;
                            margin-bottom: 5upx;

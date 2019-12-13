@@ -11,7 +11,7 @@
                      tabStyle="background:#F64228;"
                      titleStyle="color:#fff;"
                      subTitleStyle="color:#fff;"
-                     selectTitleStyle="color:#F64228;background:#FFFF00;border-radius:16px;padding:0 4px;"
+                     selectTitleStyle="color:#F64228;background:#FFFF00;padding:0 4px;"
                      selectSubTitleStyle="color:#FFD800;"
             ></wlm-tab>
         </div>
@@ -36,21 +36,21 @@
                             <span class="old-price">￥{{item.old_price}}</span>
                         </view>
                         <view class="right-info" v-show="item.status === 1 && item.is_over === 1">
-                            <view class="btn on">立即秒杀</view>
+                            <view class="btn on">立即抢购</view>
                             <view class="tips-time">
                                 <text class="text">距结束</text>
                                 <block v-if="item.timer.d">{{item.timer.d}}天</block> {{item.timer.h}}:{{item.timer.m}}:{{item.timer.s}}
                             </view>
                         </view>
                         <view class="right-info" v-show="item.status === 1 && item.is_over === 2">
-                            <view class="btn over">已抢完</view>
+                            <view class="btn over">已抢完啦</view>
                             <view class="tips-time" style="opacity: 0;">
                                 <text class="text">已抢完</text>
                                 0天00:00:00
                             </view>
                         </view>
                         <view class="right-info" v-show="item.status === 2">
-                            <view class="btn">还未开始</view>
+                            <view class="btn">即将开始</view>
                             <view class="tips-time">
                                 <text class="text">距开始</text>
                                 <block v-if="item.timer.d">{{item.timer.d}}天</block> {{item.timer.h}}:{{item.timer.m}}:{{item.timer.s}}
@@ -59,7 +59,7 @@
                         <view class="right-info" v-show="item.status === 3">
                             <view class="btn over">秒杀结束</view>
                             <view class="tips-time" style="opacity: 0;">
-                                <text class="text">秒杀结束</text>
+                                <text class="text">已结束</text>
                                 0天00:00:00
                             </view>
                         </view>
@@ -316,7 +316,6 @@
             .spike-list-content-box{
                 background: #FFFFFF;
                 border-radius:4upx;
-                box-shadow:0 0 10upx 0 #B7B7B7;
                 width:100%;
                 height:228upx;
                 margin-bottom: 24upx;
@@ -382,16 +381,16 @@
                             position: relative;
                             .btn{
                                 width: 126upx;
+                                height: 40upx;
                                 line-height: 40upx;
                                 text-align: center;
-                                border-radius: 6upx;
-                                border: 1px solid #FC2D2D;
-                                color: #FC2D2D;
-                                background: #fff;
+                                border-radius: 20upx;
+                                background:#CCCCCC;
+                                color: #FFFFFF;
                                 font-size: 18upx;
                                 margin-bottom: 5upx;
                                 &.on{
-                                    background: #FC2D2D;
+                                    background:linear-gradient(-45deg,rgba(252,69,60,1) 0%,rgba(252,123,178,1) 100%);
                                     color: #FFFFFF;
                                 }
                                 &.over{
@@ -399,7 +398,6 @@
                                     top: 10%;
                                     background: #D2D2D2;
                                     color: #FFFFFF;
-                                    border-color: #D2D2D2;
                                 }
                             }
                             .tips-time{

@@ -66,7 +66,7 @@
                 let str = '即将开始'
                 switch (status) {
                     case 1:
-                        str = '秒杀中'
+                        str = '正在疯抢'
                         break
                     case 2:
                         str = '即将开始'
@@ -115,6 +115,11 @@
                 font-size: $uni-font-size-base;
                 color: #C0E8FB;
                 margin-bottom: 6upx;
+                width:120upx;
+                height:36upx;
+                line-height: 36upx;
+                border-radius: 20upx;
+                text-align: center;
             }
             .sub-title{
                 font-size: $uni-font-size-sm - 2upx;

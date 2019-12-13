@@ -542,14 +542,14 @@
             }
         }
         .fixed{
-            //@extend %border-color-solid-top;
+            @extend %border-color-solid-top;
             z-index: 99;
             background: #fff;
             position: fixed;
             width: 100%;
 			bottom: 0;
 			/* #ifdef H5 */
-			margin-bottom: calc(var(--window-bottom) + env(safe-area-inset-bottom));
+            margin-bottom: var(--window-bottom);
             padding-bottom: 0;
 			/* #endif */
             left: 0;

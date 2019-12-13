@@ -247,13 +247,14 @@
             },
             //提交订单
             async submitOrder(){
-                if (this.isDisableSubmitOrder) {
-                    return
-                }
                 if (!this.address.id) {
                     this.msg('未选择收货地址')
                     return
                 }
+                if (this.isDisableSubmitOrder) {
+                    return
+                }
+                this.isDisableSubmitOrder = true
                 switch (this.$parseURL().createOrderType){
                     case 'car': // 购物车下单
                         await this.$minApi.createOrder(this.requestData).then(res => {

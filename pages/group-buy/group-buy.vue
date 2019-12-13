@@ -43,17 +43,17 @@
                      </view>
                   </view>
                   <view class="right-info" v-show="item.status === 2">
-                     <view class="btn">还未开始</view>
+                     <view class="btn">未开始</view>
                      <view class="tips-time">
                         <text class="text">距开始</text>
                         <block v-if="item.timer.d">{{item.timer.d}}天</block> {{item.timer.h}}:{{item.timer.m}}:{{item.timer.s}}
                      </view>
                   </view>
                   <view class="right-info" v-show="item.status === 3">
-                     <view class="btn over">拼团结束</view>
+                     <view class="btn over">已结束</view>
                      <view class="tips-time" style="opacity: 0;">
-                        <text class="text">拼团结束</text>
-                        0天00:00:00
+                        <text class="text">已结束</text>
+                        0天 00:00:00
                      </view>
                   </view>
                </view>
@@ -254,7 +254,6 @@
             .spike-list-content-box{
                background: #FFFFFF;
                border-radius:4upx;
-               box-shadow:0 0 10upx 0 #B7B7B7;
                width:100%;
                height:228upx;
                margin-bottom: 24upx;
@@ -333,16 +332,16 @@
                         position: relative;
                         .btn{
                            width: 126upx;
+                           height: 40upx;
                            line-height: 40upx;
                            text-align: center;
-                           border-radius:6upx;
-                           border: 1px solid #FC2D2D;
+                           border-radius:20upx;
                            color: #FC2D2D;
-                           background: #fff;
+                           background: #CCCCCC;
                            font-size: 18upx;
                            margin-bottom: 5upx;
                            &.on{
-                              background: #FC2D2D;
+                              background:linear-gradient(-45deg,rgba(252,69,60,1) 0%,rgba(252,123,178,1) 100%);
                               color: #FFFFFF;
                            }
                            &.over{
@@ -350,7 +349,6 @@
                               top: 10%;
                               background: #D2D2D2;
                               color: #FFFFFF;
-                              border-color: #D2D2D2;
                            }
                         }
                         .tips-time{

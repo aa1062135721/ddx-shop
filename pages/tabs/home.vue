@@ -164,7 +164,7 @@
 										</div>
 										<div class="btn-box">
 											<div class="btn" v-show="item.status === 1">立即抢购</div>
-											<div class="btn not-now" v-show="item.status === 2">还未开始</div>
+											<div class="btn not-now" v-show="item.status === 2">即将开始</div>
 										</div>
 									</div>
 								</view>
@@ -478,7 +478,7 @@
 				assemble_list: [],
 			}
 		},
-		async onLoad() {
+		onLoad() {
 			this._getCategory()
 			this._getBanner()
 			this._getIcon()
@@ -488,32 +488,6 @@
 			this._getExplosion()
 			this._getCategoryGoodsList()
 			this._getUnlimitedGoods()
-
-			// 如果是安卓平台 每次进入商品详情页面就会调用微信配置，自定义分享商品
-			if ((await this.getPlatform()).isAndroid){
-				await this.wxConfig()
-			}
-			let url = Constant[Constant.NODE_ENV].projectUrl
-			if(this.userInfo.id) {
-				url += `?user_id=${this.userInfo.id}`
-			}
-			url = Constant[Constant.NODE_ENV].shareRedirectURL + encodeURIComponent(url)
-			this.$nextTick(async () => {
-				let param1 = {
-							title: '捣蛋熊商城', // 分享标题
-							desc: '高品质、一站式服务平台', // 分享描述
-							link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-							imgUrl: `${window.location.origin}/h5/static/images/pandalogo.png`, // 分享图标
-							success: function () {}
-						},
-						param2 = {
-							title: '捣蛋熊商城', // 分享标题
-							link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-							imgUrl: `${window.location.origin}/h5/static/images/pandalogo.png`, // 分享图标
-							success: function () {}
-						}
-				await this.wxConigShareGoods(param1, param2)
-			})
 		},
 		async onReachBottom() {
 			if (this.tabList[this.TabCur].requestData.moreStatus === 'noMore') {
@@ -764,7 +738,32 @@
 			WlmTab,
 			uniLoadMore,
 		},
-		onShow(){
+		async onShow(){
+			// 如果是安卓平台 每次进入商品详情页面就会调用微信配置，自定义分享商品
+			if ((await this.getPlatform()).isAndroid){
+				await this.wxConfig()
+			}
+			let url = Constant[Constant.NODE_ENV].projectUrl
+			if(this.userInfo.id) {
+				url += `?user_id=${this.userInfo.id}`
+			}
+			url = Constant[Constant.NODE_ENV].shareRedirectURL + encodeURIComponent(url)
+			this.$nextTick(async () => {
+				let param1 = {
+							title: '捣蛋熊商城', // 分享标题
+							desc: '高品质、一站式服务平台', // 分享描述
+							link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+							imgUrl: `${window.location.origin}/h5/static/images/pandalogo.png`, // 分享图标
+							success: function () {}
+						},
+						param2 = {
+							title: '捣蛋熊商城', // 分享标题
+							link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+							imgUrl: `${window.location.origin}/h5/static/images/pandalogo.png`, // 分享图标
+							success: function () {}
+						}
+				await this.wxConigShareGoods(param1, param2)
+			})
 			this._getSpikeList()
 		},
 		computed: {
@@ -1329,7 +1328,7 @@
 							height: 300upx;
 							display: flex;
 							flex-direction: column;
-							justify-content: space-between;
+							justify-content: space-around;
 							.goods-header{
 								height: 178upx;
 								width: 178upx;
@@ -1376,10 +1375,9 @@
 										line-height:32upx;
 										background:linear-gradient(-45deg,rgba(252,69,60,1) 0%,rgba(252,123,178,1) 100%);
 										border-radius:16upx;
+										box-sizing: border-box;
 										&.not-now{
-											color: $color-primary;
-											background: none;
-											border: 1px solid $color-primary;
+											background: #ccc;
 										}
 									}
 								}

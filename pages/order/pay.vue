@@ -4,7 +4,7 @@
             <text class="icon">￥</text>
             <text class="money">{{orderData.amount}}</text>
         </view>
-        <form @submit="formSubmit" :report-submit="true">
+        <form @submit="myDebounce" :report-submit="true">
             <view class="box">
                 <radio-group @change="radioChange">
                     <label class="item" @click="radioChange({target:{value: '3'}})">
@@ -33,6 +33,7 @@
 
 <script>
     import { mapState, mapActions} from 'vuex'
+    import { _debounce } from "@/utils/mUtils"
 
     export default {
         name: "order_pay",
@@ -102,6 +103,12 @@
                         this.payWay = evt.target.value
                         break
                 }
+            },
+            // 防抖
+            myDebounce(e){
+                _debounce((_e = e, _that = this) => {
+                   _that.formSubmit(_e)
+                }, 1000)
             },
             async formSubmit(e) {
                 let data ={

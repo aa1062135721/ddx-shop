@@ -238,6 +238,7 @@
 
 				-->
 				<!-- 好物享不停 -->
+<!--
 				<view class="goods-share-no-stop" v-if="explosion.length">
 					<view class="goods-share-no-stop-box">
 						<view class="goods-top">
@@ -272,83 +273,14 @@
 									<image class="img" :src="item.pic"></image>
 								</view>
 							</view>
-							<!----
-							<view class="item">
-								<view class="goods-title">
-									<view class="title">
-										我是商品标题我是商品标题我是商品标题我是商品标题我是商品标题
-									</view>
-									<view class="footer">
-										<view class="price">￥399.99</view>
-										<view class="btn">立即购买</view>
-									</view>
-								</view>
-								<view class="goods-img">
-									<image class="img" src="../../static/images/goods.jpg"></image>
-								</view>
-							</view>
-							<view class="item">
-								<view class="goods-title">
-									<view class="title">
-										我是商品标题我是商品标题我是商品标题我是商品标题我是商品标题
-									</view>
-									<view class="footer">
-										<view class="price">￥399.99</view>
-										<view class="btn">立即购买</view>
-									</view>
-								</view>
-								<view class="goods-img">
-									<image class="img" src="../../static/images/goods.jpg"></image>
-								</view>
-							</view>
-							<view class="item">
-								<view class="goods-title">
-									<view class="title">
-										我是商品标题我是商品标题我是商品标题我是商品标题我是商品标题
-									</view>
-									<view class="footer">
-										<view class="price">￥399.99</view>
-										<view class="btn">立即购买</view>
-									</view>
-								</view>
-								<view class="goods-img">
-									<image class="img" src="../../static/images/goods.jpg"></image>
-								</view>
-							</view>
-							<view class="item">
-								<view class="goods-title">
-									<view class="title">
-										我是商品标题我是商品标题我是商品标题我是商品标题我是商品标题
-									</view>
-									<view class="footer">
-										<view class="price">￥399.99</view>
-										<view class="btn">立即购买</view>
-									</view>
-								</view>
-								<view class="goods-img">
-									<image class="img" src="../../static/images/goods.jpg"></image>
-								</view>
-							</view>
-							<view class="item">
-								<view class="goods-title">
-									<view class="title">
-										我是商品标题我是商品标题我是商品标题我是商品标题我是商品标题
-									</view>
-									<view class="footer">
-										<view class="price">￥399.99</view>
-										<view class="btn">立即购买</view>
-									</view>
-								</view>
-								<view class="goods-img">
-									<image class="img" src="../../static/images/goods.jpg"></image>
-								</view>
-							</view>
-							---->
 						</view>
 					</view>
 				</view>
+-->
 
-
+				<view style="padding: 10px;color: #000000;font-size: 20px;font-weight: bold;">
+					好物精选
+				</view>
 				<!-- 六个分类，内容部分可以向左滑动-->
 				<view class="some-category" v-if="categoryGoodsList.length" v-for="(item, index) in categoryGoodsList" :key="index">
 					<div class="some-category-banner" @click="_goPage('goods_search', {title: item.cname, id: item.category_id})">
@@ -372,7 +304,7 @@
 				</view>
 
 				<view style="padding: 10px 10px 0 10px;color: #000000;font-size: 20px;font-weight: bold;">
-					好物精选
+					猜你喜欢
 				</view>
 				<!-- 推荐页面的上拉无限加载商品 -->
 				<view class="guess-you-like">
@@ -484,8 +416,8 @@
 			this._getIcon()
 			this._getNotice()
 			// this._getCombination()
-			this._getSpikeList()
-			this._getExplosion()
+			// this._getSpikeList()
+			// this._getExplosion()
 			this._getCategoryGoodsList()
 			this._getUnlimitedGoods()
 		},
@@ -568,6 +500,14 @@
 
 						break
 					case 2:
+						if (this.swiperList[key].value === 'pre_store') {
+							this._goPage('pre_store')
+							return
+						}
+						if (this.swiperList[key].value === 'toSpike780_4395') {
+							this._goPage('spike_detail', {seckill_id: 780,item_id: 4395})
+							return
+						}
 						this._goPage('web_view',{url: this.swiperList[key].value})
 						break
 					case 3:
@@ -790,9 +730,10 @@
 			width: 100%;
 			height: calc( 80upx + 90upx);
 			overflow: hidden;
-			background-image: url('~@/static/images/double12-home/1.png');
-			background-repeat: no-repeat;
-			background-size: 100% 100%;
+			/*background-image: url('~@/static/images/double12-home/1.png');*/
+			/*background-repeat: no-repeat;*/
+			/*background-size: 100% 100%;*/
+			background-color: #fff;
 			position: fixed;
 			top: 0;
 			left: 0;
@@ -826,7 +767,7 @@
 
 			/* tab栏 */
 			.tabs{
-				color: #FFFFFF;
+				color: #333333;
 				font-size: $uni-font-size-base;
 				text-align: center;
 				width: 100%;
@@ -844,10 +785,10 @@
 				height: auto;
 				/*border-radius: 10upx;*/
 				background: #fff;
-				background-image: url('~@/static/images/double12-home/2.png');
-				background-repeat: no-repeat;
-				background-size: 100% 100%;
-				padding-bottom: 300upx;
+				/*background-image: url('~@/static/images/double12-home/2.png');*/
+				/*background-repeat: no-repeat;*/
+				/*background-size: 100% 100%;*/
+				/*padding-bottom: 300upx;*/
 				overflow: hidden;
 				.swiper-item{
 					width: 100%;
@@ -861,8 +802,6 @@
 			/*推荐页面的小图标*/
 			.limited-time{
 				width: 100%;
-				background: #ffffff;
-				padding: 10upx $uni-spacing-row-sm 0 $uni-spacing-row-sm;
 				display: flex;
 				flex-wrap: wrap;
 				flex-direction: row;
@@ -870,6 +809,7 @@
 				align-items: center;
 				background: #ffffff;
 				padding: $uni-spacing-row-base 0;
+				padding-top: 0;
 				.item{
 					display: flex;
 					flex-wrap: nowrap;
@@ -1298,7 +1238,7 @@
 
 			/* 天天秒杀 */
 			.tiantianmiaosha{
-				background: #ffff;
+				background-color: #ffff;
 				padding: 0 $uni-spacing-row-sm;
 				padding-bottom: 40upx;
 				.top-banner{

@@ -37,18 +37,6 @@ const router = new MinRouter({
 
 		//public
 		{
-			path: 'pages/public/login',
-			type: 'navigateTo',
-			name: 'login',
-			login: false
-		},
-		{
-			path: 'pages/public/login-with-mobile',
-			type: 'navigateTo',
-			name: 'login-with-mobile',
-			login: false
-		},
-		{
 			path: 'pages/public/login-with-mobile-public',
 			type: 'navigateTo',
 			name: 'login-with-mobile-public',
@@ -376,7 +364,7 @@ const router = new MinRouter({
 			name:'rule',
 			login:true
 		},
-		
+
 		//卡片详情
 		{
 			path:"pages2/user/pre_store/details",
@@ -384,7 +372,7 @@ const router = new MinRouter({
 			name:'detail',
 			login:true
 		},
-		
+
 		//预存享福利首页
 		{
 			path:"pages2/user/pre_store/main",

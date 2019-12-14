@@ -1,5 +1,17 @@
 <template>
 	<view class="container">
+		<!--	视频播放功能	-->
+		<video id="myVideo"
+			   v-show="isShowVide && goodsInfo.video"
+			   :src="goodsInfo.video"
+			   @ended="videoPlayEnded"
+			   :enable-progress-gesture="false"
+			   x5-video-player-type="h5-page"
+			   x5-video-orientation="landscape|portrait"
+			   x5-playsinline
+			   @touchmove="videoPlayEnded"
+		>
+		</video>
 
 		<view class="header">
 			<!-- 头部-滚动渐变显示 -->
@@ -19,14 +31,9 @@
 		<!-- 商品主图轮播 -->
 		<view class="swiper-box">
 			<swiper circular="true" :indicator-dots="true" indicator-active-color="#FC8A8A" @change="swiperHandle">
-				<swiper-item style="display: flex;flex-direction: column;justify-content: center;background: #000;" v-if="goodsInfo.video">
-					<video id="myVideo" :src="goodsInfo.video"
-						   controls
-						   style="width: 100%;"
-					></video>
-				</swiper-item>
 				<swiper-item v-for="(img_src,index) in goodsInfo.pics" :key="index">
 					<image :src="img_src" @click="previewImg(img_src, goodsInfo.pics)" :lazy-load="true"></image>
+					<div class="video-play" v-if="goodsInfo.video" @click="videoPlayOrStop">视频播放</div>
 				</swiper-item>
 			</swiper>
 		</view>
@@ -472,6 +479,8 @@
 	export default {
 		data() {
 			return {
+				// 是否显示视频播放
+				isShowVide:false,
 
 				//控制渐变标题栏的参数
 				beforeHeaderzIndex: 11,//层级
@@ -551,9 +560,19 @@
 			...mapMutations(['setShareID']),
 			// 商品banner滑动到非视频页面时候停止视频的播放
 			swiperHandle(e){
-				if (this.goodsInfo.video && e.detail.current !== 0) {
+			},
+			videoPlayOrStop(){
+				this.isShowVide = !this.isShowVide
+				if (this.isShowVide){
+					uni.createVideoContext('myVideo').play()
+				} else {
 					uni.createVideoContext('myVideo').pause()
 				}
+			},
+			/* 视频播放到末尾了 */
+			videoPlayEnded(){
+				uni.createVideoContext('myVideo').pause()
+				this.isShowVide = false
 			},
 			_goPage(url, query = {}){
 				this.$openPage({name:url, query})
@@ -1016,6 +1035,15 @@
 </script>
 
 <style lang="scss">
+	#myVideo{
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		opacity: 1;
+		height: 100vw;
+		z-index: 9;
+	}
 .container{
 	@import '../../static/css/goods_detail.scss';
 }

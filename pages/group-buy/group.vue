@@ -45,7 +45,7 @@
                     <view class="tag" v-if="item.commander === 1">团长</view>
                     <view class="tag" v-if="item.status === 0 && item.commander === 0">待支付</view>
                 </view>
-                <view class="head" v-for="index in responseData.r_num">
+                <view class="head" v-for="index in responseData.r_num" :key="index">
                     <image src="../../static/images/help.png" class="img no-img" :alt="index"></image>
                 </view>
             </view>

@@ -91,18 +91,6 @@
 		},
 
 		{
-			"path": "pages/public/login",
-			"style": {
-				"navigationBarTitleText": "登录"
-			}
-		},
-		{
-			"path": "pages/public/login-with-mobile",
-			"style": {
-				"navigationBarTitleText": "捣蛋熊商城-登录"
-			}
-		},
-		{
 			"path": "pages/public/login-with-mobile-public",
 			"style": {
 				"navigationBarTitleText": "捣蛋熊商城-登录"
@@ -435,26 +423,26 @@
 		"list": [
 			{
 				"pagePath": "pages/tabs/home",
-				"iconPath": "static/tab/tab-shop.png",
-				"selectedIconPath": "static/tab/tab-shop-current.png",
+				"iconPath": "static/tab2/tab-shop.png",
+				"selectedIconPath": "static/tab2/tab-shop-current.png",
 				"text": "商城"
 			},
 			{
 				"pagePath": "pages/tabs/category",
-				"iconPath": "static/tab/tab-classification.png",
-				"selectedIconPath": "static/tab/tab-classification-current.png",
+				"iconPath": "static/tab2/tab-classification.png",
+				"selectedIconPath": "static/tab2/tab-classification-current.png",
 				"text": "分类"
 			},
 			{
 				"pagePath": "pages/tabs/car",
-				"iconPath": "static/tab/tab-car.png",
-				"selectedIconPath": "static/tab/tab-car-current.png",
+				"iconPath": "static/tab2/tab-car.png",
+				"selectedIconPath": "static/tab2/tab-car-current.png",
 				"text": "购物车"
 			},
 			{
 				"pagePath": "pages/tabs/mine",
-				"iconPath": "static/tab/tab-person.png",
-				"selectedIconPath": "static/tab/tab-person-current.png",
+				"iconPath": "static/tab2/tab-person.png",
+				"selectedIconPath": "static/tab2/tab-person-current.png",
 				"text": "我的"
 			}
 		]

@@ -22,7 +22,7 @@
 			<view class="content" v-if="TabCur === 0">
 				<!-- 推荐 -- banner-->
 				<view class="swiper-box" v-if="swiperList.length">
-					<swiper circular="true" autoplay="true" :indicator-dots="true" indicator-active-color="#FC8A8A" style="width: 710upx;height: 268upx;">
+					<swiper circular="true" autoplay="true" :indicator-dots="true" indicator-active-color="#FC8A8A" style="width: 100%;height: 268upx;">
 						<swiper-item class="swiper-item" v-for="(item, index) in swiperList" :key="index">
 							<image class="banner-img" :lazy-load="true"	:src="item.thumb" @click="_clickBanner(index)" mode="widthFix"></image>
 						</swiper-item>
@@ -147,7 +147,7 @@
 				</view>
 -->
 				<!--	天天秒杀			-->
-				<view class="tiantianmiaosha"  v-show="seckill_list.length !== 0">
+				<view class="tiantianmiaosha"  v-if="seckill_list.length !== 0">
 					<view class="top-banner" @click="_goPage('spike_list')"></view>
 					<view class="body-content">
 						<scroll-view  scroll-x="true">
@@ -173,8 +173,8 @@
 					</view>
 				</view>
 				<!--	拼团特惠			-->
-				<div class="pintuantehui-box-big-div">
-					<view class="pintuantehui" v-show="assemble_list.length !== 0">
+				<div class="pintuantehui-box-big-div" v-show="assemble_list.length !== 0">
+					<view class="pintuantehui">
 						<view class="top-banner" @click="_goPage('group_buy')"></view>
 						<view class="body-content">
 							<scroll-view  scroll-x="true" style="background: #FFFFFF;border-radius:10upx;padding:0 20upx;">
@@ -493,25 +493,17 @@
 			},
 			_clickBanner(key) {
 				console.log(this.swiperList[key])
-				// this.swiperList[key].type   //类型：1不跳转，2:跳转页面（地址加全），3商品详情',
-				// this.swiperList[key].value //跳转地址：type=2时为地址，type=3时为商品id
+				// this.swiperList[key].type   类型：1不跳转，2:跳转外部页面，3跳转到内部界面'
+				// this.swiperList[key].url 地址
+				// this.swiperList[key].value 参数 {"t":"121","member":"2222"}
 				switch (this.swiperList[key].type) {
 					case 1:
-
 						break
 					case 2:
-						if (this.swiperList[key].value === 'pre_store') {
-							this._goPage('pre_store')
-							return
-						}
-						if (this.swiperList[key].value === 'toSpike780_4395') {
-							this._goPage('spike_detail', {seckill_id: 780,item_id: 4395})
-							return
-						}
-						this._goPage('web_view',{url: this.swiperList[key].value})
+						this._goPage('web_view',{url: this.swiperList[key].url})
 						break
 					case 3:
-						this._goPage('goods_detail',{id: this.swiperList[key].value})
+						this._goPage(this.swiperList[key].url, JSON.parse(this.swiperList[key].value))
 						break
 				}
 			},
@@ -781,9 +773,7 @@
 		.content{
 			.swiper-box{
 				padding: 10upx $uni-spacing-row-sm;
-				width: 100%;
-				height: auto;
-				/*border-radius: 10upx;*/
+				border-radius: 10upx;
 				background: #fff;
 				/*background-image: url('~@/static/images/double12-home/2.png');*/
 				/*background-repeat: no-repeat;*/
@@ -791,10 +781,10 @@
 				/*padding-bottom: 300upx;*/
 				overflow: hidden;
 				.swiper-item{
-					width: 100%;
-					height: 100%;
+					border-radius: 10upx;
 					.banner-img{
 						width: 100%;
+						height: 268upx!important;
 						border-radius: 10upx;
 					}
 				}
@@ -1238,9 +1228,8 @@
 
 			/* 天天秒杀 */
 			.tiantianmiaosha{
-				background-color: #ffff;
-				padding: 0 $uni-spacing-row-sm;
-				padding-bottom: 40upx;
+				background: #ffff;
+				padding: 0 $uni-spacing-row-sm 40upx $uni-spacing-row-sm;
 				.top-banner{
 					background-image:url("~@/static/images/tab-home/spike-banner.png");
 					height:88upx;

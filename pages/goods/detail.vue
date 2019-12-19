@@ -1,17 +1,7 @@
 <template>
 	<view class="container">
 		<!--	视频播放功能	-->
-		<video id="myVideo"
-			   v-show="isShowVide && goodsInfo.video"
-			   :src="goodsInfo.video"
-			   @ended="videoPlayEnded"
-			   :enable-progress-gesture="false"
-			   x5-video-player-type="h5-page"
-			   x5-video-orientation="landscape|portrait"
-			   x5-playsinline
-			   @touchmove="videoPlayEnded"
-		>
-		</video>
+		<v-video :src="goodsInfo.video" :isTop="isShowVideoTop" @videoEnd="isShowVideo = false" v-show="isShowVideo && goodsInfo.video"></v-video>
 
 		<view class="header">
 			<!-- 头部-滚动渐变显示 -->
@@ -475,12 +465,14 @@
 	import uniPopup from '@/components/uni-popup/uni-popup.vue'
 	import { mapState, mapMutations, } from 'vuex'
 	import * as Constant from '../../utils/constant'
+	import vVideo from "../../components/vdieo/video";
 
 	export default {
 		data() {
 			return {
 				// 是否显示视频播放
-				isShowVide:false,
+				isShowVideo:false,
+				isShowVideoTop: true, // 视频全屏显示/非全屏显示
 
 				//控制渐变标题栏的参数
 				beforeHeaderzIndex: 11,//层级
@@ -562,17 +554,10 @@
 			swiperHandle(e){
 			},
 			videoPlayOrStop(){
-				this.isShowVide = !this.isShowVide
-				if (this.isShowVide){
+				this.isShowVideo = true
+				this.$nextTick(()=>{
 					uni.createVideoContext('myVideo').play()
-				} else {
-					uni.createVideoContext('myVideo').pause()
-				}
-			},
-			/* 视频播放到末尾了 */
-			videoPlayEnded(){
-				uni.createVideoContext('myVideo').pause()
-				this.isShowVide = false
+				})
 			},
 			_goPage(url, query = {}){
 				this.$openPage({name:url, query})
@@ -1023,10 +1008,17 @@
 			//切换层级
 			this.beforeHeaderzIndex = e.scrollTop > 0 ? 10 : 11;
 			this.afterHeaderzIndex = e.scrollTop > 0 ? 11 : 10;
+
+			if (e.scrollTop >= 375){
+				this.isShowVideoTop = false
+			} else {
+				this.isShowVideoTop = true
+			}
 		},
 		components: {
 			uniNumberBox,
 			uniPopup,
+			vVideo
 		},
 		computed: {
 			...mapState(['userInfo', 'subscribe'])
@@ -1035,15 +1027,6 @@
 </script>
 
 <style lang="scss">
-	#myVideo{
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		opacity: 1;
-		height: 100vw;
-		z-index: 9;
-	}
 .container{
 	@import '../../static/css/goods_detail.scss';
 }

@@ -1,22 +1,26 @@
 <template>
     <view class="spike-list-container">
         <!-- #ifdef H5 -->
-        <div id="my-h5-back" @click="_goBack"></div>
+<!--        <div id="my-h5-back" @click="_goBack"></div>-->
         <!-- #endif -->
 
-        <img class="bg-image" src="../../static/images/spike-banner.png" alt="">
+<!--        <img class="bg-image" src="../../static/images/spike-banner.png" alt="">-->
 
         <div class="time-list">
             <wlm-tab :tab-list="tabList2" :tabCur.sync="TabCur2"  @change="tabChange2"
-                     tabStyle="background:#F64228;"
+                     tabStyle="background:#2B2B2B;"
                      titleStyle="color:#fff;"
                      subTitleStyle="color:#fff;"
-                     selectTitleStyle="color:#F64228;background:#FFFF00;padding:0 4px;"
+                     selectTitleStyle="color:#F5E25C;padding:0 4px;"
                      selectSubTitleStyle="color:#FFD800;"
             ></wlm-tab>
         </div>
         <div style="height: 20upx;width: 100%;"></div>
         <view class="spike-list-content">
+            <img v-show="TabCur2 === 0" src="./images/0.png" alt="" style="margin:0 auto 10px auto;display: block;width: 120px;">
+            <img v-show="TabCur2 === 1" src="./images/1.png" alt="" style="margin:0 auto 10px auto;display: block;width: 120px;">
+            <img v-show="TabCur2 === 2" src="./images/2.png" alt="" style="margin:0 auto 10px auto;display: block;width: 120px;">
+            <img v-show="TabCur2 === 3" src="./images/3.png" alt="" style="margin:0 auto 10px auto;display: block;width: 120px;">
             <view class="spike-list-content-box" v-for="(item, index) in goodsData" :key="index" @click="_goPage('spike_detail', {item_id: item.item_id, seckill_id: item.id})">
                 <view class="left">
                     <image :src="item.pic" class="img" :lazy-load="true"></image>
@@ -68,7 +72,7 @@
             </view>
         </view>
 
-        <uni-load-more :status="requestData.loadStatus" :show-icon="true" color="#fff"></uni-load-more>
+        <uni-load-more :status="requestData.loadStatus" :show-icon="true"></uni-load-more>
     </view>
 </template>
 
@@ -300,10 +304,10 @@
 
 <style scoped lang="scss">
     page {
-        background: #FE5B50;
+        /*background: #FE5B50;*/
     }
     .time-list{
-        background:#F64228;
+        background:#2B2B2B;
         padding: 0 $uni-spacing-row-sm;
     }
     .spike-list-container{
@@ -315,7 +319,7 @@
             padding: 0 $uni-spacing-row-sm;
             .spike-list-content-box{
                 background: #FFFFFF;
-                border-radius:4upx;
+                border-radius:10upx;
                 width:100%;
                 height:228upx;
                 margin-bottom: 24upx;

@@ -3,7 +3,7 @@
 		<view class="content" :style="{ 'border-radius': radius + 'px', border: border }">
 			<view class="content-box" :class="{ center: mode === 2 }">
 				<text class="icon icon-search">&#xe61c;</text>
-				<input class="input" :class="{ center: !active && mode === 2 }" :focus="isFocus" :placeholder="placeholder" v-model="inputVal" @focus="focus" @blur="blur" />
+				<input class="input" :class="{ center: !active && mode === 2 }" :focus="isFocus" :placeholder="placeholder" v-model="inputVal" @focus="focus" @blur="blur" confirm-type="search" @confirm="search" :confirm-hold="false" />
 				<!-- <view v-if="!active && mode === 2" class="input sub" @click="getFocus">请输入搜索内容</view> -->
 				<text v-if="isDelShow" class="icon icon-del" @click="clear">&#xe644;</text>
 			</view>
@@ -84,6 +84,7 @@ export default {
 			if (this.searchName === '取消') return
 			console.log(this.inputVal);
 			this.$emit('search', this.inputVal);
+			uni.hideKeyboard()
 		}
 	},
 	watch: {

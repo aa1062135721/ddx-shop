@@ -112,7 +112,7 @@
                 padding: 0;
             }
             .title{
-                font-size: $uni-font-size-base;
+                font-size: $uni-font-size-lg;
                 color: #C0E8FB;
                 margin-bottom: 6upx;
                 width:120upx;

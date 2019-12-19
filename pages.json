@@ -200,8 +200,7 @@
 		{
 			"path": "pages/spike/list",
 			"style": {
-				"navigationBarTitleText": "捣蛋熊商城-每日秒杀",
-				"navigationStyle": "custom"
+				"navigationBarTitleText": "捣蛋熊商城-每日秒杀"
 			}
 		},
 		{

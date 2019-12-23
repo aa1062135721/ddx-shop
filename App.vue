@@ -14,6 +14,7 @@
     _AIHECONG('ini', {
         entId : 15463,
         button : false, //去除聊天按钮
+        history : true, //添加该参数实现默认读取上一次聊天记录
         // uniqueId : '5ccb3020bbf4693783745351', //网站会员唯一ID，请不要超过64个字符
     });
 

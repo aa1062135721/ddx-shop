@@ -9,18 +9,16 @@
         <div class="time-list">
             <wlm-tab :tab-list="tabList2" :tabCur.sync="TabCur2"  @change="tabChange2"
                      tabStyle="background:#2B2B2B;"
-                     titleStyle="color:#fff;"
-                     subTitleStyle="color:#fff;"
-                     selectTitleStyle="color:#F5E25C;padding:0 4px;"
-                     selectSubTitleStyle="color:#FFD800;"
+                     titleStyle="color:#FFFFFF;"
+                     subTitleStyle="color:#999999;"
+                     selectTitleStyle="color:#FC2D2D;padding:0 4px;"
+                     selectSubTitleStyle="color:#fff;background:#FC2D2D;"
+                     threeTitleStyle="color:#fff;"
+                     selectThreeTitleStyle="color:#F5E25C;"
             ></wlm-tab>
         </div>
         <div style="height: 20upx;width: 100%;"></div>
         <view class="spike-list-content">
-            <img v-show="TabCur2 === 0" src="./images/0.png" alt="" style="margin:0 auto 10px auto;display: block;width: 120px;">
-            <img v-show="TabCur2 === 1" src="./images/1.png" alt="" style="margin:0 auto 10px auto;display: block;width: 120px;">
-            <img v-show="TabCur2 === 2" src="./images/2.png" alt="" style="margin:0 auto 10px auto;display: block;width: 120px;">
-            <img v-show="TabCur2 === 3" src="./images/3.png" alt="" style="margin:0 auto 10px auto;display: block;width: 120px;">
             <view class="spike-list-content-box" v-for="(item, index) in goodsData" :key="index" @click="_goPage('spike_detail', {item_id: item.item_id, seckill_id: item.id})">
                 <view class="left">
                     <image :src="item.pic" class="img" :lazy-load="true"></image>
@@ -30,8 +28,11 @@
                         <view class="title">
                             {{item.item_name}}
                         </view>
-                        <view class="specifications" v-if="item.status === 1">
-                            已抢{{item.already_num}}件
+                        <view class="already_num" v-if="item.status === 1">
+                            <view class="red-box" :style="{
+                                width:((item.already_num >= item.stock) ? (0.70) : (item.already_num / item.stock)) * 100 + '%'
+                            }"></view>
+                            <view class="text">已抢{{item.already_num}}件</view>
                         </view>
                     </view>
                     <view class="bottom">
@@ -350,14 +351,35 @@
                             color: #1A1A1A;
                             font-size: $uni-font-size-sm;
                         }
-                        .specifications{
-                            @extend %overflow-1-line;
-                            color: #808080;
-                            font-size: 20upx;
+                        .already_num{
+                            margin-top: 18upx;
+                            width:230upx;
+                            height:24upx;
+                            background-color:rgba(255,150,145,1);
+                            border-radius:12upx;
+                            position: relative;
+                            overflow: hidden;
+                            .red-box{
+                                width: 0%;
+                                position: absolute;
+                                left: 0;
+                                top: 0;
+                                height:24upx;
+                                background-color:#F14C44;
+                                border-radius:12upx;
+                            }
+                            .text{
+                                position: absolute;
+                                width: 100%;
+                                height:24upx;
+                                text-align: center;
+                                line-height: 24upx;
+                                font-size: 16upx;
+                                color: #FFFFFF;
+                            }
                         }
                     }
                     .bottom{
-                        margin-top: 15upx;
                         width: 100%;
                         display: flex;
                         justify-content: space-between;

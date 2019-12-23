@@ -78,7 +78,7 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex'
+    import { mapState, mapActions } from 'vuex'
     import uniPopup from '@/components/uni-popup/uni-popup.vue'
     import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue' //可选值：more（loading前）、loading（loading中）、noMore（没有更多了）
 
@@ -116,6 +116,7 @@
         },
 
         methods:{
+            ...mapActions(['asyncGetUserInfo']),
             _goPage(url, query = {}){
                 this.$openPage({name:url, query})
             },
@@ -155,6 +156,7 @@
                     if (res.code === 200) {
                         this.close()
                         this.msg('申请成功')
+                        this.asyncGetUserInfo()
                     }
                 })
                 this.close()

@@ -40,7 +40,7 @@
             }
         },
         created () {
-            console.log("是否关注公众号：", this.subscribe)
+            // console.log("是否关注公众号：", this.subscribe)
         },
     }
 </script>

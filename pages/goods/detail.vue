@@ -52,6 +52,9 @@
 			<view class="sub-title" v-if="goodsInfo.subtitle">
 				{{goodsInfo.subtitle}}
 			</view>
+			<view class="promise">
+				温馨提示：下单后48小时内发货
+			</view>
 			<view class="promise" v-if="goodsInfo.promise">
 				{{goodsInfo.promise}}
 			</view>

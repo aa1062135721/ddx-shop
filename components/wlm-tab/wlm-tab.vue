@@ -94,7 +94,7 @@
                         str = '居家用品'
                         break
                     case 1:
-                        str = '粮油大米'
+                        str = '粮油食品'
                         break
                     case 2:
                         str = '母婴用品'

@@ -380,6 +380,14 @@ const router = new MinRouter({
 			name:'pre_store',
 			login:true
 		},
+
+		// 优惠券
+		{
+			path:"pages/user/coupon/list",
+			type:'navigateTo',
+			name:'coupon_list',
+			login:true
+		},
 	]
 })
 

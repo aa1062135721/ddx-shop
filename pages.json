@@ -224,6 +224,12 @@
 			"style": {
 				"navigationBarTitleText": "捣蛋熊商城-我的优惠券"
 			}
+		},
+		{
+			"path": "pages/user/coupon/details",
+			"style": {
+				"navigationBarTitleText": "捣蛋熊商城-优惠券详情"
+			}
 		}
 	],
     "subPackages": [

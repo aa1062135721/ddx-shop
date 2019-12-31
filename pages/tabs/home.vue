@@ -343,7 +343,7 @@
 
 <script>
     import WucTab from '@/components/wuc-tab/wuc-tab.vue'
-	import separator from "@/components/separator.vue"
+	// import separator from "@/components/separator.vue"
 	import mGoods from '@/components/goods/goods.vue'
 	import WlmTab from '@/components/wlm-tab/wlm-tab.vue'
 	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue' //可选值：more（loading前）、loading（loading中）、noMore（没有更多了）
@@ -665,7 +665,7 @@
 		},
 		components: {
 			WucTab,
-			separator,
+			// separator,
 			mGoods,
 			WlmTab,
 			uniLoadMore,

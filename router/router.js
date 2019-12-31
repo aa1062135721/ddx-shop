@@ -388,6 +388,12 @@ const router = new MinRouter({
 			name:'coupon_list',
 			login:true
 		},
+		{
+			path:"pages/user/coupon/details",
+			type:'navigateTo',
+			name:'coupon_details',
+			login: true
+		},
 	]
 })
 

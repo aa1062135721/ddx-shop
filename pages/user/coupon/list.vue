@@ -5,72 +5,8 @@
                  style="position: fixed;left: 0;width: 100%;z-index: 999;background-color: #fff;"
         ></wuc-tab>
         <div class="div-block"></div>
-        <div class="coupon-box">
-            <div class="item">
-                <div class="left">
-                    <div class="content">
-                        <div class="content-left">
-                            <div class="content-left-price">
-                                <span>￥</span>
-                                20
-                            </div>
-                            <div class="content-left-text">满498元可用</div>
-                        </div>
-                        <div class="content-right">
-                            <div class="content-right-title">
-                                全部商品可用全部商品可用全部商品可用全部商品可用全部商品可用
-                            </div>
-                            <div class="content-right-time">
-                                有效期至：2019-08-20
-                            </div>
-                        </div>
-                    </div>
-                    <div class="semicircle-top"></div>
-                    <div class="semicircle-bottom"></div>
-                </div>
-                <div class="right">
-                    <div class="content">
-                        去使用
-                    </div>
-                    <div class="semicircle-top"></div>
-                    <div class="semicircle-bottom"></div>
-                </div>
-                <!-- 波浪线 -->
-                <div class="circle1"></div>
-            </div>
-            <div class="item">
-                <div class="left">
-                    <div class="content">
-                        <div class="content-left">
-                            <div class="content-left-price">
-                                <span>￥</span>
-                                20
-                            </div>
-                            <div class="content-left-text">满498元可用</div>
-                        </div>
-                        <div class="content-right">
-                            <div class="content-right-title">
-                                全部商品可用全部商品可用全部商品可用全部商品可用全部商品可用
-                            </div>
-                            <div class="content-right-time">
-                                有效期至：2019-08-20
-                            </div>
-                        </div>
-                    </div>
-                    <div class="semicircle-top"></div>
-                    <div class="semicircle-bottom"></div>
-                </div>
-                <div class="right">
-                    <div class="content">
-                        去使用
-                    </div>
-                    <div class="semicircle-top"></div>
-                    <div class="semicircle-bottom"></div>
-                </div>
-                <!-- 波浪线 -->
-                <div class="circle1"></div>
-            </div>
-            <div class="item">
+        <div class="coupon-box" v-show="TabCur === 0">
+            <div class="item" @click="_goPage('coupon_details', {id: 10})">
                 <div class="left">
                     <div class="content">
                         <div class="content-left">
@@ -103,7 +39,79 @@
                 <div class="circle1"></div>
             </div>
         </div>
-        <uni-load-more :status="tabList[TabCur].requestData.moreStatus" :show-icon="true"></uni-load-more>
+        <div class="coupon-box" v-show="TabCur === 1">
+            <div class="item grey" @click="_goPage('coupon_details', {id: 10})">
+                <div class="left">
+                    <div class="content">
+                        <div class="content-left">
+                            <div class="content-left-price grey-font">
+                                <span>￥</span>
+                                20
+                            </div>
+                            <div class="content-left-text">满498元可用</div>
+                        </div>
+                        <div class="content-right">
+                            <div class="content-right-title">
+                                全部商品可用全部商品可用全部商品可用全部商品可用全部商品可用
+                            </div>
+                            <div class="content-right-time">
+                                有效期至：2019-08-20
+                            </div>
+                        </div>
+                    </div>
+                    <div class="semicircle-top"></div>
+                    <div class="semicircle-bottom"></div>
+                </div>
+                <div class="right">
+                    <div class="content grey-border grey-bg">
+                        <img src="../../../static/images/used.png" class="img" alt="已使用">
+                    </div>
+                    <div class="semicircle-top grey-border"></div>
+                    <div class="semicircle-bottom grey-border"></div>
+                </div>
+                <!-- 波浪线 -->
+                <div class="circle1"></div>
+            </div>
+        </div>
+        <div class="coupon-box" v-show="TabCur === 2">
+            <div class="item grey" @click="_goPage('coupon_details', {id: 10})">
+                <div class="left">
+                    <div class="content">
+                        <div class="content-left">
+                            <div class="content-left-price grey-font">
+                                <span>￥</span>
+                                20
+                            </div>
+                            <div class="content-left-text">满498元可用</div>
+                        </div>
+                        <div class="content-right">
+                            <div class="content-right-title">
+                                全部商品可用全部商品可用全部商品可用全部商品可用全部商品可用
+                            </div>
+                            <div class="content-right-time">
+                                有效期至：2019-08-20
+                            </div>
+                        </div>
+                    </div>
+                    <div class="semicircle-top"></div>
+                    <div class="semicircle-bottom"></div>
+                </div>
+                <div class="right">
+                    <div class="content grey-border grey-bg">
+                        <img src="../../../static/images/expired.png" class="img" alt="失效了">
+                    </div>
+                    <div class="semicircle-top grey-border"></div>
+                    <div class="semicircle-bottom grey-border"></div>
+                </div>
+                <!-- 波浪线 -->
+                <div class="circle1"></div>
+            </div>
+        </div>
+        <div v-if="tabList[TabCur].list.length === 0" class="no-coupon">
+            <img src="../../../static/images/no-coupon.png" alt="">
+            <div class="text">亲，暂无优惠券哦~~</div>
+        </div>
+        <uni-load-more v-show="tabList[TabCur].list.length !== 0" :status="tabList[TabCur].requestData.moreStatus" :show-icon="true"></uni-load-more>
     </div>
 </template>
 
@@ -123,7 +131,9 @@
                             limit:10,
                             moreStatus: 'loading',
                         },
-                        goodsList:[],// 推荐页 无限下拉加载商品
+                        list:[
+                            {name: '优惠券名',}
+                        ],
                     },
                     {
                         cname: '已使用(5)',
@@ -132,7 +142,7 @@
                             limit:10,
                             moreStatus: 'loading',
                         },
-                        goodsList:[],// 推荐页 无限下拉加载商品
+                        list:[],
                     },
                     {
                         cname: '已失效(3)',
@@ -141,12 +151,15 @@
                             limit:10,
                             moreStatus: 'loading',
                         },
-                        goodsList:[],// 推荐页 无限下拉加载商品
+                        list:[],
                     },
                 ],
             }
         },
         methods: {
+            _goPage(url, query = {}){
+                this.$openPage({name:url, query})
+            },
             async tabChange(index) {
                 this.TabCur = index
             },
@@ -180,6 +193,9 @@
             height:200upx;
             overflow: hidden;
             margin-bottom: 20upx;
+            &.grey{
+                opacity: 0.8;
+            }
             .left{
                 background-color: #FFFFFF;
                 border-radius:10upx 0 0 10upx;
@@ -209,6 +225,9 @@
                             color: $color-primary;
                             span{
                                 font-size: $uni-font-size-sm;
+                            }
+                            &.grey-font{
+                                color: #999999;
                             }
                         }
                         .content-left-text{
@@ -279,6 +298,14 @@
                     font-size: $uni-font-size-base;
                     line-height: 200upx;
                     text-align: center;
+                    /* 过期 或者 失效 图片*/
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    .img{
+                        width:98upx;
+                        height:98upx;
+                    }
                 }
 
 
@@ -308,6 +335,14 @@
                     border:1px solid $color-primary;
                     z-index: 9;
                 }
+
+                .grey-border{
+                    border:1px solid #D4D4D4;
+                }
+                .grey-bg{
+                    background-color: #D4D4D4;
+                }
+
             }
             /*波浪线*/
             .circle1 {
@@ -322,6 +357,22 @@
                 background-size: 10px 10px;
                 background-repeat: repeat-x;
             }
+        }
+    }
+
+    .no-coupon{
+        margin-top: calc(90upx + 60upx);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        img{
+            width:280upx;
+            height:242upx;
+        }
+        .text{
+            margin-top: 20upx;
+            color: #999999;
+            font-size: $uni-font-size-base;
         }
     }
 </style>

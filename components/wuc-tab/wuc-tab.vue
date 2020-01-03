@@ -91,7 +91,7 @@ swiper {
 }
 
 .wuc-tab-item.cur {
-    border-bottom: 4upx solid;
+    /*border-bottom: 4upx solid;*/
 }
 
 .wuc-tab.fixed {
@@ -112,9 +112,9 @@ swiper {
     flex: 1;
 }
 .select-tab-text-color{
-  color: #FC5A5A;
-  /*color: #FFFFFF;*/
-  /*font-size: 38upx;*/
+  /*color: #FC5A5A;*/
+  color: #FFFFFF;
+  font-size: 38upx;
 }
 .text-white{
   color:#ffffff;

@@ -1,52 +1,50 @@
 <template>
-	<view class="container">
-		<div class="search-and-tabs">
-			<!-- 首页的搜索框 -->
-			<view class="my-search-box">
-				<view class="my-search-input" @click="_goPage('search_with_hot_history')">
-					<text class="iconfont icon-ddx-shop-hot"></text>
-					<text>万千商品，等你来采购</text>
-				</view>
-			</view>
-
-			<!-- 一级tab栏 -->
-			<wuc-tab :tab-list="tabList" :textFlex="true" :tabCur.sync="TabCur" tab-class="tabs"  @change="tabChange"
-					 style="position: fixed;left: 0;width: 100%;z-index: 999;"
-					 :style="style"
-			></wuc-tab>
-		</div>
-
-			<!--	站位符	-->
-			<view class="my-block"></view>
-			<!-- 推荐tab栏里的数据 -->
-			<view class="content" v-if="TabCur === 0">
-				<!-- 推荐 -- banner-->
-				<view class="swiper-box" v-if="swiperList.length">
-					<swiper circular="true" autoplay="true" :indicator-dots="true" indicator-active-color="#FC8A8A" style="width: 100%;height: 268upx;">
-						<swiper-item class="swiper-item" v-for="(item, index) in swiperList" :key="index">
-							<image class="banner-img" :lazy-load="true"	:src="item.thumb" @click="_clickBanner(index)" mode="widthFix"></image>
-						</swiper-item>
-					</swiper>
-				</view>
-				<!-- 推荐 -- 小图标-->
-				<view class="limited-time" v-if="iconArr.length">
-					<view class="item" v-for="(item, index) in iconArr" :key="index" @click="_clickIcon(item)">
-						<image :src="item.thumb" :lazy-load="true" class="image"></image>
-						<span class="text">{{item.title}}</span>
+	<view class="container" :class="{'yuandan-bg': TabCur === 0}">
+			<div class="search-and-tabs">
+				<!-- 首页的搜索框 -->
+				<view class="my-search-box">
+					<view class="my-search-input" @click="_goPage('search_with_hot_history')">
+						<text class="iconfont icon-ddx-shop-hot"></text>
+						<text>万千商品，等你来采购</text>
 					</view>
 				</view>
 
+				<!-- 一级tab栏 -->
+				<wuc-tab :tab-list="tabList" :textFlex="true" :tabCur.sync="TabCur" tab-class="tabs"  @change="tabChange" style="position: fixed;left: 0;width: 100%;z-index: 999;" :style="style"></wuc-tab>
+			</div>
+			<!--	站位符 占.search-and-tabs的位置	-->
+			<view class="my-block"></view>
+
+			<!-- 推荐tab栏里的数据 -->
+			<view class="content" v-show="TabCur === 0">
+				<div class="yd">
+					<!-- 推荐 -- banner-->
+					<view class="swiper-box" v-if="swiperList.length">
+						<swiper circular="true" autoplay="true" :indicator-dots="true" indicator-active-color="#FFF" style="width: 100%;height: 268upx;">
+							<swiper-item class="swiper-item" v-for="(item, index) in swiperList" :key="index">
+								<image class="banner-img" :lazy-load="true"	:src="item.thumb" @click="_clickBanner(index)" mode="widthFix"></image>
+							</swiper-item>
+						</swiper>
+					</view>
+					<!-- 推荐 -- 小图标-->
+					<view class="limited-time" v-if="iconArr.length">
+						<view class="item" v-for="(item, index) in iconArr" :key="index" @click="_clickIcon(item)">
+							<image :src="item.thumb" :lazy-load="true" class="image"></image>
+							<span class="text">{{item.title}}</span>
+						</view>
+					</view>
+				</div>
+
 				<!--	新人专享 	-->
-<!--				<view class="newcomer" @click="_goPage('newcomer')">-->
-<!--					<img class="img" src="../../static/images/newcomer.gif" />-->
-<!--				</view>-->
+				<!--
+				<view class="newcomer" @click="_goPage('newcomer')">
+					<img class="img" src="../../static/images/newcomer.gif" />
+				</view>
+				-->
 
 				<!-- 超级拼团 限时秒杀 童装童鞋 境外购-->
-<!--
+				<!--
 				<view class="goods-category">
---->
-					<!-- 通知栏 -->
-					<!---
 					<view class="global-notice" v-if="notice.length">
 						<view class="box">
 							<view class="notice-img">
@@ -145,8 +143,10 @@
 						</view>
 					</view>
 				</view>
--->
+				-->
+
 				<!--	天天秒杀			-->
+				<!--
 				<view class="tiantianmiaosha"  v-if="seckill_list.length !== 0">
 					<view class="top-banner" @click="_goPage('spike_list')"></view>
 					<view class="body-content">
@@ -172,7 +172,9 @@
 						</scroll-view>
 					</view>
 				</view>
+				-->
 				<!--	拼团特惠			-->
+				<!--
 				<div class="pintuantehui-box-big-div" v-show="assemble_list.length !== 0">
 					<view class="pintuantehui">
 						<view class="top-banner" @click="_goPage('group_buy')"></view>
@@ -197,10 +199,80 @@
 						</view>
 					</view>
 				</div>
+				-->
+
+				<!-- 元旦秒杀 -->
+				<div class="yuandanmiao" v-if="seckill_list.length">
+					<view class="yd-more" @click="_goPage('spike_list')"></view>
+					<div class="ydms">
+						<swiper circular="true" :indicator-dots="true" indicator-active-color="#FFF" style="width: 100%;height: 442upx;">
+							<swiper-item class="yd-swiper">
+								<div class="ydms-box">
+									<block v-for="(item, index) in seckill_list" :key="index">
+										<div class="ydms-shop" v-if="index<3" @click="_goPage('spike_detail', {item_id: item.item_id, seckill_id: item.id})">
+											<image class="ydms-img" :src="item.pic" :lazy-load="true"></image>
+											<image class="tit-img" :lazy-load="true"></image>
+											<p class="shop-tit">{{item.item_name}}</p>
+											<p class="shop-price"><span class="big-price">￥{{item.price}}</span><span class="small-price">￥{{item.old_price}}</span></p>
+											<div class="shop-button">立即购买</div>
+										</div>
+									</block>
+								</div>
+							</swiper-item>
+							<swiper-item class="yd-swiper" v-if="seckill_list.length > 3">
+								<div class="ydms-box">
+									<block v-for="(item, index) in seckill_list" :key="index">
+										<div class="ydms-shop" v-if="index > 3 && index < 7" @click="_goPage('spike_detail', {item_id: item.item_id, seckill_id: item.id})">
+											<image class="ydms-img" :src="item.pic" :lazy-load="true"></image>
+											<image class="tit-img" :lazy-load="true"></image>
+											<p class="shop-tit">{{item.item_name}}</p>
+											<p class="shop-price"><span class="big-price">￥{{item.price}}</span><span class="small-price">￥{{item.old_price}}</span></p>
+											<div class="shop-button">立即购买</div>
+										</div>
+									</block>
+								</div>
+							</swiper-item>
+						</swiper>
+					</div>
+				</div>
+				<!-- 元旦拼团抢购 -->
+				<div class="yuandanmiao pintuan" v-if="assemble_list.length">
+					<view class="yd-more" @click="_goPage('group_buy')"></view>
+					<div class="ydms">
+						<swiper circular="true" :indicator-dots="true" indicator-active-color="#FFF" style="width: 100%;height: 442upx;">
+							<swiper-item class="yd-swiper">
+								<div class="ydms-box">
+									<block v-for="(item, index) in assemble_list" :key="index">
+										<div class="ydms-shop" v-if="index < 3" @click="_goPage('group_buy_detail', {assemble_id: item.id, item_id: item.item_id})">
+											<div class="ydms-people">{{ item.assemble_num }}人团</div>
+											<image class="ydms-img" :src="item.pic" :lazy-load="true"></image>
+											<image class="tit-img" :lazy-load="true"></image>
+											<p class="shop-tit">{{ item.item_name }}</p>
+											<p class="shop-price"><span class="big-price">￥{{ item.price }}</span><span class="small-price">￥{{ item.old_price }}</span></p>
+											<div class="shop-button">立即购买</div>
+										</div>
+									</block>
+								</div>
+							</swiper-item>
+							<swiper-item class="yd-swiper" v-if="assemble_list.length > 3">
+								<div class="ydms-box">
+									<block v-for="(item, index) in assemble_list" :key="index">
+										<div class="ydms-shop" v-if="index>3 && index<7" @click="_goPage('group_buy_detail', {assemble_id: item.id, item_id: item.item_id})">
+											<image class="ydms-img" :src="item.pic" :lazy-load="true"></image>
+											<image class="tit-img" :lazy-load="true"></image>
+											<p class="shop-tit">{{item.item_name}}</p>
+											<p class="shop-price"><span class="big-price">￥{{item.price}}</span><span class="small-price">￥{{item.old_price}}</span></p>
+											<div class="shop-button">立即购买</div>
+										</div>
+									</block>
+								</div>
+							</swiper-item>
+						</swiper>
+					</div>
+				</div>
 
 				<!-- HOT SALE-->
 				<!---
-
 				<view class="hot-sale" v-if="explosion.length">
 					<view class="hot-sale-banner">
 						<image class="img" src="../../static/images/home-hot-sale-banner.png" mode="widthFix"></image>
@@ -235,10 +307,10 @@
 						</block>
 					</view>
 				</view>
-
 				-->
+
 				<!-- 好物享不停 -->
-<!--
+				<!--
 				<view class="goods-share-no-stop" v-if="explosion.length">
 					<view class="goods-share-no-stop-box">
 						<view class="goods-top">
@@ -276,17 +348,18 @@
 						</view>
 					</view>
 				</view>
--->
+				-->
 
-				<view style="padding: 10px;color: #000000;font-size: 20px;font-weight: bold;">
+				<!-- 六个分类，内容部分可以向左滑动-->
+				<view style="padding: 10px;color: #000000;font-size: 20px;font-weight: bold;" v-if="categoryGoodsList.length">
 					好物精选
 				</view>
-				<!-- 六个分类，内容部分可以向左滑动-->
 				<view class="some-category" v-if="categoryGoodsList.length" v-for="(item, index) in categoryGoodsList" :key="index">
 					<div class="some-category-banner" @click="_goPage('goods_search', {title: item.cname, id: item.category_id})">
 						<img class="img" :src="item.thumb">
 					</div>
 					<div class="some-category-box">
+						<!--
 						<scroll-view  scroll-x="true">
 							<div class="all-goods">
 								<div class="goods" v-for="(subItem, subIndex) in item.items" :key="subIndex" @click="_goPage('goods_detail', {id: subItem.id})">
@@ -300,13 +373,25 @@
 								</div>
 							</div>
 						</scroll-view>
+						-->
+						<swiper class="all-goods" display-multiple-items="4" autoplay="true" interval="3000" easing-function="linear">
+							<swiper-item class="goods" v-for="(subItem, subIndex) in item.items" :key="subIndex" @click="_goPage('goods_detail', {id: subItem.id})">
+									<div class="goods-header">
+										<image class="img" :src="subItem.pic" :lazy-load="true"></image>
+									</div>
+									<div class="goods-footer">
+										<div class="goods-title">{{subItem.title}}</div>
+										<div class="goods-price">￥{{subItem.min_price}}</div>
+									</div>
+							</swiper-item>
+						</swiper>
 					</div>
 				</view>
 
+				<!-- 推荐页面的上拉无限加载商品 -->
 				<view style="padding: 10px 10px 0 10px;color: #000000;font-size: 20px;font-weight: bold;">
 					猜你喜欢
 				</view>
-				<!-- 推荐页面的上拉无限加载商品 -->
 				<view class="guess-you-like">
 					<view class="goods-list">
 						<mGoods v-for="(item, index) in tabList[TabCur].goodsList" :key="index" :goodsInfo="item" @click.native="goGoodsDetails(item)"></mGoods>
@@ -314,8 +399,8 @@
 				</view>
 			</view>
 			<!-- 其他tab栏里的数据 -->
-			<view class="content" v-if="TabCur !== 0">
-				<view class="limited-time">
+			<view class="content" v-show="TabCur !== 0">
+				<view class="limited-time" style="background-color: #FFFFFF;">
 					<view class="item" v-for="(item, index) in subTab" :key="index" @click="_clickSubTab(item)">
 						<view>
 							<image :src="item.thumb" :lazy-load="true"></image>
@@ -331,8 +416,8 @@
 					</view>
 				</view>
 			</view>
-			<uni-load-more :status="tabList[TabCur].requestData.moreStatus" :show-icon="true"></uni-load-more>
 
+			<uni-load-more :status="tabList[TabCur].requestData.moreStatus" :show-icon="true" class="load-more"></uni-load-more>
 
 			<!-- 悬浮的联系客服按钮	-->
 			<view class="customer-service" @click="contactCustomerService">
@@ -718,13 +803,17 @@
 
 <style lang="scss">
 	.container{
+		&.yuandan-bg {
+			background: #FFEAC2;
+		}
+
 		.search-and-tabs{
 			width: 100%;
 			height: calc( 80upx + 90upx);
 			overflow: hidden;
-			/*background-image: url('~@/static/images/double12-home/1.png');*/
-			/*background-repeat: no-repeat;*/
-			/*background-size: 100% 100%;*/
+			background-image: url('~@/static/images/yuandan-home/1.jpg');
+			background-repeat: no-repeat;
+			background-size: 100% 100%;
 			background-color: #fff;
 			position: fixed;
 			top: 0;
@@ -759,7 +848,7 @@
 
 			/* tab栏 */
 			.tabs{
-				color: #333333;
+				color: #FFFFFF;
 				font-size: $uni-font-size-base;
 				text-align: center;
 				width: 100%;
@@ -771,24 +860,67 @@
 			background: #fff;
 		}
 		.content{
-			.swiper-box{
-				padding: 10upx $uni-spacing-row-sm;
-				border-radius: 10upx;
-				background: #fff;
-				/*background-image: url('~@/static/images/double12-home/2.png');*/
-				/*background-repeat: no-repeat;*/
-				/*background-size: 100% 100%;*/
-				/*padding-bottom: 300upx;*/
-				overflow: hidden;
-				.swiper-item{
+			.yd {
+				background-image: url('~@/static/images/yuandan-home/2.jpg');
+				background-repeat: no-repeat;
+				background-size: 100% 100%;
+				height: 900upx;
+
+				.swiper-box{
+					padding: 0 $uni-spacing-row-sm;
 					border-radius: 10upx;
-					.banner-img{
-						width: 100%;
-						height: 268upx!important;
+					/*background: #fff;*/
+					/*background-image: url('~@/static/images/double12-home/2.png');*/
+					/*background-repeat: no-repeat;*/
+					/*background-size: 100% 100%;*/
+					/*padding-bottom: 300upx;*/
+					overflow: hidden;
+					.swiper-item{
 						border-radius: 10upx;
+						.banner-img{
+							width: 100%;
+							height: 268upx!important;
+							border-radius: 10upx;
+						}
+					}
+				}
+
+				/*推荐页面的小图标*/
+				.limited-time {
+					width: 100%;
+					display: flex;
+					flex-wrap: wrap;
+					flex-direction: row;
+					justify-content: flex-start;
+					align-items: center;
+					// background: #ffffff;
+					padding: $uni-spacing-row-base 0;
+					padding-top: 0;
+
+					.item {
+						display: flex;
+						flex-wrap: nowrap;
+						flex-direction: column;
+						align-items: center;
+						width: 20%;
+						padding: $uni-spacing-col-sm 0;
+
+						.image,
+						image {
+							width: 98upx;
+							height: 98upx;
+						}
+
+						.text,
+						text {
+							font-size: $uni-font-size-sm;
+							// color: $color-primary-plain;
+							color: #fff;
+						}
 					}
 				}
 			}
+
 			/*推荐页面的小图标*/
 			.limited-time{
 				width: 100%;
@@ -797,7 +929,7 @@
 				flex-direction: row;
 				justify-content: flex-start;
 				align-items: center;
-				background: #ffffff;
+				/*background: #ffffff;*/
 				padding: $uni-spacing-row-base 0;
 				padding-top: 0;
 				.item{
@@ -1190,7 +1322,7 @@
 						flex-wrap: nowrap;
 
 						.goods{
-							margin-right: 20upx;
+							padding:0 10upx;
 							width: 178upx;
 							height: 300upx;
 							display: flex;
@@ -1407,8 +1539,123 @@
 				}
 			}
 
+			/* 元旦秒杀 */
+			.yuandanmiao {
+				height: 811upx;
+				background: url("~@/static/images/yuandan-home/3.jpg") no-repeat;
+				background-size: 100% 100%;
+				overflow: hidden;
+				position: relative;
+				// .more{
+				// 	position: absolute;
+				// 	top: 40upx;
+				// 	right: ;
+				// }
+				.yd-more {
+					width: 90upx;
+					height: 30upx;
+					position: absolute;
+					right: 44upx;
+					top: 160upx;
+				}
+				&.pintuan {
+					background: url("~@/static/images/yuandan-home/4.jpg") no-repeat;
+					background-size: 100% 100%;
+				}
+				.ydms {
+					margin-top: 216upx;
+					position: relative;
+
+					.ydms-box {
+						display: flex;
+						justify-content: space-around;
+						align-items: center;
+						width: 710upx;
+						margin: 0 auto;
+
+						.ydms-shop {
+							width: 212upx;
+							height: 364upx;
+							padding: 0 8upx;
+							border: 1px solid #FDEBCA;
+							background-color: #FDEBCA;
+							box-shadow: 0px 4px 4px 0px rgba(191, 104, 25, 0.2);
+							position: relative;
+
+							.ydms-people {
+								width: 77upx;
+								line-height: 31upx;
+								text-align: center;
+								color: #FFFFFF;
+								font-size: 20upx;
+								background-color: #D80515;
+								position: absolute;
+								left: 16upx;
+								top: 172upx;
+								z-index: 99;
+							}
+
+							.tit-img {
+								position: absolute;
+								top: 0;
+								left: 0;
+								width: 42upx;
+								height: 42upx;
+								background: url("~@/static/images/yuandan-home/tit.png") no-repeat;
+								background-size: 100% 100%;
+							}
+
+							.ydms-img {
+								width: 196upx;
+								height: 196upx;
+								margin: 8upx;
+								display: block;
+								background-color: #fff;
+							}
+
+							.shop-tit {
+								@extend %overflow-1-line;
+								margin: 0;
+								font-size: 26upx;
+								color: #333333;
+								padding-left: 8upx;
+							}
+
+							.shop-price {
+								padding-left: 8upx;
+								height: 40upx;
+
+								.big-price {
+									color: #D80515;
+									font-size: 26upx;
+								}
+
+								.small-price {
+									color: #999999;
+									font-size: 18upx;
+									text-decoration: line-through;
+									margin-left: 5upx;
+								}
+							}
+
+							.shop-button {
+								width: 118upx;
+								line-height: 48upx;
+								text-align: center;
+								background: url("~@/static/images/yuandan-home/btn.png") no-repeat;
+								background-size: 100% 100%;
+								margin: 15upx auto;
+								color: #fff;
+								font-size: 20upx;
+							}
+						}
+					}
+				}
+			}
+
 			/*猜你喜欢 或者 其他页面的商品列表*/
 			.guess-you-like{
+				background-color: $background-color;
 				margin-top: 10upx;
 				.goods-list{
 					padding: 10upx $uni-spacing-row-sm 0 $uni-spacing-row-sm;
@@ -1418,6 +1665,11 @@
 					justify-content: space-between;
 				}
 			}
+		}
+
+		/* 上拉加载更多 */
+		.load-more{
+			background-color: $background-color;
 		}
 
 		/* 悬浮的联系客服按钮 */

@@ -6,22 +6,28 @@
         ></wuc-tab>
         <div class="div-block"></div>
         <div class="coupon-box" v-show="TabCur === 0">
-            <div class="item" @click="_goPage('coupon_details', {id: 10})">
+            <div class="item" v-for="(item, index) in tabList[TabCur].list" :key="index" @click="_goPage('coupon_details', {id: item.id})">
                 <div class="left">
                     <div class="content">
                         <div class="content-left">
                             <div class="content-left-price">
-                                <span>￥</span>
-                                20
+                                <block v-if="item.c_type === 1">
+                                    <span>￥</span>
+                                    {{ item.c_amo_dis }}
+                                </block>
+                                <block v-if="item.c_type === 2">
+                                    {{ item.c_amo_dis / 10}}
+                                    <span>折</span>
+                                </block>
                             </div>
-                            <div class="content-left-text">满498元可用</div>
+                            <div class="content-left-text">{{ item.c_use_cill === 0 ? '无使用门槛' : `满${item.c_use_cill}元可用` }}</div>
                         </div>
                         <div class="content-right">
                             <div class="content-right-title">
-                                全部商品可用全部商品可用全部商品可用全部商品可用全部商品可用
+                                {{ item.c_name }}
                             </div>
                             <div class="content-right-time">
-                                有效期至：2019-08-20
+                                {{ item.c_use_time | couponTime }}
                             </div>
                         </div>
                     </div>
@@ -29,33 +35,38 @@
                     <div class="semicircle-bottom"></div>
                 </div>
                 <div class="right">
-                    <div class="content">
+                    <div class="content" @click.stop="_goPage('home')">
                         去使用
                     </div>
                     <div class="semicircle-top"></div>
                     <div class="semicircle-bottom"></div>
                 </div>
-                <!-- 波浪线 -->
                 <div class="circle1"></div>
             </div>
         </div>
         <div class="coupon-box" v-show="TabCur === 1">
-            <div class="item grey" @click="_goPage('coupon_details', {id: 10})">
+            <div class="item grey" v-for="(item, index) in tabList[TabCur].list" :key="index" @click="_goPage('coupon_details', {id: item.id})">
                 <div class="left">
                     <div class="content">
                         <div class="content-left">
                             <div class="content-left-price grey-font">
-                                <span>￥</span>
-                                20
+                                <block v-if="item.c_type === 1">
+                                    <span>￥</span>
+                                    {{ item.c_amo_dis }}
+                                </block>
+                                <block v-if="item.c_type === 2">
+                                    {{ item.c_amo_dis / 10 }}
+                                    <span>折</span>
+                                </block>
                             </div>
-                            <div class="content-left-text">满498元可用</div>
+                            <div class="content-left-text">{{ item.c_use_cill === 0 ? '无使用门槛' : `满${item.c_use_cill}元可用` }}</div>
                         </div>
                         <div class="content-right">
                             <div class="content-right-title">
-                                全部商品可用全部商品可用全部商品可用全部商品可用全部商品可用
+                                {{ item.c_name }}
                             </div>
                             <div class="content-right-time">
-                                有效期至：2019-08-20
+                                {{ item.c_use_time | couponTime }}
                             </div>
                         </div>
                     </div>
@@ -69,27 +80,32 @@
                     <div class="semicircle-top grey-border"></div>
                     <div class="semicircle-bottom grey-border"></div>
                 </div>
-                <!-- 波浪线 -->
                 <div class="circle1"></div>
             </div>
         </div>
         <div class="coupon-box" v-show="TabCur === 2">
-            <div class="item grey" @click="_goPage('coupon_details', {id: 10})">
+            <div class="item grey" v-for="(item, index) in tabList[TabCur].list" :key="index" @click="_goPage('coupon_details', {id: item.id})">
                 <div class="left">
                     <div class="content">
                         <div class="content-left">
                             <div class="content-left-price grey-font">
-                                <span>￥</span>
-                                20
+                                <block v-if="item.c_type === 1">
+                                    <span>￥</span>
+                                    {{ item.c_amo_dis }}
+                                </block>
+                                <block v-if="item.c_type === 2">
+                                    {{ item.c_amo_dis / 10 }}
+                                    <span>折</span>
+                                </block>
                             </div>
-                            <div class="content-left-text">满498元可用</div>
+                            <div class="content-left-text">{{ item.c_use_cill === 0 ? '无使用门槛' : `满${item.c_use_cill}元可用` }}</div>
                         </div>
                         <div class="content-right">
                             <div class="content-right-title">
-                                全部商品可用全部商品可用全部商品可用全部商品可用全部商品可用
+                                {{ item.c_name }}
                             </div>
                             <div class="content-right-time">
-                                有效期至：2019-08-20
+                                {{ item.c_use_time | couponTime }}
                             </div>
                         </div>
                     </div>
@@ -103,7 +119,6 @@
                     <div class="semicircle-top grey-border"></div>
                     <div class="semicircle-bottom grey-border"></div>
                 </div>
-                <!-- 波浪线 -->
                 <div class="circle1"></div>
             </div>
         </div>
@@ -116,6 +131,7 @@
 </template>
 
 <script>
+    import { timeStampToTime } from '@/filter/index'
     import WucTab from '@/components/wuc-tab/wuc-tab.vue'
     import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue' //可选值：more（loading前）、loading（loading中）、noMore（没有更多了）
 
@@ -125,32 +141,36 @@
                 TabCur: 0,//当前选中的下标
                 tabList: [
                     {
-                        cname: '待使用(5)',
+                        cname: '待使用',
                         requestData: {
                             page:1,
                             limit:10,
+                            is_use: 1, // 正常
                             moreStatus: 'loading',
                         },
-                        list:[
-                            {name: '优惠券名',}
-                        ],
-                    },
-                    {
-                        cname: '已使用(5)',
-                        requestData: {
-                            page:1,
-                            limit:10,
-                            moreStatus: 'loading',
-                        },
+                        count: 0,
                         list:[],
                     },
                     {
-                        cname: '已失效(3)',
+                        cname: '已使用',
                         requestData: {
                             page:1,
                             limit:10,
+                            is_use: 2, // 已使用
                             moreStatus: 'loading',
                         },
+                        count: 0,
+                        list:[],
+                    },
+                    {
+                        cname: '已失效',
+                        requestData: {
+                            page:1,
+                            limit:10,
+                            is_use: 3, // 已失效
+                            moreStatus: 'loading',
+                        },
+                        count: 0,
                         list:[],
                     },
                 ],
@@ -162,12 +182,56 @@
             },
             async tabChange(index) {
                 this.TabCur = index
+                if (this.tabList[this.TabCur].requestData.page === 1){
+                    this.loadData()
+                }
             },
+            async loadData(){
+                this.tabList[this.TabCur].requestData.moreStatus = 'loading'
+                this.$minApi.myCouponList(this.tabList[this.TabCur].requestData).then(res => {
+                    if (res.code === 200) {
+                        this.tabList[this.TabCur].count = res.data.count
+                        if (this.tabList[this.TabCur].requestData.page === 1){
+                            this.tabList[this.TabCur].list = res.data.data
+                        } else {
+                            this.tabList[this.TabCur].list.push(...res.data.data)
+                        }
+                        if (res.data.data.length < this.tabList[this.TabCur].requestData.limit) {
+                            this.tabList[this.TabCur].requestData.moreStatus = 'noMore'
+                        } else {
+                            this.tabList[this.TabCur].requestData.moreStatus = 'more'
+                        }
+                    }
+                }).catch(err => {
+                    console.log(err)
+                    this.tabList[this.TabCur].requestData.moreStatus = 'noMore'
+                })
+            },
+        },
+        filters: {
+            couponTime: function (value) {
+                let str = ''
+                if (value instanceof Object) {
+                    str += timeStampToTime(value.start_time, true) + '至' + timeStampToTime(value.end_time, true)
+                } else {
+                    str += `领取日起${value}天内使用`
+                }
+                return str
+            }
         },
         components: {
             WucTab,
             uniLoadMore,
-
+        },
+        onReachBottom(){
+            if (this.tabList[this.TabCur].requestData.moreStatus === 'noMore') {
+                return
+            }
+            this.tabList[this.TabCur].requestData.page ++
+            this.loading()
+        },
+        onLoad(){
+            this.loadData()
         },
     }
 </script>

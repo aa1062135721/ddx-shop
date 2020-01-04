@@ -3,16 +3,23 @@
         <div class="container">
             <div class="coupon">
                 <div class="coupon-top">
-                    <div class="title">奶粉纸尿裤专场</div>
-                    <div class="time">有效日期：领券次日起5天内可用</div>
+                    <div class="title">{{responseData.c_name}}</div>
+                    <div class="time">有效日期：{{ responseData.c_use_time | couponTime }}</div>
                 </div>
                 <hr class="coupon-hr">
                 <div class="coupon-bottom">
                     <div class="price">
                         <div class="text">面值</div>
-                        <div>20.00</div>
+                        <div v-if="responseData.c_type === 1">
+                            {{ responseData.c_amo_dis }}
+                            <span>￥</span>
+                        </div>
+                        <div v-if="responseData.c_type === 2">
+                            {{ responseData.c_amo_dis / 10 }}
+                            <span>折</span>
+                        </div>
                     </div>
-                    <div class="price-sub">有效日期：领券次日起5天内可用</div>
+                    <div class="price-sub">{{ responseData.c_use_cill === 0 ? '无使用门槛' : `满${responseData.c_use_cill}元可用` }}</div>
                 </div>
 
                 <div class="semicircle-left"></div>
@@ -20,21 +27,17 @@
             </div>
             <div class="box">
                 <div class="btn">
-                    <div class="now-use">立即使用</div>
+                    <div class="now-use" @click="_goPage('home')">立即使用</div>
                 </div>
                 <div class="div-block"></div>
                 <div class="footer">
                     <div class="item">
                         <div class="title">使用说明</div>
-                        <div class="content">奶粉纸尿裤专场</div>
+                        <div class="content">{{responseData.c_content}}</div>
                     </div>
                     <div class="item">
                         <div class="title">优惠内容</div>
-                        <div class="content">全部商品可用，满200元，减免20元优惠券</div>
-                    </div>
-                    <div class="item">
-                        <div class="title">使用时间</div>
-                        <div class="content">领券次日起5天内可用</div>
+                        <div class="content">{{ responseData.c_use_scene | whoCanUse }}</div>
                     </div>
                 </div>
             </div>
@@ -43,19 +46,77 @@
 </template>
 
 <script>
+    import { timeStampToTime } from '@/filter/index'
+
     export default {
         data() {
             return {
-                key: "dfasd"
+                id: 0,
+                responseData: {
+                    id: 3,
+                    c_name: "30%折扣优惠券",
+                    c_type: 2,
+                    c_amo_dis: 30,
+                    c_use_scene: 0,
+                    c_use_cill: 100,
+                    c_use_price: 2,
+                    c_use_time: "55",
+                    c_content: "30%折扣优惠券",
+                    cusScene_id: "",
+                }
             }
         },
         methods: {
-            name() {
+            _goPage(url, query = {}){
+                this.$openPage({name:url, query})
+            },
+            loadData() {
+                this.$minApi.couponDetails({id: this.id}).then(res => {
+                    if (res.code === 200) {
+                        this.responseData = res.data
+                    }
+                }).catch(err => {
 
+                })
+            }
+        },
+        filters: {
+            couponTime: function (value) {
+                let str = ''
+                if (value instanceof Object) {
+                    str += timeStampToTime(value.start_time, true) + '至' + timeStampToTime(value.end_time, true)
+                } else {
+                    str += `领取日起${value}天内使用`
+                }
+                return str
+            },
+            // 0全部商品可用、1指定商品可用、2指定商品不可用、3指定品牌可用、4指定品牌不可用
+            whoCanUse: function (val) {
+                let str = ''
+                switch (val) {
+                    case 0:
+                        str = '全部商品可用'
+                        break
+                    case 1:
+                        str = '指定商品可用'
+                        break
+                    case 2:
+                        str = '指定商品不可用'
+                        break
+                    case 3:
+                        str = '指定品牌可用'
+                        break
+                    case 4:
+                        str = '指定品牌不可用'
+                        break
+                }
+                return str
             }
         },
         onLoad() {
-          console.log("其他页面带过来的参数：", this.$parseURL())
+            console.log("其他页面带过来的参数：", this.$parseURL())
+            this.id = this.$parseURL().id
+            this.loadData()
         },
     }
 </script>

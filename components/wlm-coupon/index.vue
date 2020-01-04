@@ -3,21 +3,27 @@
             <div class="coupon">
                 <div class="my-coupon-title">领取优惠券</div>
                 <div class="my-coupon-box">
-                    <div class="item" @click="_goPage('coupon_details', {id: 10})">
+                    <div class="item" v-for="(item, index) in list" :key="index" @click="_goPage('coupon_details', {id: item.id})">
                         <div class="left">
                             <div class="content">
                                 <div class="content-left">
                                     <div class="content-left-price">
-                                        <span>￥</span>
-                                        20
+                                        <block v-if="item.c_type === 1">
+                                            <span>￥</span>
+                                            {{ item.c_amo_dis }}
+                                        </block>
+                                        <block v-if="item.c_type === 2">
+                                            {{ item.c_amo_dis / 10}}
+                                            <span>折</span>
+                                        </block>
                                     </div>
                                 </div>
                                 <div class="content-right">
                                     <div class="content-right-title">
-                                        单订金额满168元可使用
+                                        {{ item.c_name }}
                                     </div>
                                     <div class="content-right-time">
-                                        有效期至：2019-08-20
+                                        {{ item.c_use_time | couponTime }}
                                     </div>
                                 </div>
                             </div>
@@ -25,107 +31,12 @@
                             <div class="semicircle-bottom"></div>
                         </div>
                         <div class="right">
-                            <div class="content">
-                                去使用
-                                <div class="sub-has-more">持有1张</div>
+                            <div class="content" @click.stop="getCoupon(item.id)">
+                                领取
                             </div>
                             <div class="semicircle-top"></div>
                             <div class="semicircle-bottom"></div>
                         </div>
-                        <!-- 波浪线 -->
-                        <div class="circle1"></div>
-                    </div>
-                    <div class="item" @click="_goPage('coupon_details', {id: 10})">
-                        <div class="left">
-                            <div class="content">
-                                <div class="content-left">
-                                    <div class="content-left-price">
-                                        <span>￥</span>
-                                        20
-                                    </div>
-                                </div>
-                                <div class="content-right">
-                                    <div class="content-right-title">
-                                        单订金额满168元可使用
-                                    </div>
-                                    <div class="content-right-time">
-                                        有效期至：2019-08-20
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="semicircle-top"></div>
-                            <div class="semicircle-bottom"></div>
-                        </div>
-                        <div class="right">
-                            <div class="content">
-                                去使用
-                            </div>
-                            <div class="semicircle-top"></div>
-                            <div class="semicircle-bottom"></div>
-                        </div>
-                        <!-- 波浪线 -->
-                        <div class="circle1"></div>
-                    </div>
-                    <div class="item" @click="_goPage('coupon_details', {id: 10})">
-                        <div class="left">
-                            <div class="content">
-                                <div class="content-left">
-                                    <div class="content-left-price">
-                                        <span>￥</span>
-                                        20
-                                    </div>
-                                </div>
-                                <div class="content-right">
-                                    <div class="content-right-title">
-                                        单订金额满168元可使用
-                                    </div>
-                                    <div class="content-right-time">
-                                        有效期至：2019-08-20
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="semicircle-top"></div>
-                            <div class="semicircle-bottom"></div>
-                        </div>
-                        <div class="right">
-                            <div class="content">
-                                去使用
-                            </div>
-                            <div class="semicircle-top"></div>
-                            <div class="semicircle-bottom"></div>
-                        </div>
-                        <!-- 波浪线 -->
-                        <div class="circle1"></div>
-                    </div>
-                    <div class="item grey" @click="_goPage('coupon_details', {id: 10})">
-                        <div class="left">
-                            <div class="content">
-                                <div class="content-left">
-                                    <div class="content-left-price">
-                                        <span>￥</span>
-                                        20
-                                    </div>
-                                </div>
-                                <div class="content-right">
-                                    <div class="content-right-title">
-                                        单订金额满168元可使用
-                                    </div>
-                                    <div class="content-right-time">
-                                        有效期至：2019-08-20
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="semicircle-top"></div>
-                            <div class="semicircle-bottom"></div>
-                        </div>
-                        <div class="right">
-                            <div class="content grey-border grey-bg grey-font">
-                                已领取
-                            </div>
-                            <div class="semicircle-top grey-border"></div>
-                            <div class="semicircle-bottom grey-border"></div>
-                        </div>
-                        <!-- 波浪线 -->
                         <div class="circle1"></div>
                     </div>
                 </div>
@@ -135,12 +46,14 @@
 </template>
 
 <script>
+    import { timeStampToTime } from '@/filter/index'
     import uniPopup from '@/components/uni-popup/uni-popup.vue'
 
     export default {
         name: 'coupon', // 商品/秒杀/拼团 详情领取优惠券弹框
         data() {
             return {
+                list: []
             }
         },
         props: {
@@ -148,10 +61,26 @@
                 type: Boolean,
                 default: false
             },
+            goodsId: {
+                type: Number,
+                default: 0,
+            },
+        },
+        filters: {
+            couponTime: function (value) {
+                let str = ''
+                if (value instanceof Object) {
+                    str += timeStampToTime(value.start_time, true) + '至' + timeStampToTime(value.end_time, true)
+                } else {
+                    str += `领取日起${value}天内使用`
+                }
+                return str
+            }
         },
         watch: {
             isShow(newValue, oldValue) {
                 if (newValue) {
+                    this.loadData()
                     this.open()
                 }
             }
@@ -170,6 +99,28 @@
                if (!e.show){
                    this.$emit("update:isShow", false)
                }
+            },
+            loadData(){
+                const requestData = {
+                    item_id: this.goodsId,
+                }
+                this.$minApi.couponList(requestData).then(res => {
+                    if (res.code === 200){
+                        this.list = res.data.data
+                    }
+                }).catch(err => {
+                    console.log(err)
+                })
+            },
+
+            // 领取优惠券
+            getCoupon(id) {
+              this.$minApi.collectCoupon({ id }).then(res => {
+                  this.close()
+                  uni.showToast({title: res.msg, duration: 1500, mask: false, icon: 'none'})
+              }).catch(err => {
+                  console.log(err)
+              })
             },
         },
         components: {

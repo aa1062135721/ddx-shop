@@ -71,6 +71,7 @@
 				您购买成功后，实际支付的价格已含9.1%的跨境代扣税
 			</view>
 		</div>
+
 		<!--	优惠券	-->
 		<div class="coupon-title">
 			<div class="item" @click="pouponIsShow = true">
@@ -85,7 +86,8 @@
 				<div class="two"><span class="iconfont icon-ddx-shop-content_arrows"></span></div>
 			</div>
 		</div>
-		<coupon :isShow.sync="pouponIsShow"></coupon>
+		<coupon :isShow.sync="pouponIsShow" :goodsId="goodsInfo.id"></coupon>
+
 		<!--服务说明-->
 		<view class="my-service-title-btn" @click="openService">
 			<view class="item">

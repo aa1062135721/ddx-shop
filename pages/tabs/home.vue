@@ -40,9 +40,9 @@
 			<view class="content" v-show="TabCur === 0">
 
 				<!-- 专题广告图 -->
-				<!-- <div class="thematic">
+				<div class="thematic">
 					<image class="thematicImg" src="../../static/images/thematic/thematic.png" @click="_goPage('thematic')"></image>
-				</div> -->
+				</div>
 				<!--	新人专享 	-->
 				<!--
 				<view class="newcomer" @click="_goPage('newcomer')">
@@ -1006,8 +1006,8 @@
 				.thematicImg {
 					display: block;
 					width: 710upx;
-					height: 187upx;
-					margin: 0 auto;
+					height: 162upx;
+					margin: 20upx auto;
 					border-radius: 10upx;
 				}
 			}

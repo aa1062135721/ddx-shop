@@ -790,6 +790,13 @@ export default {
     spikeTimeList(data){
       return minRequest.get('/Assemble/seckill_time', data)
     },
+	
+	/**
+	 * 专题活动接口
+	 */
+	thematicList(data){
+	  return minRequest.get('/index/getActivityList', data)
+	},
 
   }
 }

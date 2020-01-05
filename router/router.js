@@ -380,6 +380,14 @@ const router = new MinRouter({
 			name:'pre_store',
 			login:true
 		},
+
+		//专题首页
+		{
+			path:"pages/thematic/thematic",
+			type:'navigateTo',
+			name:'thematic',
+			login:false
+		},
 	]
 })
 

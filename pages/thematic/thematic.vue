@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<div class="banner"></div>
-		<div class="time">距离每周专场 基地直供结束还有 <span class="timeS">{{timer.d}}</span>天<span class="timeS">{{timer.h}}</span>:<span class="timeS">{{timer.m}}</span>:<span
+		<div class="time">距离每周专场 基地直供结束仅有 <span class="timeS">{{timer.d}}</span>天<span class="timeS">{{timer.h}}</span>:<span class="timeS">{{timer.m}}</span>:<span
 			 class="timeS">{{timer.s}}</span></div>
 		<div class="content">
 			<div class="content-nav">

@@ -41,9 +41,7 @@
 
 				<!-- 专题广告图 -->
 				<div class="thematic">
-					<image class="thematicImg" src="../../static/images/thematic/thematicHome.png" @click="_goPage('thematic')"></image>
-					<image class="goImg Big" src="../../static/images/thematic/bigGo.png" v-show="goImg" @click="_goPage('thematic')"></image>
-					<image class="goImg S" src="../../static/images/thematic/smallGo.png" v-show="!goImg" @click="_goPage('thematic')"></image>
+					<image class="thematicImg" src="../../static/images/thematic/thematic.png" @click="_goPage('thematic')"></image>
 				</div>
 				<!--	新人专享 	-->
 				<!--
@@ -446,8 +444,8 @@
 </template>
 
 <script>
-    import WucTab from '@/components/wuc-tab/wuc-tab.vue'
-	// import separator from "@/components/separator.vue"
+	import WucTab from '@/components/wuc-tab/wuc-tab.vue'
+	import separator from "@/components/separator.vue"
 	import mGoods from '@/components/goods/goods.vue'
 	import WlmTab from '@/components/wlm-tab/wlm-tab.vue'
 	import backTop from '@/components/back-top/back-top.vue'
@@ -457,7 +455,7 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
-	let goTime = null;
+
 	export default {
 		onTabItemTap(e) {
 			console.log(e)
@@ -495,11 +493,8 @@
 					src: '../../static/back-top/backtop.png',
 					scrollTop: 0
 				},
-				
-				scrollTop: 0, 
-				
-				goImg:false, // go图片
-				
+				scrollTop: 0,
+
 				/**
 				 * 推荐里的数据
 				 */
@@ -542,7 +537,6 @@
 			// this._getExplosion()
 			this._getCategoryGoodsList()
 			this._getUnlimitedGoods()
-			this._goImage()
 		},
 		async onReachBottom() {
 			if (this.tabList[this.TabCur].requestData.moreStatus === 'noMore') {
@@ -795,14 +789,7 @@
 					id: goods.id
 				})
 			},
-			
-			// go图片动态
-			async _goImage(){
-				 goTime = await setInterval(()=>{
-					this.goImg = !this.goImg
-				},333)
-			},
-			
+
 			// 打开合从聊天弹窗
 			contactCustomerService() {
 				if (this.userInfo.id) {
@@ -820,7 +807,7 @@
 		},
 		components: {
 			WucTab,
-			// separator,
+			separator,
 			mGoods,
 			WlmTab,
 			uniLoadMore,
@@ -867,8 +854,7 @@
 			},
 		},
 		onUnload() {
-			clearInterval(goTime)
-			goTime = null;
+
 		},
 	}
 </script>
@@ -967,7 +953,7 @@
 				/*background-size: 100% 100%;*/
 				/*padding-bottom: 300upx;*/
 				overflow: hidden;
-				margin-bottom: 20upx; // 图标 和 banner 距离
+			
 				.swiper-item {
 					border-radius: 10upx;
 			
@@ -1017,28 +1003,12 @@
 
 			/*专题页面图片*/
 			.thematic {
-				position: relative;
 				.thematicImg {
 					display: block;
 					width: 710upx;
 					height: 162upx;
 					margin: 20upx auto;
 					border-radius: 10upx;
-				}
-				.goImg{
-					position: absolute;
-					top:20upx;
-					right:40upx;
-					&.Big{
-						width: 117upx;
-						height: 117upx;
-					}
-					&.S{
-						width: 94upx;
-						height: 94upx;
-						top: 30upx;
-						right: 50upx;
-					}
 				}
 			}
 

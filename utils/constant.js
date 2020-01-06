@@ -1,8 +1,8 @@
 /**
  * 当前是开发环境还是生产环境
  */
-export const NODE_ENV = 'development'
-// export const NODE_ENV = 'production'
+// export const NODE_ENV = 'development'
+export const NODE_ENV = 'production'
 
 
 /**

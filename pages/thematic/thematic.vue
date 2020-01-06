@@ -1,14 +1,17 @@
 <template>
 	<view class="container">
+		<!-- #ifdef H5 -->
+		<div id="my-h5-back" @click="_goBack"></div>
+		<!-- #endif -->
 		<div class="banner"></div>
 		<div class="time">距离每周专场 基地直供结束仅有 <span class="timeS">{{timer.d}}</span>天<span class="timeS">{{timer.h}}</span>:<span class="timeS">{{timer.m}}</span>:<span
 			 class="timeS">{{timer.s}}</span></div>
 		<div class="content">
-			<div class="content-nav">
-				<div class="nav-item" :class="reqData.type == 0 ? 'active' : ''" @click="change(0)">口腔清洁</div>
-				<div class="nav-item" :class="reqData.type == 1 ? 'active' : ''" @click="change(1)">洗护品</div>
-				<div class="nav-item" :class="reqData.type == 2 ? 'active' : ''" @click="change(2)">卫生巾</div>
-				<div class="nav-item" :class="reqData.type == 3 ? 'active' : ''" @click="change(3)">唇膏</div>
+			<div class="content-nav" :class="scrollTop >= 350 ? 'fix' : '' ">
+				<div class="nav-item" :style="reqData.type == 0 ? {color:active,fontWeight:400} : ''" @click="change(0)">口腔清洁</div>
+				<div class="nav-item" :style="reqData.type == 1 ? {color:active,fontWeight:400} : ''" @click="change(1)">洗护品</div>
+				<div class="nav-item" :style="reqData.type == 2 ? {color:active,fontWeight:400} : ''" @click="change(2)">卫生巾</div>
+				<div class="nav-item" :style="reqData.type == 3 ? {color:active,fontWeight:400} : ''" @click="change(3)">唇膏</div>
 			</div>
 			<div class="ad"></div>
 			<div class="item" v-for="(item,index) in shopList" :key="index" @click="_goPage('goods_detail', {id: item.item_id})">
@@ -26,6 +29,17 @@
 				shopList:[],
 				reqData:{
 					type:1
+				},
+				scrollTop:0,
+				active:'#F0000B'
+			}
+		},
+		watch:{
+			scrollTop(){
+				if(this.scrollTop >= 350){
+					this.active = '#FFFFFF'
+				}else{
+					this.active = '#F0000B'
 				}
 			}
 		},
@@ -41,6 +55,10 @@
 		onUnload(){
 		    clearInterval(myTimer)
 		    myTimer = null
+		},
+		onPageScroll(res){
+			console.log("距离",res.scrollTop);// 距离页面顶部距离
+			this.scrollTop = res.scrollTop
 		},
 		methods: {
 			getRTime() {
@@ -93,6 +111,10 @@
 					query
 				})
 			},
+			
+			_goBack() {
+			      uni.navigateBack()
+			}
 		}
 	}
 </script>
@@ -127,7 +149,6 @@
 		.content {
 			background-color: #F0000B;
 			padding: 40upx 30upx;
-
 			.content-nav {
 				width: 690upx;
 				height: 98upx;
@@ -139,12 +160,13 @@
 				color: #666666;
 				font-size: 32upx;
 				background-color: #FFFFFF;
-
-				.nav-item {
-					&.active {
-						color: #F0000B;
-						font-weight: 400;
-					}
+				&.fix {
+					position: fixed;
+					top: 0;
+					z-index: 999;
+					background-color: #F0000B;
+					border-radius: 0;
+					color: #333333;
 				}
 			}
 

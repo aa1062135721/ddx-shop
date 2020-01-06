@@ -10,7 +10,7 @@
 		<div class="content-nav" :class="isFix ? 'fix' : '' ">
 			<div class="nav-item" :style="reqData.type == 0 ? {color:active,fontWeight:400} : ''" @click="change(0)">口腔清洁</div>
 			<div class="nav-item" :style="reqData.type == 1 ? {color:active,fontWeight:400} : ''" @click="change(1)">洗护品</div>
-			<div class="nav-item" :style="reqData.type == 2 ? {color:active,fontWeight:400} : ''" @click="change(2)">卫生巾</div>
+			<div class="nav-item" :style="reqData.type == 2 ? {color:active,fontWeight:400} : ''" @click="change(2)">女神护理</div>
 			<div class="nav-item" :style="reqData.type == 3 ? {color:active,fontWeight:400} : ''" @click="change(3)">唇膏</div>
 		</div>
 		<div class="content">

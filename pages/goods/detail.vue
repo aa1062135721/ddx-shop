@@ -80,7 +80,7 @@
 						<span class="tag">领券</span>
 					</div>
 					<div class="content">
-						满200减20，满400减40，满100减10
+						领取优惠券
 					</div>
 				</div>
 				<div class="two"><span class="iconfont icon-ddx-shop-content_arrows"></span></div>

@@ -26,14 +26,18 @@
                 <div class="semicircle-right"></div>
             </div>
             <div class="box">
-                <div class="btn">
-                    <div class="now-use" @click="_goPage('home')">立即使用</div>
-                </div>
-                <div class="div-block"></div>
+<!--                <div class="btn">-->
+<!--                    <div class="now-use" @click="_goPage('home')">立即使用</div>-->
+<!--                </div>-->
+<!--                <div class="div-block"></div>-->
                 <div class="footer">
                     <div class="item">
                         <div class="title">使用说明</div>
                         <div class="content">{{responseData.c_content}}</div>
+                    </div>
+                    <div class="item">
+                        <div class="title">使用规则</div>
+                        <div class="content">{{ responseData.c_use_price === 1 ? '原价上使用' : '会员价上使用' }}</div>
                     </div>
                     <div class="item">
                         <div class="title">优惠内容</div>
@@ -53,15 +57,15 @@
             return {
                 id: 0,
                 responseData: {
-                    id: 3,
-                    c_name: "30%折扣优惠券",
-                    c_type: 2,
-                    c_amo_dis: 30,
+                    id: 0,
+                    c_name: "0",
+                    c_type: 1,
+                    c_amo_dis: 0,
                     c_use_scene: 0,
-                    c_use_cill: 100,
+                    c_use_cill: 0,
                     c_use_price: 2,
-                    c_use_time: "55",
-                    c_content: "30%折扣优惠券",
+                    c_use_time: 0,
+                    c_content: "0",
                     cusScene_id: "",
                 }
             }

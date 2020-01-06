@@ -27,6 +27,9 @@
                                 {{ item.c_name }}
                             </div>
                             <div class="content-right-time">
+                                {{ item.c_use_price === 1 ? '原价上使用' : '会员价上使用' }}
+                            </div>
+                            <div class="content-right-time">
                                 {{ item.c_use_time | couponTime }}
                             </div>
                         </div>
@@ -66,6 +69,9 @@
                                 {{ item.c_name }}
                             </div>
                             <div class="content-right-time">
+                                {{ item.c_use_price === 1 ? '原价上使用' : '会员价上使用' }}
+                            </div>
+                            <div class="content-right-time">
                                 {{ item.c_use_time | couponTime }}
                             </div>
                         </div>
@@ -103,6 +109,9 @@
                         <div class="content-right">
                             <div class="content-right-title">
                                 {{ item.c_name }}
+                            </div>
+                            <div class="content-right-time">
+                                {{ item.c_use_price === 1 ? '原价上使用' : '会员价上使用' }}
                             </div>
                             <div class="content-right-time">
                                 {{ item.c_use_time | couponTime }}

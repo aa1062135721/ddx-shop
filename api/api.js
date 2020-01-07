@@ -826,6 +826,12 @@ export default {
       return minRequest.post('/order/getCanUseCoupon', data)
     },
 
+    /**
+     * 下单的时候选择了优惠券，得到最后优惠后的价格
+     */
+    orderSubmitChoosesCouponList(data){
+      return minRequest.post('/order/getCouponPrice', data)
+    },
 
   }
 }

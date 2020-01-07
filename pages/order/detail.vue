@@ -81,16 +81,16 @@
         <view class="sum-section">
             <view class="item">
                 <view>商品金额</view>
-                <view>￥{{(parseFloat(responseData.amount) - parseFloat(responseData.postage)) | moneyToFixed}}</view>
+                <view>￥{{(parseFloat(responseData.old_amount) - parseFloat(responseData.postage)) | moneyToFixed}}</view>
             </view>
             <view class="item">
                 <view>运费</view>
                 <view>￥{{responseData.postage}}</view>
             </view>
-<!--            <view class="item" v-if="responseData.discount">-->
-<!--                <view>优惠券</view>-->
-<!--                <view>￥{{responseData.discount}}</view>-->
-<!--            </view>-->
+            <view class="item" v-if="responseData.discount">
+                <view>优惠券</view>
+                <view>- ￥{{responseData.discount}}</view>
+            </view>
             <view class="item">
                 <view>付款总金额</view>
                 <view style="color: #dd524d;">￥{{responseData.amount | moneyToFixed}}</view>

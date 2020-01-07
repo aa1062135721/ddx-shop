@@ -67,7 +67,14 @@
         <view class="fixed">
             <view class="other">
                 <view class="num">共{{sumNum}}件，</view>
-                <view class="money">合计：<span class="money-num">￥{{(parseFloat(sumMoney) + parseFloat(freight)) | moneyToFixed}}</span></view>
+                <view class="money">合计：
+                    <span class="money-num" v-if="chooseCoupon.receive_id == 0">
+                        ￥{{(parseFloat(sumMoney) + parseFloat(freight)) | moneyToFixed}}
+                    </span>
+                    <span class="money-num" v-else>
+                        ￥{{ chooseCoupon.responsesData.money | moneyToFixed }}
+                    </span>
+                </view>
                 <view class="btn" @click="submitOrder">提交订单</view>
             </view>
         </view>
@@ -120,6 +127,12 @@
               chooseCoupon: {
                   receive_id: 0,
                   coupon: {},
+                  // 选择了优惠券，显示的价格
+                  responsesData: {
+                      money: 0,  //订单总金额（包含运费）,
+                      discount: 0,  //总优惠了多少钱
+                      postage: 0,    //运费
+                  }
               },
           }
         },
@@ -301,10 +314,23 @@
                             this.chooseCoupon.coupon = item
                         }
                     })
+                    this.getCouponPrice()
                 } else {
                     this.chooseCoupon.coupon = {}
                 }
                 console.log(this.chooseCoupon)
+            },
+            // 选择优惠券后，得到的优惠金额
+            getCouponPrice(){
+                const requestData = {
+                    receive_id: this.chooseCoupon.receive_id,
+                    item: this.requestData.item
+                }
+                this.$minApi.orderSubmitChoosesCouponList(requestData).then(res => {
+                    if (res.code === 200){
+                        this.chooseCoupon.responsesData = res.data
+                    }
+                })
             },
 
             //获取运费

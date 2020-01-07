@@ -18,7 +18,7 @@
 			</div>
 			<!--	站位符 占.search-and-tabs的位置	-->
 			<!-- <view class="my-block"></view> -->
-			
+
 			<!-- 推荐 -- banner-->
 			<view class="swiper-box" v-if="swiperList.length">
 				<swiper circular="true" autoplay="true" :indicator-dots="true" indicator-active-color="#FFF" style="width: 100%;height: 268upx;">
@@ -268,6 +268,7 @@
 								<div class="ydms-box">
 									<block v-for="(item, index) in assemble_list" :key="index">
 										<div class="ydms-shop" v-if="index>3 && index<7" @click="_goPage('group_buy_detail', {assemble_id: item.id, item_id: item.item_id})">
+											<div class="ydms-people">{{ item.assemble_num }}人团</div>
 											<image class="ydms-img" :src="item.pic" :lazy-load="true"></image>
 											<image class="tit-img" :lazy-load="true"></image>
 											<p class="shop-tit">{{item.item_name}}</p>
@@ -406,7 +407,7 @@
 					<view class="goods-list">
 						<mGoods v-for="(item, index) in tabList[TabCur].goodsList" :key="index" :goodsInfo="item" @click.native="goGoodsDetails(item)"></mGoods>
 					</view>
-					
+
 					<uni-load-more :status="tabList[0].requestData.moreStatus" :show-icon="true" class="load-more"></uni-load-more>
 				</view>
 
@@ -459,6 +460,9 @@
 	} from 'vuex'
 	let goTime = null;
 	export default {
+		/**
+
+		// 从其他tab页面到首页, 回到推荐页面的顶部
 		onTabItemTap(e) {
 			console.log(e)
 			if (e.index === 0) {
@@ -469,6 +473,8 @@
 				this.TabCur = 0
 			}
 		},
+
+		 */
 		onPageScroll(e) {
 			this.backTop.scrollTop = e.scrollTop;
 		},
@@ -495,11 +501,11 @@
 					src: '../../static/back-top/backtop.png',
 					scrollTop: 0
 				},
-				
-				scrollTop: 0, 
-				
-				goImg:false, // go图片
-				
+
+				scrollTop: 0,
+
+				goImg: false, // go图片
+
 				/**
 				 * 推荐里的数据
 				 */
@@ -795,14 +801,14 @@
 					id: goods.id
 				})
 			},
-			
+
 			// go图片动态
 			async _goImage(){
 				 goTime = await setInterval(()=>{
 					this.goImg = !this.goImg
 				},333)
 			},
-			
+
 			// 打开合从聊天弹窗
 			contactCustomerService() {
 				if (this.userInfo.id) {
@@ -956,8 +962,8 @@
 				height: calc(80upx + 90upx);
 				background: #fff;
 			}
-			
-			
+
+
 			.swiper-box {
 				padding: 0 $uni-spacing-row-sm;
 				border-radius: 10upx;
@@ -970,7 +976,7 @@
 				margin-bottom: 20upx; // 图标 和 banner 距离
 				.swiper-item {
 					border-radius: 10upx;
-			
+
 					.banner-img {
 						width: 100%;
 						height: 268upx !important;

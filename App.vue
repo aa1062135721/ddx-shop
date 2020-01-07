@@ -1,23 +1,6 @@
 <script>
     import {mapState, mapActions, mapMutations} from 'vuex'
 
-    // 合从 客服
-    (function(d, w, c) {
-        let s = d.createElement('script');
-        w[c] = w[c] || function() {
-            (w[c].z = w[c].z || []).push(arguments);
-        };
-        s.async = true;
-        s.src = 'https://pubres.aihecong.com/hecong.js';
-        if (d.head) d.head.appendChild(s);
-    })(document, window, '_AIHECONG');
-    _AIHECONG('ini', {
-        entId : 15463,
-        button : false, //去除聊天按钮
-        history : true, //添加该参数实现默认读取上一次聊天记录
-        // uniqueId : '5ccb3020bbf4693783745351', //网站会员唯一ID，请不要超过64个字符
-    });
-
 	export default {
         computed: {
             ...mapState(['userInfo'])
@@ -157,10 +140,6 @@
 		},
 		onShow: function() {
 			console.log('App Show')
-
-            if (this.userInfo.id) {
-                _AIHECONG('update',{ entId : '15463', uniqueId : this.userInfo.id });
-            }
 		},
 		onHide: function() {
 			console.log('App Hide')

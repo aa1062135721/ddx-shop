@@ -59,6 +59,8 @@ const actions = {
         await _that.$minApi.getUserInfo().then(async res => {
             console.log('vuex中利用actions，去异步获取用户信息，并存到vuex里', res)
             if (res.code === 200) {
+                // 合从客服，指定唯一的会员标识
+                _AIHECONG('update', { entId :'15463', uniqueId: res.data.id, history: true, button : false,});
                 await commit('setUserInfo', res.data)
                 await commit('setSubscribe', 1)
             }

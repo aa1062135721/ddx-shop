@@ -792,10 +792,17 @@ export default {
     },
 	
 	/**
+	 * 专题类型接口
+	 */
+	thematicType(data){
+	  return minRequest.get('/Special/getTypeList', data)
+  },
+  
+	/**
 	 * 专题活动接口
 	 */
 	thematicList(data){
-	  return minRequest.get('/index/getActivityList', data)
+	  return minRequest.get('/Special/getItemList', data)
 	},
 
   }

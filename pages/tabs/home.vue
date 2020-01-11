@@ -40,11 +40,11 @@
 			<view class="content" v-show="TabCur === 0">
 
 				<!-- 专题广告图 -->
-				<div class="thematic">
+				<!-- <div class="thematic">
 					<image class="thematicImg" src="../../static/images/thematic/thematicHome.png" @click="_goPage('thematic')"></image>
 					<image class="goImg Big" src="../../static/images/thematic/bigGo.png" v-show="goImg" @click="_goPage('thematic')"></image>
 					<image class="goImg S" src="../../static/images/thematic/smallGo.png" v-show="!goImg" @click="_goPage('thematic')"></image>
-				</div>
+				</div> -->
 				<!--	新人专享 	-->
 				<!--
 				<view class="newcomer" @click="_goPage('newcomer')">
@@ -211,11 +211,76 @@
 				</div>
 				-->
 
+				<!-- 每周专场 -->
+				<div class="yuandanmiao thematicShop">
+					<div class="thematicWord" v-if="word == 1">专人选货</div>
+					<div class="thematicWord" v-else-if="word == 2">好货不断</div>
+					<div class="thematicWord" v-else>无中间商</div>
+					<view class="yd-more" @click="_goPage('thematic')"></view>
+					<div class="ydms tma">
+						<swiper circular="true" indicator-active-color="#FFF" style="width: 710upx;height: 374upx;margin:0 auto;">
+							<swiper-item class="yd-swiper">
+								<div class="ydms-box">
+									<block v-for="(item, index) in thematicList1" :key="index">
+										<div class="ydms-shop" v-if="index<3" @click="_goPage('goods_detail', {id: item.item_info.id})">
+											<image class="ydms-img" :src="item.item_info.pic" :lazy-load="true"></image>
+											<image class="tit-img" :lazy-load="true"></image>
+											<p class="shop-tit">{{item.item_info.title}}</p>
+											<p class="shop-price"><span class="big-price">￥{{item.item_info.min_price}}</span><span class="small-price">￥{{item.item_info.max_price}}</span></p>
+											<div class="shop-button">立即购买</div>
+										</div>
+									</block>
+								</div>
+							</swiper-item>
+							<swiper-item class="yd-swiper" v-if="thematicList1.length > 3">
+								<div class="ydms-box">
+									<block v-for="(item, index) in thematicList1" :key="index">
+										<div class="ydms-shop" v-if="index >= 3 && index < 6" @click="_goPage('goods_detail', {id: item.item_id})">
+											<image class="ydms-img" :src="item.item_info.pic" :lazy-load="true"></image>
+											<image class="tit-img" :lazy-load="true"></image>
+											<p class="shop-tit">{{item.item_info.title}}</p>
+											<p class="shop-price"><span class="big-price">￥{{item.item_info.min_price}}</span><span class="small-price">￥{{item.item_info.max_price}}</span></p>
+											<div class="shop-button">立即购买</div>
+										</div>
+									</block>
+								</div>
+							</swiper-item>
+						</swiper>
+						<swiper circular="true" indicator-active-color="#FFF" style="width: 710upx;height: 382upx;margin:0 auto;">
+							<swiper-item class="yd-swiper">
+								<div class="ydms-box">
+									<block v-for="(item, index) in thematicList2" :key="index">
+										<div class="ydms-shop" v-if="index<3" @click="_goPage('goods_detail', {id: item.item_info.id})">
+											<image class="ydms-img" :src="item.item_info.pic" :lazy-load="true"></image>
+											<image class="tit-img" :lazy-load="true"></image>
+											<p class="shop-tit">{{item.item_info.title}}</p>
+											<p class="shop-price"><span class="big-price">￥{{item.item_info.min_price}}</span><span class="small-price">￥{{item.item_info.max_price}}</span></p>
+											<div class="shop-button">立即购买</div>
+										</div>
+									</block>
+								</div>
+							</swiper-item>
+							<swiper-item class="yd-swiper" v-if="thematicList2.length > 3">
+								<div class="ydms-box">
+									<block v-for="(item, index) in thematicList1" :key="index">
+										<div class="ydms-shop" v-if="index >= 3 && index < 6" @click="_goPage('goods_detail', {id: item.item_id})">
+											<image class="ydms-img" :src="item.item_info.pic" :lazy-load="true"></image>
+											<image class="tit-img" :lazy-load="true"></image>
+											<p class="shop-tit">{{item.item_info.title}}</p>
+											<p class="shop-price"><span class="big-price">￥{{item.item_info.min_price}}</span><span class="small-price">￥{{item.item_info.max_price}}</span></p>
+											<div class="shop-button">立即购买</div>
+										</div>
+									</block>
+								</div>
+							</swiper-item>
+						</swiper>
+					</div>
+				</div>
 				<!-- 元旦秒杀 -->
 				<div class="yuandanmiao" v-if="seckill_list.length">
 					<view class="yd-more" @click="_goPage('spike_list')"></view>
 					<div class="ydms">
-						<swiper circular="true" :indicator-dots="true" indicator-active-color="#FFF" style="width: 100%;height: 442upx;">
+						<swiper circular="true" :indicator-dots="true" indicator-active-color="#FFF" style="width: 710upx;height: 442upx;margin:0 auto;">
 							<swiper-item class="yd-swiper">
 								<div class="ydms-box">
 									<block v-for="(item, index) in seckill_list" :key="index">
@@ -249,7 +314,7 @@
 				<div class="yuandanmiao pintuan" v-if="assemble_list.length">
 					<view class="yd-more" @click="_goPage('group_buy')"></view>
 					<div class="ydms">
-						<swiper circular="true" :indicator-dots="true" indicator-active-color="#FFF" style="width: 100%;height: 442upx;">
+						<swiper circular="true" :indicator-dots="true" indicator-active-color="#FFF" style="width: 710upx;height: 442upx;margin:0 auto;">
 							<swiper-item class="yd-swiper">
 								<div class="ydms-box">
 									<block v-for="(item, index) in assemble_list" :key="index">
@@ -362,7 +427,7 @@
 				-->
 
 				<!-- 六个分类，内容部分可以向左滑动-->
-				<view style="padding: 10px;color: #000000;font-size: 20px;font-weight: bold;" v-if="categoryGoodsList.length">
+				<view style="padding: 10px;color: #000000;font-size: 48upx;font-weight: bold;" v-if="categoryGoodsList.length">
 					好物精选
 				</view>
 				<view class="some-category" v-if="categoryGoodsList.length" v-for="(item, index) in categoryGoodsList" :key="index">
@@ -400,7 +465,7 @@
 				</view>
 
 				<!-- 推荐页面的上拉无限加载商品 -->
-				<view style="padding: 10px 10px 0 10px;color: #000000;font-size: 20px;font-weight: bold;">
+				<view style="padding: 10px 10px 0 10px;color: #000000;font-size: 48upx;font-weight: bold;">
 					猜你喜欢
 				</view>
 				<view class="guess-you-like">
@@ -495,6 +560,16 @@
 				}, ],
 				//首页 非推荐里的tab栏，二级tab
 				subTab: [],
+				
+				// 专题栏 文字跳动
+				word:1,
+				thematicData:{ // 专题请求对象
+					hot:1,
+					page:1,
+					limit:12
+				},
+				thematicList1:[], // 专题列表
+				thematicList2:[], // 专题列表
 
 				// 回到顶部
 				backTop: {
@@ -543,12 +618,14 @@
 			this._getBanner()
 			this._getIcon()
 			this._getNotice()
+			this._getThematic()
 			// this._getCombination()
 			// this._getSpikeList()
 			// this._getExplosion()
 			this._getCategoryGoodsList()
 			this._getUnlimitedGoods()
-			this._goImage()
+			// this._goImage() // 专题Go图片
+			this._goWord()
 		},
 		async onReachBottom() {
 			if (this.tabList[this.TabCur].requestData.moreStatus === 'noMore') {
@@ -773,7 +850,18 @@
 					}
 				})
 			},
-
+			async _getThematic(){
+				await this.$minApi.thematicList(this.thematicData).then(res=>{
+					console.log("专题",res)
+					if(res.code == 200){
+						let arr = res.data.data
+						this.thematicList1 = arr.splice(0,6);
+						console.log("数组",arr)
+						this.thematicList2 = arr.splice(0,6);
+						// console.log("数组2",this.thematicList1)
+					}
+				})
+			},
 			// 去到商品详情/限时购详情/拼团详情
 			goGoodsDetails(goods) {
 				console.log('商品信息：', goods)
@@ -803,11 +891,23 @@
 			},
 
 			// go图片动态
-			async _goImage(){
-				 goTime = await setInterval(()=>{
-					this.goImg = !this.goImg
-				},333)
+			// async _goImage(){
+			// 	 goTime = await setInterval(()=>{
+			// 		this.goImg = !this.goImg
+			// 	},333)
+			// },
+			
+			// 专题入口问题跳动
+			async _goWord(){
+				goTime = await setInterval(()=>{
+					if(this.word == 3){
+						this.word = 1
+					}else {
+						this.word++
+					}
+				},1500)
 			},
+
 
 			// 打开合从聊天弹窗
 			contactCustomerService() {
@@ -1719,7 +1819,7 @@
 
 			/* 元旦秒杀 */
 			.yuandanmiao {
-				height: 811upx;
+				height: 722upx;
 				background: url("~@/static/images/yuandan-home/3.jpg") no-repeat;
 				background-size: 100% 100%;
 				overflow: hidden;
@@ -1739,14 +1839,30 @@
 				}
 
 				&.pintuan {
+					height: 833upx;
 					background: url("~@/static/images/yuandan-home/4.jpg") no-repeat;
 					background-size: 100% 100%;
 				}
-
+				
+				&.thematicShop{
+					height: 1174upx;
+					background: url("~@/static/images/yuandan-home/2.jpg") no-repeat;
+					background-size: 100% 100%;
+					position: relative;
+					.thematicWord{
+						font-size: 34upx;
+						font-weight: 800;
+						color: #fcc972;
+						line-height: 164upx;
+						text-align: center;
+					}
+				}
 				.ydms {
 					margin-top: 216upx;
 					position: relative;
-
+					&.tma{
+						margin-top: 60upx;
+					}
 					.ydms-box {
 						display: flex;
 						justify-content: space-around;
@@ -1825,7 +1941,7 @@
 								text-align: center;
 								background: url("~@/static/images/yuandan-home/btn.png") no-repeat;
 								background-size: 100% 100%;
-								margin: 15upx auto;
+								margin: 10upx auto;
 								color: #fff;
 								font-size: 20upx;
 							}

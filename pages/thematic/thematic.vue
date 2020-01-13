@@ -248,6 +248,7 @@ export default {
   .content {
     background-color: #c20200;
     padding: 40upx 30upx;
+    padding-bottom: 0;
     display: flex;
     flex-wrap: wrap;
     .ad {

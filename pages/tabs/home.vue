@@ -246,7 +246,7 @@
 								</div>
 							</swiper-item>
 						</swiper>
-						<swiper circular="true" indicator-active-color="#FFF" style="width: 710upx;height: 382upx;margin:0 auto;">
+						<swiper circular="true" :indicator-dots="true" indicator-active-color="#FFF" style="width: 710upx;height: 436upx;margin:0 auto;">
 							<swiper-item class="yd-swiper">
 								<div class="ydms-box">
 									<block v-for="(item, index) in thematicList2" :key="index">
@@ -262,7 +262,7 @@
 							</swiper-item>
 							<swiper-item class="yd-swiper" v-if="thematicList2.length > 3">
 								<div class="ydms-box">
-									<block v-for="(item, index) in thematicList1" :key="index">
+									<block v-for="(item, index) in thematicList2" :key="index">
 										<div class="ydms-shop" v-if="index >= 3 && index < 6" @click="_goPage('goods_detail', {id: item.item_id})">
 											<image class="ydms-img" :src="item.item_info.pic" :lazy-load="true"></image>
 											<image class="tit-img" :lazy-load="true"></image>
@@ -855,10 +855,10 @@
 					console.log("专题",res)
 					if(res.code == 200){
 						let arr = res.data.data
-						this.thematicList1 = arr.splice(0,6);
-						console.log("数组",arr)
-						this.thematicList2 = arr.splice(0,6);
-						// console.log("数组2",this.thematicList1)
+						this.thematicList1 = arr.slice(0,6);
+						console.log("数组",this.thematicList1)
+						this.thematicList2 = arr.slice(6);
+						console.log("数组2",this.thematicList2)
 					}
 				})
 			},

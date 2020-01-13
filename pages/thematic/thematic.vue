@@ -46,6 +46,11 @@
 
 <script>
 import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue";
+import * as Constant from '../../utils/constant'
+import {
+		mapState,
+		mapMutations
+	} from 'vuex'
 let myTimer = null;
 export default {
   data() {
@@ -83,7 +88,7 @@ export default {
   components: {
     uniLoadMore
   },
-  onLoad() {
+  async onLoad() {
     this._getType();
     this._getList();
     // this.getRTime();
@@ -92,6 +97,33 @@ export default {
         this.getRTime();
       }, 1000);
     });
+
+    // 分享功能
+    	// 如果是安卓平台 每次进入商品详情页面就会调用微信配置，自定义分享商品
+			if ((await this.getPlatform()).isAndroid) {
+				await this.wxConfig()
+			}
+			let url = Constant[Constant.NODE_ENV].thematicURL
+			if (this.userInfo.id) {
+				url += `?user_id=${this.userInfo.id}`
+			}
+			url = Constant[Constant.NODE_ENV].shareRedirectURL + encodeURIComponent(url)
+			this.$nextTick(async () => {
+				let param1 = {
+						title: '捣蛋熊商城-每周专场', // 分享标题
+						desc: '专人选货 好货不断 无中间商', // 分享描述
+						link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+						imgUrl: `${window.location.origin}/h5/static/images/thematic/thematicBanner.jpg`, // 分享图标
+						success: function() {}
+					},
+					param2 = {
+						title: '捣蛋熊商城-专题分享', // 分享标题
+						link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+						imgUrl: `${window.location.origin}/h5/static/images/thematic/thematicBanner.jpg`, // 分享图标
+						success: function() {}
+					}
+				await this.wxConigShareGoods(param1, param2)
+			})
   },
   onUnload() {
     clearInterval(myTimer);
@@ -193,7 +225,10 @@ export default {
         uni.navigateBack();
       }
     }
-  }
+  },
+  computed:{
+    ...mapState(['userInfo']),
+  },
 };
 </script>
 

@@ -90,10 +90,10 @@
             // this.setToken('c5b4b6f2f974a8d509a50b4a70930c990c9d2aef735e6bcfea50da292a963718')
             try {
                 const token = uni.getStorageSync('token')
+                this.setSubscribe(1)
                 if (token) {
                     this.setToken(token)
                     this.asyncGetUserInfo()
-                    this.setSubscribe(1)
                 } else {
                     let code = this.getUrlParam("code") //是否存在code
                     if (code && param.path && param.path !== 'pages2/user/distributor'){ //用户自己的登录操作，不是系统自己调用的，只有在 pages2/user/distributor下 系统可能会自己调用获取code

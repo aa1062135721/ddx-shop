@@ -23,7 +23,7 @@ export const production = {
     inviteFriends: 'https://www.ddxm661.com/h5/#/pages2/user/distributor', // 邀请别人成为分销员 别人打开的url
     spikeList: 'https://www.ddxm661.com/h5/#/pages/spike/list', // 秒杀列表分享 别人打开的url
     groupBuyList: 'https://www.ddxm661.com/h5/#/pages/group-buy/group-buy', // 拼团列表分享 别人打开的url
-
+    thematicURL: 'https://www.ddxm661.com/h5/#/pages/thematic/thematic' // 专题页面分享 
 }
 
 
@@ -45,5 +45,5 @@ export const development = {
     inviteFriends: 'https://ddxm661.com/h5/#/pages2/user/distributor', // 邀请别人成为分销员 别人打开的url
     spikeList: 'https://ddxm661.com/h5/#/pages/spike/list', // 秒杀列表分享 别人打开的url
     groupBuyList: 'https://ddxm661.com/h5/#/pages/group-buy/group-buy', // 拼团列表分享 别人打开的url
-
+    thematicURL: 'https://ddxm661.com/h5/#/pages/thematic/thematic' // 专题页面分享
 }

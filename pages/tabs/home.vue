@@ -212,6 +212,7 @@
 				-->
 
 				<!-- 每周专场 -->
+				<!--
 				<div class="yuandanmiao thematicShop">
 					<div class="thematicWord" v-if="word == 1">专人选货</div>
 					<div class="thematicWord" v-else-if="word == 2">好货不断</div>
@@ -276,6 +277,8 @@
 						</swiper>
 					</div>
 				</div>
+				-->
+
 				<!-- 元旦秒杀 -->
 				<div class="yuandanmiao" v-if="seckill_list.length">
 					<view class="yd-more" @click="_goPage('spike_list')"></view>
@@ -560,7 +563,7 @@
 				}, ],
 				//首页 非推荐里的tab栏，二级tab
 				subTab: [],
-				
+
 				// 专题栏 文字跳动
 				word:1,
 				thematicData:{ // 专题请求对象
@@ -618,14 +621,14 @@
 			this._getBanner()
 			this._getIcon()
 			this._getNotice()
-			this._getThematic()
+			// this._getThematic()
 			// this._getCombination()
 			// this._getSpikeList()
 			// this._getExplosion()
 			this._getCategoryGoodsList()
 			this._getUnlimitedGoods()
 			// this._goImage() // 专题Go图片
-			this._goWord()
+			// this._goWord()
 		},
 		async onReachBottom() {
 			if (this.tabList[this.TabCur].requestData.moreStatus === 'noMore') {
@@ -896,7 +899,7 @@
 			// 		this.goImg = !this.goImg
 			// 	},333)
 			// },
-			
+
 			// 专题入口问题跳动
 			async _goWord(){
 				goTime = await setInterval(()=>{
@@ -1843,7 +1846,7 @@
 					background: url("~@/static/images/yuandan-home/4.jpg") no-repeat;
 					background-size: 100% 100%;
 				}
-				
+
 				&.thematicShop{
 					height: 1174upx;
 					background: url("~@/static/images/yuandan-home/2.jpg") no-repeat;

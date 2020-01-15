@@ -1,70 +1,339 @@
 <template>
-    <div>
-        <!-- #ifdef H5 -->
-        <div id="my-h5-back" @click="_goBack"></div>
-        <!-- #endif -->
-
-        <div class="bg">
-            <img src="./bg.png" alt="背景图片">
-        </div>
-        <div class="goods-list">
-            <img class="img" src="./1.png" alt="商品1" @click="_goPage('spike_detail', {seckill_id: 7, item_id: 2227})">
-            <img class="img" src="./2.png" alt="商品2" @click="_goPage('spike_detail', {seckill_id: 8, item_id: 2228})">
-            <img class="img" src="./3.png" alt="商品3" @click="_goPage('spike_detail', {seckill_id: 9, item_id: 2345})">
-            <img class="img" src="./4.png" alt="商品4" @click="_goPage('spike_detail', {seckill_id: 10, item_id: 2354})">
-            <img class="img" src="./5.png" alt="商品5" @click="_goPage('spike_detail', {seckill_id: 11, item_id: 2358})">
-            <img class="img" src="./6.png" alt="商品6" @click="_goPage('spike_detail', {seckill_id: 12, item_id: 2406})">
-            <img class="img" src="./7.png" alt="商品7" @click="_goPage('spike_detail', {seckill_id: 13, item_id: 2395})">
-            <img class="img" src="./8.png" alt="商品8" @click="_goPage('spike_detail', {seckill_id: 14, item_id: 2428})">
-            <img class="img" src="./9.png" alt="商品9" @click="_goPage('spike_detail', {seckill_id: 15, item_id: 2430})">
-            <img class="img" src="./10.png" alt="商品10" @click="_goPage('spike_detail', {seckill_id: 16, item_id: 2360})">
-            <img class="img" src="./11.png" alt="商品11" @click="_goPage('spike_detail', {seckill_id: 17, item_id: 2367})">
-            <img class="img" src="./12.png" alt="商品12" @click="_goPage('spike_detail', {seckill_id: 18, item_id: 2384})">
-            <img class="img" src="./13.png" alt="商品13" @click="_goPage('spike_detail', {seckill_id: 19, item_id: 2379})">
-            <img class="img" src="./14.png" alt="商品14" @click="_goPage('spike_detail', {seckill_id: 22, item_id: 2160})">
-        </div>
+  <div>
+    <!-- #ifdef H5 -->
+    <div id="my-h5-back" @click="_goBack"></div>
+    <!-- #endif -->
+    <div class="bg">
+      <img src="./bg.jpg" />
     </div>
+    <luBarTabNav :tabList="tabList" :barFixed="barFixed" :barId="barId" ref="barTabNav">
+      <div class="goods-box">
+        <view id="item1" class="goods">
+          <view class="type">
+            <div class="icon-left"></div>
+            <div class="typeTitle">爆款推荐</div>
+            <div class="icon-right"></div>
+          </view>
+          <div class="hot-goods">
+            <div class="hot-img">
+              <img src="./shop.jpg" />
+            </div>
+            <div class="hot-info">
+              <div class="content">露安适甜睡新生护理礼盒护理礼盒 1盒装</div>
+              <div class="hot-price">
+                <div class="price-left">
+                  <div class="old">原价399</div>
+                  <div class="new">促销价:</div>
+                </div>
+                <div class="price-right">199</div>
+              </div>
+              <div class="hot-btn">立即购买</div>
+            </div>
+          </div>
+        </view>
+        <view id="item2" class="goods">
+          <view class="type">
+            <div class="icon-left"></div>
+            <div class="typeTitle">母婴用品</div>
+            <div class="icon-right"></div>
+          </view>
+          <div class="typeGoods">
+            <div class="goods-item">
+              <img src="./6.png" />
+            </div>
+            <div class="goods-item">
+              <img src="./6.png" />
+            </div>
+            <div class="goods-item">
+              <img src="./6.png" />
+            </div>
+            <div class="goods-item">
+              <img src="./6.png" />
+            </div>
+            <div class="goods-item">
+              <img src="./6.png" />
+            </div>
+            <div class="goods-item">
+              <img src="./6.png" />
+            </div>
+          </div>
+        </view>
+        <view id="item3" class="goods">
+          <view class="type">
+            <div class="icon-left"></div>
+            <div class="typeTitle">童鞋童装</div>
+            <div class="icon-right"></div>
+          </view>
+          <div class="typeGoods">
+            <div class="goods-item">
+              <img src="./6.png" />
+            </div>
+            <div class="goods-item">
+              <img src="./6.png" />
+            </div>
+            <div class="goods-item">
+              <img src="./6.png" />
+            </div>
+            <div class="goods-item">
+              <img src="./6.png" />
+            </div>
+            <div class="goods-item">
+              <img src="./6.png" />
+            </div>
+            <div class="goods-item">
+              <img src="./6.png" />
+            </div>
+          </div>
+        </view>
+        <view id="item4" class="goods">
+          <view class="type">
+            <div class="icon-left"></div>
+            <div class="typeTitle">家居清洁</div>
+            <div class="icon-right"></div>
+          </view>
+          <div class="typeGoods">
+            <div class="goods-item">
+              <img src="./6.png" />
+            </div>
+            <div class="goods-item">
+              <img src="./6.png" />
+            </div>
+            <div class="goods-item">
+              <img src="./6.png" />
+            </div>
+            <div class="goods-item">
+              <img src="./6.png" />
+            </div>
+            <div class="goods-item">
+              <img src="./6.png" />
+            </div>
+            <div class="goods-item">
+              <img src="./6.png" />
+            </div>
+          </div>
+        </view>
+      </div>
+    </luBarTabNav>
+  </div>
 </template>
 
 <script>
-    export default {
-        name: "newcomer", // 新人专享
-        methods:{
-            _goPage(url, query = {}){
-                this.$openPage({name:url, query})
-            },
-            // 返回按钮
-            _goBack() {
-                uni.navigateBack()
-            },
+import luBarTabNav from "@/components/lu-bar-tab-nav/lu-bar-tab-nav.vue";
+export default {
+  name: "newcomer", // 新人专享
+  data() {
+    return {
+      barFixed: true,
+      barTop: 0,
+      iconShow: true,
+      barId: "0",
+      tabList: [
+        {
+          text: "爆款推荐",
+          navTarget: "#item1"
+        },
+        {
+          text: "母婴用品",
+          navTarget: "#item2"
+        },
+        {
+          text: "童装童鞋",
+          navTarget: "#item3"
+        },
+        {
+          text: "家居清洁",
+          navTarget: "#item4"
         }
+      ]
+    };
+  },
+  components: { luBarTabNav },
+  onPageScroll(res) {
+    console.log("距离", res.scrollTop); // 距离页面顶部距离
+    this.$refs.barTabNav._selectedTab(res.scrollTop);
+  },
+  created () {
+    this._getType()
+    this._getGoods()
+  },
+  methods: {
+
+    // 获取类型接口
+    _getType(){
+      this.$minApi.newmanType({
+        type:2
+      }).then(res=>{
+        console.log(res)
+      })
+    },
+
+    // 获取商品
+    _getGoods(){
+      this.$minApi.newmanList({
+        st_id:11
+      }).then(res=>{
+        console.log("爆款",res)
+      })
+    },
+
+    _goPage(url, query = {}) {
+      this.$openPage({ name: url, query });
+    },
+
+    // 返回按钮
+    _goBack() {
+      uni.navigateBack();
+    },
+
+    _go(idx) {
+      this.num = idx;
+      console.log(this.num);
     }
+  }
+};
 </script>
 
 <style scoped lang="scss">
-    *{
-        background: #FF3F48;
-    }
-.bg{
+.bg {
+  width: 100%;
+  height: 1016upx;
+  img {
     width: 100%;
-    height: 1239upx;
-    img {
-        width: 100%;
-    }
+  }
 }
-    .goods-list{
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        padding: $uni-spacing-row-base;
-        margin-top: -250upx;
-        .img{
-            width:338upx;
-            height:512upx;
-            border-radius:8upx;
-            overflow: hidden;
-            margin: 8upx;
-        }
-
+.nav {
+  width: 100%;
+  height: 88upx;
+  background-color: #fff;
+  color: #333333;
+  font-size: 26upx;
+  .nav-item {
+    width: 25%;
+    height: 88upx;
+    line-height: 88upx;
+    text-align: center;
+    float: left;
+    &.active {
+      background-color: #d2251e;
     }
+  }
+}
+.goods-box {
+  padding: 0 20upx;
+  background-color: #be0c13;
+  .goods {
+    .type {
+      height: 110upx;
+      line-height: 110upx;
+      text-align: center;
+      color: #fff;
+      font-weight: 450;
+      & > div {
+        display: inline-block;
+      }
+      .typeTitle {
+        margin: 0 15upx;
+      }
+      .icon-left {
+        width: 114upx;
+        height: 28upx;
+        background: url(./left.png) no-repeat;
+        background-size: 100% 100%;
+      }
+      .icon-right {
+        width: 114upx;
+        height: 28upx;
+        background: url(./right.png) no-repeat;
+        background-size: 100% 100%;
+      }
+    }
+    .hot-goods {
+      width: 710upx;
+      height: 388upx;
+      box-sizing: border-box;
+      border-radius: 10upx;
+      background-color: #fdecc2;
+      padding: 30upx;
+      margin-bottom: 24upx;
+      & > div {
+        float: left;
+      }
+      &.right {
+        & > div {
+          float: right;
+        }
+        .hot-img {
+          margin-right: 0;
+          margin-left: 20upx !important;
+        }
+      }
+      .hot-info {
+        .content {
+          margin-top: 10upx;
+          color: #333333;
+          font-size: 30upx;
+          width: 302upx;
+          line-height: 40upx;
+          font-weight: 400;
+        }
+        .hot-price {
+          margin-top: 20upx;
+          // display: flex;
+          // justify-content: space-between;
+          // align-items: flex-end;
+          color: #f81f1f;
+          font-size: 30upx;
+          & > div {
+            display: inline-block;
+          }
+          .old {
+            font-size: 24upx;
+            text-decoration: line-through;
+            color: #999999;
+          }
+          .price-right {
+            font-size: 84upx;
+            font-weight: bold;
+            margin-left: 10upx;
+          }
+        }
+        .hot-btn {
+          width: 142upx;
+          line-height: 48upx;
+          margin-top: 20upx;
+          text-align: center;
+          background-color: #e30c14;
+          color: #fff;
+          font-size: 26upx;
+          border-radius: 10upx;
+        }
+      }
+      .hot-img {
+        width: 328upx;
+        height: 328upx;
+        margin-right: 20upx;
+        border-radius: 10upx; 
+        overflow: hidden;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+    .typeGoods {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      .goods-item {
+        width: 348upx;
+        height: 512upx;
+        margin-bottom: 14upx;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+}
 </style>

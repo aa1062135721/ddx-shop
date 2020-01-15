@@ -803,6 +803,20 @@ export default {
 	 */
 	thematicList(data){
 	  return minRequest.get('/Special/getItemList', data)
+  },
+  
+	/**
+	 * 新人专区类型接口
+	 */
+	newmanType(data){
+	  return minRequest.get('/Special/getTypeList', data)
+  },
+  
+	/**
+	 * 新人专区列表接口
+	 */
+	newmanList(data){
+	  return minRequest.get('/Exclusive/getItemList', data)
 	},
 
   }

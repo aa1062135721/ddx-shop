@@ -52,11 +52,11 @@
 			<view class="sub-title" v-if="goodsInfo.subtitle">
 				{{goodsInfo.subtitle}}
 			</view>
-			<view class="promise">
-				温馨提示：下单后48小时内发货
-			</view>
 			<view class="promise" v-if="goodsInfo.promise">
 				{{goodsInfo.promise}}
+			</view>
+			<view class="promise">
+				温馨提示：物流已停运，商城自助下单，春节期间订单，2月1日起陆续发货。
 			</view>
 		</view>
 

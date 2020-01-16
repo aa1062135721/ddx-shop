@@ -128,52 +128,73 @@ export default {
       iconShow: true,
       barId: "0",
       tabList: [
-        {
-          text: "爆款推荐",
-          navTarget: "#item1"
-        },
-        {
-          text: "母婴用品",
-          navTarget: "#item2"
-        },
-        {
-          text: "童装童鞋",
-          navTarget: "#item3"
-        },
-        {
-          text: "家居清洁",
-          navTarget: "#item4"
-        }
-      ]
+        // {
+        //   text: "爆款推荐",
+        //   navTarget: "#item1",
+        // },
+        // {
+        //   text: "母婴用品",
+        //   navTarget: "#item2"
+        // },
+        // {
+        //   text: "童装童鞋",
+        //   navTarget: "#item3"
+        // },
+        // {
+        //   text: "家居清洁",
+        //   navTarget: "#item4"
+        // }
+      ],
+      // 类型id 数组,
+      typeID: [],
+      // 爆款数组
+      hotList: [],
+      // 普通数组
+      typeList: []
     };
   },
   components: { luBarTabNav },
   onPageScroll(res) {
-    console.log("距离", res.scrollTop); // 距离页面顶部距离
+    // console.log("距离", res.scrollTop); // 距离页面顶部距离
     this.$refs.barTabNav._selectedTab(res.scrollTop);
   },
-  created () {
-    this._getType()
-    this._getGoods()
+  created() {
+    this._getType();
   },
   methods: {
-
     // 获取类型接口
-    _getType(){
-      this.$minApi.newmanType({
-        type:2
-      }).then(res=>{
-        console.log(res)
-      })
+    _getType() {
+      this.$minApi
+        .newmanType({
+          type: 2
+        })
+        .then(res => {
+          // console.log(res);
+          if (res.code == 200) {
+            res.data.data.forEach((item, index) => {
+              let obj = {
+                text: item.title,
+                navTarget: `#${index}`
+              };
+              this.tabList.push(obj);
+              this.typeID.push(item.id);
+            });
+            this._getGoods();
+          }
+        });
     },
 
     // 获取商品
-    _getGoods(){
-      this.$minApi.newmanList({
-        st_id:11
-      }).then(res=>{
-        console.log("爆款",res)
-      })
+    _getGoods() {
+      // console.log(this.typeID)
+      this.typeID.forEach(item => {
+        console.log(item);
+        this.$minApi.newmanList({
+          st_id:item
+        }).then(res=>{
+          console.log("输出每个类型的商品",res.data.data)
+        })
+      });
     },
 
     _goPage(url, query = {}) {
@@ -312,7 +333,7 @@ export default {
         width: 328upx;
         height: 328upx;
         margin-right: 20upx;
-        border-radius: 10upx; 
+        border-radius: 10upx;
         overflow: hidden;
         img {
           width: 100%;

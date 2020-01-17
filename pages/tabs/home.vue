@@ -1822,7 +1822,7 @@
 
 			/* 元旦秒杀 */
 			.yuandanmiao {
-				height: 722upx;
+				height: 833upx;
 				background: url("~@/static/images/yuandan-home/3.jpg") no-repeat;
 				background-size: 100% 100%;
 				overflow: hidden;

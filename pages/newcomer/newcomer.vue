@@ -8,107 +8,37 @@
     </div>
     <luBarTabNav :tabList="tabList" :barFixed="barFixed" :barId="barId" ref="barTabNav">
       <div class="goods-box">
-        <view id="item1" class="goods">
+        <view id="item0" class="goods">
           <view class="type">
             <div class="icon-left"></div>
-            <div class="typeTitle">爆款推荐</div>
+            <div class="typeTitle">{{tabList[0].text}}</div>
             <div class="icon-right"></div>
           </view>
-          <div class="hot-goods">
+          <div class="hot-goods" v-for="(item,index) in tabList[0].data" :key="index" :class="index % 2 == 1 ? 'right':''">
             <div class="hot-img">
-              <img src="./shop.jpg" />
+              <img :src="item.item_pic" />
             </div>
             <div class="hot-info">
-              <div class="content">露安适甜睡新生护理礼盒护理礼盒 1盒装</div>
+              <div class="content">{{item.item_info[0].item_name}}</div>
               <div class="hot-price">
-                <div class="price-left">
-                  <div class="old">原价399</div>
-                  <div class="new">促销价:</div>
-                </div>
-                <div class="price-right">199</div>
+                <div class="new-price">促销价：<span class="word">{{item.item_info[0].price}}</span></div>
+                <div class="old-price">原价{{item.item_info[0].old_price}}</div>
               </div>
               <div class="hot-btn">立即购买</div>
             </div>
           </div>
         </view>
-        <view id="item2" class="goods">
+        <view :id="item.nav" class="goods" v-for="(item,index) in tabList.slice(1)" :key="index"  >
           <view class="type">
             <div class="icon-left"></div>
-            <div class="typeTitle">母婴用品</div>
+            <div class="typeTitle">{{item.text}}</div>
             <div class="icon-right"></div>
           </view>
           <div class="typeGoods">
-            <div class="goods-item">
-              <img src="./6.png" />
-            </div>
-            <div class="goods-item">
-              <img src="./6.png" />
-            </div>
-            <div class="goods-item">
-              <img src="./6.png" />
-            </div>
-            <div class="goods-item">
-              <img src="./6.png" />
-            </div>
-            <div class="goods-item">
-              <img src="./6.png" />
-            </div>
-            <div class="goods-item">
-              <img src="./6.png" />
-            </div>
-          </div>
-        </view>
-        <view id="item3" class="goods">
-          <view class="type">
-            <div class="icon-left"></div>
-            <div class="typeTitle">童鞋童装</div>
-            <div class="icon-right"></div>
-          </view>
-          <div class="typeGoods">
-            <div class="goods-item">
-              <img src="./6.png" />
-            </div>
-            <div class="goods-item">
-              <img src="./6.png" />
-            </div>
-            <div class="goods-item">
-              <img src="./6.png" />
-            </div>
-            <div class="goods-item">
-              <img src="./6.png" />
-            </div>
-            <div class="goods-item">
-              <img src="./6.png" />
-            </div>
-            <div class="goods-item">
-              <img src="./6.png" />
-            </div>
-          </div>
-        </view>
-        <view id="item4" class="goods">
-          <view class="type">
-            <div class="icon-left"></div>
-            <div class="typeTitle">家居清洁</div>
-            <div class="icon-right"></div>
-          </view>
-          <div class="typeGoods">
-            <div class="goods-item">
-              <img src="./6.png" />
-            </div>
-            <div class="goods-item">
-              <img src="./6.png" />
-            </div>
-            <div class="goods-item">
-              <img src="./6.png" />
-            </div>
-            <div class="goods-item">
-              <img src="./6.png" />
-            </div>
-            <div class="goods-item">
-              <img src="./6.png" />
-            </div>
-            <div class="goods-item">
-              <img src="./6.png" />
+            <div class="goods-item" v-for="(goods,idx) in item.data" :key="idx">
+              <img :src="goods.item_pic" class="itemImag"/>
+              <p class="goods-word">{{goods.item_name}}</p>
+              <div><span class="new">￥{{goods.item_info[0].price}}</span><span class="old">{{goods.item_info[0].old_price}}</span></div>
             </div>
           </div>
         </view>
@@ -174,10 +104,12 @@ export default {
             res.data.data.forEach((item, index) => {
               let obj = {
                 text: item.title,
-                navTarget: `#${index}`
+                navTarget: `#item${index}`,
+                nav:`item${index}`,
+                id:item.id,
+                data:[]
               };
               this.tabList.push(obj);
-              this.typeID.push(item.id);
             });
             this._getGoods();
           }
@@ -187,14 +119,16 @@ export default {
     // 获取商品
     _getGoods() {
       // console.log(this.typeID)
-      this.typeID.forEach(item => {
-        console.log(item);
+      this.tabList.forEach(item=>{
         this.$minApi.newmanList({
-          st_id:item
+          st_id:item.id
         }).then(res=>{
-          console.log("输出每个类型的商品",res.data.data)
+          if(res.code == 200){
+            item.data = res.data.data
+          }
         })
-      });
+      })
+      console.log("处理之后的tabList",this.tabList)
     },
 
     _goPage(url, query = {}) {
@@ -274,7 +208,7 @@ export default {
       box-sizing: border-box;
       border-radius: 10upx;
       background-color: #fdecc2;
-      padding: 30upx;
+      padding: 20upx;
       margin-bottom: 24upx;
       & > div {
         float: left;
@@ -290,7 +224,8 @@ export default {
       }
       .hot-info {
         .content {
-          margin-top: 10upx;
+          @extend %overflow-2-line;
+          margin-top: 30upx;
           color: #333333;
           font-size: 30upx;
           width: 302upx;
@@ -303,19 +238,17 @@ export default {
           // justify-content: space-between;
           // align-items: flex-end;
           color: #f81f1f;
-          font-size: 30upx;
-          & > div {
-            display: inline-block;
-          }
-          .old {
+          .old-price {
             font-size: 24upx;
             text-decoration: line-through;
             color: #999999;
           }
-          .price-right {
-            font-size: 84upx;
-            font-weight: bold;
-            margin-left: 10upx;
+          .new-price{
+            font-size: 28upx;
+            .word{
+              font-size: 50upx;
+              font-weight: 600;
+            }
           }
         }
         .hot-btn {
@@ -332,7 +265,8 @@ export default {
       .hot-img {
         width: 328upx;
         height: 328upx;
-        margin-right: 20upx;
+        // margin-right: 20upx;
+        margin: 10upx 20upx 0 0 ;
         border-radius: 10upx;
         overflow: hidden;
         img {
@@ -349,9 +283,34 @@ export default {
         width: 348upx;
         height: 512upx;
         margin-bottom: 14upx;
+        background-color: #fff;
+        border-radius: 10upx;
+        overflow: hidden;
         img {
+          display: block;
           width: 100%;
-          height: 100%;
+          height: 348upx;
+        }
+        .goods-word{
+          @extend %overflow-2-line;
+          height: 70upx;
+          margin-top: 10upx;
+          margin-bottom: 20upx;
+          padding: 0 10upx;
+          font-size: 26upx;
+          color: #333333;
+          font-weight: 400;
+        }
+        .new{
+          font-size: 36upx;
+          color: #FC5A5A;
+          margin-right: 10upx;
+          margin-left: 10upx;
+        }
+        .old{
+          font-size: 24upx;
+          color: #999999;
+          text-decoration: line-through;
         }
       }
     }

@@ -29,72 +29,14 @@
 				</swiper-item>
 			</swiper>
 		</view>
-		<!-- 倒计时  -->
-		<!-- <view class="info-box miaosha">
-			<view class="left">
-				<view class="top">
-					<text class="price">
-						￥{{goodsInfo.price}}
-					</text>
-					<text class="time-kill">
-						{{goodsInfo.assemble_num}}人团
-					</text>
-				</view>
-				<view class="bottom">
-					<span class="old-price">
-						￥{{goodsInfo.old_price}}
-					</span>
-					<span class="mei-ren-xian-gou">每人限购:
-						<block v-if="goodsInfo.people_num === -1">
-                            不限购
-                        </block>
-                        <block v-else>
-                        {{goodsInfo.people_num}}件
-                        </block>
-					</span>
-					<span class="mei-ren-xian-gou" v-if="goodsInfo.item_specs.length === 1">
-						已拼{{choosesGoodsInfo.specs.already_num}}件
-						<block v-if="choosesGoodsInfo.specs.over_num !== -1">
-                            ,剩余{{choosesGoodsInfo.specs.over_num}}件
-                        </block>
-                    </span>
-				</view>
-			</view>
-			<view class="right">
-				<view class="one" v-if="goodsInfo.status === 1">
-					<view class="title">距离结束还剩</view>
-					<view class="time">
-						<text class="tag" v-if="timer.d">{{timer.d + '天'}}</text>
-						<text class="no-tag" v-if="timer.d"></text>
-						<text class="tag">{{timer.h}}</text>
-						<text class="no-tag">:</text>
-						<text class="tag">{{timer.m}}</text>
-						<text class="no-tag">:</text>
-						<text class="tag">{{timer.s}}</text>
-					</view>
-				</view>
-				<view class="one" v-if="goodsInfo.status === 3">
-					<view class="title">拼团状态</view>
-					<view class="time">
-						<text class="tag">已经结束</text>
-					</view>
-				</view>
-				<view class="one" v-if="goodsInfo.status === 2">
-					<view class="title">距离开始还剩</view>
-					<view class="time">
-						<text class="tag" v-if="timer.d">{{timer.d + '天'}}</text>
-						<text class="no-tag" v-if="timer.d"></text>
-						<text class="tag">{{timer.h}}</text>
-						<text class="no-tag">:</text>
-						<text class="tag">{{timer.m}}</text>
-						<text class="no-tag">:</text>
-						<text class="tag">{{timer.s}}</text>
-					</view>
-				</view>
-			</view>
-		</view> -->
 		<!-- 标题 -->
 		<view class="info-box goods-info">
+            <view class="price">
+				<view>
+					<text class="one">￥{{item_specs[0].price}}</text>
+					<text class="two" style="text-decoration: line-through;">￥{{item_specs[0].old_price}}</text>
+				</view>
+			</view>
 			<view class="title">
 				<div class="title-left">
 					<text class="tag" v-if="goodsInfo.mold_id">{{goodsInfo.mold}}</text>
@@ -394,12 +336,12 @@
 		</uni-popup>
 
 		<!-- 选择商品 商品信息  -->
-		<view class="info-box goods-info2" v-if="goodsInfo.attributes">
-			<view class="item" @click="open">
+		<view class="info-box goods-info2" v-if="item_specs.length > 1">
+			<view class="item" @click="open(2)">
 				<view class="one">
 					<text class="title">选择规格</text>
 					<text class="comtent">
-						<text>{{goodsInfo.attributes}}</text>
+						<text>{{item_specs.attr_name}}</text>
 					</text>
 				</view>
 				<view class="two">

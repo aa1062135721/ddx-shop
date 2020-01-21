@@ -11,10 +11,10 @@
         <view id="item0" class="goods">
           <view class="type">
             <div class="icon-left"></div>
-            <div class="typeTitle">{{tabList[0].text}}</div>
+            <div class="typeTitle">{{hotList.title}}</div>
             <div class="icon-right"></div>
           </view>
-          <div class="hot-goods" v-for="(item,index) in tabList[0].data" :key="index" :class="index % 2 == 1 ? 'right':''" @click="_goPage('newcomer_detail',{id:item.id,item_id:item.item_id})">
+          <div class="hot-goods" v-for="(item,index) in hotList.item" :key="index" :class="index % 2 == 1 ? 'right':''" @click="_goPage('newcomer_detail',{id:item.id,item_id:item.item_id})">
             <div class="hot-img">
               <img :src="item.item_pic" />
             </div>
@@ -28,14 +28,14 @@
             </div>
           </div>
         </view>
-        <view :id="item.nav" class="goods" v-for="(item,index) in tabList.slice(1)" :key="index" >
+        <view :id="tabList[index+1].nav" class="goods" v-for="(item,index) in typeList" :key="index" >
           <view class="type">
             <div class="icon-left"></div>
-            <div class="typeTitle">{{item.text}}</div>
+            <div class="typeTitle">{{item.title}}</div>
             <div class="icon-right"></div>
           </view>
           <div class="typeGoods">
-            <div class="goods-item" v-for="(goods,idx) in item.data" :key="idx" @click="_goPage('newcomer_detail',{id:goods.id,item_id:goods.item_id})">
+            <div class="goods-item" v-for="(goods,idx) in item.item" :key="idx" @click="_goPage('newcomer_detail',{id:goods.id,item_id:goods.item_id})">
               <img :src="goods.item_pic" class="itemImag"/>
               <p class="goods-word">{{goods.item_name}}</p>
               <div><span class="new">￥{{goods.item_info[0].price}}</span><span class="old">{{goods.item_info[0].old_price}}</span></div>
@@ -82,36 +82,21 @@ export default {
           type: 2
         })
         .then(res => {
-          // console.log(res);
-          if (res.code == 200) {
-            res.data.data.forEach((item, index) => {
+          console.log("数据",res);
+          if(res.code == 200){
+            res.data.forEach((item, index) => {
               let obj = {
                 text: item.title,
                 navTarget: `#item${index}`,
                 nav:`item${index}`,
                 id:item.id,
-                data:[]
               };
               this.tabList.push(obj);
             });
-            this._getGoods();
+            this.hotList = res.data[0]
+            this.typeList = res.data.slice(1)
           }
         });
-    },
-
-    // 获取商品
-    _getGoods() {
-      // console.log(this.typeID)
-      this.tabList.forEach(item=>{
-        this.$minApi.newmanList({
-          st_id:item.id
-        }).then(res=>{
-          if(res.code == 200){
-            item.data = res.data.data
-          }
-        })
-      })
-      console.log("处理之后的tabList",this.tabList)
     },
 
     _goPage(url, query = {}) {

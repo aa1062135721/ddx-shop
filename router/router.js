@@ -356,6 +356,12 @@ const router = new MinRouter({
 			name: 'newcomer',
 			login: false
 		},
+		{
+			path: "pages/newcomer/detail",
+			type: 'navigateTo',
+			name: 'newcomer_detail',
+			login: false
+		},
 
 		//预存享福利活动规则
 		{

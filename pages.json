@@ -218,6 +218,13 @@
 				"navigationBarTitleText": "捣蛋熊商城-新人专享"
 			}
 		},
+		{
+			"path": "pages/newcomer/detail",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "捣蛋熊商城-新人专享详情"
+			}
+		},
 
 		{
 			"path": "pages/thematic/thematic",

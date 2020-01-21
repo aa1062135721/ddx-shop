@@ -817,6 +817,20 @@ export default {
 	 */
 	newmanList(data){
 	  return minRequest.get('/Exclusive/getItemList', data)
+  },
+  
+	/**
+	 * 新人专区详情接口
+	 */
+	newmanDetail(data){
+	  return minRequest.get('/Exclusive/itemInfo', data)
+  },
+  
+	/**
+	 * 新人专区下单接口
+	 */
+	newmanCreate(data){
+	  return minRequest.post('/Exclusive_order/index', data)
 	},
 
   }

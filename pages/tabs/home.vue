@@ -11,7 +11,7 @@
 				</view>
 				<view class="sort" @click="_goPage('category')">
 					<text class="iconfont icon-ddx-shop-fenlei"></text>
-					<text style="margin: -6upx;">分类</text>
+					<text style="margin: -6upx;color:#333333;">分类</text>
 				</view>
 				<!-- 一级tab栏 -->
 				<!-- <wuc-tab :tab-list="tabList" :textFlex="true" :tabCur.sync="TabCur" tab-class="tabs"  @change="tabChange" style="position: fixed;left: 0;width: 100%;z-index: 999;" :style="style"></wuc-tab> -->
@@ -283,16 +283,14 @@
 				<div class="yuandanmiao" v-if="seckill_list.length">
 					<view class="yd-more" @click="_goPage('spike_list')"></view>
 					<div class="ydms">
-						<swiper circular="true" :indicator-dots="true" indicator-active-color="#FFF" style="width: 710upx;height: 442upx;margin:0 auto;">
+						<swiper circular="true" :indicator-dots="true" indicator-active-color="#FFF" style="width: 628upx;height: 480upx;margin:0 auto;">
 							<swiper-item class="yd-swiper">
 								<div class="ydms-box">
 									<block v-for="(item, index) in seckill_list" :key="index">
 										<div class="ydms-shop" v-if="index<3" @click="_goPage('spike_detail', {item_id: item.item_id, seckill_id: item.id})">
 											<image class="ydms-img" :src="item.pic" :lazy-load="true"></image>
-											<image class="tit-img" :lazy-load="true"></image>
 											<p class="shop-tit">{{item.item_name}}</p>
-											<p class="shop-price"><span class="big-price">￥{{item.price}}</span><span class="small-price">￥{{item.old_price}}</span></p>
-											<div class="shop-button">立即购买</div>
+											<div class="shop-price"><div class="big-price">￥{{item.price}}</div><div class="small-price">￥{{item.old_price}}</div></div>
 										</div>
 									</block>
 								</div>
@@ -302,10 +300,8 @@
 									<block v-for="(item, index) in seckill_list" :key="index">
 										<div class="ydms-shop" v-if="index > 3 && index < 7" @click="_goPage('spike_detail', {item_id: item.item_id, seckill_id: item.id})">
 											<image class="ydms-img" :src="item.pic" :lazy-load="true"></image>
-											<image class="tit-img" :lazy-load="true"></image>
 											<p class="shop-tit">{{item.item_name}}</p>
-											<p class="shop-price"><span class="big-price">￥{{item.price}}</span><span class="small-price">￥{{item.old_price}}</span></p>
-											<div class="shop-button">立即购买</div>
+											<div class="shop-price"><div class="big-price">￥{{item.price}}</div><div class="small-price">￥{{item.old_price}}</div></div>
 										</div>
 									</block>
 								</div>
@@ -317,17 +313,14 @@
 				<div class="yuandanmiao pintuan" v-if="assemble_list.length">
 					<view class="yd-more" @click="_goPage('group_buy')"></view>
 					<div class="ydms">
-						<swiper circular="true" :indicator-dots="true" indicator-active-color="#FFF" style="width: 710upx;height: 442upx;margin:0 auto;">
+						<swiper circular="true" :indicator-dots="true" indicator-active-color="#FFF" style="width: 628upx;height: 480upx;margin:0 auto;">
 							<swiper-item class="yd-swiper">
 								<div class="ydms-box">
 									<block v-for="(item, index) in assemble_list" :key="index">
 										<div class="ydms-shop" v-if="index < 3" @click="_goPage('group_buy_detail', {assemble_id: item.id, item_id: item.item_id})">
-											<div class="ydms-people">{{ item.assemble_num }}人团</div>
 											<image class="ydms-img" :src="item.pic" :lazy-load="true"></image>
-											<image class="tit-img" :lazy-load="true"></image>
 											<p class="shop-tit">{{ item.item_name }}</p>
-											<p class="shop-price"><span class="big-price">￥{{ item.price }}</span><span class="small-price">￥{{ item.old_price }}</span></p>
-											<div class="shop-button">立即购买</div>
+											<div class="shop-price"><div class="big-price pintuan">￥{{ item.price }}<span class="ydms-people">{{ item.assemble_num }}人团</span></div><div class="small-price pintuan">￥{{ item.old_price }}</div></div>
 										</div>
 									</block>
 								</div>
@@ -335,13 +328,10 @@
 							<swiper-item class="yd-swiper" v-if="assemble_list.length > 3">
 								<div class="ydms-box">
 									<block v-for="(item, index) in assemble_list" :key="index">
-										<div class="ydms-shop" v-if="index>3 && index<7" @click="_goPage('group_buy_detail', {assemble_id: item.id, item_id: item.item_id})">
-											<div class="ydms-people">{{ item.assemble_num }}人团</div>
+										<div class="ydms-shop" v-if="index > 3" @click="_goPage('group_buy_detail', {assemble_id: item.id, item_id: item.item_id})">
 											<image class="ydms-img" :src="item.pic" :lazy-load="true"></image>
-											<image class="tit-img" :lazy-load="true"></image>
-											<p class="shop-tit">{{item.item_name}}</p>
-											<p class="shop-price"><span class="big-price">￥{{item.price}}</span><span class="small-price">￥{{item.old_price}}</span></p>
-											<div class="shop-button">立即购买</div>
+											<p class="shop-tit">{{ item.item_name }}</p>
+											<div class="shop-price"><div class="big-price pintuan">￥{{ item.price }}<span class="ydms-people">{{ item.assemble_num }}人团</span></div><div class="small-price pintuan">￥{{ item.old_price }}</div></div>
 										</div>
 									</block>
 								</div>
@@ -985,14 +975,14 @@
 <style lang="scss">
 	.container {
 		&.yuandan-bg {
-			background: #FFEAC2;
+			background: #E4F7F3;
 		}
 
 		.content-box {
 			background-image: url('~@/static/images/yuandan-home/background.jpg');
 			background-repeat: no-repeat;
 			background-size: 100% 100%;
-			height: 1034upx;
+			height: 737upx;
 
 			.search-and-tabs {
 				width: 100%;
@@ -1099,7 +1089,7 @@
 				/*background: #ffffff;*/
 				padding: $uni-spacing-row-base 0;
 				padding-top: 0;
-
+				margin-top: 200upx;
 				.item {
 					display: flex;
 					flex-wrap: nowrap;
@@ -1116,7 +1106,7 @@
 					.text,
 					text {
 						font-size: $uni-font-size-sm;
-						color: #fff;
+						color: #333333;
 					}
 				}
 			}
@@ -1822,7 +1812,7 @@
 
 			/* 元旦秒杀 */
 			.yuandanmiao {
-				height: 833upx;
+				height: 760upx;
 				background: url("~@/static/images/yuandan-home/3.jpg") no-repeat;
 				background-size: 100% 100%;
 				overflow: hidden;
@@ -1842,24 +1832,24 @@
 				}
 
 				&.pintuan {
-					height: 833upx;
+					height: 730upx;
 					background: url("~@/static/images/yuandan-home/4.jpg") no-repeat;
 					background-size: 100% 100%;
 				}
 
-				&.thematicShop{
-					height: 1174upx;
-					background: url("~@/static/images/yuandan-home/2.jpg") no-repeat;
-					background-size: 100% 100%;
-					position: relative;
-					.thematicWord{
-						font-size: 34upx;
-						font-weight: 800;
-						color: #fcc972;
-						line-height: 164upx;
-						text-align: center;
-					}
-				}
+				// &.thematicShop{
+				// 	height: 1174upx;
+				// 	background: url("~@/static/images/yuandan-home/2.jpg") no-repeat;
+				// 	background-size: 100% 100%;
+				// 	position: relative;
+				// 	.thematicWord{
+				// 		font-size: 34upx;
+				// 		font-weight: 800;
+				// 		color: #fcc972;
+				// 		line-height: 164upx;
+				// 		text-align: center;
+				// 	}
+				// }
 				.ydms {
 					margin-top: 216upx;
 					position: relative;
@@ -1870,29 +1860,29 @@
 						display: flex;
 						justify-content: space-around;
 						align-items: center;
-						width: 710upx;
-						margin: 0 auto;
+						width: 635upx;
+						margin: 8upx auto;
 
 						.ydms-shop {
-							width: 212upx;
+							width: 192upx;
 							height: 364upx;
 							padding: 0 8upx;
-							border: 1px solid #FDEBCA;
-							background-color: #FDEBCA;
-							box-shadow: 0px 4px 4px 0px rgba(191, 104, 25, 0.2);
+							// border: 1px solid #FDEBCA;
+							// background-color: #FDEBCA;
+							// box-shadow: 0px 4px 4px 0px rgba(191, 104, 25, 0.2);
 							position: relative;
 
 							.ydms-people {
-								width: 77upx;
-								line-height: 31upx;
+								display: inline-block;
+								width: 74upx;
+								height: 28upx;
+								line-height: 28upx;
+								margin-left: 5upx;
 								text-align: center;
 								color: #FFFFFF;
-								font-size: 20upx;
-								background-color: #D80515;
-								position: absolute;
-								left: 16upx;
-								top: 172upx;
-								z-index: 99;
+								font-size: 18upx;
+								background: url("~@/static/images/yuandan-home/pintuan.png") no-repeat;
+								background-size: contain;
 							}
 
 							.tit-img {
@@ -1906,15 +1896,15 @@
 							}
 
 							.ydms-img {
-								width: 196upx;
+								width: 100%;
 								height: 196upx;
-								margin: 8upx;
+								margin: 8upx 0;
 								display: block;
 								background-color: #fff;
 							}
 
 							.shop-tit {
-								@extend %overflow-1-line;
+								@extend %overflow-2-line;
 								margin: 0;
 								font-size: 26upx;
 								color: #333333;
@@ -1922,20 +1912,35 @@
 							}
 
 							.shop-price {
+								margin-top: 14upx;
 								padding-left: 8upx;
 								line-height: 40upx;
 
 								.big-price {
-									color: #D80515;
-									font-size: 26upx;
+									color: #fff;
+									font-size: 22upx;
+									background: url("~@/static/images/yuandan-home/miaosha.png") no-repeat;
+									background-size: contain;
+									height: 32upx;
+									line-height: 32upx;
+									margin-top: 5upx;
+									width: 138upx;
+									&.pintuan{
+										width: 100%;
+										background: none;
+										color: #F83D3D;
+										font-size: 24upx;
+										margin-bottom: 4upx;
+									}
 								}
 
 								.small-price {
 									color: #999999;
-									font-size: 18upx;
+									font-size: 22upx;
 									text-decoration: line-through;
 									margin-left: 5upx;
 								}
+
 							}
 
 							.shop-button {

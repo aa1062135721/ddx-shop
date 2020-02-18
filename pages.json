@@ -217,8 +217,7 @@
 				"navigationStyle": "custom",
 				"navigationBarTitleText": "捣蛋熊商城-新人专享"
 			}
-		}
-
+		},
 //		{
 //			"path": "pages/thematic/thematic",
 //			"style": {
@@ -226,6 +225,13 @@
 //				"navigationBarTitleText": "捣蛋熊商城"
 //			}
 //		},
+		{
+			"path": "pages/activity20200217/index",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "捣蛋熊商城-全民防护，共同战“疫”"
+			}
+		}
 	],
     "subPackages": [
 		{

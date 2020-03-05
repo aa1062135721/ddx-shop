@@ -44,7 +44,7 @@
                     <view class="item" @click="goPage('coupon_list')">
                         <view>
                             <view class="icon-text">
-                                {{userInfo.coupon_count}}<text class="unit">张</text>
+                                {{userInfo.coupon_count || 0}}<text class="unit">张</text>
                             </view>
                         </view>
                         <text class="text" style="margin-top: 6upx;">优惠券</text>

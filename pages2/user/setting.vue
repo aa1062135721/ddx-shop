@@ -35,6 +35,17 @@
                     </view>
                 </view>
             </view>
+            <view class="item">
+                <view class="left">
+                    <view class="title">解绑</view>
+                    <view class="value">解绑手机号，谨慎操作！</view>
+                </view>
+                <view class="right">
+                    <view class="btn" @click="unBindMobile()">
+                        解绑
+                    </view>
+                </view>
+            </view>
             <view class="item" style="display: none;">
                 <view class="left">
                     <view class="title">退出登录</view>
@@ -69,6 +80,27 @@
                 this.setToken()
                 this.setShopID()
                 this._goPage('mine')
+            },
+            unBindMobile(){
+                let _that = this;
+                uni.showModal({
+                    title: '警告',
+                    content: "解绑后，你当前微信绑定的手机号将被移除绑定，请谨慎操作！？",
+                    success: function (showModalRes) {
+                        if (showModalRes.confirm) {
+                            _that.$minApi.unBindMobile(null).then(res => {
+                                if (res.code === 200){
+                                    _that.msg('解绑成功');
+                                    _that.setToken(); // 清空用户token
+                                    _that.setUserInfo(); // 清空用户数据
+                                    _that._goPage('home');
+                                }
+                            })
+                        } else if (showModalRes.cancel) {
+
+                        }
+                    }
+                });
             },
             ...mapMutations(['setToken', 'setUserInfo', 'setShopID'])
         },

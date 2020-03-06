@@ -790,20 +790,28 @@ export default {
     spikeTimeList(data){
       return minRequest.get('/Assemble/seckill_time', data)
     },
-	
+
 	/**
 	 * 专题类型接口
 	 */
 	thematicType(data){
 	  return minRequest.get('/Special/getTypeList', data)
   },
-  
+
 	/**
 	 * 专题活动接口
 	 */
 	thematicList(data){
 	  return minRequest.get('/Special/getItemList', data)
 	},
+
+    /**
+     * 解绑手机号
+     */
+    unBindMobile(data) {
+      return minRequest.post('/Userinfo/relieveMobile', data)
+    },
+
 
   }
 }

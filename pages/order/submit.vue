@@ -57,7 +57,7 @@
                 <view class="shop-name" style="border: none;" v-show="useCouponList.length !== 0">
                     <view>优惠券</view>
                     <view style="display: flex;align-items: center; color: #666666;" @click="open">
-                        {{ chooseCoupon.receive_id != 0 ? chooseCoupon.coupon.c_name : '未选择' }}
+                        {{ chooseCoupon.receive_id != 0 ? chooseCoupon.coupon.c_name : useCouponList.length + '张可用' }}
                         <span class="iconfont icon-ddx-shop-content_arrows"></span>
                     </view>
                 </view>

@@ -41,10 +41,10 @@
                         </view>
                         <text class="text" style="margin-top: 6upx;">积分</text>
                     </view>
-                    <view class="item">
+                    <view class="item" @click="goPage('coupon_list')">
                         <view>
                             <view class="icon-text">
-                                0<text class="unit">张</text>
+                                {{userInfo.coupon_count || 0}}<text class="unit">张</text>
                             </view>
                         </view>
                         <text class="text" style="margin-top: 6upx;">优惠券</text>

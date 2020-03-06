@@ -805,5 +805,47 @@ export default {
 	  return minRequest.get('/Special/getItemList', data)
 	},
 
+    /**
+     * 优惠券列表，商品详情里的列表
+     */
+    couponList(data) {
+      return minRequest.get('/Coupon/getItemCoupon', data)
+    },
+
+    /**
+     * 领取优惠券
+     */
+    collectCoupon(data) {
+      return minRequest.post('/Coupon/collectCoupon', data)
+    },
+
+    /**
+     * 我的优惠券列表
+     */
+    myCouponList(data){
+      return minRequest.get('/Coupon/getMemberCoupon', data)
+    },
+
+    /**
+     * 我的优惠券列表
+     */
+    couponDetails(data){
+      return minRequest.get('/Coupon/getCouponInfo', data)
+    },
+
+    /**
+     * 下单时候获取可以使用的优惠券列表
+     */
+    orderSubmitUseCouponList(data){
+      return minRequest.post('/order/getCanUseCoupon', data)
+    },
+
+    /**
+     * 下单的时候选择了优惠券，得到最后优惠后的价格
+     */
+    orderSubmitChoosesCouponList(data){
+      return minRequest.post('/order/getCouponPrice', data)
+    },
+
   }
 }

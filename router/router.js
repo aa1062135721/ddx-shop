@@ -396,6 +396,20 @@ const router = new MinRouter({
 			name: 'activity20200217',
 			login: false
 		},
+
+		// 优惠券
+		{
+			path:"pages/user/coupon/list",
+			type:'navigateTo',
+			name:'coupon_list',
+			login:true
+		},
+		{
+			path:"pages/user/coupon/details",
+			type:'navigateTo',
+			name:'coupon_details',
+			login: true
+		},
 	]
 })
 

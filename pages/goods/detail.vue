@@ -71,6 +71,23 @@
 				您购买成功后，实际支付的价格已含9.1%的跨境代扣税
 			</view>
 		</div>
+
+		<!--	优惠券	-->
+		<div class="coupon-title">
+			<div class="item" @click="pouponIsShow = true">
+				<div class="one">
+					<div class="title">
+						<span class="tag">领券</span>
+					</div>
+					<div class="content">
+						领取优惠券
+					</div>
+				</div>
+				<div class="two"><span class="iconfont icon-ddx-shop-content_arrows"></span></div>
+			</div>
+		</div>
+		<coupon :isShow.sync="pouponIsShow" :goodsId="goodsInfo.id"></coupon>
+
 		<!--服务说明-->
 		<view class="my-service-title-btn" @click="openService">
 			<view class="item">
@@ -469,6 +486,7 @@
 	import { mapState, mapMutations, } from 'vuex'
 	import * as Constant from '../../utils/constant'
 	import vVideo from "../../components/vdieo/video";
+	import coupon from '@/components/wlm-coupon/index.vue'
 
 	export default {
 		data() {
@@ -549,6 +567,9 @@
 
 				//h5的分享引导显示与否
 				isShowShareH5: false,
+
+				// 优惠券弹框
+				pouponIsShow: false,
 			}
 		},
 		methods:{
@@ -1021,7 +1042,8 @@
 		components: {
 			uniNumberBox,
 			uniPopup,
-			vVideo
+			vVideo,
+			coupon,
 		},
 		computed: {
 			...mapState(['userInfo', 'subscribe'])

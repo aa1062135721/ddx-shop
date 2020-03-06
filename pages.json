@@ -231,6 +231,19 @@
 				"navigationStyle": "custom",
 				"navigationBarTitleText": "捣蛋熊商城-全民防护，共同战“疫”"
 			}
+		},
+
+		{
+			"path": "pages/user/coupon/list",
+			"style": {
+				"navigationBarTitleText": "捣蛋熊商城-我的优惠券"
+			}
+		},
+		{
+			"path": "pages/user/coupon/details",
+			"style": {
+				"navigationBarTitleText": "捣蛋熊商城-优惠券详情"
+			}
 		}
 	],
     "subPackages": [

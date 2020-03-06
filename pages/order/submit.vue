@@ -54,20 +54,55 @@
                     <view>运费</view>
                     <view style="color: #dd524d;">￥{{freight | moneyToFixed}}</view>
                 </view>
+                <view class="shop-name" style="border: none;" v-show="useCouponList.length !== 0">
+                    <view>优惠券</view>
+                    <view style="display: flex;align-items: center; color: #666666;" @click="open">
+                        {{ chooseCoupon.receive_id != 0 ? chooseCoupon.coupon.c_name : useCouponList.length + '张可用' }}
+                        <span class="iconfont icon-ddx-shop-content_arrows"></span>
+                    </view>
+                </view>
             </view>
         </view>
 
         <view class="fixed">
             <view class="other">
                 <view class="num">共{{sumNum}}件，</view>
-                <view class="money">合计：<span class="money-num">￥{{(parseFloat(sumMoney) + parseFloat(freight)) | moneyToFixed}}</span></view>
+                <view class="money">合计：
+                    <span class="money-num" v-if="chooseCoupon.receive_id == 0">
+                        ￥{{(parseFloat(sumMoney) + parseFloat(freight)) | moneyToFixed}}
+                    </span>
+                    <span class="money-num" v-else>
+                        ￥{{ chooseCoupon.responsesData.money | moneyToFixed }}
+                    </span>
+                </view>
                 <view class="btn" @click="submitOrder">提交订单</view>
             </view>
         </view>
+
+        <uni-popup ref="coupon" type="center" :custom="true">
+            <div class="coupon">
+                <div class="title">选择优惠券</div>
+                <radio-group class="list" @change="couponRadioChange">
+                    <label class="item">
+                        <div class="coupon-title">不使用优惠券</div>
+                        <radio value="0" :checked="0 == chooseCoupon.receive_id" color="#FC5A5A" />
+                    </label>
+                    <label class="item" v-for="(item, index) in useCouponList" :key="index">
+                        <div class="coupon-title">{{item.c_name}}</div>
+                        <radio :value="''+item.receive_id" :checked="item.receive_id == chooseCoupon.receive_id" color="#FC5A5A" />
+                    </label>
+                </radio-group>
+                <div class="footer">
+                    <div class="btn" @click="close">完成</div>
+                </div>
+            </div>
+        </uni-popup>
     </view>
 </template>
 
 <script>
+    import uniPopup from '@/components/uni-popup/uni-popup.vue'
+
     export default {
         name: "submit",
         data(){
@@ -86,6 +121,19 @@
               //提交订单，或者是获取运费需要上传的数据
               requestData: null,
               isDisableSubmitOrder: false,// 是否禁用  提交订单按钮
+
+              useCouponList: [], // 可使用的优惠券列表
+              // 已选择的优惠券
+              chooseCoupon: {
+                  receive_id: 0,
+                  coupon: {},
+                  // 选择了优惠券，显示的价格
+                  responsesData: {
+                      money: 0,  //订单总金额（包含运费）,
+                      discount: 0,  //总优惠了多少钱
+                      postage: 0,    //运费
+                  }
+              },
           }
         },
         async onLoad(){
@@ -117,6 +165,7 @@
                         })
                     })
                     this.requestData = {
+                        receive_id: 0, // 选择的已领取的优惠券id，getCanUseCoupon接口的receive_id， 非必传
                         address_id: this.address.id,// 收货地址id
                         order_distinguish: 0, //普通订单
                         item: goodsData
@@ -140,6 +189,7 @@
                         })
                     })
                     this.requestData = {
+                        receive_id: 0, // 选择的已领取的优惠券id，getCanUseCoupon接口的receive_id， 非必传
                         address_id: this.address.id,// 收货地址id
                         order_distinguish: 0, //购物车订单（普通订单）
                         item: goodsData
@@ -209,6 +259,9 @@
                     break
             }
             this.getFreight()
+            if (this.$parseURL().createOrderType === 'buy_now' || this.$parseURL().createOrderType === 'car') {
+                this.getUseCouponList()
+            }
 
             // 选择地址 从其他页面传过来的值
             let _this = this
@@ -227,6 +280,57 @@
         methods:{
             _goPage(url, query = {}){
                 this.$openPage({name:url, query})
+            },
+            // 打开使用优惠券弹框
+            open(){
+                if (this.useCouponList.length !== 0){
+                    this.$refs.coupon.open()
+                } else {
+                    this.msg('暂无优惠券可选')
+                }
+            },
+            // 关闭优惠券弹框
+            close(){
+                this.$refs.coupon.close()
+            },
+            //获可使用的优惠券列表
+            async getUseCouponList(){
+                const requestData = {
+                    item: this.requestData.item
+                }
+                await this.$minApi.orderSubmitUseCouponList(requestData).then(res => {
+                    if (res.code === 200){
+                        this.useCouponList = res.data
+                    }
+                })
+            },
+            // 选择优惠券
+            couponRadioChange(evt) {
+                this.chooseCoupon.receive_id = evt.target.value
+                this.requestData.receive_id = evt.target.value
+                if (evt.target.value != 0){
+                    this.useCouponList.map((item) => {
+                        if (item.receive_id == evt.target.value) {
+                            this.chooseCoupon.coupon = item
+                        }
+                    })
+                    this.getCouponPrice()
+                } else {
+                    this.chooseCoupon.coupon = {}
+                }
+                console.log(this.chooseCoupon)
+            },
+            // 选择优惠券后，得到的优惠金额
+            getCouponPrice(){
+                const requestData = {
+                    receive_id: this.chooseCoupon.receive_id,
+                    item: this.requestData.item
+                }
+                this.$minApi.orderSubmitChoosesCouponList(requestData).then(res => {
+                    if (res.code === 200){
+                        this.chooseCoupon.responsesData = res.data
+                    }
+                })
             },
 
             //获取运费
@@ -425,7 +529,7 @@
             }
         },
         components: {
-
+            uniPopup,
         }
     }
 </script>
@@ -490,6 +594,11 @@
                     padding: $uni-spacing-row-sm;
                     color: #000000;
                     font-size: $uni-font-size-lg;
+                    .icon-ddx-shop-content_arrows{
+                        margin-left: 10upx;
+                        color: #CCCCCC;
+                        font-size: $uni-font-size-sm;
+                    }
                 }
                 .goods{
                     display: flex;
@@ -572,6 +681,65 @@
                     color: #fff;
                 }
             }
+        }
+        /* 优惠券 */
+        .coupon{
+            background-color: #FFFFFF;
+            height: 500upx;
+            width:650upx;
+            padding: $uni-spacing-col-lg;
+            border-radius:8px;
+            font-size: $uni-font-size-base;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            .title{
+                font-size: $uni-font-size-base + 8upx;
+                text-align: center;
+                color: #333333;
+                width: 100%;
+            }
+            .list{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+                height: 320upx;
+                overflow-y: auto;
+                .item{
+                    display: flex;
+                    align-content: space-around;
+                    width: 100%;
+                    margin-bottom: 20upx;
+                    &:last-child{
+                        margin-bottom: 0;
+                    }
+                    .coupon-title{
+                        @extend %overflow-1-line;
+                        width: 80%;
+                        color: #333333;
+                    }
+                    radio{
+                        text-align: right;
+                        width: 20%;
+                        transform:scale(0.7);
+                    }
+                }
+            }
+            .footer{
+                display: flex;
+                justify-content: center;
+                .btn{
+                    width:428upx;
+                    text-align: center;
+                    height:62upx;
+                    line-height: 62upx;
+                    background:#FC5A5A;
+                    color: #FFFFFF;
+                    border-radius:31upx;
+                }
+            }
+
         }
     }
 </style>

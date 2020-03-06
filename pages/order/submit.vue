@@ -301,6 +301,13 @@
                 await this.$minApi.orderSubmitUseCouponList(requestData).then(res => {
                     if (res.code === 200){
                         this.useCouponList = res.data
+                        // 默认选择第一个优惠券
+                        if (res.data.length){
+                            this.chooseCoupon.coupon = res.data[0];
+                            this.chooseCoupon.receive_id = res.data[0].receive_id;
+                            this.requestData.receive_id = res.data[0].receive_id;
+                            this.getCouponPrice();
+                        }
                     }
                 })
             },

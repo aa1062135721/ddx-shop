@@ -410,6 +410,14 @@ const router = new MinRouter({
 			name:'coupon_details',
 			login: true
 		},
+
+		//活动页面，20200308女神节
+		{
+			path: "pages/activity20200308/index",
+			type: 'navigateTo',
+			name: 'activity20200308',
+			login: false
+		},
 	]
 })
 

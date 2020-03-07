@@ -764,8 +764,9 @@
 						this._goPage('spike_list')
 						break
 					case 6:
-						this.msg('功能正在完善中，请敬请期待！')
+						// this.msg('功能正在完善中，请敬请期待！')
 						// this._goPage('newcomer')
+						this._goPage('activity20200308')
 						break
 				}
 			},

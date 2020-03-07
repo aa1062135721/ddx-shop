@@ -244,6 +244,14 @@
 			"style": {
 				"navigationBarTitleText": "捣蛋熊商城-优惠券详情"
 			}
+		},
+
+		{
+			"path": "pages/activity20200308/index",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "捣蛋熊商城-女神节"
+			}
 		}
 	],
     "subPackages": [

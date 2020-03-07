@@ -389,14 +389,6 @@ const router = new MinRouter({
 			login:false
 		},
 
-		//活动页面，消毒水 衍生 中国灸
-		{
-			path: "pages/activity20200217/index",
-			type: 'navigateTo',
-			name: 'activity20200217',
-			login: false
-		},
-
 		// 优惠券
 		{
 			path:"pages/user/coupon/list",

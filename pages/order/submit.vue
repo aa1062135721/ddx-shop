@@ -54,12 +54,16 @@
                     <view>运费</view>
                     <view style="color: #dd524d;">￥{{freight | moneyToFixed}}</view>
                 </view>
-                <view class="shop-name" style="border: none;" v-show="useCouponList.length !== 0">
+                <view class="shop-name" style="border: none;" v-show="useCouponList.length !== 0 && is_deduct === 0">
                     <view>优惠券</view>
                     <view style="display: flex;align-items: center; color: #666666;" @click="open">
                         {{ chooseCoupon.receive_id != 0 ? chooseCoupon.coupon.c_name : useCouponList.length + '张可用' }}
                         <span class="iconfont icon-ddx-shop-content_arrows"></span>
                     </view>
+                </view>
+                <view class="shop-name" style="border: none;" v-show="chooseCoupon.receive_id == 0 && stRecharge.amount != null">
+                    <view>是否使用折扣</view>
+                    <switch :checked="is_deduct ? true : false" color="#31BF1A" style="transform:scale(0.7);display: flex;align-items: center; " @change="switchChange" />
                 </view>
             </view>
         </view>
@@ -68,11 +72,17 @@
             <view class="other">
                 <view class="num">共{{sumNum}}件，</view>
                 <view class="money">合计：
-                    <span class="money-num" v-if="chooseCoupon.receive_id == 0">
-                        ￥{{(parseFloat(sumMoney) + parseFloat(freight)) | moneyToFixed}}
+                    <!--    使用了优惠券 或者  折扣                -->
+                    <span class="money-num" v-if="chooseCoupon.receive_id != 0 || is_deduct == 1">
+                        <block v-if="chooseCoupon.receive_id != 0">
+                            ￥{{ chooseCoupon.responsesData.money | moneyToFixed }}
+                        </block>
+                        <block v-if="is_deduct == 1">
+                            ￥{{ stRechargeSumMoney | moneyToFixed }}
+                        </block>
                     </span>
                     <span class="money-num" v-else>
-                        ￥{{ chooseCoupon.responsesData.money | moneyToFixed }}
+                        ￥{{(parseFloat(sumMoney) + parseFloat(freight)) | moneyToFixed}}
                     </span>
                 </view>
                 <view class="btn" @click="submitOrder">提交订单</view>
@@ -134,6 +144,14 @@
                       postage: 0,    //运费
                   }
               },
+
+              // 折扣抵扣金额
+              stRecharge: {
+                  amount: 0,//现有抵扣金额
+                  ratio: 0.1
+              },
+              stRechargeSumMoney: 0.00, //使用折扣后的金额
+              is_deduct: 0,// 是否抵扣：1抵扣、0不抵扣，普通下单时候才能使用，且不能和优惠券同时使用
           }
         },
         async onLoad(){
@@ -166,6 +184,7 @@
                     })
                     this.requestData = {
                         receive_id: 0, // 选择的已领取的优惠券id，getCanUseCoupon接口的receive_id， 非必传
+                        is_deduct: 0, // 是否抵扣：1抵扣、0不抵扣
                         address_id: this.address.id,// 收货地址id
                         order_distinguish: 0, //普通订单
                         item: goodsData
@@ -190,6 +209,7 @@
                     })
                     this.requestData = {
                         receive_id: 0, // 选择的已领取的优惠券id，getCanUseCoupon接口的receive_id， 非必传
+                        is_deduct: 0, // 是否抵扣：1抵扣、0不抵扣
                         address_id: this.address.id,// 收货地址id
                         order_distinguish: 0, //购物车订单（普通订单）
                         item: goodsData
@@ -261,6 +281,7 @@
             this.getFreight()
             if (this.$parseURL().createOrderType === 'buy_now' || this.$parseURL().createOrderType === 'car') {
                 this.getUseCouponList()
+                this.getStRecharge();//只有普通商品才能使用折扣
             }
 
             // 选择地址 从其他页面传过来的值
@@ -338,6 +359,34 @@
                         this.chooseCoupon.responsesData = res.data
                     }
                 })
+            },
+
+            // 折扣抵扣金额
+            getStRecharge(){
+              this.$minApi.getStRecharge().then(res => {
+                  if (res.code === 200) {
+                      this.stRecharge = res.data
+                  }
+              }).catch(err => {
+
+              })
+            },
+            // 是否使用折扣
+            switchChange(e) {
+                if (e.target.value) {
+                    this.requestData.is_deduct = 1;
+                    this.is_deduct = 1;
+                    this.chooseCoupon.receive_id = 0; //使用折扣，则优惠券就不使用了。
+                    let stRechargeMoney = parseFloat(this.stRecharge.ratio)  * parseFloat(this.sumMoney);
+                    if(stRechargeMoney <= parseFloat(this.stRecharge.amount)){
+                        this.stRechargeSumMoney = parseFloat(this.sumMoney) + parseFloat(this.freight) - stRechargeMoney;
+                    } else {
+                        this.stRechargeSumMoney = parseFloat(this.sumMoney) + parseFloat(this.freight) - parseFloat(this.stRecharge.amount);
+                    }
+                } else {
+                    this.is_deduct = 0;
+                    this.requestData.is_deduct = 0;
+                }
             },
 
             //获取运费

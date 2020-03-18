@@ -854,6 +854,18 @@ export default {
       return minRequest.post('/Userinfo/relieveMobile', data)
     },
 
+    /**
+     * 充值送抵扣金额活动-获取抵扣金额和折扣
+     */
+    getStRecharge(data) {
+      return minRequest.post('/order/getStRecharge', data)
+    },
 
+    /**
+     * 充值送抵扣金额活动-查看明细
+     */
+    getRechargeFlow(data) {
+      return minRequest.post('/userinfo/getRechargeFlow', data)
+    },
   }
 }

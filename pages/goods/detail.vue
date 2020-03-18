@@ -903,17 +903,8 @@
 				}
 			},
 		},
-		// 分享到朋友
-		onShareAppMessage(res) {
-			if (res.from === 'button') {// 来自页面内分享按钮
-				console.log(res.target)
-			}
-			return {
-				title: `${this.goodsInfo.title}`,
-				path: `pages/goods/detail?user_id=${this.userInfo.id}&id=${this.goodsInfo.id}`
-			}
-		},
 		async onLoad() {
+			await this.wxConfig();
 			let requestData = {
 					id:0,
 				},
@@ -929,7 +920,6 @@
 			}
 			url = Constant[Constant.NODE_ENV].shareRedirectURL + encodeURIComponent(url)
 			await this.$minApi.goodsDetail(requestData).then(async res => {
-				console.log("商品详情：", res)
 				if (res.code === 200){
 					res.data.content = this.formatRichText2(res.data.content)
 					if(!res.data.specs_list){
@@ -945,12 +935,6 @@
 						})
 					})
 					this.goodsInfo = res.data
-
-
-					// 如果是安卓平台 每次进入商品详情页面就会调用微信配置，自定义分享商品
-					if ((await this.getPlatform()).isAndroid){
-						await this.wxConfig()
-					}
 
 					this.$nextTick(() => {
 						this.calcAnchor();//计算锚点高度，页面数据是ajax加载时，请把此行放在数据渲染完成事件中执行以保证高度计算正确

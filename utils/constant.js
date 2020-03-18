@@ -1,8 +1,8 @@
 /**
  * 当前是开发环境还是生产环境
  */
-// export const NODE_ENV = 'development'
-export const NODE_ENV = 'production'
+export const NODE_ENV = 'development'
+// export const NODE_ENV = 'production'
 
 
 /**
@@ -24,7 +24,6 @@ export const production = {
     spikeList: 'https://www.ddxm661.com/h5/#/pages/spike/list', // 秒杀列表分享 别人打开的url
     groupBuyList: 'https://www.ddxm661.com/h5/#/pages/group-buy/group-buy', // 拼团列表分享 别人打开的url
     thematicURL: 'https://www.ddxm661.com/h5/#/pages/thematic/thematic', // 专题页面分享
-    activity20200217URL: 'https://www.ddxm661.com/h5/#/pages/activity20200217/index', //活动页面分享功能
 }
 
 
@@ -47,5 +46,4 @@ export const development = {
     spikeList: 'https://ddxm661.com/h5/#/pages/spike/list', // 秒杀列表分享 别人打开的url
     groupBuyList: 'https://ddxm661.com/h5/#/pages/group-buy/group-buy', // 拼团列表分享 别人打开的url
     thematicURL: 'https://ddxm661.com/h5/#/pages/thematic/thematic', // 专题页面分享
-    activity20200217URL: 'https://ddxm661.com/h5/#/pages/activity20200217/index', //活动页面分享功能
 }

@@ -105,10 +105,7 @@
           ...mapState(['userInfo'])
        },
        async onLoad(){
-          // 如果是安卓平台 每次进入商品详情页面就会调用微信配置，自定义分享商品
-          if ((await this.getPlatform()).isAndroid){
-             await this.wxConfig()
-          }
+          await this.wxConfig();
           let url = Constant[Constant.NODE_ENV].groupBuyList // 分享地址
           // 如果用户登录了，把自己的唯一id也分享出去
           if(this.userInfo.id) {

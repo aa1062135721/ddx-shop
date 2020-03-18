@@ -144,16 +144,12 @@
                 ]
             }
         },
-        onLoad(){
+        async onLoad(){
             console.log("其他页面穿过来的参数：", this.$parseURL())
             this.orderGoodsData = this.$parseURL().goods
             this.requestData.order_id = this.$parseURL().order_id
             this.requestData.goods_id = this.$parseURL().goods.id
-
-            // 如果是安卓平台 每次进入商品详情页面就会调用微信配置，自定义分享商品
-            if ((this.getPlatform()).isAndroid){
-                this.wxConfig()
-            }
+            await this.wxConfig();
         },
         methods: {
             //图片放大预览

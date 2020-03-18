@@ -48,7 +48,9 @@
                 disabledMoney: false,//禁用余额支付按钮
             }
         },
-        onLoad(){
+        async onLoad(){
+            await this.wxConfig();
+            /**
             // 如果是ios 强制刷新一波
             if (this.getPlatform().isIOS){
                 if(!(uni.getStorageSync('refresh'))){
@@ -58,6 +60,7 @@
                     uni.removeStorageSync('refresh');
                 }
             }
+             **/
 
             console.log("其他页面带过来的参数：", this.$parseURL())
             this.orderData = this.$parseURL()
@@ -69,11 +72,6 @@
                     this.payWay = '1'
                 }
             }, 500)
-
-            // 如果是安卓平台 每次进入商品详情页面就会调用微信配置，自定义分享商品
-            if (this.getPlatform().isAndroid){
-                this.wxConfig()
-            }
         },
         onShow(){
             if (this.userInfo.id){

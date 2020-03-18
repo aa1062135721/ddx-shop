@@ -27,11 +27,8 @@
                 uni.navigateBack()
             },
         },
-        onLoad() {
-            // 如果是安卓平台 每次进入商品详情页面就会调用微信配置，自定义分享商品
-            if ((this.getPlatform()).isAndroid){
-                this.wxConfig()
-            }
+        async onLoad() {
+            await this.wxConfig();
 
             this.$minApi.becomeADistributorGetBackGroundImg().then(res => {
                 this.bgImg = res

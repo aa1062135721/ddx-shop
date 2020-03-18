@@ -927,10 +927,7 @@
 			backTop
 		},
 		async onShow() {
-			// 如果是安卓平台 每次进入商品详情页面就会调用微信配置，自定义分享商品
-			if ((await this.getPlatform()).isAndroid) {
-				await this.wxConfig()
-			}
+			await this.wxConfig();
 			let url = Constant[Constant.NODE_ENV].projectUrl
 			if (this.userInfo.id) {
 				url += `?user_id=${this.userInfo.id}`

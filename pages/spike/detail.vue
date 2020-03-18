@@ -842,18 +842,19 @@
             },
         },
         async onLoad(){
+            await this.wxConfig();
             let requestData = {
                     item_id: 0,
                     seckill_id: 0
                 },
                 url = Constant[Constant.NODE_ENV].shareSpikeGoodsDetail // 分享地址
 
-                if (this.$parseURL().item_id && this.$parseURL().seckill_id){
-                    requestData.item_id = this.$parseURL().item_id
-                    requestData.seckill_id = this.$parseURL().seckill_id
-                    url += `?item_id=${this.$parseURL().item_id}&seckill_id=${this.$parseURL().seckill_id}`
-                    console.log("其他页面带过来的参数：",this.$parseURL())
-                }
+            if (this.$parseURL().item_id && this.$parseURL().seckill_id){
+                requestData.item_id = this.$parseURL().item_id
+                requestData.seckill_id = this.$parseURL().seckill_id
+                url += `?item_id=${this.$parseURL().item_id}&seckill_id=${this.$parseURL().seckill_id}`
+                console.log("其他页面带过来的参数：",this.$parseURL())
+            }
 
             // 如果用户登录了，把自己的唯一id也分享出去
             if(this.userInfo.id) {
@@ -866,11 +867,6 @@
                     res.data.item.content = this.formatRichText2(res.data.item.content)
                     this.goodsInfo = res.data
                     this.choosesGoodsInfo.specs = res.data.item_specs[0]
-
-                    // 如果是安卓平台 每次进入商品详情页面就会调用微信配置，自定义分享商品
-                    if ((await this.getPlatform()).isAndroid){
-                        await this.wxConfig()
-                    }
 
                     await this.$nextTick(async () => {
                         //设置定时器 每一秒执行一次

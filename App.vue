@@ -82,12 +82,8 @@
                     }
                 }
             }
-            // ios 进入应用就要配置微信sdk
-            if(this.getPlatform().isIOS){
-               this.wxConfig()
-            }
 
-            // this.setToken('c5b4b6f2f974a8d509a50b4a70930c990c9d2aef735e6bcfea50da292a963718')
+            // this.setToken('2cd361456a534d38431008e83f8a986712042b6866e6a79b0cc75b87947251d3')
             try {
                 const token = uni.getStorageSync('token')
                 this.setSubscribe(1)

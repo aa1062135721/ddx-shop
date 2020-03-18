@@ -245,6 +245,21 @@
 				"navigationStyle": "custom",
 				"navigationBarTitleText": "捣蛋熊商城-女神节"
 			}
+		},
+
+		{
+			"path": "pages/user/discount-coupon/index",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "捣蛋熊商城-充值疯狂送"
+			}
+		},
+		{
+			"path": "pages/user/discount-coupon/details",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "捣蛋熊商城-折扣低用券使用记录"
+			}
 		}
 	],
     "subPackages": [

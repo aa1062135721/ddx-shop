@@ -33,13 +33,15 @@
                         </view>
                         <text class="text" style="margin-top: 6upx;">钱包</text>
                     </view>
-                    <view class="item">
+                    <view class="item" @click="goPage('discount_coupon_details')">
                         <view>
                             <view class="icon-text">
-                                0<text class="unit">分</text>
+                                <block v-if="userInfo.st_recharge">{{userInfo.st_recharge}}</block>
+                                <block v-else>0.00</block>
+                                <text class="unit">元</text>
                             </view>
                         </view>
-                        <text class="text" style="margin-top: 6upx;">积分</text>
+                        <text class="text" style="margin-top: 6upx;">抵用折扣券</text>
                     </view>
                     <view class="item" @click="goPage('coupon_list')">
                         <view>

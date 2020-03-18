@@ -1051,6 +1051,7 @@
 			},
 		},
 		async onLoad() {
+			await this.wxConfig();
 			let requestData = {
 					assemble_id:0,
 					item_id:0,
@@ -1086,11 +1087,6 @@
 					}
 					this.choosesGoodsInfo.specs = res.data.item_specs[0]
 					this.goodsInfo = res.data
-
-					// 如果是安卓平台 每次进入商品详情页面就会调用微信配置，自定义分享商品
-					if (await(this.getPlatform()).isAndroid){
-						await this.wxConfig()
-					}
 
 					this.$nextTick(async ()=>{
 						//整个商品的拼团倒计时

@@ -91,6 +91,10 @@
                 <view>优惠券</view>
                 <view>- ￥{{responseData.discount}}</view>
             </view>
+            <view class="item" v-if="responseData.discount_price">
+                <view>折扣抵用金额</view>
+                <view>- ￥{{responseData.discount_price}}</view>
+            </view>
             <view class="item">
                 <view>付款总金额</view>
                 <view style="color: #dd524d;">￥{{responseData.amount | moneyToFixed}}</view>

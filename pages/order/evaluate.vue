@@ -53,12 +53,8 @@
               goodsList:[]
           }
         },
-        onLoad(){
-            // 如果是安卓平台 每次进入商品详情页面就会调用微信配置，自定义分享商品
-            if ((this.getPlatform()).isAndroid){
-                this.wxConfig()
-            }
-
+        async onLoad(){
+            await this.wxConfig();
             console.log('其他页面带过来的参数：', this.$parseURL())
             let myData = []
             this.$parseURL().data.item_list.map((goods, index) => {

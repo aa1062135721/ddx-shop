@@ -107,6 +107,10 @@
             </div>
         </div>
         -->
+
+        <div class="xuanfu-log" @click="_goPage('discount_coupon')">
+            <img class="img" src="http://picture.ddxm661.com/7f343202003171535236962.png" alt="">
+        </div>
     </div>
 </template>
 
@@ -121,20 +125,8 @@
               money: '',
           }
         },
-        onLoad(){
-            // 如果是ios 强制刷新一波
-            if (this.getPlatform().isIOS){
-                if(!(uni.getStorageSync('refresh'))){
-                    uni.setStorageSync('refresh', "ios进入支付页面需要强制刷新一波")
-                    location.reload()
-                } else {
-                    uni.removeStorageSync('refresh')
-                }
-            }
-            // 如果是安卓平台 每次调用微信配置
-            if (this.getPlatform().isAndroid){
-                this.wxConfig()
-            }
+        async onLoad(){
+            await this.wxConfig();
         },
         methods:{
             ...mapActions(['asyncGetUserInfo']),
@@ -303,6 +295,17 @@
             border-radius:8upx;
             color: #FFFFFF;
             font-size: $uni-font-size-lg;
+        }
+    }
+
+    /* 悬浮logo */
+    .xuanfu-log{
+        position: fixed;
+        bottom: 100upx;
+        right: 60upx;
+        .img{
+            width: 144upx;
+            height: 118upx;
         }
     }
 </style>

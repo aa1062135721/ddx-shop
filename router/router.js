@@ -424,6 +424,12 @@ const router = new MinRouter({
 			name: 'discount_coupon_details',
 			login: true
 		},
+		{
+			path: "pages/user/discount-coupon/details",
+			type: 'redirectTo',
+			name: 'discount_coupon_details_redirect',
+			login: true
+		},
 
 	]
 })

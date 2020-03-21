@@ -66,7 +66,7 @@
                                 paySign: data.paySign, // 支付签名
                                 success: async (success) => {
                                     console.log("用户支付成功：", success)
-                                    _that._goPage('discount_coupon_details')
+                                    _that._goPage('discount_coupon_details_redirect')
                                 },
                                 fail: async (fail) => {
                                     console.log("支付失败：",fail)

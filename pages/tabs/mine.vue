@@ -33,7 +33,7 @@
                         </view>
                         <text class="text" style="margin-top: 6upx;">钱包</text>
                     </view>
-                    <view class="item" @click="goPage('discount_coupon_details')">
+                    <view class="item" @click="goPage(userInfo.is_st_recharge != 0 ? 'discount_coupon_details' : 'discount_coupon')">
                         <view>
                             <view class="icon-text">
                                 <block v-if="userInfo.st_recharge">{{userInfo.st_recharge}}</block>

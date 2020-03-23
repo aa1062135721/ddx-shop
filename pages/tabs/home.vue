@@ -764,9 +764,9 @@
 						this._goPage('spike_list')
 						break
 					case 6:
-						// this.msg('功能正在完善中，请敬请期待！')
+						this.msg('功能正在完善中，请敬请期待！')
 						// this._goPage('newcomer')
-						this._goPage('activity20200308')
+						// this._goPage('activity20200308')
 						break
 				}
 			},
@@ -1858,11 +1858,12 @@
 						display: flex;
 						justify-content: space-around;
 						align-items: center;
-						width: 635upx;
+						width: 625upx;
 						margin: 8upx auto;
+						overflow: hidden;
 
 						.ydms-shop {
-							width: 192upx;
+							width: 190upx;
 							height: 364upx;
 							padding: 0 8upx;
 							// border: 1px solid #FDEBCA;

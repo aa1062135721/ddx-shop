@@ -404,12 +404,12 @@ const router = new MinRouter({
 		},
 
 		//活动页面，20200308女神节
-		{
-			path: "pages/activity20200308/index",
-			type: 'navigateTo',
-			name: 'activity20200308',
-			login: false
-		},
+		// {
+		// 	path: "pages/activity20200308/index",
+		// 	type: 'navigateTo',
+		// 	name: 'activity20200308',
+		// 	login: false
+		// },
 
 		// 折扣抵用券
 		{
@@ -429,6 +429,14 @@ const router = new MinRouter({
 			type: 'redirectTo',
 			name: 'discount_coupon_details_redirect',
 			login: true
+		},
+
+		//活动页面，春季上新
+		{
+			path: "pages/activity20200323/index",
+			type: 'navigateTo',
+			name: 'activity20200323',
+			login: false
 		},
 
 	]

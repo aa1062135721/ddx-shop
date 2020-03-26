@@ -438,7 +438,20 @@ const router = new MinRouter({
 			name: 'activity20200323',
 			login: false
 		},
-
+		//活动页面，洗护用品
+		{
+			path: "pages/activity20200325/index",
+			type: 'navigateTo',
+			name: 'activity20200325',
+			login: false
+		},
+		//活动页面，奶粉专区
+		// {
+		// 	path: "pages/activity20200326/index",
+		// 	type: 'navigateTo',
+		// 	name: 'activity20200326',
+		// 	login: false
+		// },
 	]
 })
 

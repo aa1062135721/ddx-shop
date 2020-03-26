@@ -1,5 +1,5 @@
 <template>
-	<view class="container" :class="{'yuandan-bg': TabCur === 0}">
+	<view class="container yuandan-bg">
 		<div class="content-box">
 			<div class="search-and-tabs">
 				<!-- 首页的搜索框 -->
@@ -13,11 +13,7 @@
 					<text class="iconfont icon-ddx-shop-fenlei"></text>
 					<text style="margin: -6upx;color:#333333;">分类</text>
 				</view>
-				<!-- 一级tab栏 -->
-				<!-- <wuc-tab :tab-list="tabList" :textFlex="true" :tabCur.sync="TabCur" tab-class="tabs"  @change="tabChange" style="position: fixed;left: 0;width: 100%;z-index: 999;" :style="style"></wuc-tab> -->
 			</div>
-			<!--	站位符 占.search-and-tabs的位置	-->
-			<!-- <view class="my-block"></view> -->
 
 			<!-- 推荐 -- banner-->
 			<view class="swiper-box" v-if="swiperList.length">
@@ -36,249 +32,26 @@
 			</view>
 		</div>
 
+		<!--	春季上新 	-->
+		<div class="ad-space" @click="_goPage('activity20200323')">
+			<img class="img" src="http://picture.ddxm661.com/6cc56202003260941181249.gif" />
+		</div>
+
+		<!--	活动页面 广告位 盛夏洗护	就要爽购-->
+		<div class="shengxiaxihu">
+			<div class="my-bg">
+				<div class="go-more" @click="_goPage('activity20200325')"></div>
+				<div class="goods-all">
+					<img src="http://picture.ddxm661.com/23e23202003261053251757.png" @click="_goPage('spike_detail', {seckill_id: 1947,item_id: 5105})">
+					<img src="http://picture.ddxm661.com/27237202003261053252544.png" @click="_goPage('spike_detail', {seckill_id: 1951,item_id: 5114})">
+					<img src="http://picture.ddxm661.com/67656202003261053257767.png"  @click="_goPage('spike_detail', {seckill_id: 1953,item_id: 2528})">
+				</div>
+			</div>
+		</div>
+
+
 			<!-- 推荐tab栏里的数据 -->
-			<view class="content" v-show="TabCur === 0">
-
-				<!-- 专题广告图 -->
-				<!-- <div class="thematic">
-					<image class="thematicImg" src="../../static/images/thematic/thematicHome.png" @click="_goPage('thematic')"></image>
-					<image class="goImg Big" src="../../static/images/thematic/bigGo.png" v-show="goImg" @click="_goPage('thematic')"></image>
-					<image class="goImg S" src="../../static/images/thematic/smallGo.png" v-show="!goImg" @click="_goPage('thematic')"></image>
-				</div> -->
-				<!--	新人专享 	-->
-				<!--
-				<view class="newcomer" @click="_goPage('newcomer')">
-					<img class="img" src="../../static/images/newcomer.gif" />
-				</view>
-				-->
-
-				<!-- 超级拼团 限时秒杀 童装童鞋 境外购-->
-				<!--
-				<view class="goods-category">
-					<view class="global-notice" v-if="notice.length">
-						<view class="box">
-							<view class="notice-img">
-								<image class="img" src="../../static/images/notice-img.png"></image>
-							</view>
-							<view class="hot-spot">热点</view>
-							<view class="notice-content">{{notice[0].title}}</view>
-						</view>
-					</view>
-					<view class="all-goods">
-						<view class="item">
-							<view class="title-box" @click="_goPage('group_buy')">
-								<view class="title">
-									<text>超级拼团</text>
-									<text class="more-text">
-										更多 <text class="iconfont icon-ddx-shop-content_arrows"></text>
-									</text>
-								</view>
-								<view class="sub-title">约惠好友 超值拼购</view>
-							</view>
-							<view class="goods-info">
-								<view class="goods" v-for="(item, index) in combination.assemble_list" :key="index" @click="_goPage('group_buy_detail', {assemble_id: item.id, item_id: item.item_id})">
-									<view class="goods-img">
-										<image class="img" :src="item.pic" :lazy-load="true"></image>
-									</view>
-									<view class="price">
-										<text class="now-price">￥{{item.min_price}}</text>
-										<text class="old-price">￥{{item.max_price}}</text>
-									</view>
-								</view>
-							</view>
-						</view>
-						<view class="item">
-							<view class="title-box" @click="_goPage('spike_list')">
-								<view class="title">
-									<text>限时秒杀</text>
-									<text class="more-text">
-										更多 <text class="iconfont icon-ddx-shop-content_arrows"></text>
-									</text>
-								</view>
-								<view class="sub-title">爆品限时限量抢</view>
-							</view>
-							<view class="goods-info">
-								<view class="goods" v-for="(item, index) in combination.seckill_list" :key="index"  @click="_goPage('spike_detail', {seckill_id: item.id, item_id: item.item_id})">
-									<view class="goods-img">
-										<image class="img" :src="item.pic" :lazy-load="true"></image>
-									</view>
-									<view class="price">
-										<text class="now-price">￥{{item.min_price}}</text>
-										<text class="old-price">￥{{item.max_price}}</text>
-									</view>
-								</view>
-							</view>
-						</view>
-						<view class="item" v-if="combination.tong_list.data.length">
-							<view class="title-box" @click="_goPage('goods_search', {title: combination.tong_list.name, id: combination.tong_list.id})">
-								<view class="title">
-									<text>童装童鞋</text>
-									<text class="more-text">
-										更多 <text class="iconfont icon-ddx-shop-content_arrows"></text>
-									</text>
-								</view>
-								<view class="sub-title">天使般温柔呵护</view>
-							</view>
-							<view class="goods-info">
-								<view class="goods" v-for="(item, index) in combination.tong_list.data" :key="index" @click="_goPage('goods_detail', {id: item.item_id})">
-									<view class="goods-img">
-										<image class="img" :src="item.pic" :lazy-load="true"></image>
-									</view>
-									<view class="price">
-										<text class="now-price">￥{{item.min_price}}</text>
-									</view>
-								</view>
-							</view>
-						</view>
-						<view class="item" v-if="combination.kua_list.data.length">
-							<view class="title-box" @click="_goPage('goods_search', {title: combination.kua_list.name, id: combination.kua_list.id, is_cate: 1})">
-								<view class="title">
-									<text>跨境购</text>
-									<text class="more-text">
-										更多 <text class="iconfont icon-ddx-shop-content_arrows"></text>
-									</text>
-								</view>
-								<view class="sub-title">正品保障 跨境直邮</view>
-							</view>
-							<view class="goods-info">
-								<view class="goods" v-for="(item, index) in combination.kua_list.data" :key="index" @click="_goPage('goods_detail', {id: item.item_id})">
-									<view class="goods-img">
-										<image class="img" :src="item.pic" :lazy-load="true"></image>
-									</view>
-									<view class="price">
-										<text class="now-price">￥{{item.min_price}}</text>
-									</view>
-								</view>
-							</view>
-						</view>
-					</view>
-				</view>
-				-->
-
-				<!--	天天秒杀			-->
-				<!--
-				<view class="tiantianmiaosha"  v-if="seckill_list.length !== 0">
-					<view class="top-banner" @click="_goPage('spike_list')"></view>
-					<view class="body-content">
-						<scroll-view  scroll-x="true">
-							<view class="all-goods">
-								<view class="goods" v-for="(item, index) in seckill_list" :key="index" @click="_goPage('spike_detail', {item_id: item.item_id, seckill_id: item.id})">
-									<view class="goods-header">
-										<image class="img" :src="item.pic" :lazy-load="true"></image>
-									</view>
-									<div class="goods-footer">
-										<div class="goods-title">{{item.item_name}}</div>
-										<div class="goods-price">
-											<span class="old-price">￥{{item.old_price}}</span>
-											<span class="now-price">￥{{item.price}}</span>
-										</div>
-										<div class="btn-box">
-											<div class="btn" v-show="item.status === 1">立即抢购</div>
-											<div class="btn not-now" v-show="item.status === 2">即将开始</div>
-										</div>
-									</div>
-								</view>
-							</view>
-						</scroll-view>
-					</view>
-				</view>
-				-->
-				<!--	拼团特惠			-->
-				<!--
-				<div class="pintuantehui-box-big-div" v-show="assemble_list.length !== 0">
-					<view class="pintuantehui">
-						<view class="top-banner" @click="_goPage('group_buy')"></view>
-						<view class="body-content">
-							<scroll-view  scroll-x="true" style="background: #FFFFFF;border-radius:10upx;padding:0 20upx;">
-								<view class="all-goods">
-									<view class="goods" v-for="(item, index) in assemble_list" :key="index" @click="_goPage('group_buy_detail', {assemble_id: item.id, item_id: item.item_id})">
-										<view class="goods-header">
-											<image class="img" :src="item.pic" :lazy-load="true"></image>
-											<div class="flag">{{item.assemble_num}}人团</div>
-										</view>
-										<div class="goods-footer">
-											<div class="goods-title">{{item.item_name}}</div>
-											<div class="goods-price">
-												<span class="old-price">￥{{item.old_price}}</span>
-												<span class="now-price">￥{{item.price}}</span>
-											</div>
-										</div>
-									</view>
-								</view>
-							</scroll-view>
-						</view>
-					</view>
-				</div>
-				-->
-
-				<!-- 每周专场 -->
-				<!--
-				<div class="yuandanmiao thematicShop">
-					<div class="thematicWord" v-if="word == 1">专人选货</div>
-					<div class="thematicWord" v-else-if="word == 2">好货不断</div>
-					<div class="thematicWord" v-else>无中间商</div>
-					<view class="yd-more" @click="_goPage('thematic')"></view>
-					<div class="ydms tma">
-						<swiper circular="true" indicator-active-color="#FFF" style="width: 710upx;height: 374upx;margin:0 auto;">
-							<swiper-item class="yd-swiper">
-								<div class="ydms-box">
-									<block v-for="(item, index) in thematicList1" :key="index">
-										<div class="ydms-shop" v-if="index<3" @click="_goPage('goods_detail', {id: item.item_info.id})">
-											<image class="ydms-img" :src="item.item_info.pic" :lazy-load="true"></image>
-											<image class="tit-img" :lazy-load="true"></image>
-											<p class="shop-tit">{{item.item_info.title}}</p>
-											<p class="shop-price"><span class="big-price">￥{{item.item_info.min_price}}</span><span class="small-price">￥{{item.item_info.max_price}}</span></p>
-											<div class="shop-button">立即购买</div>
-										</div>
-									</block>
-								</div>
-							</swiper-item>
-							<swiper-item class="yd-swiper" v-if="thematicList1.length > 3">
-								<div class="ydms-box">
-									<block v-for="(item, index) in thematicList1" :key="index">
-										<div class="ydms-shop" v-if="index >= 3 && index < 6" @click="_goPage('goods_detail', {id: item.item_id})">
-											<image class="ydms-img" :src="item.item_info.pic" :lazy-load="true"></image>
-											<image class="tit-img" :lazy-load="true"></image>
-											<p class="shop-tit">{{item.item_info.title}}</p>
-											<p class="shop-price"><span class="big-price">￥{{item.item_info.min_price}}</span><span class="small-price">￥{{item.item_info.max_price}}</span></p>
-											<div class="shop-button">立即购买</div>
-										</div>
-									</block>
-								</div>
-							</swiper-item>
-						</swiper>
-						<swiper circular="true" :indicator-dots="true" indicator-active-color="#FFF" style="width: 710upx;height: 436upx;margin:0 auto;">
-							<swiper-item class="yd-swiper">
-								<div class="ydms-box">
-									<block v-for="(item, index) in thematicList2" :key="index">
-										<div class="ydms-shop" v-if="index<3" @click="_goPage('goods_detail', {id: item.item_info.id})">
-											<image class="ydms-img" :src="item.item_info.pic" :lazy-load="true"></image>
-											<image class="tit-img" :lazy-load="true"></image>
-											<p class="shop-tit">{{item.item_info.title}}</p>
-											<p class="shop-price"><span class="big-price">￥{{item.item_info.min_price}}</span><span class="small-price">￥{{item.item_info.max_price}}</span></p>
-											<div class="shop-button">立即购买</div>
-										</div>
-									</block>
-								</div>
-							</swiper-item>
-							<swiper-item class="yd-swiper" v-if="thematicList2.length > 3">
-								<div class="ydms-box">
-									<block v-for="(item, index) in thematicList2" :key="index">
-										<div class="ydms-shop" v-if="index >= 3 && index < 6" @click="_goPage('goods_detail', {id: item.item_id})">
-											<image class="ydms-img" :src="item.item_info.pic" :lazy-load="true"></image>
-											<image class="tit-img" :lazy-load="true"></image>
-											<p class="shop-tit">{{item.item_info.title}}</p>
-											<p class="shop-price"><span class="big-price">￥{{item.item_info.min_price}}</span><span class="small-price">￥{{item.item_info.max_price}}</span></p>
-											<div class="shop-button">立即购买</div>
-										</div>
-									</block>
-								</div>
-							</swiper-item>
-						</swiper>
-					</div>
-				</div>
-				-->
-
+			<view class="content">
 				<!-- 元旦秒杀 -->
 				<div class="yuandanmiao" v-if="seckill_list.length">
 					<view class="yd-more" @click="_goPage('spike_list')"></view>
@@ -328,7 +101,7 @@
 							<swiper-item class="yd-swiper" v-if="assemble_list.length > 3">
 								<div class="ydms-box">
 									<block v-for="(item, index) in assemble_list" :key="index">
-										<div class="ydms-shop" v-if="index > 3" @click="_goPage('group_buy_detail', {assemble_id: item.id, item_id: item.item_id})">
+										<div class="ydms-shop" v-if="index > 3 && index < 7" @click="_goPage('group_buy_detail', {assemble_id: item.id, item_id: item.item_id})">
 											<image class="ydms-img" :src="item.pic" :lazy-load="true"></image>
 											<p class="shop-tit">{{ item.item_name }}</p>
 											<div class="shop-price"><div class="big-price pintuan">￥{{ item.price }}<span class="ydms-people">{{ item.assemble_num }}人团</span></div><div class="small-price pintuan">￥{{ item.old_price }}</div></div>
@@ -340,85 +113,6 @@
 					</div>
 				</div>
 
-				<!-- HOT SALE-->
-				<!---
-				<view class="hot-sale" v-if="explosion.length">
-					<view class="hot-sale-banner">
-						<image class="img" src="../../static/images/home-hot-sale-banner.png" mode="widthFix"></image>
-					</view>
-					<view class="hot-sale-box">
-						<block  v-for="(item, index) in explosion" :key="index">
-							<view class="goods" v-if="item.type !== 1" @click="_goPage('goods_detail', {id: item.item.id})">
-								<view class="goods-header">
-									<view  class="goods-tag" v-if="item.type === 3">热销第一</view>
-									<view  class="goods-tag" v-if="item.type === 4">好评第一</view>
-									<view  class="goods-tag" v-if="item.type === 5">热门推荐</view>
-									<image class="img" :src="item.item.pic" :lazy-load="true"></image>
-								</view>
-								<view class="goods-footer">
-									<view class="goods-title">
-										{{item.item.title}}
-									</view>
-									<view class="goods-price">¥{{item.item.min_price}}</view>
-								</view>
-			            	</view>
-							<view class="goods" v-if="item.type === 1 && item.item.length" v-for="(oItem, oIndex) in item.item" :key="oIndex" @click="_goPage('goods_detail', {id: oItem.id})">
-								<view class="goods-header">
-									<image class="img" :src="oItem.pic" :lazy-load="true"></image>
-								</view>
-								<view class="goods-footer">
-									<view class="goods-title">
-										{{oItem.title}}
-									</view>
-									<view class="goods-price">¥{{oItem.min_price}}</view>
-								</view>
-							</view>
-						</block>
-					</view>
-				</view>
-				-->
-
-				<!-- 好物享不停 -->
-				<!--
-				<view class="goods-share-no-stop" v-if="explosion.length">
-					<view class="goods-share-no-stop-box">
-						<view class="goods-top">
-							<view class="item" @click="_goPage('goods_detail', {id: explosion[0].item.id})">
-								<view class="goods-tag">好评第一</view>
-								<view class="goods-price">￥{{parseInt(explosion[0].item.min_price)}}</view>
-								<image class="img" :src="explosion[0].item.pic"></image>
-							</view>
-							<view class="item" style="height:336upx;" @click="_goPage('goods_detail', {id: explosion[1].item.id})">
-								<view class="goods-tag">销量第一</view>
-								<view class="goods-price" style="height: 64upx;width: 64upx;font-size: 20upx;line-height: 64upx">￥{{parseInt(explosion[1].item.min_price)}}</view>
-								<image class="img" :src="explosion[1].item.pic"></image>
-							</view>
-							<view class="item" @click="_goPage('goods_detail', {id: explosion[2].item.id})">
-								<view class="goods-tag">热门推荐</view>
-								<view class="goods-price">￥{{parseInt(explosion[2].item.min_price)}}</view>
-								<image class="img" :src="explosion[2].item.pic"></image>
-							</view>
-						</view>
-						<view class="goods-box" v-if="explosion.length >= 3">
-							<view class="item" v-for="(item, index) in explosion[3].item" :key="index" @click="_goPage('goods_detail', {id: item.id})">
-								<view class="goods-title">
-									<view class="title">
-										{{item.title}}
-									</view>
-									<view class="footer">
-										<view class="price">￥{{item.min_price}}</view>
-										<view class="btn">立即购买</view>
-									</view>
-								</view>
-								<view class="goods-img">
-									<image class="img" :src="item.pic"></image>
-								</view>
-							</view>
-						</view>
-					</view>
-				</view>
-				-->
-
 				<!-- 六个分类，内容部分可以向左滑动-->
 				<view style="padding: 10px;color: #000000;font-size: 48upx;font-weight: bold;" v-if="categoryGoodsList.length">
 					好物精选
@@ -428,21 +122,6 @@
 						<img class="img" :src="item.thumb">
 					</div>
 					<div class="some-category-box">
-						<!--
-						<scroll-view  scroll-x="true">
-							<div class="all-goods">
-								<div class="goods" v-for="(subItem, subIndex) in item.items" :key="subIndex" @click="_goPage('goods_detail', {id: subItem.id})">
-									<div class="goods-header">
-										<image class="img" :src="subItem.pic" :lazy-load="true"></image>
-									</div>
-									<div class="goods-footer">
-										<div class="goods-title">{{subItem.title}}</div>
-										<div class="goods-price">￥{{subItem.min_price}}</div>
-									</div>
-								</div>
-							</div>
-						</scroll-view>
-						-->
 						<swiper class="all-goods" display-multiple-items="4" autoplay="true" interval="3000" easing-function="linear">
 							<swiper-item class="goods" v-for="(subItem, subIndex) in item.items" :key="subIndex" @click="_goPage('goods_detail', {id: subItem.id})">
 								<div class="goods-header">
@@ -471,28 +150,6 @@
 
 			</view>
 
-		<!-- 其他tab栏里的数据 -->
-		<!--
-		<view class="content" v-show="TabCur !== 0">
-			<view class="limited-time" style="background-color: #FFFFFF;">
-				<view class="item" v-for="(item, index) in subTab" :key="index" @click="_clickSubTab(item)">
-					<view>
-						<image :src="item.thumb" :lazy-load="true"></image>
-					</view>
-					<view>
-						<text>{{item.cname}}</text>
-					</view>
-				</view>
-			</view>
-			<view class="guess-you-like">
-				<view class="goods-list">
-					<mGoods v-for="(item, index) in tabList[TabCur].goodsList" :key="index" :goodsInfo="item" @click.native="goGoodsDetails(item)"></mGoods>
-				</view>
-			</view>
-		</view>
-		-->
-
-		<!-- <uni-load-more :status="tabList[0].requestData.moreStatus" :show-icon="true" class="load-more"></uni-load-more> -->
 
 		<!-- 回到顶部 -->
 		<backTop :src="backTop.src" :scrollTop="backTop.scrollTop"></backTop>
@@ -505,21 +162,14 @@
 </template>
 
 <script>
-    import WucTab from '@/components/wuc-tab/wuc-tab.vue'
-	// import separator from "@/components/separator.vue"
 	import mGoods from '@/components/goods/goods.vue'
-	import WlmTab from '@/components/wlm-tab/wlm-tab.vue'
 	import backTop from '@/components/back-top/back-top.vue'
 	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue' //可选值：more（loading前）、loading（loading中）、noMore（没有更多了）
 	import * as Constant from '../../utils/constant'
-	import {
-		mapState,
-		mapMutations
-	} from 'vuex'
-	let goTime = null;
+	import { mapState, mapMutations } from 'vuex'
+
 	export default {
 		/**
-
 		// 从其他tab页面到首页, 回到推荐页面的顶部
 		onTabItemTap(e) {
 			console.log(e)
@@ -531,8 +181,8 @@
 				this.TabCur = 0
 			}
 		},
-
 		 */
+
 		onPageScroll(e) {
 			this.backTop.scrollTop = e.scrollTop;
 		},
@@ -550,19 +200,7 @@
 						moreStatus: 'loading',
 					},
 					goodsList: [], // 推荐页 无限下拉加载商品
-				}, ],
-				//首页 非推荐里的tab栏，二级tab
-				subTab: [],
-
-				// 专题栏 文字跳动
-				word:1,
-				thematicData:{ // 专题请求对象
-					hot:1,
-					page:1,
-					limit:12
-				},
-				thematicList1:[], // 专题列表
-				thematicList2:[], // 专题列表
+				}],
 
 				// 回到顶部
 				backTop: {
@@ -570,9 +208,6 @@
 					scrollTop: 0
 				},
 
-				scrollTop: 0,
-
-				goImg: false, // go图片
 
 				/**
 				 * 推荐里的数据
@@ -583,23 +218,7 @@
 				iconArr: [],
 				//分类商品
 				categoryGoodsList: [],
-				// hot sale 人气爆款
-				explosion: [],
-				//公告 notice
-				notice: [],
-				// 超级拼团 限时秒杀 童装童鞋 境外购
-				// 参数说明：assemble_list：拼团，seckill_list秒杀，tong_list童装童鞋，kua_list跨境购
-				// 注意：拼团点击跳转拼团详情，秒杀点击跳转秒杀详情，童装童鞋与跨境购 跳转到商品搜索
-				combination: {
-					assemble_list: [],
-					seckill_list: [],
-					tong_list: {
-						data: [],
-					},
-					kua_list: {
-						data: [],
-					},
-				},
+
 				// 限时秒杀列表
 				seckill_list: [],
 				// 获取拼团列表
@@ -607,18 +226,10 @@
 			}
 		},
 		onLoad() {
-			this._getCategory()
 			this._getBanner()
 			this._getIcon()
-			this._getNotice()
-			// this._getThematic()
-			// this._getCombination()
-			// this._getSpikeList()
-			// this._getExplosion()
 			this._getCategoryGoodsList()
 			this._getUnlimitedGoods()
-			// this._goImage() // 专题Go图片
-			// this._goWord()
 		},
 		async onReachBottom() {
 			if (this.tabList[this.TabCur].requestData.moreStatus === 'noMore') {
@@ -627,8 +238,6 @@
 			this.tabList[this.TabCur].requestData.page++
 			if (this.TabCur === 0) {
 				await this._getUnlimitedGoods()
-			} else {
-				await this._getGoodsList()
 			}
 		},
 		methods: {
@@ -639,61 +248,7 @@
 					query
 				})
 			},
-			async tabChange(index) {
-				this.TabCur = index
-				if (index === 0) {
-					return
-				}
-				console.log('被点击的tab信息', this.tabList[index])
-				await this.$minApi.category({
-					pid: this.tabList[index].id
-				}).then(res => {
-					if (res.code === 200) {
-						this.subTab = res.data
-					}
-				})
-				console.log('返回的子分类信息', this.subTab)
-				if (this.tabList[index].goodsList.length===0) {
-					await this._getGoodsList(index)
-				}
 
-			},
-			async _getGoodsList() {
-				this.tabList[this.TabCur].requestData.moreStatus = 'loading'
-				let data = {
-					type: this.tabList[this.TabCur].id,
-					page: this.tabList[this.TabCur].requestData.page,
-					limit: this.tabList[this.TabCur].requestData.limit,
-				}
-				await this.$minApi.searchGoods(data).then(res => {
-					if (res.code === 200) {
-						this.tabList[this.TabCur].goodsList.push(...res.data)
-						if (res.data.length < this.tabList[this.TabCur].requestData.limit) {
-							this.tabList[this.TabCur].requestData.moreStatus = 'noMore'
-						} else {
-							this.tabList[this.TabCur].requestData.moreStatus = 'more'
-						}
-					}
-				})
-			},
-			_getCategory(pid) {
-				this.$minApi.category({
-					pid
-				}).then(res => {
-					if (res.code === 200) {
-						let newArr = res.data.map((item, index) => {
-							item.requestData = {
-								page: 1,
-								limit: 10,
-								moreStatus: 'loading'
-							}
-							item.goodsList = []
-							return item
-						})
-						this.tabList.push(...newArr)
-					}
-				})
-			},
 			_getBanner() {
 				this.$minApi.banner().then(res => {
 					if (res.code === 200) {
@@ -718,13 +273,6 @@
 						this._goPage(this.swiperList[key].url, JSON.parse(this.swiperList[key].value))
 						break
 				}
-			},
-			_clickSubTab(item) {
-				console.log(item)
-				this._goPage('goods_search', {
-					id: item.id,
-					title: item.cname
-				})
 			},
 
 			//推荐页面的图标
@@ -780,24 +328,6 @@
 					}
 				})
 			},
-			//公告
-			async _getNotice() {
-				await this.$minApi.notice().then(res => {
-					console.log("获取推荐tab中的公告：", res)
-					if (res.code === 200) {
-						this.notice = res.data
-					}
-				})
-			},
-			// 超级拼团 限时秒杀 童装童鞋 境外购
-			async _getCombination() {
-				await this.$minApi.combination().then(res => {
-					console.log("获取推荐tab中的 超级拼团 限时秒杀 童装童鞋 境外购：", res)
-					if (res.code === 200) {
-						this.combination = res.data
-					}
-				})
-			},
 			/**
 			 * 获取10个秒杀商品 和 10 拼团
 			 */
@@ -810,15 +340,6 @@
 				await this.$minApi.getAssembleList().then(res => {
 					if (res.code === 200) {
 						this.assemble_list = res.data
-					}
-				})
-			},
-			//hot sale 人气爆款
-			async _getExplosion() {
-				await this.$minApi.explosion().then(res => {
-					console.log("hot sale 人气爆款数据：", res)
-					if (res.code === 200) {
-						this.explosion = res.data
 					}
 				})
 			},
@@ -844,22 +365,8 @@
 					}
 				})
 			},
-			async _getThematic(){
-				await this.$minApi.thematicList(this.thematicData).then(res=>{
-					console.log("专题",res)
-					if(res.code == 200){
-						let arr = res.data.data
-						this.thematicList1 = arr.slice(0,6);
-						console.log("数组",this.thematicList1)
-						this.thematicList2 = arr.slice(6);
-						console.log("数组2",this.thematicList2)
-					}
-				})
-			},
 			// 去到商品详情/限时购详情/拼团详情
 			goGoodsDetails(goods) {
-				console.log('商品信息：', goods)
-
 				// 限时购
 				if (goods.activity_id && goods.activity_type === 4) {
 					this._goPage('spike_detail', {
@@ -868,40 +375,10 @@
 					})
 					return
 				}
-				// // 秒杀
-				// if (goods.activity_id && goods.activity_type === 2) {
-				// 	this._goPage('spike_detail', {seckill_id: goods.activity_id, item_id: goods.id})
-				// 	return
-				// }
-				// //拼团活动
-				// if (goods.activity_id && goods.activity_type === 3) {
-				// 	this._goPage('group_buy_detail', {assemble_id: goods.activity_id, item_id: goods.id})
-				// 	return
-				// }
-
 				this._goPage('goods_detail', {
 					id: goods.id
 				})
 			},
-
-			// go图片动态
-			// async _goImage(){
-			// 	 goTime = await setInterval(()=>{
-			// 		this.goImg = !this.goImg
-			// 	},333)
-			// },
-
-			// 专题入口问题跳动
-			async _goWord(){
-				goTime = await setInterval(()=>{
-					if(this.word == 3){
-						this.word = 1
-					}else {
-						this.word++
-					}
-				},1500)
-			},
-
 
 			// 打开合从聊天弹窗
 			contactCustomerService() {
@@ -919,10 +396,7 @@
 			},
 		},
 		components: {
-			WucTab,
-			// separator,
 			mGoods,
-			WlmTab,
 			uniLoadMore,
 			backTop
 		},
@@ -953,19 +427,6 @@
 		},
 		computed: {
 			...mapState(['userInfo']),
-			style() {
-				//#ifdef MP-WEIXIN
-				var systemInfo = uni.getSystemInfoSync()
-				return `top:${systemInfo.statusBarHeight + 44}px`
-				//#endif
-				//#ifdef APP-PLUS
-				return ''
-				//#endif
-			},
-		},
-		onUnload() {
-			clearInterval(goTime)
-			goTime = null;
 		},
 	}
 </script>
@@ -990,11 +451,6 @@
 				justify-content: space-between;
 				align-items: center;
 
-				// background-color: #fff;
-				// position: fixed;
-				// top: 0;
-				// left: 0;
-				// z-index: 999999;
 				.sort {
 					display: flex;
 					flex-direction: column;
@@ -1046,12 +502,6 @@
 					text-align: center;
 					width: 100%;
 				}
-			}
-
-			.my-block {
-				width: 100%;
-				height: calc(80upx + 90upx);
-				background: #fff;
 			}
 
 
@@ -1110,426 +560,51 @@
 			}
 		}
 
-		.content {
+		/* 广告位，一般用于跳转其他活动页面 */
+		.ad-space {
+			background-color: #ECFEF1;
+			padding: $uni-spacing-row-base;
+			.img {
+				width: 100%;
+			}
+		}
 
-			/*专题页面图片*/
-			.thematic {
+		/* 活动页面 广告位 盛夏洗护	就要爽购 */
+		.shengxiaxihu{
+			background-color: #ECFEF1;
+			padding: $uni-spacing-row-base $uni-spacing-row-base $uni-spacing-row-base 0;
+			.my-bg{
+				height: 720upx;
+				background: url("http://picture.ddxm661.com/68d0820200326105439276.png") no-repeat;
+				background-size: 100% 100%;
+				overflow: hidden;
+				padding-left: $uni-spacing-row-base;
 				position: relative;
-				.thematicImg {
-					display: block;
-					width: 710upx;
-					height: 162upx;
-					margin: 20upx auto;
-					border-radius: 10upx;
-				}
-				.goImg{
+				.go-more{
 					position: absolute;
-					top:20upx;
-					right:40upx;
-					&.Big{
-						width: 117upx;
-						height: 117upx;
-					}
-					&.S{
-						width: 94upx;
-						height: 94upx;
-						top: 30upx;
-						right: 50upx;
-					}
+					/*background: #000;*/
+					right: 20upx;
+					top:230upx;
+					width: 100upx;
+					height: 50upx;
 				}
-			}
-
-			/* 新人专享 */
-			.newcomer {
-				background: #FFFFFF;
-
-				.img {
-					width: 100%;
-				}
-			}
-
-			/*超级拼团 限时秒杀 童装童鞋 跨境商品*/
-			.goods-category {
-				padding: 0 $uni-spacing-row-sm;
-				margin-bottom: 20upx;
-
-				/*通知栏*/
-				.global-notice {
-					background: #fff;
-					overflow: hidden;
-					padding: 0 $uni-spacing-row-base;
-					@extend %border-color-solid-botton;
-					border-radius: 8upx 8upx 0 0;
-
-					.box {
-						height: 80upx;
-						display: flex;
-						align-items: center;
-
-						.notice-img {
-							margin-right: 14upx;
-
-							.img {
-								width: 154upx;
-								height: 30upx;
-							}
-						}
-
-						.hot-spot {
-							color: $color-primary;
-							border: 1px solid $color-primary;
-							font-size: 14upx;
-							width: 50upx;
-							text-align: center;
-							line-height: 26upx;
-							border-radius: 11upx;
-							margin-right: 14upx;
-						}
-
-						.notice-content {
-							color: #666666;
-							font-size: $uni-font-size-sm;
-						}
-					}
-
-				}
-
-				.all-goods {
-					margin: auto;
-					background: #FFFFFF;
-					border-radius: 0 0 8upx 8upx;
-					width: 710upx;
+				.goods-all{
+					padding-top: 330upx;
 					display: flex;
-					flex-wrap: wrap;
-
-					.item {
-						width: 50%;
-						height: 50%;
-						box-sizing: border-box;
-						border-left: 1px solid #efefef;
-						border-bottom: 1px solid #efefef;
-
-						&:nth-child(1) {
-							border-left: none;
-						}
-
-						&:nth-child(3) {
-							border-bottom: none;
-							border-left: none;
-						}
-
-						&:nth-child(4) {
-							border-bottom: none;
-						}
-
-						padding: 30upx 20upx 26upx 20upx;
-						display: flex;
-						flex-direction: column;
-						justify-content: space-between;
-
-						.title-box {
-							margin-bottom: 20upx;
-
-							.title {
-								font-size: $uni-font-size-base;
-								color: $color-primary-plain;
-								font-weight: 600;
-								display: flex;
-								justify-content: space-between;
-
-								.more-text {
-									font-weight: normal;
-									color: #999999;
-									font-size: 18upx;
-
-									.iconfont {
-										margin-left: 4upx;
-										font-size: 18upx;
-									}
-								}
-							}
-
-							.sub-title {
-								font-size: $uni-font-size-sm;
-								color: #808080;
-							}
-						}
-
-						.goods-info {
-							display: flex;
-							justify-content: space-between;
-
-							.goods {
-								width: 152upx;
-
-								.goods-img {
-									.img {
-										width: 152upx;
-										height: 152upx;
-										border-radius: 4upx;
-									}
-
-									margin-bottom: 15upx;
-								}
-
-								.price {
-									width: 152upx;
-									display: flex;
-									align-items: center;
-									justify-content: space-around;
-
-									.now-price {
-										font-size: 22upx;
-										color: $color-primary;
-									}
-
-									.old-price {
-										text-decoration: line-through;
-										color: #B2B2B2;
-										font-size: 16upx;
-									}
-								}
-
-							}
-						}
-
-					}
-				}
-			}
-
-			/*HOT SALE*/
-			.hot-sale {
-				margin: 28upx auto;
-				padding: 0 $uni-spacing-row-sm;
-
-				.hot-sale-banner {
-					border-radius: 8upx 8upx 0 0;
-					width: 100%;
-					height: 123upx;
-					overflow: hidden;
-					background-color: #C1ADFA;
-
-					.img {
-						width: 710upx;
-						height: 123upx;
-					}
-				}
-
-				.hot-sale-box {
-					width: 100%;
-					background: #C1ADFA;
-					padding: 10upx;
-					border-radius: 0 0 8upx 8upx;
-
-					display: flex;
-					flex-wrap: wrap;
-					justify-content: space-between;
-
-					.goods {
-						box-sizing: border-box;
-						border: 1upx solid #D5C7FD;
-						background: #A384FA;
-						width: 224upx;
-						height: 330upx;
-						margin-bottom: 8upx;
-						border-radius: 4upx;
-						padding: 10upx;
-						display: flex;
-						flex-direction: column;
-						justify-content: space-between;
-
-						.goods-header {
-							background: #FFFFFF;
-							width: 204upx;
-							height: 204upx;
-							position: relative;
-
-							.goods-tag {
-								position: absolute;
-								top: 10upx;
-								left: 0;
-								background: $color-primary;
-								color: #FFFFFF;
-								font-size: 18upx;
-								width: 102upx;
-								height: 34upx;
-								line-height: 34upx;
-								text-align: center;
-								border-radius: 0 17upx 17upx 0;
-								z-index: 99;
-							}
-
-							.img {
-								width: 204upx;
-								height: 204upx;
-							}
-						}
-
-						.goods-footer {
-							width: 100%;
-							display: flex;
-							flex-direction: column;
-							justify-content: space-between;
-
-							.goods-title {
-								width: 100%;
-								@extend %overflow-2-line;
-								color: #FFFFFF;
-								font-size: 22upx;
-							}
-
-							.goods-price {
-								width: 100%;
-								color: #FFFFFF;
-								font-size: $uni-font-size-sm;
-								text-align: center;
-							}
+					justify-content: center;
+					img{
+						width: 212upx;
+						height: 356upx;
+						margin: 10upx;
+						&:first-child{
+							margin-left: 0;
 						}
 					}
 				}
 			}
+		}
 
-			/* 好物享不停 */
-			.goods-share-no-stop {
-				padding: 0 $uni-spacing-row-base;
-				margin-bottom: 20upx;
-
-				.goods-share-no-stop-box {
-					background-image: url("~@/static/images/goods-share-no-stop.png");
-					height: 1166upx;
-					background-size: 100% 100%;
-					background-repeat: no-repeat;
-
-					.goods-top {
-						padding: $uni-spacing-row-sm;
-						display: flex;
-						justify-content: space-between;
-						align-items: flex-end;
-						padding-top: 220upx;
-
-						.item {
-							width: 218upx;
-							height: 300upx;
-							background: #FFFFFF;
-							border-radius: 8upx;
-							position: relative;
-							overflow: hidden;
-
-							.img {
-								position: absolute;
-								bottom: 0;
-								left: 0;
-								width: 218upx;
-								height: 218upx;
-								border-radius: 4upx;
-							}
-
-							.goods-tag {
-								position: absolute;
-								top: 20upx;
-								left: 0;
-								background: $color-primary;
-								color: #FFFFFF;
-								font-size: 18upx;
-								width: 102upx;
-								height: 34upx;
-								line-height: 34upx;
-								text-align: center;
-								border-radius: 0 17upx 17upx 0;
-								z-index: 99;
-							}
-
-							.goods-price {
-								position: absolute;
-								top: 6upx;
-								right: 10upx;
-								color: #FD3666;
-								font-size: 16upx;
-								width: 60upx;
-								height: 60upx;
-								line-height: 60upx;
-								text-align: center;
-								z-index: 99;
-								background-size: cover;
-								background-repeat: no-repeat;
-								background-image: url('~@/static/images/price-tag.png');
-							}
-						}
-					}
-
-					.goods-box {
-						padding: $uni-spacing-row-sm;
-						padding-top: 0;
-						height: 560upx;
-						display: flex;
-						justify-content: flex-start;
-						flex-wrap: wrap;
-
-						.item {
-							width: 328upx;
-							height: 178upx;
-							padding: 14upx 10upx;
-							background: #FFFFFF;
-							border-radius: 6upx;
-							margin: 0 13upx 13upx 0;
-
-							&:nth-child(2n) {
-								margin-right: 0;
-							}
-
-
-							display: flex;
-							justify-content: space-between;
-
-							.goods-title {
-								width: 50%;
-								display: flex;
-								flex-direction: column;
-								justify-content: space-between;
-
-								.title {
-									font-size: $uni-font-size-sm;
-									color: $color-primary-plain;
-									@extend %overflow-2-line;
-								}
-
-								.footer {
-									display: flex;
-									flex-direction: column;
-									justify-content: flex-end;
-
-									.price {
-										color: #FD3666;
-										font-size: $uni-font-size-sm;
-										margin-bottom: 4upx;
-									}
-
-									.btn {
-										color: #fff;
-										font-size: 14upx;
-										background: #ED5D80;
-										width: 90upx;
-										padding: 6upx 10upx;
-										text-align: center;
-									}
-								}
-							}
-
-							.goods-img {
-								display: flex;
-								justify-content: center;
-								align-items: center;
-
-								.img {
-									height: 134upx;
-									width: 134upx;
-									border-radius: 4upx;
-								}
-							}
-						}
-					}
-				}
-			}
+		.content {
 
 			/*六个分类，内容部分可以向左滑动*/
 			.some-category {
@@ -1601,213 +676,6 @@
 				}
 			}
 
-			/* 天天秒杀 */
-			.tiantianmiaosha {
-				background: #ffff;
-				padding: 0 $uni-spacing-row-sm 40upx $uni-spacing-row-sm;
-
-				.top-banner {
-					background-image: url("~@/static/images/tab-home/spike-banner.png");
-					height: 88upx;
-					background-size: 100% 100%;
-					background-repeat: no-repeat;
-				}
-
-				.body-content {
-					height: 358upx;
-					background: rgba(250, 229, 229, 1);
-					border-radius: 0 0 10upx 10upx;
-					width: 100%;
-					padding: 0 24upx;
-					display: flex;
-					align-items: center;
-
-					.all-goods {
-						height: 100%;
-						width: 100%;
-						display: flex;
-						flex-wrap: nowrap;
-
-						.goods {
-							margin-right: 20upx;
-							width: 178upx;
-							height: 300upx;
-							display: flex;
-							flex-direction: column;
-							justify-content: space-around;
-
-							.goods-header {
-								height: 178upx;
-								width: 178upx;
-
-								.img {
-									height: 178upx;
-									width: 178upx;
-									border-radius: 6upx;
-								}
-							}
-
-							.goods-footer {
-								width: 100%;
-								height: 100upx;
-								display: flex;
-								flex-direction: column;
-								justify-content: space-between;
-
-								.goods-title {
-									@extend %overflow-1-line;
-									color: $color-primary-plain;
-									font-size: 22upx;
-								}
-
-								.goods-price {
-									font-size: 20upx;
-									display: flex;
-									justify-content: space-around;
-									align-items: flex-end;
-
-									.old-price {
-										font-size: 18upx;
-										color: #999999;
-										text-decoration: line-through;
-									}
-
-									.now-price {
-										color: $color-primary;
-									}
-								}
-
-								.btn-box {
-									display: flex;
-									justify-content: center;
-
-									.btn {
-										padding: 0 20upx;
-										height: 32upx;
-										font-size: 20upx;
-										font-weight: 400;
-										color: rgba(255, 255, 255, 1);
-										line-height: 32upx;
-										background: linear-gradient(-45deg, rgba(252, 69, 60, 1) 0%, rgba(252, 123, 178, 1) 100%);
-										border-radius: 16upx;
-										box-sizing: border-box;
-
-										&.not-now {
-											background: #ccc;
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-
-			/* 拼团特惠 */
-			.pintuantehui-box-big-div {
-				height: 400upx;
-				padding: 0 $uni-spacing-row-sm;
-				background-image: linear-gradient(#fff, #f2f2f2);
-				margin-bottom: 20upx;
-
-				.pintuantehui {
-					background-image: url("~@/static/images/tab-home/group-bg.png");
-					background-size: 100% 100%;
-					background-repeat: no-repeat;
-					padding: 0 $uni-spacing-row-sm;
-
-					.top-banner {
-						height: 80upx;
-						background-size: 100% 100%;
-						background-repeat: no-repeat;
-					}
-
-					.body-content {
-						height: 320upx;
-						border-radius: 10upx 0 10upx 10upx;
-						width: 100%;
-						display: flex;
-						align-items: center;
-
-						.all-goods {
-							height: 280upx;
-							width: 100%;
-							display: flex;
-							flex-wrap: nowrap;
-							align-items: center;
-							padding: 20upx 0;
-							overflow: hidden;
-							overflow-x: auto;
-
-							.goods {
-								margin-right: 20upx;
-								width: 178upx;
-								height: 278upx;
-								display: flex;
-								flex-direction: column;
-								justify-content: space-around;
-
-								.goods-header {
-									height: 178upx;
-									width: 178upx;
-									position: relative;
-
-									.img {
-										height: 178upx;
-										width: 178upx;
-										border-radius: 6upx;
-									}
-
-									.flag {
-										position: absolute;
-										background: #FB4F58;
-										font-size: 18upx;
-										text-align: center;
-										width: 60upx;
-										height: 60upx;
-										color: #FFFFFF;
-										line-height: 60upx;
-										border-radius: 50%;
-										left: 0;
-										bottom: 0;
-									}
-								}
-
-								.goods-footer {
-									width: 100%;
-									display: flex;
-									flex-direction: column;
-									justify-content: space-between;
-
-									.goods-title {
-										@extend %overflow-1-line;
-										color: $color-primary-plain;
-										font-size: 22upx;
-									}
-
-									.goods-price {
-										font-size: 20upx;
-										display: flex;
-										justify-content: space-around;
-										align-items: flex-end;
-
-										.old-price {
-											font-size: 18upx;
-											color: #999999;
-											text-decoration: line-through;
-										}
-
-										.now-price {
-											color: $color-primary;
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-
 			/* 元旦秒杀 */
 			.yuandanmiao {
 				height: 760upx;
@@ -1815,12 +683,6 @@
 				background-size: 100% 100%;
 				overflow: hidden;
 				position: relative;
-
-				// .more{
-				// 	position: absolute;
-				// 	top: 40upx;
-				// 	right: ;
-				// }
 				.yd-more {
 					width: 90upx;
 					height: 30upx;
@@ -1834,20 +696,6 @@
 					background: url("~@/static/images/yuandan-home/4.jpg") no-repeat;
 					background-size: 100% 100%;
 				}
-
-				// &.thematicShop{
-				// 	height: 1174upx;
-				// 	background: url("~@/static/images/yuandan-home/2.jpg") no-repeat;
-				// 	background-size: 100% 100%;
-				// 	position: relative;
-				// 	.thematicWord{
-				// 		font-size: 34upx;
-				// 		font-weight: 800;
-				// 		color: #fcc972;
-				// 		line-height: 164upx;
-				// 		text-align: center;
-				// 	}
-				// }
 				.ydms {
 					margin-top: 216upx;
 					position: relative;

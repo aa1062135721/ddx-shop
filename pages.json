@@ -268,7 +268,22 @@
 				"navigationStyle": "custom",
 				"navigationBarTitleText": "捣蛋熊商城-春季上新"
 			}
+		},
+		//		{
+		//			"path": "pages/activity20200326/index",
+		//			"style": {
+		//				"navigationStyle": "custom",
+		//				"navigationBarTitleText": "捣蛋熊商城-奶粉专区"
+		//			}
+		//		},
+		{
+			"path": "pages/activity20200325/index",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "捣蛋熊商城-洗护防蚊"
+			}
 		}
+
 	],
     "subPackages": [
 		{

@@ -56,14 +56,17 @@
 				<div class="yuandanmiao" v-if="seckill_list.length">
 					<view class="yd-more" @click="_goPage('spike_list')"></view>
 					<div class="ydms">
-						<swiper circular="true" :indicator-dots="true" indicator-active-color="#FFF" style="width: 628upx;height: 480upx;margin:0 auto;">
+						<swiper circular="true" :indicator-dots="true" indicator-active-color="#FFF" style="width: 628rpx;height: 480rpx;margin:0 auto;">
 							<swiper-item class="yd-swiper">
 								<div class="ydms-box">
 									<block v-for="(item, index) in seckill_list" :key="index">
 										<div class="ydms-shop" v-if="index<3" @click="_goPage('spike_detail', {item_id: item.item_id, seckill_id: item.id})">
-											<image class="ydms-img" :src="item.pic" :lazy-load="true"></image>
+											<img class="ydms-img" :src="item.pic">
 											<p class="shop-tit">{{item.item_name}}</p>
-											<div class="shop-price"><div class="big-price">￥{{item.price}}</div><div class="small-price">￥{{item.old_price}}</div></div>
+											<div class="shop-price">
+												<div class="big-price">￥{{item.price}}</div>
+												<div class="small-price">￥{{item.old_price}}</div>
+											</div>
 										</div>
 									</block>
 								</div>
@@ -72,7 +75,7 @@
 								<div class="ydms-box">
 									<block v-for="(item, index) in seckill_list" :key="index">
 										<div class="ydms-shop" v-if="index > 3 && index < 7" @click="_goPage('spike_detail', {item_id: item.item_id, seckill_id: item.id})">
-											<image class="ydms-img" :src="item.pic" :lazy-load="true"></image>
+											<img class="ydms-img" :src="item.pic" :lazy-load="true">
 											<p class="shop-tit">{{item.item_name}}</p>
 											<div class="shop-price"><div class="big-price">￥{{item.price}}</div><div class="small-price">￥{{item.old_price}}</div></div>
 										</div>
@@ -86,12 +89,12 @@
 				<div class="yuandanmiao pintuan" v-if="assemble_list.length">
 					<view class="yd-more" @click="_goPage('group_buy')"></view>
 					<div class="ydms">
-						<swiper circular="true" :indicator-dots="true" indicator-active-color="#FFF" style="width: 628upx;height: 480upx;margin:0 auto;">
+						<swiper circular="true" :indicator-dots="true" indicator-active-color="#FFF" style="width: 628rpx;height: 480rpx;margin:0 auto;">
 							<swiper-item class="yd-swiper">
 								<div class="ydms-box">
 									<block v-for="(item, index) in assemble_list" :key="index">
 										<div class="ydms-shop" v-if="index < 3" @click="_goPage('group_buy_detail', {assemble_id: item.id, item_id: item.item_id})">
-											<image class="ydms-img" :src="item.pic" :lazy-load="true"></image>
+											<img class="ydms-img" :src="item.pic" :lazy-load="true">
 											<p class="shop-tit">{{ item.item_name }}</p>
 											<div class="shop-price"><div class="big-price pintuan">￥{{ item.price }}<span class="ydms-people">{{ item.assemble_num }}人团</span></div><div class="small-price pintuan">￥{{ item.old_price }}</div></div>
 										</div>
@@ -102,7 +105,7 @@
 								<div class="ydms-box">
 									<block v-for="(item, index) in assemble_list" :key="index">
 										<div class="ydms-shop" v-if="index > 3 && index < 7" @click="_goPage('group_buy_detail', {assemble_id: item.id, item_id: item.item_id})">
-											<image class="ydms-img" :src="item.pic" :lazy-load="true"></image>
+											<img class="ydms-img" :src="item.pic" :lazy-load="true">
 											<p class="shop-tit">{{ item.item_name }}</p>
 											<div class="shop-price"><div class="big-price pintuan">￥{{ item.price }}<span class="ydms-people">{{ item.assemble_num }}人团</span></div><div class="small-price pintuan">￥{{ item.old_price }}</div></div>
 										</div>
@@ -711,9 +714,9 @@
 						overflow: hidden;
 
 						.ydms-shop {
-							width: 190upx;
-							height: 364upx;
-							padding: 0 8upx;
+							width: 190rpx;
+							height: 364rpx;
+							padding: 8rpx;
 							// border: 1px solid #FDEBCA;
 							// background-color: #FDEBCA;
 							// box-shadow: 0px 4px 4px 0px rgba(191, 104, 25, 0.2);
@@ -753,16 +756,13 @@
 							.shop-tit {
 								@extend %overflow-2-line;
 								margin: 0;
-								font-size: 26upx;
+								font-size: 24upx;
 								color: #333333;
-								padding-left: 8upx;
 							}
 
 							.shop-price {
-								margin-top: 14upx;
-								padding-left: 8upx;
 								line-height: 40upx;
-
+								margin-top: 12rpx;
 								.big-price {
 									color: #fff;
 									font-size: 22upx;
@@ -772,6 +772,9 @@
 									line-height: 32upx;
 									margin-top: 5upx;
 									width: 138upx;
+									display: flex;
+									justify-content: space-between;
+									align-items: center;
 									&.pintuan{
 										width: 100%;
 										background: none;

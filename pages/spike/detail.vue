@@ -380,12 +380,12 @@
                 </view>
             </view>
             <view class="btn">
-                <view class="joinCart" @click="_goPage('goods_detail', {id: goodsInfo.item.id})">
+                <view class="joinCart" @click="_goPage('goods_detail', {id: goodsInfo.item.id})" v-if="goodsInfo.item.id !== 5451">
                     <view class="inner">
                         单独购买
                     </view>
                 </view>
-                <view class="buy" @click="open()" v-if="goodsInfo.status === 1">
+                <view class="buy" @click="open()" v-if="goodsInfo.status === 1" :style="{width: goodsInfo.item.id === 5451 ? '100%' : '50%'}">
                     <block v-if="goodsInfo.type === 2">立即秒杀</block>
                     <block v-if="goodsInfo.type === 1">立即抢购</block>
                 </view>

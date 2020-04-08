@@ -2,7 +2,7 @@
     <view>
         <view class="section">
             <view class="left">
-                <image class="img" src="../../static/images/goods.jpg"></image>
+                <image class="img"></image>
             </view>
             <view class="right">
                 <view class="title">衍生健康大师草本番茄膳面 12包装衍生健生健衍生健康大师草本番茄膳面 12包装衍生健生健衍生健康大师草本番茄膳面 12包装衍生健生健</view>

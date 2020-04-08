@@ -32,23 +32,12 @@
 			</view>
 		</div>
 
-		<!--	春季上新 	-->
+		<!--	广告区域 	-->
+		<!---
 		<div class="ad-space" @click="_goPage('activity20200323')">
 			<img class="img" src="http://picture.ddxm661.com/6cc56202003260941181249.gif" />
 		</div>
-
-		<!--	活动页面 广告位 盛夏洗护	就要爽购-->
-		<div class="shengxiaxihu">
-			<div class="my-bg">
-				<div class="go-more" @click="_goPage('activity20200325')"></div>
-				<div class="goods-all">
-					<img src="http://picture.ddxm661.com/23e23202003261053251757.png" @click="_goPage('spike_detail', {seckill_id: 1947,item_id: 5105})">
-					<img src="http://picture.ddxm661.com/27237202003261053252544.png" @click="_goPage('spike_detail', {seckill_id: 1951,item_id: 5114})">
-					<img src="http://picture.ddxm661.com/67656202003261053257767.png"  @click="_goPage('spike_detail', {seckill_id: 1953,item_id: 2528})">
-				</div>
-			</div>
-		</div>
-
+		--->
 
 			<!-- 推荐tab栏里的数据 -->
 			<view class="content">
@@ -569,41 +558,6 @@
 			padding: $uni-spacing-row-base;
 			.img {
 				width: 100%;
-			}
-		}
-
-		/* 活动页面 广告位 盛夏洗护	就要爽购 */
-		.shengxiaxihu{
-			background-color: #ECFEF1;
-			padding: $uni-spacing-row-base $uni-spacing-row-base $uni-spacing-row-base 0;
-			.my-bg{
-				height: 720upx;
-				background: url("http://picture.ddxm661.com/68d0820200326105439276.png") no-repeat;
-				background-size: 100% 100%;
-				overflow: hidden;
-				padding-left: $uni-spacing-row-base;
-				position: relative;
-				.go-more{
-					position: absolute;
-					/*background: #000;*/
-					right: 20upx;
-					top:230upx;
-					width: 100upx;
-					height: 50upx;
-				}
-				.goods-all{
-					padding-top: 330upx;
-					display: flex;
-					justify-content: center;
-					img{
-						width: 212upx;
-						height: 356upx;
-						margin: 10upx;
-						&:first-child{
-							margin-left: 0;
-						}
-					}
-				}
 			}
 		}
 

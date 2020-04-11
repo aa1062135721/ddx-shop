@@ -89,6 +89,101 @@
 				"navigationBarTitleText": "捣蛋熊商城-我的卡包"
 			}
 		},
+		{
+			"path": "pages2/user/id-card-authentication",
+			"style": {
+				"navigationBarTitleText": "捣蛋熊商城-实名认证"
+			}
+		},
+		{
+			"path": "pages2/user/id-card-authentication-detail",
+			"style": {
+				"navigationBarTitleText": "捣蛋熊商城-实名认证"
+			}
+		},
+		{
+			"path": "pages2/user/setting",
+			"style": {
+				"navigationBarTitleText": "捣蛋熊商城-设置"
+			}
+		},
+		{
+			"path": "pages2/user/money",
+			"style": {
+				"navigationBarTitleText": "捣蛋熊商城-我的钱包"
+			}
+		},
+		{
+			"path": "pages2/user/modify-mobile",
+			"style": {
+				"navigationBarTitleText": "捣蛋熊商城-修改手机号码"
+			}
+		},
+		{
+			"path": "pages2/user/distribution",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "捣蛋熊商城-分销中心"
+			}
+		},
+		{
+			"path": "pages2/user/distribution/sum-customer",
+			"style": {
+				"navigationBarTitleText": "捣蛋熊商城-累计分销员"
+			}
+		},
+		{
+			"path": "pages2/user/distribution/sum-order",
+			"style": {
+				"navigationBarTitleText": "捣蛋熊商城-累计订单"
+			}
+		},
+		{
+			"path": "pages2/user/pre_store/details",
+			"style": {
+				"navigationBarTitleText": "活动专用水育卡-详情"
+			}
+		},
+		{
+			"path": "pages2/user/pre_store/rule",
+			"style": {
+				"navigationBarTitleText": "捣蛋熊商城-活动规则"
+			}
+		},
+		{
+			"path": "pages2/user/pre_store/main",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "预存享福利 累消获惊喜"
+			}
+		},
+
+		{
+			"path": "pages2/address/list",
+			"style": {
+				"navigationBarTitleText": "捣蛋熊商城-我的收货地址"
+			}
+		},
+		{
+			"path": "pages2/address/chooses",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "捣蛋熊商城-选择收货地址"
+			}
+		},
+		{
+			"path": "pages2/address/add",
+			"style": {
+				"navigationBarTitleText": "捣蛋熊商城-新增收货地址"
+			}
+		},
+
+		{
+			"path": "pages2/logistics/view",
+			"style": {
+				"navigationBarTitleText": "捣蛋熊商城-查看物流"
+			}
+		},
 
 		{
 			"path": "pages/public/login-with-mobile-public",
@@ -139,6 +234,24 @@
 			"path": "pages/order/pay",
 			"style": {
 				"navigationBarTitleText": "捣蛋熊商城-确认付款"
+			}
+		},
+		{
+			"path": "pages2/order_return/refund",
+			"style": {
+				"navigationBarTitleText": "捣蛋熊商城-填写退款信息"
+			}
+		},
+		{
+			"path": "pages2/order_return/status",
+			"style": {
+				"navigationBarTitleText": "捣蛋熊商城-退款详情"
+			}
+		},
+		{
+			"path": "pages2/order_return/apply",
+			"style": {
+				"navigationBarTitleText": "捣蛋熊商城-申请退款"
 			}
 		},
 
@@ -285,194 +398,6 @@
 //		},
 
 	],
-    "subPackages": [
-		{
-			"root": "pages2",
-			"pages": [
-				{
-					"path": "user/id-card-authentication",
-					"style": {
-						"navigationBarTitleText": "捣蛋熊商城-实名认证"
-					}
-			  	},
-				{
-					"path": "user/id-card-authentication-detail",
-					"style": {
-						"navigationBarTitleText": "捣蛋熊商城-实名认证"
-					}
-				},
-				{
-					"path": "user/setting",
-					"style": {
-					  "navigationBarTitleText": "捣蛋熊商城-设置"
-					}
-				},
-				{
-					"path": "user/money",
-					"style": {
-						  "navigationBarTitleText": "捣蛋熊商城-我的钱包"
-					}
-				},
-				{
-					"path": "user/modify-mobile",
-					"style": {
-					  "navigationBarTitleText": "捣蛋熊商城-修改手机号码"
-					}
-				},
-				{
-					"path": "user/distribution",
-					"style": {
-						"navigationStyle": "custom",
-						"navigationBarTitleText": "捣蛋熊商城-分销中心"
-					}
-				},
-				{
-					"path": "user/distribution/sum-customer",
-					"style": {
-						"navigationBarTitleText": "捣蛋熊商城-累计分销员"
-					}
-				},
-				{
-					"path": "user/distribution/sum-order",
-					"style": {
-						"navigationBarTitleText": "捣蛋熊商城-累计订单"
-					}
-				},
-
-				{
-					"path": "logistics/view",
-					"style": {
-						"navigationBarTitleText": "捣蛋熊商城-查看物流"
-					}
-				},
-
-				{
-					"path": "order_return/refund",
-					"style": {
-						"navigationBarTitleText": "捣蛋熊商城-填写退款信息"
-					}
-				},
-				{
-					"path": "order_return/status",
-					"style": {
-						"navigationBarTitleText": "捣蛋熊商城-退款详情"
-					}
-				},
-				{
-					"path": "order_return/apply",
-					"style": {
-						"navigationBarTitleText": "捣蛋熊商城-申请退款"
-					}
-				},
-
-				{
-					"path": "address/list",
-					"style": {
-						"navigationBarTitleText": "捣蛋熊商城-我的收货地址"
-					}
-				},
-				{
-					"path": "address/chooses",
-					"style": {
-						"navigationStyle": "custom",
-						"navigationBarTitleText": "捣蛋熊商城-选择收货地址"
-					}
-				},
-				{
-					"path": "address/add",
-					"style": {
-						"navigationBarTitleText": "捣蛋熊商城-新增收货地址"
-					}
-				},
-				{
-					"path": "user/pre_store/details",
-					"style": {
-						"navigationBarTitleText": "活动专用水育卡-详情"
-					}
-				},
-				{
-					"path": "user/pre_store/rule",
-					"style": {
-						"navigationBarTitleText": "捣蛋熊商城-活动规则"
-					}
-				},
-				{
-					"path": "user/pre_store/main",
-					"style": {
-						"navigationStyle": "custom",
-						"navigationBarTitleText": "预存享福利 累消获惊喜"
-					}
-				}
-
-			]
-		}
-    ],
-    "preloadRule": {
-		"pages2/user/id-card-authentication": {
-			"network": "all",
-			"packages": ["__APP__"]
-		},
-		"pages2/user/id-card-authentication-detail": {
-			"network": "all",
-			"packages": ["__APP__"]
-		},
-		"pages2/user/setting": {
-			"network": "all",
-			"packages": ["__APP__"]
-		},
-		"pages2/user/money": {
-			"network": "all",
-			"packages": ["__APP__"]
-		},
-		"pages2/user/modify-mobile": {
-			"network": "all",
-			"packages": ["__APP__"]
-		},
-		"pages2/user/distribution": {
-			"network": "all",
-			"packages": ["__APP__"]
-		},
-		"pages2/user/distribution/sum-customer": {
-			"network": "all",
-			"packages": ["__APP__"]
-		},
-		"pages2/user/distribution/sum-order": {
-			"network": "all",
-			"packages": ["__APP__"]
-		},
-
-		"pages2/logistics/view": {
-			"network": "all",
-			"packages": ["__APP__"]
-		},
-
-		"pages2/order_return/refund": {
-			"network": "all",
-			"packages": ["__APP__"]
-		},
-		"pages2/order_return/status": {
-			"network": "all",
-			"packages": ["__APP__"]
-		},
-		"pages2/order_return/apply": {
-			"network": "all",
-			"packages": ["__APP__"]
-		},
-
-		"pages2/address/list": {
-			"network": "all",
-			"packages": ["__APP__"]
-		},
-		"pages2/address/chooses": {
-			"network": "all",
-			"packages": ["__APP__"]
-		},
-		"pages2/address/add": {
-			"network": "all",
-			"packages": ["__APP__"]
-		}
-
-	},
 	"globalStyle": {
 		"backgroundTextStyle": "light",
 		"navigationBarTextStyle": "black",

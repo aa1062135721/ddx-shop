@@ -803,6 +803,27 @@ export default {
 	 */
 	thematicList(data){
 	  return minRequest.get('/Special/getItemList', data)
+  },
+  
+	/**
+	 * 新人专区类型接口
+	 */
+	newmanType(data){
+	  return minRequest.get('/Exclusive/getTypeList', data)
+  },
+  
+	/**
+	 * 新人专区详情接口
+	 */
+	newmanDetail(data){
+	  return minRequest.get('/Exclusive/itemInfo', data)
+  },
+  
+	/**
+	 * 新人专区下单接口
+	 */
+	newmanCreate(data){
+	  return minRequest.post('/Exclusive_order/index', data)
 	},
 
     /**

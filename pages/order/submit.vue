@@ -278,6 +278,25 @@
                         this.requestData.share_id = inviteBuy.data.share_id
                     }
                     break
+                case "newman_buy":
+                    let actId = null
+                    this.$parseURL().myResponseData.forEach((item1, index1) => {
+                        item1.data.forEach((item2, index2) => {
+                            actId = item2.activity_id
+                            goodsData.push({
+                                id: item2.item_id,
+                                num: item2.num,
+                                specs_ids: item2.key,
+                            })
+                        })
+                    })
+                    this.requestData = {
+                        address_id: this.address.id,// 收货地址id
+                        activity_id:actId,
+                        order_distinguish: 6, //新人订单
+                        item: goodsData
+                    }
+                    break
             }
             this.getFreight()
             if (this.$parseURL().createOrderType === 'buy_now' || this.$parseURL().createOrderType === 'car') {
@@ -554,6 +573,47 @@
                         break
                     case 'spike':
                         await this.$minApi.createOrederSeckillDoPost(this.requestData).then(res => {
+                            if (res.code === 200) {
+                                this._goPage('order_pay', res.data)
+                            } else {
+                                let _that = this
+                                if([108, 107, 208].indexOf(res.code) !== -1){
+                                    uni.showModal({
+                                        title: '提示',
+                                        content: res.msg,
+                                        success: function (showModalRes) {
+                                            if (showModalRes.confirm) {
+                                                console.log('用户点击确定');
+                                                if (res.code === 108) { // 需要实名认证
+                                                    _that._goPage('id_card_authentication')
+                                                }
+                                                if (res.code === 107) { // 收件人姓名与实名认证信息不符,请修改或更换收件人信息
+                                                    _that._goPage('address_chooses')
+                                                }
+                                                if (res.code === 208) { // 您当前存在未支付的秒杀订单,请先支付，需跳转到支付界面，返回的data为订单信息,order_id":3812,"amount":"119.00
+                                                    // _that._goPage('order_pay', {
+                                                    //     amount: res.data.amount,      //总金额
+                                                    //     order_id: res.data.order_id      //订单id
+                                                    // })
+                                                    _that._goPage('order_detail', {
+                                                        order_id: res.data.order_id      //订单id
+                                                    })
+                                                }
+                                            } else if (showModalRes.cancel) {
+                                                console.log('用户点击取消');
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    this.msg(res.msg)
+                                }
+                            }
+                        }).catch(err => {
+                            console.log(err)
+                        })
+                        break
+                    case 'newman_buy':
+                        await this.$minApi.newmanCreate(this.requestData).then(res => {
                             if (res.code === 200) {
                                 this._goPage('order_pay', res.data)
                             } else {

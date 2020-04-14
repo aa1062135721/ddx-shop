@@ -44,17 +44,17 @@
                     <span class="old-price">
                         ￥{{goodsInfo.item.old_price}}
                     </span>
-                    <span class="mei-ren-xian-gou">每人限购:
+                    <span class="mei-ren-xian-gou">
                         <block v-if="goodsInfo.people_num === -1">
                             不限购
                         </block>
                         <block v-else>
-                        {{goodsInfo.people_num}}件
+                        限购:{{goodsInfo.people_num}}件
                         </block>
                     </span>
                     <span class="mei-ren-xian-gou" v-if="goodsInfo.item_specs.length === 1">
                         <block v-if="goodsInfo.type === 2">已秒杀</block>
-                        <block v-if="goodsInfo.type === 1">已抢购</block>
+                        <block v-if="goodsInfo.type === 1">已购</block>
                         {{choosesGoodsInfo.specs.already_num}}件
                         <block v-if="choosesGoodsInfo.specs.over_num !== -1">
                             ,剩余{{choosesGoodsInfo.specs.over_num}}件
@@ -380,12 +380,12 @@
                 </view>
             </view>
             <view class="btn">
-                <view class="joinCart" @click="_goPage('goods_detail', {id: goodsInfo.item.id})" v-if="goodsInfo.item.id !== 5451">
+                <view class="joinCart" @click="_goPage('goods_detail', {id: goodsInfo.item.id})" v-if="[5451, 5119].indexOf(goodsInfo.item.id) === -1">
                     <view class="inner">
                         单独购买
                     </view>
                 </view>
-                <view class="buy" @click="open()" v-if="goodsInfo.status === 1" :style="{width: goodsInfo.item.id === 5451 ? '100%' : '50%'}">
+                <view class="buy" @click="open()" v-if="goodsInfo.status === 1" :style="{width: [5451, 5119].indexOf(goodsInfo.item.id) === -1 ? '50%' : '100%'}">
                     <block v-if="goodsInfo.type === 2">立即秒杀</block>
                     <block v-if="goodsInfo.type === 1">立即抢购</block>
                 </view>

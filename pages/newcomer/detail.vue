@@ -33,8 +33,8 @@
 		<view class="info-box goods-info">
             <view class="price">
 				<view>
-					<text class="one">￥{{item_specs[0].price}}</text>
-					<text class="two" style="text-decoration: line-through;">￥{{item_specs[0].old_price}}</text>
+					<text class="one">￥{{item_specs.length ? item_specs[0].price : ''}}</text>
+					<text class="two" style="text-decoration: line-through;">￥{{item_specs.length ? item_specs[0].old_price : ''}}</text>
 				</view>
 			</view>
 			<view class="title">
@@ -70,98 +70,6 @@
 				您购买成功后，实际支付的价格已含9.1%的跨境代扣税
 			</view>
 		</div>
-
-		<!-- 其他拼团信息 -->
-		<!-- <view class="info-box comments" style="padding-bottom: 0;" v-if="goodsInfo.assemble_group.length">
-			<view class="row">
-				<view class="text" style="font-size: 28upx;">有<text style="color: #FC5A5A;">{{goodsInfo.assemble_group.length}}人</text>正在拼团，你可以直接参与哦</view>
-				<view class="arrow" @click="openMoreOtherGroupBuy">
-					<view class="show">
-						查看全部
-						<view class="iconfont icon-ddx-shop-content_arrows"></view>
-					</view>
-				</view>
-			</view>
-			<view class="many-group-buy" v-for="(item, index) in goodsInfo.assemble_group" :key="index" v-if="index < 2">
-				<view class="one">
-					<view><image :src="item.commander_pic" class="img"></image></view>
-					<view class="name-and-tips">
-						<view>{{item.commander_nickname}}</view>
-						<view class="tips">{{item.copywriting}}</view>
-					</view>
-				</view>
-				<view class="two">
-					<view class="info">
-						<view class="info-title">还差{{item.r_num}}人成团</view>
-						<view class="info-time" v-if="item.status === 1">仅剩 {{item.timeStr}}</view>
-						<view class="info-time" v-if="item.status === 0">组团已结束</view>
-					</view>
-					<view class="btns">
-						<view class="btn" @click="buyGroup(item)">去参团</view>
-					</view>
-				</view>
-			</view>
-		</view> -->
-		<!-- 其他拼团信息，查看更多 -->
-		<!-- <uni-popup ref="moreOtherGroupBuy" type="center" :custom="true" :mask-click="false">
-			<view class="more-other-group-buy">
-				<view class="box">
-					<view class="title">参与可直接成团</view>
-					<view class="center">
-						<view class="item" v-for="(item, index) in goodsInfo.assemble_group" :key="index">
-							<view class="left">
-								<view>
-									<image :src="item.commander_pic" class="img"></image>
-								</view>
-								<view class="info">
-									<view>{{item.commander_nickname}}：还差{{item.r_num}}人成团</view>
-									<view v-if="item.status === 1">仅剩 {{item.timeStr}}</view>
-									<view v-if="item.status === 0">组团已结束</view>
-								</view>
-							</view>
-							<view class="right">
-								<view class="btn" @click="buyGroup(item)">去参团</view>
-							</view>
-						</view>
-					</view>
-					<view class="bottom">最多仅显示10个正在拼团</view>
-				</view>
-				<view class="iconfont icon-ddx-shop-close close" @click="closeMoreOtherGroupBuy"></view>
-			</view>
-		</uni-popup> -->
-
-		<!-- 拼团规则 -->
-		<!-- <view class="group-buy-rule">
-			<view class="title">
-				<view class="one">拼团玩法</view>
-				<view class="two" @click="goRulePage">
-					规则详情<text style="margin-left: 6upx;" class="iconfont icon-ddx-shop-content_arrows"></text>
-				</view>
-			</view>
-			<view class="content">
-				<view class="item">
-					<image src="../../static/icon/group-step1.png"></image>
-					<view class="step-title">
-						<view>下单</view>
-						<view>开团或参团</view>
-					</view>
-				</view>
-				<view class="item">
-					<image src="../../static/icon/group-step2.png"></image>
-					<view class="step-title">
-						<view>邀请</view>
-						<view>好友参团</view>
-					</view>
-				</view>
-				<view class="item">
-					<image src="../../static/icon/group-step3.png"></image>
-					<view class="step-title">
-						<view>成团</view>
-						<view>购买成功</view>
-					</view>
-				</view>
-			</view>
-		</view> -->
 
 		<!--服务说明-->
 		<view class="my-service-title-btn" @click="openService">
@@ -806,6 +714,10 @@
 					this.commentResponseData.data = res.data
 				}
 			})
+
+			this.$nextTick(() => {
+				this.calcAnchor();
+			})
 		},
 		async onShow() {
 			if (!this.$parseURL().assemble_list_id) {
@@ -822,7 +734,7 @@
 			}
         },
         mounted () {
-          this.calcAnchor();  
+
         },
 		onUnload(){
 

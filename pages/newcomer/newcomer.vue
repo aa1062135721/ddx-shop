@@ -105,7 +105,11 @@ export default {
 
     // 返回按钮
     _goBack() {
-      uni.navigateBack();
+      if (getCurrentPages().length === 1) {
+        this._goPage('home')
+      } else {
+        uni.navigateBack()
+      }
     },
 
     _go(idx) {

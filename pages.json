@@ -380,7 +380,7 @@
 				"navigationStyle": "custom",
 				"navigationBarTitleText": "捣蛋熊商城-折扣低用券使用记录"
 			}
-		}
+		},
 
 //		{
 //			"path": "pages/activity20200323/index",
@@ -403,7 +403,13 @@
 //				"navigationBarTitleText": "捣蛋熊商城-洗护防蚊"
 //			}
 //		},
-
+		{
+			"path": "pages/activity20200415/index",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "捣蛋熊商城-夏季美妆防晒季"
+			}
+		}
 	],
 	"globalStyle": {
 		"backgroundTextStyle": "light",

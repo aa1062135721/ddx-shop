@@ -458,6 +458,13 @@ const router = new MinRouter({
 		// 	name: 'activity20200326',
 		// 	login: false
 		// },
+		//活动页面，防晒，口红，面膜
+		{
+			path: "pages/activity20200415/index",
+			type: 'navigateTo',
+			name: 'activity20200415',
+			login: false
+		},
 	]
 })
 

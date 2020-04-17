@@ -32,7 +32,7 @@
                 <div class="goods-box">
                     <div class="item-box">
                         <img src="http://picture.ddxm661.com/f413f202004151138376058.png" alt="" @click="_goPage('spike_detail', {seckill_id: 2220,item_id: 5645})">
-                        <img src="http://picture.ddxm661.com/4bfb0202004151417101771.png" alt="" @click="_goPage('spike_detail', {seckill_id: 2221,item_id: 5646})">
+                        <img src="http://picture.ddxm661.com/5b6ad202004171351339915.png" alt="" @click="_goPage('spike_detail', {seckill_id: 2221,item_id: 5646})">
                         <img src="http://picture.ddxm661.com/d7a23202004151139158601.png" alt="" @click="_goPage('spike_detail', {seckill_id: 2222,item_id: 5647})">
                         <img src="http://picture.ddxm661.com/eeaa3202004151139294952.png" alt="" @click="_goPage('spike_detail', {seckill_id: 2223,item_id: 5648})">
                         <img src="http://picture.ddxm661.com/6edf8202004151139438401.png" alt="" @click="_goPage('spike_detail', {seckill_id: 2224,item_id: 5649})">

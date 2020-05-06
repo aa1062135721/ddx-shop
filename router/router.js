@@ -465,6 +465,13 @@ const router = new MinRouter({
 			name: 'activity20200415',
 			login: false
 		},
+		//活动页面，方广品牌周
+		{
+			path: "pages/activity20200424/index",
+			type: 'navigateTo',
+			name: 'activity20200424',
+			login: false
+		},
 	]
 })
 

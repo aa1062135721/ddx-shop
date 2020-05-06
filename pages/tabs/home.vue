@@ -33,11 +33,9 @@
 		</div>
 
 		<!--	广告区域 	-->
-		<!---
-		<div class="ad-space" @click="_goPage('activity20200323')">
-			<img class="img" src="http://picture.ddxm661.com/6cc56202003260941181249.gif" />
+		<div class="ad-space" @click="_goPage('activity20200424')">
+			<img class="img" src="http://picture.ddxm661.com/f32b7202004231035065236.gif" />
 		</div>
-		--->
 
 			<!-- 推荐tab栏里的数据 -->
 			<view class="content">
@@ -430,10 +428,11 @@
 		}
 
 		.content-box {
-			background-image: url('~@/static/images/yuandan-home/background.jpg');
-			background-repeat: no-repeat;
-			background-size: 100% 100%;
-			height: 737upx;
+			/*background-image: url('~@/static/images/yuandan-home/background.jpg');*/
+			/*background-repeat: no-repeat;*/
+			/*background-size: 100% 100%;*/
+			/*height: 737upx;*/
+			background-color: #ECFEF1;
 
 			.search-and-tabs {
 				width: 100%;
@@ -529,7 +528,7 @@
 				/*background: #ffffff;*/
 				padding: $uni-spacing-row-base 0;
 				padding-top: 0;
-				margin-top: 200upx;
+				/*margin-top: 200upx;*/
 				.item {
 					display: flex;
 					flex-wrap: nowrap;

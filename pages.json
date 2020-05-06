@@ -403,11 +403,18 @@
 //				"navigationBarTitleText": "捣蛋熊商城-洗护防蚊"
 //			}
 //		},
+//		{
+//			"path": "pages/activity20200415/index",
+//			"style": {
+//				"navigationStyle": "custom",
+//				"navigationBarTitleText": "捣蛋熊商城-夏季美妆防晒季"
+//			}
+//		},
 		{
-			"path": "pages/activity20200415/index",
+			"path": "pages/activity20200424/index",
 			"style": {
 				"navigationStyle": "custom",
-				"navigationBarTitleText": "捣蛋熊商城-夏季美妆防晒季"
+				"navigationBarTitleText": "捣蛋熊商城-方广品牌周"
 			}
 		}
 	],

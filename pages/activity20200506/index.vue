@@ -103,7 +103,6 @@
 </template>
 
 <script>
-    import * as Constant from "../../utils/constant";
     import { mapState } from 'vuex'
 
     export default {

@@ -46,6 +46,7 @@
 
 <script>
     import uniNoticeBar from '@/components/uni-notice-bar/uni-notice-bar.vue'
+    import { mapState } from 'vuex'
 
     export default {
         data() {
@@ -86,9 +87,33 @@
                 })
             },
         },
+        async onLoad(){
+            await this.wxConfig();
+            let url = `https://www.ddxm661.com/h5/#/pages/activity20200424/index`
+            if (this.userInfo.id) {
+                url += `?user_id=${this.userInfo.id}`
+            }
+            const param1 = {
+                    title: '捣蛋熊商城-方广品牌周', // 分享标题
+                    desc: '方广品牌周', // 分享描述
+                    link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                    imgUrl: `http://picture.ddxm661.com/19abd202004221614071092.png`, // 分享图标
+                    success: function() {}
+                },
+                param2 = {
+                    title: '捣蛋熊商城-方广品牌周', // 分享标题
+                    link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                    imgUrl: `http://picture.ddxm661.com/19abd202004221614071092.png`, // 分享图标
+                    success: function() {}
+                }
+            await this.wxConigShareGoods(param1, param2)
+        },
         components: {
             uniNoticeBar
-        }
+        },
+        computed: {
+            ...mapState(['userInfo']),
+        },
     }
 </script>
 

@@ -416,6 +416,13 @@
 				"navigationStyle": "custom",
 				"navigationBarTitleText": "捣蛋熊商城-方广品牌周"
 			}
+		},
+		{
+			"path": "pages/activity20200506/index",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "捣蛋熊商城-纸尿裤专场"
+			}
 		}
 	],
 	"globalStyle": {

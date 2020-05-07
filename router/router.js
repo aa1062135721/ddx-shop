@@ -472,6 +472,13 @@ const router = new MinRouter({
 			name: 'activity20200424',
 			login: false
 		},
+		//活动页面，纸尿裤专场
+		{
+			path: "pages/activity20200506/index",
+			type: 'navigateTo',
+			name: 'activity20200506',
+			login: false
+		},
 	]
 })
 

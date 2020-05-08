@@ -1,21 +1,22 @@
 <template>
-	<view class="container yuandan-bg">
+	<view class="container">
+        <!-- 搜索框 分类图标 banner -->
 		<div class="content-box">
+            <!-- 搜索框 分类图标-->
 			<div class="search-and-tabs">
-				<!-- 首页的搜索框 -->
-				<view class="my-search-box">
-					<view class="my-search-input" @click="_goPage('search_with_hot_history')">
-						<text class="iconfont icon-ddx-shop-hot"></text>
-						<text>万千商品，等你来采购</text>
-					</view>
-				</view>
-				<view class="sort" @click="_goPage('category')">
-					<text class="iconfont icon-ddx-shop-fenlei"></text>
-					<text style="margin: -6upx;color:#333333;">分类</text>
-				</view>
+				<div class="my-search-box">
+					<div class="my-search-input" @click="_goPage('search_with_hot_history')">
+						<i class="iconfont icon-ddx-shop-hot"></i>
+						<span>万千商品，等你来采购</span>
+					</div>
+				</div>
+				<div class="sort" @click="_goPage('category')">
+					<i class="iconfont icon-ddx-shop-fenlei"></i>
+					<span class="sort-text">分类</span>
+				</div>
 			</div>
 
-			<!-- 推荐 -- banner-->
+			<!-- banner  -->
 			<view class="swiper-box" v-if="swiperList.length">
 				<swiper circular="true" autoplay="true" :indicator-dots="true" indicator-active-color="#FFF" style="width: 100%;height: 268upx;">
 					<swiper-item class="swiper-item" v-for="(item, index) in swiperList" :key="index">
@@ -23,123 +24,145 @@
 					</swiper-item>
 				</swiper>
 			</view>
-			<!-- 推荐 -- 小图标-->
-			<view class="limited-time" v-if="iconArr.length">
-				<view class="item" v-for="(item, index) in iconArr" :key="index" @click="_clickIcon(item)">
-					<image :src="item.thumb" :lazy-load="true" class="image"></image>
-					<span class="text">{{item.title}}</span>
-				</view>
-			</view>
 		</div>
+
+        <!-- 小图标  -->
+        <view class="limited-time" v-if="iconArr.length">
+            <view class="item" v-for="(item, index) in iconArr" :key="index" @click="_clickIcon(item)">
+                <image :src="item.thumb" :lazy-load="true" class="image"></image>
+                <span class="text">{{item.title}}</span>
+            </view>
+        </view>
 
 		<!--	广告区域 	-->
 		<div class="ad-space" @click="_goPage('activity20200424')">
 			<img class="img" src="http://picture.ddxm661.com/f32b7202004231035065236.gif" />
 		</div>
 
-			<!-- 推荐tab栏里的数据 -->
-			<view class="content">
-				<!-- 元旦秒杀 -->
-				<div class="yuandanmiao" v-if="seckill_list.length">
-					<view class="yd-more" @click="_goPage('spike_list')"></view>
-					<div class="ydms">
-						<swiper circular="true" :indicator-dots="true" indicator-active-color="#FFF" style="width: 628rpx;height: 480rpx;margin:0 auto;">
-							<swiper-item class="yd-swiper">
-								<div class="ydms-box">
-									<block v-for="(item, index) in seckill_list" :key="index">
-										<div class="ydms-shop" v-if="index<3" @click="_goPage('spike_detail', {item_id: item.item_id, seckill_id: item.id})">
-											<img class="ydms-img" :src="item.pic">
-											<p class="shop-tit">{{item.item_name}}</p>
-											<div class="shop-price">
-												<div class="big-price">￥{{item.price}}</div>
-												<div class="small-price">￥{{item.old_price}}</div>
-											</div>
-										</div>
-									</block>
-								</div>
-							</swiper-item>
-							<swiper-item class="yd-swiper" v-if="seckill_list.length > 3">
-								<div class="ydms-box">
-									<block v-for="(item, index) in seckill_list" :key="index">
-										<div class="ydms-shop" v-if="index > 3 && index < 7" @click="_goPage('spike_detail', {item_id: item.item_id, seckill_id: item.id})">
-											<img class="ydms-img" :src="item.pic" :lazy-load="true">
-											<p class="shop-tit">{{item.item_name}}</p>
-											<div class="shop-price"><div class="big-price">￥{{item.price}}</div><div class="small-price">￥{{item.old_price}}</div></div>
-										</div>
-									</block>
-								</div>
-							</swiper-item>
-						</swiper>
-					</div>
-				</div>
-				<!-- 元旦拼团抢购 -->
-				<div class="yuandanmiao pintuan" v-if="assemble_list.length">
-					<view class="yd-more" @click="_goPage('group_buy')"></view>
-					<div class="ydms">
-						<swiper circular="true" :indicator-dots="true" indicator-active-color="#FFF" style="width: 628rpx;height: 480rpx;margin:0 auto;">
-							<swiper-item class="yd-swiper">
-								<div class="ydms-box">
-									<block v-for="(item, index) in assemble_list" :key="index">
-										<div class="ydms-shop" v-if="index < 3" @click="_goPage('group_buy_detail', {assemble_id: item.id, item_id: item.item_id})">
-											<img class="ydms-img" :src="item.pic" :lazy-load="true">
-											<p class="shop-tit">{{ item.item_name }}</p>
-											<div class="shop-price"><div class="big-price pintuan">￥{{ item.price }}<span class="ydms-people">{{ item.assemble_num }}人团</span></div><div class="small-price pintuan">￥{{ item.old_price }}</div></div>
-										</div>
-									</block>
-								</div>
-							</swiper-item>
-							<swiper-item class="yd-swiper" v-if="assemble_list.length > 3">
-								<div class="ydms-box">
-									<block v-for="(item, index) in assemble_list" :key="index">
-										<div class="ydms-shop" v-if="index > 3 && index < 7" @click="_goPage('group_buy_detail', {assemble_id: item.id, item_id: item.item_id})">
-											<img class="ydms-img" :src="item.pic" :lazy-load="true">
-											<p class="shop-tit">{{ item.item_name }}</p>
-											<div class="shop-price"><div class="big-price pintuan">￥{{ item.price }}<span class="ydms-people">{{ item.assemble_num }}人团</span></div><div class="small-price pintuan">￥{{ item.old_price }}</div></div>
-										</div>
-									</block>
-								</div>
-							</swiper-item>
-						</swiper>
-					</div>
-				</div>
+        <!--    秒杀   -->
+        <div class="spike-and-group" v-if="seckill_list.length">
+            <div class="spike-and-group-title">
+                <div class="spike-and-group-title-left">
+                    <span>限时秒杀</span>
+                </div>
+                <div class="spike-and-group-title-right" @click="_goPage('spike_list')">
+                    <i class="iconfont icon-ddx-shop-content_arrows"></i>
+                </div>
+            </div>
+            <swiper class="spike-and-group-goods-box" circular="true" :indicator-dots="true" indicator-active-color="#FFF">
+                <swiper-item class="spike-and-group-goods-box-swiper-item">
+                    <block v-for="(item, index) in seckill_list" :key="index">
+                        <div class="spike-and-group-goods-box-swiper-item-goods" v-if="index < 3" @click="_goPage('spike_detail', {item_id: item.item_id, seckill_id: item.id})">
+                            <img class="goods-img" :src="item.pic">
+                            <div class="goods-title">{{item.item_name}}</div>
+                            <div class="goods-price">
+                                <span class="price">￥{{item.price}}</span>
+                                <div class="cart">
+                                    <i class="iconfont icon-ddx-shop-shopping-cart-o"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </block>
+                </swiper-item>
+                <swiper-item class="spike-and-group-goods-box-swiper-item" v-if="seckill_list.length > 3">
+                    <block v-for="(item, index) in seckill_list" :key="index">
+                        <div class="spike-and-group-goods-box-swiper-item-goods" v-if="index >= 3 && index <= 5" @click="_goPage('spike_detail', {item_id: item.item_id, seckill_id: item.id})">
+                            <img class="goods-img" :src="item.pic" :lazy-load="true">
+                            <div class="goods-title">{{item.item_name}}</div>
+                            <div class="goods-price">
+                                <span class="price">￥{{item.price}}</span>
+                                <div class="cart">
+                                    <i class="iconfont icon-ddx-shop-shopping-cart-o"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </block>
+                </swiper-item>
+            </swiper>
+        </div>
 
-				<!-- 六个分类，内容部分可以向左滑动-->
-				<view style="padding: 10px;color: #000000;font-size: 48upx;font-weight: bold;" v-if="categoryGoodsList.length">
-					好物精选
-				</view>
-				<view class="some-category" v-if="categoryGoodsList.length" v-for="(item, index) in categoryGoodsList" :key="index">
-					<div class="some-category-banner" @click="_goPage('goods_search', {title: item.cname, id: item.category_id})">
-						<img class="img" :src="item.thumb">
-					</div>
-					<div class="some-category-box">
-						<swiper class="all-goods" display-multiple-items="4" autoplay="true" interval="3000" easing-function="linear">
-							<swiper-item class="goods" v-for="(subItem, subIndex) in item.items" :key="subIndex" @click="_goPage('goods_detail', {id: subItem.id})">
-								<div class="goods-header">
-									<image class="img" :src="subItem.pic" :lazy-load="true"></image>
-								</div>
-								<div class="goods-footer">
-									<div class="goods-title">{{subItem.title}}</div>
-									<div class="goods-price">￥{{subItem.min_price}}</div>
-								</div>
-							</swiper-item>
-						</swiper>
-					</div>
-				</view>
+        <!--    拼团   -->
+        <div class="spike-and-group" v-if="assemble_list.length" style="margin-top: 24rpx;">
+            <div class="spike-and-group-title">
+                <div class="spike-and-group-title-left">
+                    <span>拼团汇聚</span>
+                    <span class="spike-and-group-title-left-sub">3人成团 进行中</span>
+                </div>
+                <div class="spike-and-group-title-right" @click="_goPage('group_buy')">
+                    <i class="iconfont icon-ddx-shop-content_arrows"></i>
+                </div>
+            </div>
+            <swiper class="spike-and-group-goods-box" circular="true" :indicator-dots="true" indicator-active-color="#FFF">
+                <swiper-item class="spike-and-group-goods-box-swiper-item">
+                    <block v-for="(item, index) in assemble_list" :key="index">
+                        <div class="spike-and-group-goods-box-swiper-item-goods" v-if="index < 3" @click="_goPage('group_buy_detail', {assemble_id: item.id, item_id: item.item_id})">
+                            <img class="goods-img" :src="item.pic">
+                            <div class="goods-title">{{item.item_name}}</div>
+                            <div class="goods-price">
+                                <span class="price">￥{{item.price}}</span>
+                                <div class="cart">
+                                    <i class="iconfont icon-ddx-shop-shopping-cart-o"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </block>
+                </swiper-item>
+                <swiper-item class="spike-and-group-goods-box-swiper-item" v-if="assemble_list.length > 3">
+                    <block v-for="(item, index) in assemble_list" :key="index">
+                        <div class="spike-and-group-goods-box-swiper-item-goods" v-if="index >= 3 && index <= 5" @click="_goPage('group_buy_detail', {assemble_id: item.id, item_id: item.item_id})">
+                            <img class="goods-img" :src="item.pic">
+                            <div class="goods-title">{{item.item_name}}</div>
+                            <div class="goods-price">
+                                <span class="price">￥{{item.price}}</span>
+                                <div class="cart">
+                                    <i class="iconfont icon-ddx-shop-shopping-cart-o"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </block>
+                </swiper-item>
+            </swiper>
+        </div>
 
-				<!-- 推荐页面的上拉无限加载商品 -->
-				<view style="padding: 10px 10px 0 10px;color: #000000;font-size: 48upx;font-weight: bold;">
-					猜你喜欢
-				</view>
-				<view class="guess-you-like">
-					<view class="goods-list">
-						<mGoods v-for="(item, index) in tabList[TabCur].goodsList" :key="index" :goodsInfo="item" @click.native="goGoodsDetails(item)"></mGoods>
-					</view>
+        <!-- 六个分类，内容部分可以向左滑动-->
+        <view style="padding: 10px;color: #000000;font-size: 48upx;" v-if="categoryGoodsList.length">
+            好物精选Ⅱ
+        </view>
+        <div class="some-category" v-if="categoryGoodsList.length" v-for="(item, index) in categoryGoodsList" :key="index">
+            <div class="some-category-title">
+                <div class="left img"></div>
+                <div class="medium">{{item.cname}}</div>
+                <div class="right img"></div>
+            </div>
+            <div class="some-category-banner" @click="_goPage('goods_search', {title: item.cname, id: item.category_id})">
+                <image class="img" :src="item.thumb" :lazy-load="true"></image>
+            </div>
+            <swiper display-multiple-items="4" autoplay="true" interval="3000" easing-function="linear">
+                <swiper-item class="some-category-box" v-for="(subItem, subIndex) in item.items" :key="subIndex" @click="_goPage('goods_detail', {id: subItem.id})">
+                    <div class="some-category-box-goods" @click="_goPage('goods_detail', {id: subItem.id})">
+                        <image class="goods-img" :src="subItem.pic" :lazy-load="true"></image>
+                        <div class="goods-title">{{subItem.title}}</div>
+                        <div class="goods-price">
+                            <span class="price">￥{{subItem.min_price}}</span>
+                            <div class="cart">
+                                <i class="iconfont icon-ddx-shop-shopping-cart-o"></i>
+                            </div>
+                        </div>
+                    </div>
+                </swiper-item>
+            </swiper>
+        </div>
 
-					<uni-load-more :status="tabList[0].requestData.moreStatus" :show-icon="true" class="load-more"></uni-load-more>
-				</view>
-
-			</view>
-
+        <!--  上拉无限加载商品 -->
+        <view style="padding: 10px 10px 0 10px;color: #000000;font-size: 48upx;">
+            猜你喜欢Ⅱ
+        </view>
+        <view class="guess-you-like">
+            <view class="goods-list">
+                <mGoods v-for="(item, index) in tabList[TabCur].goodsList" :key="index" :goodsInfo="item" @click.native="goGoodsDetails(item)"></mGoods>
+            </view>
+            <uni-load-more style="background-color: #FFEAEF;" :status="tabList[0].requestData.moreStatus" :show-icon="true" class="load-more"></uni-load-more>
+        </view>
 
 		<!-- 回到顶部 -->
 		<backTop :src="backTop.src" :scrollTop="backTop.scrollTop"></backTop>
@@ -220,6 +243,7 @@
 			this._getIcon()
 			this._getCategoryGoodsList()
 			this._getUnlimitedGoods()
+            this._getSpikeList()
 		},
 		async onReachBottom() {
 			if (this.tabList[this.TabCur].requestData.moreStatus === 'noMore') {
@@ -413,7 +437,6 @@
 					}
 				await this.wxConigShareGoods(param1, param2)
 			})
-			this._getSpikeList()
 		},
 		computed: {
 			...mapState(['userInfo']),
@@ -422,18 +445,17 @@
 </script>
 
 <style lang="scss">
+    page{
+        background-color: #FFEAEF;
+    }
+
 	.container {
-		&.yuandan-bg {
-			background: #E4F7F3;
-		}
 
 		.content-box {
-			/*background-image: url('~@/static/images/yuandan-home/background.jpg');*/
-			/*background-repeat: no-repeat;*/
-			/*background-size: 100% 100%;*/
-			/*height: 737upx;*/
-			background-color: #ECFEF1;
-
+			background-image: url(http://picture.ddxm661.com/b9843202005081452154790.png);
+			background-repeat: no-repeat;
+			background-size: 100% 100%;
+			/*搜索框和分类图标*/
 			.search-and-tabs {
 				width: 100%;
 				height: 109upx;
@@ -442,6 +464,34 @@
 				justify-content: space-between;
 				align-items: center;
 
+                /* 搜索框 */
+                .my-search-box {
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    margin-left: $uni-spacing-row-base;
+                    width: 642upx;
+
+                    .my-search-input {
+                        border: 1upx solid #efefef;
+                        color: #999999;
+                        font-size: $uni-font-size-base;
+                        background: #fff;
+                        height: 60upx;
+                        width: 100%;
+                        padding: 0 10upx;
+                        border-radius: 30upx;
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: flex-start;
+                        align-items: center;
+                        overflow: hidden;
+
+                        .iconfont {
+                            margin-right: 6upx;
+                        }
+                    }
+                }
 				.sort {
 					display: flex;
 					flex-direction: column;
@@ -449,63 +499,22 @@
 					align-items: center;
 					margin-right: 20upx;
 					font-size: 18upx;
-					color: $uni-text-color-inverse;
-
-					.icon-ddx-shop-fenlei {
-						color: #FFFFFF;
+                    .sort-text{
+                        margin: -6rpx;
+                        color: #fff;
+                    }
+					.iconfont{
 						font-size: 38upx;
+                        color: #fff;
 					}
-				}
-
-				/* 搜索框 */
-				.my-search-box {
-					display: flex;
-					justify-content: flex-start;
-					align-items: center;
-					margin-left: $uni-spacing-row-base;
-					width: 642upx;
-
-					.my-search-input {
-						border: 1upx solid #efefef;
-						color: #999999;
-						font-size: $uni-font-size-base;
-						background: #fff;
-						height: 60upx;
-						width: 100%;
-						padding: 0 10upx;
-						border-radius: 30upx;
-						display: flex;
-						flex-direction: row;
-						justify-content: flex-start;
-						align-items: center;
-						overflow: hidden;
-
-						.iconfont {
-							margin-right: 6upx;
-						}
-					}
-				}
-
-				/* tab栏 */
-				.tabs {
-					color: #FFFFFF;
-					font-size: $uni-font-size-base;
-					text-align: center;
-					width: 100%;
 				}
 			}
-
-
+			/*banner*/
 			.swiper-box {
 				padding: 0 $uni-spacing-row-sm;
 				border-radius: 10upx;
-				/*background: #fff;*/
-				/*background-image: url('~@/static/images/double12-home/2.png');*/
-				/*background-repeat: no-repeat;*/
-				/*background-size: 100% 100%;*/
-				/*padding-bottom: 300upx;*/
 				overflow: hidden;
-				margin-bottom: 20upx; // 图标 和 banner 距离
+				margin-bottom: 20upx;
 				.swiper-item {
 					border-radius: 10upx;
 
@@ -516,265 +525,242 @@
 					}
 				}
 			}
+		}
 
-			/*推荐页面的小图标*/
-			.limited-time {
-				width: 100%;
+		/* 推荐页面的小图标 */
+		.limited-time {
+			width: 100%;
+			display: flex;
+			flex-wrap: wrap;
+			flex-direction: row;
+			justify-content: flex-start;
+			align-items: center;
+			padding: $uni-spacing-row-base 0;
+			padding-top: 0;
+			.item {
 				display: flex;
-				flex-wrap: wrap;
-				flex-direction: row;
-				justify-content: flex-start;
+				flex-wrap: nowrap;
+				flex-direction: column;
 				align-items: center;
-				/*background: #ffffff;*/
-				padding: $uni-spacing-row-base 0;
-				padding-top: 0;
-				/*margin-top: 200upx;*/
-				.item {
-					display: flex;
-					flex-wrap: nowrap;
-					flex-direction: column;
-					align-items: center;
-					width: 20%;
-					padding: $uni-spacing-col-sm 0;
-					.image,
-					image {
-						width: 98upx;
-						height: 98upx;
-					}
+				width: 20%;
+				padding: $uni-spacing-col-sm 0;
+				.image,
+				image {
+					width: 98upx;
+					height: 98upx;
+				}
 
-					.text,
-					text {
-						font-size: $uni-font-size-sm;
-						color: #333333;
-					}
+				.text,
+				text {
+					font-size: $uni-font-size-sm;
+					color: #333333;
 				}
 			}
 		}
 
 		/* 广告位，一般用于跳转其他活动页面 */
 		.ad-space {
-			background-color: #ECFEF1;
 			padding: $uni-spacing-row-base;
 			.img {
 				width: 100%;
 			}
 		}
 
-		.content {
+        /* 秒杀 和 拼团  */
+        .spike-and-group{
+            margin: auto;
+            width:702rpx;
+            height:440rpx;
+            background:rgba(255,0,92,1);
+            border-radius:12rpx;
+            overflow: hidden;
 
-			/*六个分类，内容部分可以向左滑动*/
-			.some-category {
-				padding: 0 $uni-spacing-row-sm;
-				margin-bottom: 28upx;
+            .spike-and-group-title{
+                display: flex;
+                justify-content: space-between;
+                height: 84rpx;
+                align-items: center;
+                padding: 0 12rpx;
+                .spike-and-group-title-left{
+                    display: flex;
+                    align-items: center;
+                    color: #fff;
+                    font-size: $uni-font-size-lg;
+                    .spike-and-group-title-left-sub{
+                        margin-left: 30rpx;
+                        font-size: $uni-font-size-sm;
+                    }
+                }
+                .spike-and-group-title-right{
+                    .iconfont{
+                        color: #fff;
+                        font-size: $uni-font-size-base;
+                    }
+                }
+            }
+            .spike-and-group-goods-box{
+                height: 368rpx;
+                padding: 0 12rpx;
+                .spike-and-group-goods-box-swiper-item{
+                    height: 324rpx;
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+                    .spike-and-group-goods-box-swiper-item-goods{
+                        border-radius: 4rpx;
+                        overflow: hidden;
+                        width: 218rpx;
+                        height: 324rpx;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                        background-color: #fff;
+                        margin: 0 6rpx;
+                        .goods-img{
+                            width: 218rpx;
+                            height: 218rpx;
+                        }
+                        .goods-title{
+                            padding: 0 12rpx;
+                            @extend %overflow-2-line;
+                            font-size: 20rpx;
+                            color: #222222;
+                            height: 60rpx;
+                            overflow: hidden;
+                        }
+                        .goods-price{
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            padding: 6rpx 8rpx;
+                            .price{
+                                color: #DC0952;
+                                font-size:20rpx;
+                            }
+                            .cart{
+                                width: 30rpx;
+                                height: 30rpx;
+                                border-radius: 50%;
+                                background-color: #DC0952;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                .iconfont{
+                                    margin-top: 2rpx;
+                                    font-size: 20rpx;
+                                    color: #fff;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
-				.some-category-banner {
-					width: 100%;
-					border-radius: 8upx 8upx 0 0;
-					overflow: hidden;
-					background: #fff;
+        /*六个分类，内容部分可以向左滑动*/
+        .some-category {
+            margin:0 auto;
+            margin-bottom: 28rpx;
+            width:702rpx;
+            height:647rpx;
+            box-shadow:0 0 16rpx #FF005C;
+            border-radius: 12rpx;
 
-					.img {
-						width: 100%;
-					}
-				}
+            .some-category-title{
+                height: 74rpx;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                .img{
+                    width: 50rpx;
+                    height: 20rpx;
+                    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC8AAAAUCAYAAAAdmmTCAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA3NpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQ4IDc5LjE2NDAzNiwgMjAxOS8wOC8xMy0wMTowNjo1NyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDplZDBhMGFkOS0xNDkwLTBmNGEtOTAyMS1hYzkxZjRhOWRmNjAiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6QzM4ODQ2QjQ5MERFMTFFQTgxNTdCOTVCRDYzMDcyNkQiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6QzM4ODQ2QjM5MERFMTFFQTgxNTdCOTVCRDYzMDcyNkQiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIDIxLjAgKFdpbmRvd3MpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6M2E1ZGEzZDEtOGRlOS1kNjRhLWJlMjYtMjVjYjk3ZjFiZGFjIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOmVkMGEwYWQ5LTE0OTAtMGY0YS05MDIxLWFjOTFmNGE5ZGY2MCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pv94KSUAAALnSURBVHjazFbNaxNBFJ/ZbIM1pjFp60fSgFjbEosimkMEA57sQRFELfoH6N2DUIXiSRShIngQ/4JiBdGL+AGKpdpgbQ/aGi9tUzcfppWUJmm6SbMzvomzZbM0H7Zrkwc/3uy8t29/8+bNm8WUUrQVMnT8ctFzb0DEoC6yIWAPIAx4AXgy5MsTjc9ZwGlAGyAOeAr2l8wuotpJH+CS5tnD4QXS1/ncXUCPxscFOAp2DyxgANci8/BxH6jHZdzvA7KAG2V8rtYq8+cr2K8AlAo+Fwrkx3GPBdRJwC7APGCYO5wAtAIWAB+O0dcZg8gfqWC3VhND4Nvp5/XUwPUpXmtuwDau/fpDtwlpNiKGWjbOKoLvNYi4hWIkY4osm4yTEvhArsJZNoi8PSuirwbECTDyQsbe8AU0KeOYB4wYRH77zG7yDPTqRgPAzq2AesjI74h1WRMJd+M7IuLfekdFxPFFV+OraZ8jbBB502QbCYcd9AH92w7/lXgq1ELuQZ8PM/JmNgkEk7Ne+7BsFSf4LhA2DnntH2FhWWScFHb4U6cyMekmN/MmFKr2xVURTY3tV/rG2smUesOyYGrto0h3U8gZTBEEaYketP5UF2wg+TTAxgZBF4mGWkm//4fpjC2Dz2GeyHWyLScsdPB9t/KW4AKXtEo+pQZTJepZI639oFHCSrMJwP5b0IoZ5d8cVp4fkoTxzphwzUSKu5oioF9BJxn4DqWmTvF7p5BxdnAWSxygHLflDCTPSlDSN4hvbiKNdCn9UEYzGuJSoEO5pSMuqXwEzeSSLsNsnKzimt5o6czq22/cRpdHO5Q7QHqBCCgROKDcjthpkpuXAdOAtVteXKeXU76lMvq/kuULYBdii5rI2E6alprJIxPB5oiDLvHkzfMKKBKxRNCtEsrPQIr/ghQO7Od2EtSUrVSKk9g7OojqQBg5Vuv7+L+UWgVz5cpWQPUjhJPN8eYxV+m8iai+hJGNacZl5Y8AAwBv3gxT0NYKqgAAAABJRU5ErkJggg==");
+                    background-size: 100% 100%;
+                    background-repeat: no-repeat;
+                }
+                .left{
+                    margin-right: 20rpx;
+                }
+                .medium{
+                    color: #E0004E;
+                    font-size: $uni-font-size-lg;
+                }
+                .right{
+                    transform: scaleX(-1);
+                    margin-left: 20rpx;
+                }
+            }
+            .some-category-banner{
+                .img{
+                    width:702rpx;
+                    height:272rpx;
+                }
+            }
+            .some-category-box{
+                width:100%;
+                height:277rpx;
+                display: flex;
+                justify-content: center;
+                .some-category-box-goods{
+                    border-radius: 4rpx;
+                    overflow: hidden;
+                    width:161rpx;
+                    height:277rpx;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    background-color: #fff;
+                    .goods-img{
+                        width: 161rpx;
+                        height: 164rpx;
+                    }
+                    .goods-title{
+                        padding: 0 12rpx;
+                        @extend %overflow-2-line;
+                        font-size: 20rpx;
+                        color: #222222;
+                        height: 60rpx;
+                        overflow: hidden;
+                    }
+                    .goods-price{
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        padding: 8rpx 8rpx;
+                        .price{
+                            color: #DC0952;
+                            font-size:20rpx;
+                        }
+                        .cart{
+                            width: 30rpx;
+                            height: 30rpx;
+                            border-radius: 50%;
+                            background-color: #DC0952;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            .iconfont{
+                                margin-top: 2rpx;
+                                font-size: 20rpx;
+                                color: #fff;
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
-				.some-category-box {
-					border-radius: 0 0 8upx 8upx;
-					background: #FFFFFF;
-					height: 320upx;
-					padding: 10upx;
-
-					.all-goods {
-						height: 100%;
-						width: 100%;
-						display: flex;
-						flex-wrap: nowrap;
-
-						.goods {
-							padding: 0 10upx;
-							width: 178upx;
-							height: 300upx;
-							display: flex;
-							flex-direction: column;
-							justify-content: space-between;
-
-							.goods-header {
-								height: 178upx;
-								width: 178upx;
-
-								.img {
-									height: 178upx;
-									width: 178upx;
-								}
-							}
-
-							.goods-footer {
-								width: 100%;
-								height: calc(100% - 178upx);
-								display: flex;
-								flex-direction: column;
-								justify-content: flex-end;
-
-								.goods-title {
-									@extend %overflow-2-line;
-									color: $color-primary-plain;
-									font-size: 22upx;
-								}
-
-								.goods-price {
-									font-size: $uni-font-size-sm;
-									color: $color-primary;
-									text-align: center;
-								}
-							}
-						}
-					}
-				}
-			}
-
-			/* 元旦秒杀 */
-			.yuandanmiao {
-				height: 760upx;
-				background: url("~@/static/images/yuandan-home/3.jpg") no-repeat;
-				background-size: 100% 100%;
-				overflow: hidden;
-				position: relative;
-				.yd-more {
-					width: 90upx;
-					height: 30upx;
-					position: absolute;
-					right: 44upx;
-					top: 160upx;
-				}
-
-				&.pintuan {
-					height: 730upx;
-					background: url("~@/static/images/yuandan-home/4.jpg") no-repeat;
-					background-size: 100% 100%;
-				}
-				.ydms {
-					margin-top: 216upx;
-					position: relative;
-					&.tma{
-						margin-top: 60upx;
-					}
-					.ydms-box {
-						display: flex;
-						justify-content: space-around;
-						align-items: center;
-						width: 625upx;
-						margin: 8upx auto;
-						overflow: hidden;
-
-						.ydms-shop {
-							width: 190rpx;
-							height: 364rpx;
-							padding: 8rpx;
-							// border: 1px solid #FDEBCA;
-							// background-color: #FDEBCA;
-							// box-shadow: 0px 4px 4px 0px rgba(191, 104, 25, 0.2);
-							position: relative;
-
-							.ydms-people {
-								display: inline-block;
-								width: 74upx;
-								height: 28upx;
-								line-height: 28upx;
-								margin-left: 5upx;
-								text-align: center;
-								color: #FFFFFF;
-								font-size: 18upx;
-								background: url("~@/static/images/yuandan-home/pintuan.png") no-repeat;
-								background-size: contain;
-							}
-
-							.tit-img {
-								position: absolute;
-								top: 0;
-								left: 0;
-								width: 42upx;
-								height: 42upx;
-								background: url("~@/static/images/yuandan-home/tit.png") no-repeat;
-								background-size: 100% 100%;
-							}
-
-							.ydms-img {
-								width: 100%;
-								height: 196upx;
-								margin: 8upx 0;
-								display: block;
-								background-color: #fff;
-							}
-
-							.shop-tit {
-								@extend %overflow-2-line;
-								margin: 0;
-								font-size: 24upx;
-								color: #333333;
-							}
-
-							.shop-price {
-								line-height: 40upx;
-								margin-top: 12rpx;
-								.big-price {
-									color: #fff;
-									font-size: 22upx;
-									background: url("~@/static/images/yuandan-home/miaosha.png") no-repeat;
-									background-size: contain;
-									height: 32upx;
-									line-height: 32upx;
-									margin-top: 5upx;
-									width: 138upx;
-									display: flex;
-									justify-content: space-between;
-									align-items: center;
-									&.pintuan{
-										width: 100%;
-										background: none;
-										color: #F83D3D;
-										font-size: 24upx;
-										margin-bottom: 4upx;
-									}
-								}
-
-								.small-price {
-									color: #999999;
-									font-size: 22upx;
-									text-decoration: line-through;
-									margin-left: 5upx;
-								}
-
-							}
-
-							.shop-button {
-								width: 118upx;
-								line-height: 48upx;
-								text-align: center;
-								background: url("~@/static/images/yuandan-home/btn.png") no-repeat;
-								background-size: 100% 100%;
-								margin: 10upx auto;
-								color: #fff;
-								font-size: 20upx;
-							}
-						}
-					}
-				}
-			}
-
-			/*猜你喜欢 或者 其他页面的商品列表*/
-			.guess-you-like {
-				background-color: $background-color;
-				margin-top: 10upx;
-				.goods-list {
-					padding: 10upx $uni-spacing-row-sm 0 $uni-spacing-row-sm;
-					display: flex;
-					flex-direction: row;
-					flex-wrap: wrap;
-					justify-content: space-between;
-				}
-			}
-		}
-
+        /*猜你喜欢 或者 其他页面的商品列表*/
+        .guess-you-like {
+            margin-top: 10upx;
+            .goods-list {
+                padding: 10upx $uni-spacing-row-sm 0 $uni-spacing-row-sm;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }
+        }
 
 		/* 上拉加载更多 */
 		.load-more {

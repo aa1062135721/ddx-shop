@@ -137,7 +137,7 @@
             <div class="some-category-banner" @click="_goPage('goods_search', {title: item.cname, id: item.category_id})">
                 <image class="img" :src="item.thumb" :lazy-load="true"></image>
             </div>
-            <swiper display-multiple-items="4" autoplay="true" interval="3000" easing-function="linear">
+            <swiper style="height:277rpx;" display-multiple-items="4" autoplay="true" interval="3000" easing-function="linear">
                 <swiper-item class="some-category-box" v-for="(subItem, subIndex) in item.items" :key="subIndex" @click="_goPage('goods_detail', {id: subItem.id})">
                     <div class="some-category-box-goods" @click="_goPage('goods_detail', {id: subItem.id})">
                         <image class="goods-img" :src="subItem.pic" :lazy-load="true"></image>
@@ -625,7 +625,6 @@
                             @extend %overflow-2-line;
                             font-size: 20rpx;
                             color: #222222;
-                            height: 60rpx;
                             overflow: hidden;
                         }
                         .goods-price{
@@ -719,7 +718,6 @@
                         @extend %overflow-2-line;
                         font-size: 20rpx;
                         color: #222222;
-                        height: 60rpx;
                         overflow: hidden;
                     }
                     .goods-price{

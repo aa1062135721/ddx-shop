@@ -35,9 +35,11 @@
         </view>
 
 		<!--	广告区域 	-->
+        <!--
 		<div class="ad-space" @click="_goPage('activity20200424')">
 			<img class="img" src="http://picture.ddxm661.com/f32b7202004231035065236.gif" />
 		</div>
+        -->
 
         <!--    秒杀   -->
         <div class="spike-and-group" v-if="seckill_list.length">
@@ -300,37 +302,25 @@
 			},
 			// 推荐页面的图标单击操作
 			_clickIcon(item) {
-				// "type":"1",     //跳转类型：1:不跳；2：跳网站；3：商品详情；4：拼团列表；5：抢购列表；6：新人专区
 				console.log("单击了推荐页选项卡里的图标：", item)
-				switch (item.type) {
-					case 1:
-						break
-					case 2:
-						if (item.value === 'msg') {
-							this.msg('功能正在完善中，请敬请期待！')
-							return
-						}
-						this._goPage('web_view', {
-							url: item.value
-						})
-						break
-					case 3:
-						this._goPage('goods_detail', {
-							id: item.value
-						})
-						break
-					case 4:
-						this._goPage('group_buy')
-						break
-					case 5:
-						this._goPage('spike_list')
-						break
-					case 6:
-						this.msg('功能正在完善中，请敬请期待！')
-						// this._goPage('newcomer')
-						// this._goPage('activity20200308')
-						break
-				}
+                // item.type   类型：1不跳转，2:跳转外部页面，3跳转到内部界面 4:弹出提示（功能正在完善中，请敬请期待！）
+                // item.url 地址 如果type为2的话，这个url必定为网页地址，如果type为3的话，这个url是本项目router.js中的某个页面的name值，他是唯一的
+                // item.value 参数 {"t":"121","member":"2222"}
+                switch (item.type) {
+                    case 1:
+                        break
+                    case 2:
+                        this._goPage('web_view', {
+                            url: item.url
+                        })
+                        break
+                    case 3:
+                        this._goPage(item.url, JSON.parse(item.value))
+                        break
+                    case 4:
+                        this.msg('功能正在完善中，请敬请期待！')
+                        break
+                }
 			},
 
 			// 推荐页面的六个板块数据

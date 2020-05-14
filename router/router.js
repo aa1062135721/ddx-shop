@@ -466,17 +466,24 @@ const router = new MinRouter({
 			login: false
 		},
 		//活动页面，方广品牌周
-		{
-			path: "pages/activity20200424/index",
-			type: 'navigateTo',
-			name: 'activity20200424',
-			login: false
-		},
+		// {
+		// 	path: "pages/activity20200424/index",
+		// 	type: 'navigateTo',
+		// 	name: 'activity20200424',
+		// 	login: false
+		// },
 		//活动页面，纸尿裤专场
 		{
 			path: "pages/activity20200506/index",
 			type: 'navigateTo',
 			name: 'activity20200506',
+			login: false
+		},
+		//活动页面，德国NUK厂家大放价
+		{
+			path: "pages/activity20200513/index",
+			type: 'navigateTo',
+			name: 'activity20200513',
 			login: false
 		},
 	]

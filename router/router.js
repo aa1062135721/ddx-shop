@@ -486,6 +486,13 @@ const router = new MinRouter({
 			name: 'activity20200513',
 			login: false
 		},
+		//活动页面，520放肆爱
+		{
+			path: "pages/activity20200520/index",
+			type: 'navigateTo',
+			name: 'activity20200520',
+			login: false
+		},
 	]
 })
 

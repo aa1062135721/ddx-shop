@@ -430,6 +430,13 @@
 				"navigationStyle": "custom",
 				"navigationBarTitleText": "捣蛋熊商城-德国NUK厂家大放价"
 			}
+		},
+		{
+			"path": "pages/activity20200520/index",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "捣蛋熊商城-520放肆爱"
+			}
 		}
 	],
 	"globalStyle": {

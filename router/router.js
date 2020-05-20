@@ -473,12 +473,12 @@ const router = new MinRouter({
 		// 	login: false
 		// },
 		//活动页面，纸尿裤专场
-		{
-			path: "pages/activity20200506/index",
-			type: 'navigateTo',
-			name: 'activity20200506',
-			login: false
-		},
+		// {
+		// 	path: "pages/activity20200506/index",
+		// 	type: 'navigateTo',
+		// 	name: 'activity20200506',
+		// 	login: false
+		// },
 		//活动页面，德国NUK厂家大放价
 		{
 			path: "pages/activity20200513/index",
@@ -491,6 +491,13 @@ const router = new MinRouter({
 			path: "pages/activity20200520/index",
 			type: 'navigateTo',
 			name: 'activity20200520',
+			login: false
+		},
+		//活动页面，六一儿童节
+		{
+			path: "pages/activity20200601/index",
+			type: 'navigateTo',
+			name: 'activity20200601',
 			login: false
 		},
 	]

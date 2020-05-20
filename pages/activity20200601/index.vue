@@ -118,13 +118,13 @@
                     title: '捣蛋熊商城-六一儿童节', // 分享标题
                     desc: '祝小朋友们节日快乐', // 分享描述
                     link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                    imgUrl: `http://picture.ddxm661.com/a1101202005161439536268.png`, // 分享图标
+                    imgUrl: `http://picture.ddxm661.com/4fd28202005201355028061.png`, // 分享图标
                     success: function() {}
                 },
                 param2 = {
                     title: '捣蛋熊商城-六一儿童节', // 分享标题
                     link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                    imgUrl: `http://picture.ddxm661.com/a1101202005161439536268.png`, // 分享图标
+                    imgUrl: `http://picture.ddxm661.com/4fd28202005201355028061.png`, // 分享图标
                     success: function() {}
                 }
             await this.wxConigShareGoods(param1, param2)

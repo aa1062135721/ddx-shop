@@ -101,8 +101,8 @@
                 <image src="http://picture.ddxm661.com/23962202005161336264120.png" @click="_goPage('spike_detail', {seckill_id: 2499,item_id: 5669})" :lazy-load="true" class="img"></image>
                 <image src="http://picture.ddxm661.com/648c9202005161337224921.png" @click="_goPage('spike_detail', {seckill_id: 2500,item_id: 5670})" :lazy-load="true" class="img"></image>
                 <image src="http://picture.ddxm661.com/5b5bf202005161337224153.png" @click="_goPage('spike_detail', {seckill_id: 2501,item_id: 5671})" :lazy-load="true" class="img"></image>
-                <image src="http://picture.ddxm661.com/97ef9202005161337223084.png" @click="_goPage('spike_detail', {seckill_id: 2502,item_id: 4409})" :lazy-load="true" class="img"></image>
-                <image src="http://picture.ddxm661.com/43adf202005161337229896.png" @click="_goPage('spike_detail', {seckill_id: 2503,item_id: 5668})" :lazy-load="true" class="img"></image>
+                <image src="http://picture.ddxm661.com/f350e202005211007491704.gif" @click="_goPage('spike_detail', {seckill_id: 2502,item_id: 4409})" :lazy-load="true" class="img"></image>
+                <image src="http://picture.ddxm661.com/5b059202005211007492727.png" @click="_goPage('spike_detail', {seckill_id: 2503,item_id: 5668})" :lazy-load="true" class="img"></image>
             </div>
         </div>
 

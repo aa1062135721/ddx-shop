@@ -4,10 +4,10 @@
         <view class="header">
             <!-- 头部-滚动渐变显示 -->
             <view class="after">
-                <view class="icon-btn-left" @click="_goBack">
+               <view class="icon-btn-left" @click="_goBack">
                     <view class="icon iconfont icon-ddx-shop-content_arrows"></view>
                 </view>
-                <view class="middle">
+               <view class="middle">
                     <view v-for="(anchor,index) in anchorlist" :class="[selectAnchor==index ?'on':'']" :key="index" @tap="toAnchor(index)">{{anchor.name}}</view>
                 </view>
 <!--                <view class="icon-btn" @click="openShareH5">-->
@@ -404,7 +404,7 @@
                 <view class="goods-info">
                     <view class="main">
                         <view class="image">
-                            <image class="img" :src='choosesGoodsInfo.specs.pic' @click="previewImg(choosesGoodsInfo.specs.pic, [choosesGoodsInfo.specs.pic])"></image>
+                           <image class="img" :src='choosesGoodsInfo.specs.pic' @click="previewImg(choosesGoodsInfo.specs.pic, [choosesGoodsInfo.specs.pic])"></image>
                         </view>
                         <view class="info">
                             <view class="price">￥{{choosesGoodsInfo.specs.price}}</view>
@@ -417,7 +417,7 @@
                                 件
                             </view>
                         </view>
-                        <view class="close">
+                       <view class="close">
                             <text class="iconfont icon-ddx-shop-close" @click="close()"></text>
                         </view>
                     </view>
@@ -634,7 +634,7 @@
                 })
             },
 
-            //跳转锚点
+            // 跳转锚点
             toAnchor(index){
                 this.selectAnchor = index;
                 uni.pageScrollTo({scrollTop: this.anchorlist[index].top,duration: 200});

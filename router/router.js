@@ -500,6 +500,13 @@ const router = new MinRouter({
 			name: 'activity20200601',
 			login: false
 		},
+		//活动页面，端午节
+		{
+			path: "pages/activity20200611/index",
+			type: 'navigateTo',
+			name: 'activity20200611',
+			login: false
+		},
 	]
 })
 

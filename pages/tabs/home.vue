@@ -27,7 +27,7 @@
 		</div>
 
         <!-- 小图标  -->
-        <view class="limited-time" v-if="iconArr.length">
+       <view class="limited-time" v-if="iconArr.length">
             <view class="item" v-for="(item, index) in iconArr" :key="index" @click="_clickIcon(item)">
                 <image :src="item.thumb" :lazy-load="true" class="image"></image>
                 <span class="text">{{item.title}}</span>
@@ -51,7 +51,7 @@
                     <i class="iconfont icon-ddx-shop-content_arrows"></i>
                 </div>
             </div>
-            <swiper class="spike-and-group-goods-box" circular="true" :indicator-dots="true" indicator-active-color="#FFF">
+           <swiper class="spike-and-group-goods-box" circular="true" :indicator-dots="true" indicator-active-color="#FFF">
                 <swiper-item class="spike-and-group-goods-box-swiper-item">
                     <block v-for="(item, index) in seckill_list" :key="index">
                         <div class="spike-and-group-goods-box-swiper-item-goods" v-if="index < 3" @click="_goPage('spike_detail', {item_id: item.item_id, seckill_id: item.id})">
@@ -267,6 +267,7 @@
 
 			_getBanner() {
 				this.$minApi.banner().then(res => {
+					console.log("获取banner数据",res)
 					if (res.code === 200) {
 						this.swiperList = res.data
 					}
@@ -276,7 +277,7 @@
 				console.log(this.swiperList[key])
 				// this.swiperList[key].type   类型：1不跳转，2:跳转外部页面，3跳转到内部界面'
 				// this.swiperList[key].url 地址
-				// this.swiperList[key].value 参数 {"t":"121","member":"2222"}
+				// this.swiperList[key].value 参数 {"t":"121","mumber":"2222"}
 				switch (this.swiperList[key].type) {
 					case 1:
 						break
@@ -294,7 +295,6 @@
 			//推荐页面的图标
 			async _getIcon() {
 				await this.$minApi.getHomeIcon().then(res => {
-					console.log("获取推荐选项卡里的图标数据：", res)
 					if (res.code === 200) {
 						this.iconArr = res.data
 					}

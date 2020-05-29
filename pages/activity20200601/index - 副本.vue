@@ -1,26 +1,12 @@
 <template>
-    <div class="box">
+    <div>
         <!-- #ifdef H5 -->
         <div id="my-h5-back" @click="_goBack"></div>
         <!-- #endif -->
 
         <div class="banner">
-           <img src="http://picture.ddxm661.com/54f4c202005291653431204.png" alt="">
+           <img src="http://picture.ddxm661.com/6c508202005200937239508.png" alt="">
         </div>
-		<div class="hot-box">
-			<div class="title-box" style="text-align: center; padding-top: 40rpx; margin-bottom: 30rpx;">
-				<image src="http://picture.ddxm661.com/d1bf7202005291659512884.png" style="width: 460rpx; height: 80rpx;"></image>
-			</div>
-			<div class="hot-box-items">
-				<image src="http://picture.ddxm661.com/4fcbe202005291710466623.png" @click="_goPage('spike_detail', {seckill_id: 2639,item_id: 5972})" :lazy-load="true" class="M_img"></image>
-			</div>
-			<div class="hot-box-items">
-				<image src="http://picture.ddxm661.com/79fc920200529171810530.png" @click="_goPage('spike_detail', {seckill_id: 2640,item_id: 6061})" :lazy-load="true" class="M_img"></image>
-			</div>
-			<div class="hot-box-items">
-				<image src="http://picture.ddxm661.com/45588202005291718324857.png" @click="_goPage('spike_detail', {seckill_id: 2641,item_id: 6001})" :lazy-load="true" class="M_img"></image>
-			</div>
-		</div>
         <div class="goods-box">
             <div class="goods-box-items">
                 <image src="http://picture.ddxm661.com/85fb6202005200943286520.png" @click="_goPage('spike_detail', {seckill_id: 2511,item_id: 5754})" :lazy-load="true" class="img"></image>
@@ -150,9 +136,6 @@
 </script>
 
 <style scoped lang="scss">
-	.box{
-		background-image:url(../../static/images/acitity618/bg.png);
-	}
     #my-h5-back{
         position: fixed;
         top:70rpx;
@@ -168,19 +151,7 @@
             width: 100%;
         }
     }
-	.hot-box{
-		width: 100%;
-		min-height: 1200rpx;
-		.hot-box-items{
-			display: flex;
-			justify-content: space-around;
-			margin-bottom: 30rpx;
-			.M_img{
-				width: 95%;
-				height: 360rpx;
-			}
-		}
-	}
+
     .goods-box{
         width: 100%;
         min-height: 1689rpx;

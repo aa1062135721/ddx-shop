@@ -267,7 +267,7 @@
 
 			_getBanner() {
 				this.$minApi.banner().then(res => {
-					console.log("获取banner数据",res)
+					console.log(res)
 					if (res.code === 200) {
 						this.swiperList = res.data
 					}

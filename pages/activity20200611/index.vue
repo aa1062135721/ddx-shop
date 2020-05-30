@@ -114,19 +114,19 @@
         },
         async onLoad(){
             await this.wxConfig();
-            let url = `https://www.ddxm661.com/h5/#/pages/activity20200601/index`
+            let url = `https://www.ddxm661.com/h5/#/pages/activity20200611/index`
             if (this.userInfo.id) {
                 url += `?user_id=${this.userInfo.id}`
             }
             const param1 = {
-                    title: '捣蛋熊商城-六一儿童节', // 分享标题
-                    desc: '祝小朋友们节日快乐', // 分享描述
+                    title: '捣蛋熊商城-端午节', // 分享标题
+                    desc: '祝朋友们节日快乐', // 分享描述
                     link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                     imgUrl: `http://picture.ddxm661.com/4fd28202005201355028061.png`, // 分享图标
                     success: function() {}
                 },
                 param2 = {
-                    title: '捣蛋熊商城-六一儿童节', // 分享标题
+                    title: '捣蛋熊商城-端午节', // 分享标题
                     link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                     imgUrl: `http://picture.ddxm661.com/4fd28202005201355028061.png`, // 分享图标
                     success: function() {}

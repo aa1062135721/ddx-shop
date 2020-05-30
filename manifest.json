@@ -84,7 +84,7 @@
             "base" : "/h5/"
         },
         "title" : "捣蛋熊商城",
-        "domain" : "",
+        "domain" : "https://ddxm661.com/h5/#/",
         "optimization" : {
             "treeShaking" : {
                 "enable" : true

@@ -444,6 +444,13 @@
 				"navigationStyle": "custom",
 				"navigationBarTitleText": "捣蛋熊商城-六一儿童节"
 			}
+		},
+		{
+			"path": "pages/activity20200611/index",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "捣蛋熊商城-浓情端午节"
+			}
 		}
 	],
 	"globalStyle": {

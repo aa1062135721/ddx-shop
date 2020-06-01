@@ -1,5 +1,9 @@
 <template>
 	<view class="container">
+		<div class="smectite" @touchmove.stop.prevent="moveHandle" v-if="flag">
+			<image src="http://picture.ddxm661.com/f6fbd202006011014312531.png" class="icon_x" @click="flag=false"></image>
+			<image src="http://picture.ddxm661.com/7b63d202006011117435341.png" class="icon_six"  @click="_goPage('activity20200618')"></image>
+		</div>
         <!-- 搜索框 分类图标 banner -->
 		<div class="content-box">
             <!-- 搜索框 分类图标-->
@@ -33,7 +37,10 @@
                 <span class="text">{{item.title}}</span>
             </view>
         </view>
-
+		<!-- 618活动栏 -->
+		<view class="six_banner"  @click="_goPage('activity20200618')">
+			<image src="http://picture.ddxm661.com/8871d20200601115234158.gif"></image>
+		</view>
 		<!--	广告区域 	-->
         <!--
 		<div class="ad-space" @click="_goPage('activity20200424')">
@@ -238,6 +245,8 @@
 				seckill_list: [],
 				// 获取拼团列表
 				assemble_list: [],
+				//蒙层控制按钮
+				flag:"true", 
 			}
 		},
 		onLoad() {
@@ -291,7 +300,6 @@
 						break
 				}
 			},
-
 			//推荐页面的图标
 			async _getIcon() {
 				await this.$minApi.getHomeIcon().then(res => {
@@ -440,7 +448,34 @@
     }
 
 	.container {
-
+		position: relative;
+		.smectite{
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			top: 0;
+			left: 0;
+			background-color: rgba(0,0,0,0.8);
+			z-index: 10;
+			.icon_x{
+				width: 60rpx;
+				height: 60rpx;
+				position: fixed;
+				left: 75%;
+				top: 25%;
+				z-index: 10;
+			}
+			.icon_six{
+				width: 60%;
+				height: 50%;
+				position: fixed;
+				margin: auto;
+				top: 0;
+				left: 0;
+				bottom: 0;
+				right: 0;
+			}
+		}
 		.content-box {
 			background-image: url(http://picture.ddxm661.com/b9843202005081452154790.png);
 			background-repeat: no-repeat;
@@ -547,7 +582,16 @@
 				}
 			}
 		}
-
+		// 618活动banner栏
+		.six_banner{
+			display: flex;
+			justify-content: space-around;
+			margin-bottom: 20rpx;
+			image{
+				width: 95%;
+				height: 200rpx;
+			}
+		}
 		/* 广告位，一般用于跳转其他活动页面 */
 		.ad-space {
 			padding: $uni-spacing-row-base;

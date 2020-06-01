@@ -451,6 +451,13 @@
 				"navigationStyle": "custom",
 				"navigationBarTitleText": "捣蛋熊商城-浓情端午节"
 			}
+		},
+		{
+			"path": "pages/activity20200618/index",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "捣蛋熊商城-618"
+			}
 		}
 	],
 	"globalStyle": {

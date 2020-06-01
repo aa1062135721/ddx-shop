@@ -507,6 +507,13 @@ const router = new MinRouter({
 			name: 'activity20200611',
 			login: false
 		},
+		// 活动页面，618
+		{
+			path: "pages/activity20200618/index",
+			type: 'navigateTo',
+			name: 'activity20200618',
+			login: false
+		},
 	]
 })
 

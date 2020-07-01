@@ -108,16 +108,15 @@
         </div>
         -->
 
-        <div class="xuanfu-log" @click="_goPage('discount_coupon')">
+     <!--  <div class="xuanfu-log" @click="_goPage('discount_coupon')">
             <img class="img" src="http://picture.ddxm661.com/7f343202003171535236962.png" alt="">
-        </div>
+        </div> -->
     </div>
 </template>
 
 <script>
     import { mapState, mapActions } from 'vuex'
     import { _debounce } from "@/utils/mUtils"
-
     export default {
         name: "recharge", //充值页面
         data(){

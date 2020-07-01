@@ -11,8 +11,8 @@
                     <div class="price">
                         <div class="text">面值</div>
                         <div v-if="responseData.c_type === 1">
-                            {{ responseData.c_amo_dis }}
-                            <span>￥</span>
+                             <span>￥</span>
+							{{ responseData.c_amo_dis }}
                         </div>
                         <div v-if="responseData.c_type === 2">
                             {{ responseData.c_amo_dis / 10 }}
@@ -78,6 +78,7 @@
                 this.$minApi.couponDetails({id: this.id}).then(res => {
                     if (res.code === 200) {
                         this.responseData = res.data
+						console.log(res)
                     }
                 }).catch(err => {
 

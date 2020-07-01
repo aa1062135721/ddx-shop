@@ -10,9 +10,12 @@
             </view>
         </view>
 
-        <view class="step">
+       <view class="step" v-if="rod">
             <uni-steps :options="responseData.list" :active="active" direction="column" activeColor="#FC5A5A"  activeTextColor="#1A1A1A"/>
         </view>
+		<view class="jump" v-if="flag">
+			<text @click="CheckLogistics">点击查看物流信息</text>
+		</view>
     </view>
 </template>
 
@@ -35,6 +38,9 @@
                     title: "",//快递公司
                     list:[],//物流信息
                 },
+				otherSN:'',
+				flag:false,
+				rod:true
             }
         },
         onLoad(){
@@ -45,17 +51,27 @@
                     order_id: this.$parseURL().order_id,
                     orderGoodsId: this.$parseURL().goods.id
                 }).then(res => {
-                    console.log(res)
-                    if (res.code === 200) {
+					console.log((res))
+                    if (res.code === 200 ) {
                         this.responseData = res.data
                         this.active = res.data.list.length
                         this.$forceUpdate()
                     }
+					if(res.brief_code==="JTSD"){
+						this.otherSN=res.sn
+						// window.location.href = 'https://m.kuaidi100.com/result.jsp?nu='+sn
+						this.flag=true
+						this.rod=false
+						this.responseData.title = res.brief_code
+						this.responseData.sn = res.sn
+					}
                 })
             }
         },
         methods: {
-
+			CheckLogistics(){
+				window.location.href = 'https://m.kuaidi100.com/result.jsp?nu='+this.otherSN
+			}
         }
     }
 </script>
@@ -89,4 +105,15 @@
         background: #ffffff;
         width: 100%;
     }
+	.jump{
+		font-size: $uni-font-size-base;
+		margin: auto;
+		text-align: center;
+		color: #fff;
+		background: #FF7F02;
+		width: 400rpx;
+		height: 60rpx;
+		line-height: 60rpx;
+		border-radius: 10rpx;
+	}
 </style>

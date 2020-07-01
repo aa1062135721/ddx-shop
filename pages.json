@@ -446,6 +446,13 @@
 			}
 		},
 		{
+			"path": "pages/activity20200605/index",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "捣蛋熊商城-咱佳宝贝"
+			}
+		},
+		{
 			"path": "pages/activity20200611/index",
 			"style": {
 				"navigationStyle": "custom",
@@ -453,10 +460,24 @@
 			}
 		},
 		{
+			"path": "pages/activity20200615/index",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "捣蛋熊商城-三周年庆"
+			}
+		},
+		{
 			"path": "pages/activity20200618/index",
 			"style": {
 				"navigationStyle": "custom",
 				"navigationBarTitleText": "捣蛋熊商城-618"
+			}
+		},
+		{
+			"path": "pages/activity20200620/index",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "捣蛋熊商城-奶纸大作战"
 			}
 		}
 	],

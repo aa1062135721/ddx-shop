@@ -1,5 +1,6 @@
 <template>
 	<div class="container">
+		<div id="my-h5-back" @click="_goBack"></div>
 		<div class="title">
 			<image src="http://picture.ddxm661.com/1e43a202006011200357230.PNG" style="width: 100%; height: 600rpx;"></image>
 		</div>
@@ -10,39 +11,85 @@
 			<span>{{text}}</span>
 		</div>
 		<div class="section_1">
-			<image src="http://picture.ddxm661.com/d0a7a202006011423478241.png"></image>
-			<image src="http://picture.ddxm661.com/a916e202006011423569255.png"  @click="_receive({id:5065})"></image>
-			<image src="http://picture.ddxm661.com/cb748202006011424048270.png"  @click="_receive({id:456})"></image>
-			<image src="http://picture.ddxm661.com/15bec202006011424106744.png"></image>
+			<image src="http://picture.ddxm661.com/d0a7a202006011423478241.png" @click="_goPage('spike_detail', {seckill_id: 2677,item_id: 6336})"></image>
+			  <!-- <image src="http://picture.ddxm661.com/5b32b2020053009080530.png" @click="_goPage('spike_detail', {seckill_id: 2642,item_id: 5964})" :lazy-load="true" class="S_img"></image> -->
+			<image src="http://picture.ddxm661.com/a916e202006011423569255.png"></image>
+			<image src="http://picture.ddxm661.com/cb748202006011424048270.png" @click="_receive(25)"></image>
+			<image src="http://picture.ddxm661.com/c8b70202006031700511145.png" @click="_receive(23)"></image>
+			<image src="http://picture.ddxm661.com/74bb5202006031700578796.png" @click="_receive(24)"></image>
 		</div>
 	</div>
 </template>
-
+ 
 <script>
+	import { mapState } from 'vuex'
+	import {collectCoupon} from '../../api/api.js'
+	import uniPopup from '@/components/uni-popup/uni-popup.vue'
+	
 	export default{
 		data(){
 			return{
-				text:"注：本次活动特价产品除外，在法律范围内最终解释权归重庆捣蛋熊科技有限公司所有",
+				text:"注：本次活动特价产品除外，在法律范围内最终解释权归重庆捣蛋熊科技有限公司所有 。 ",
 			}
 		},
 		methods:{
+			// 文字跑马灯
 			show(){
 				var that = this
 				const interval = setInterval( ()=>{
 					var start = that.text.substring(0,1);
 					var end = that.text.substring(1);
 					that.text =  end + start 
-				},500)
+				},200)
 			},
-			_receive(index){
-				var data = index.id
-				this.$minApi.coupon("data").then(res => {
-					console.log(res)
+			// 满减
+			_receive(id){
+				this.$minApi.collectCoupon({id}).then(res => {
+					uni.showToast({title: res.msg, duration: 1500, mask: false, icon: 'none'})	
+					setTimeout(()=>{
+						if(!this.$store.state.token){
+							uni.switchTab({
+								url:"/pages/tabs/mine"
+							})
+						}
+					},500)
 				})
-			}
+			},
+			_goPage(url, query = {}) {
+			    this.$openPage({
+			        name: url,
+			        query
+			  })
+			},
+			// 返回按钮
+			_goBack() {
+			   this.$router.replace('/')
+			},
 		},
-		onLoad(){
-			this.show()
+		computed:{
+			...mapState(['userInfo']),
+		},
+		async onLoad(){
+			this.show();
+			await this.wxConfig();
+			let url = `https://www.ddxm661.com/h5/#/pages/activity20200618/index`
+			if (this.userInfo.id) {
+			    url += `?user_id=${this.userInfo.id}`
+			}
+			const param1 = {
+			        title: '捣蛋熊商城-618', // 分享标题
+			        desc: '祝朋友们节日快乐', // 分享描述
+			        link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+			        imgUrl: `http://picture.ddxm661.com/1d783202006021453146538.PNG`, // 分享图标
+			        success: function() {}
+			    },
+			    param2 = {
+			        title: '捣蛋熊商城-618', // 分享标题
+			        link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+			        imgUrl: `http://picture.ddxm661.com/1d783202006021453146538.PNG`, // 分享图标
+			        success: function() {}
+			    }
+			await this.wxConigShareGoods(param1, param2)
 		}
 	}
 </script>
@@ -50,6 +97,9 @@
 <style lang="scss">
 	uni-page-body{
 		height: 100%;
+	}
+	#my-h5-back{
+	    position: fixed;
 	}
 	.container{
 		width: 100%;
@@ -95,7 +145,7 @@
 		image{
 			width: 90%;
 			height: 180rpx;
-			margin: 10rpx;
+			margin: 5rpx;
 		}
 	}
 </style>

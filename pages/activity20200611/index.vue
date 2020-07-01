@@ -5,7 +5,7 @@
         <!-- #endif -->
 
         <div class="banner">
-           <img src="http://picture.ddxm661.com/54f4c202005291653431204.png" alt="">
+           <img src="http://picture.ddxm661.com/74827202006191449123631.png">
         </div>
 		<div class="hot-box">
 			<div class="title-box" style="text-align: center; padding-top: 10rpx; margin-bottom: 20rpx;">
@@ -122,13 +122,13 @@
                     title: '捣蛋熊商城-端午节', // 分享标题
                     desc: '祝朋友们节日快乐', // 分享描述
                     link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                    imgUrl: `http://picture.ddxm661.com/4fd28202005201355028061.png`, // 分享图标
+                    imgUrl: `http://picture.ddxm661.com/22b42202006010907087907.png`, // 分享图标
                     success: function() {}
                 },
                 param2 = {
                     title: '捣蛋熊商城-端午节', // 分享标题
                     link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                    imgUrl: `http://picture.ddxm661.com/4fd28202005201355028061.png`, // 分享图标
+                    imgUrl: `http://picture.ddxm661.com/22b42202006010907087907.png`, // 分享图标
                     success: function() {}
                 }
             await this.wxConigShareGoods(param1, param2)

@@ -9,7 +9,7 @@ export const timeStampToTime = (timestamp, is_ymd = false) => {
     's': date.getSeconds()
   }
   if (is_ymd) {
-    return o.y + '-' + o.M + '-' + o.d
+    return o.y + '-' + o.M + '-' + o.d + ' '+ o.h + ':'+ o.m
   } else {
     return o.y + '-' + o.M + '-' + o.d + ' ' + o.h + ':' + o.m + ':' + o.s
   }

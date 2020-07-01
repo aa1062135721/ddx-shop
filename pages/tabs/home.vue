@@ -2,7 +2,7 @@
 	<view class="container">
 		<div class="smectite" @touchmove.stop.prevent="moveHandle" v-if="flag">
 			<image src="http://picture.ddxm661.com/f6fbd202006011014312531.png" class="icon_x" @click="flag=false"></image>
-			<image src="http://picture.ddxm661.com/7b63d202006011117435341.png" class="icon_six"  @click="_goPage('activity20200618')"></image>
+			<image src="http://picture.ddxm661.com/52555202006181433145059.png" class="icon_six"  @click="_goPage('activity20200620')"></image>
 		</div>
         <!-- 搜索框 分类图标 banner -->
 		<div class="content-box">
@@ -37,9 +37,9 @@
                 <span class="text">{{item.title}}</span>
             </view>
         </view>
-		<!-- 618活动栏 -->
-		<view class="six_banner"  @click="_goPage('activity20200618')">
-			<image src="http://picture.ddxm661.com/8871d20200601115234158.gif"></image>
+		<!-- 620奶纸大作战 -->
+		<view class="six_banner"  @click="_goPage('activity20200620')" v-if="flag1">
+			<image src="../../static/images/acitity620/enter.gif"></image>
 		</view>
 		<!--	广告区域 	-->
         <!--
@@ -246,7 +246,8 @@
 				// 获取拼团列表
 				assemble_list: [],
 				//蒙层控制按钮
-				flag:"true", 
+				flag:true, 
+				flag1:true
 			}
 		},
 		onLoad() {
@@ -255,6 +256,7 @@
 			this._getCategoryGoodsList()
 			this._getUnlimitedGoods()
             this._getSpikeList()
+			this.backTime()
 		},
 		async onReachBottom() {
 			if (this.tabList[this.TabCur].requestData.moreStatus === 'noMore') {
@@ -273,7 +275,9 @@
 					query
 				})
 			},
-
+			// topage(){
+			// 	this.$router.replace("../../pages/activity20200620/index")
+			// },
 			_getBanner() {
 				this.$minApi.banner().then(res => {
 					console.log(res)
@@ -281,6 +285,17 @@
 						this.swiperList = res.data
 					}
 				})
+			},
+			backTime(){
+			 setInterval( ()=> {
+				var old = new Date();
+				var future = new Date("2020-07-13 00:00:00")
+				var cha = future - old;
+				if(cha<=0){
+					this.flag = false
+					this.flag1 = false
+				}
+				}, 30);
 			},
 			_clickBanner(key) {
 				console.log(this.swiperList[key])
@@ -455,19 +470,19 @@
 			position: absolute;
 			top: 0;
 			left: 0;
-			background-color: rgba(0,0,0,0.8);
+			background-color: rgba(0,0,0,0.3);
 			z-index: 10;
 			.icon_x{
 				width: 60rpx;
 				height: 60rpx;
 				position: fixed;
-				left: 75%;
-				top: 25%;
-				z-index: 10;
+				left: 80%;
+				top: 20%;
+				z-index: 12;
 			}
 			.icon_six{
-				width: 60%;
-				height: 50%;
+				width: 560rpx;
+				height: 830rpx;
 				position: fixed;
 				margin: auto;
 				top: 0;

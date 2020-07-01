@@ -500,6 +500,13 @@ const router = new MinRouter({
 			name: 'activity20200601',
 			login: false
 		},
+		//活动页面，咱佳宝贝
+		{
+			path: "pages/activity20200605/index",
+			type: 'navigateTo',
+			name: 'activity20200605',
+			login: false
+		},
 		//活动页面，端午节
 		{
 			path: "pages/activity20200611/index",
@@ -507,11 +514,25 @@ const router = new MinRouter({
 			name: 'activity20200611',
 			login: false
 		},
+		//活动页面，三周年庆
+		{
+			path: "pages/activity20200615/index",
+			type: 'navigateTo',
+			name: 'activity20200615',
+			login: false
+		},
 		// 活动页面，618
 		{
 			path: "pages/activity20200618/index",
 			type: 'navigateTo',
 			name: 'activity20200618',
+			login: false
+		},
+		// 活动页面，620
+		{
+			path: "pages/activity20200620/index",
+			type: 'navigateTo',
+			name: 'activity20200620',
 			login: false
 		},
 	]

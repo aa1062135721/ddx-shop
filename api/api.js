@@ -888,12 +888,5 @@ export default {
     getRechargeFlow(data) {
       return minRequest.post('/userinfo/getRechargeFlow', data)
     },
-	
-	/*
-	20200618活动，领取优惠券
-	*/ 
-   coupon(data){
-	   return minRequest.post('/Coupon/collectCoupon',data)
-   }
   }
 }

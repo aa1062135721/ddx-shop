@@ -22,7 +22,7 @@
                         <text>我的财富</text>
                     </view>
                 </view>
-                <view class="box" style="justify-content: space-between;">
+                <view class="box" style="justify-content: space-around;">
                     <view class="item" @click="goPage('user_money')">
                         <view>
                             <view class="icon-text" style="color:#FC5A5A;">
@@ -33,7 +33,7 @@
                         </view>
                         <text class="text" style="margin-top: 6upx;">钱包</text>
                     </view>
-                    <view class="item" @click="goPage(userInfo.is_st_recharge != 0 ? 'discount_coupon_details' : 'discount_coupon')">
+                  <!--  <view class="item" @click="goPage(userInfo.is_st_recharge != 0 ? 'discount_coupon_details' : 'discount_coupon')">
                         <view>
                             <view class="icon-text">
                                 <block v-if="userInfo.st_recharge">{{userInfo.st_recharge}}</block>
@@ -42,7 +42,7 @@
                             </view>
                         </view>
                         <text class="text" style="margin-top: 6upx;">抵用折扣券</text>
-                    </view>
+                    </view> -->
                     <view class="item" @click="goPage('coupon_list')">
                         <view>
                             <view class="icon-text">

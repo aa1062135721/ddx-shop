@@ -724,6 +724,11 @@
 					if (res.code === 200){
 						this.carNum++
 						this.msg(res.msg)
+					}else if(res.code === -1){
+						this.msg(res.msg)
+						setTimeout(()=>{
+							this.$router.replace('/pages/tabs/mine')
+						},1500)
 					}
 				})
 			},

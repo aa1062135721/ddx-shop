@@ -1,9 +1,5 @@
 <template>
 	<view class="container">
-		<div class="smectite" @touchmove.stop.prevent="moveHandle" v-if="flag">
-			<image src="http://picture.ddxm661.com/f6fbd202006011014312531.png" class="icon_x" @click="flag=false"></image>
-			<image src="http://picture.ddxm661.com/52555202006181433145059.png" class="icon_six"  @click="_goPage('activity20200620')"></image>
-		</div>
         <!-- 搜索框 分类图标 banner -->
 		<div class="content-box">
             <!-- 搜索框 分类图标-->
@@ -37,10 +33,6 @@
                 <span class="text">{{item.title}}</span>
             </view>
         </view>
-		<!-- 620奶纸大作战 -->
-		<view class="six_banner"  @click="_goPage('activity20200620')" v-if="flag1">
-			<image src="../../static/images/acitity620/enter.gif"></image>
-		</view>
 		<!--	广告区域 	-->
         <!--
 		<div class="ad-space" @click="_goPage('activity20200424')">
@@ -245,9 +237,6 @@
 				seckill_list: [],
 				// 获取拼团列表
 				assemble_list: [],
-				//蒙层控制按钮
-				flag:true, 
-				flag1:true
 			}
 		},
 		onLoad() {
@@ -275,9 +264,6 @@
 					query
 				})
 			},
-			// topage(){
-			// 	this.$router.replace("../../pages/activity20200620/index")
-			// },
 			_getBanner() {
 				this.$minApi.banner().then(res => {
 					console.log(res)
@@ -286,17 +272,18 @@
 					}
 				})
 			},
-			backTime(){
-			 setInterval( ()=> {
-				var old = new Date();
-				var future = new Date("2020-07-13 00:00:00")
-				var cha = future - old;
-				if(cha<=0){
-					this.flag = false
-					this.flag1 = false
-				}
-				}, 30);
-			},
+			//定时器
+			// backTime(){
+			//  setInterval( ()=> {
+			// 	var old = new Date();
+			// 	var future = new Date("2020-07-13 00:00:00")
+			// 	var cha = future - old;
+			// 	if(cha<=0){
+			// 		this.flag = false
+			// 		this.flag1 = false
+			// 	}
+			// 	}, 30);
+			// },
 			_clickBanner(key) {
 				console.log(this.swiperList[key])
 				// this.swiperList[key].type   类型：1不跳转，2:跳转外部页面，3跳转到内部界面'

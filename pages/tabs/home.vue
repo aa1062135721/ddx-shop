@@ -34,12 +34,11 @@
             </view>
         </view>
 		<!--	广告区域 	-->
-        <!--
-		<div class="ad-space" @click="_goPage('activity20200424')">
-			<img class="img" src="http://picture.ddxm661.com/f32b7202004231035065236.gif" />
+        
+		<div class="ad-space" @click="_goPage('activity20200713')" v-if='flag'>
+			<img class="img" src="http://picture.ddxm661.com/a548f202007111345208694.png" />
 		</div>
-        -->
-
+       
         <!--    秒杀   -->
         <div class="spike-and-group" v-if="seckill_list.length">
             <div class="spike-and-group-title">
@@ -214,6 +213,7 @@
 						moreStatus: 'loading',
 					},
 					goodsList: [], // 推荐页 无限下拉加载商品
+					
 				}],
 
 				// 回到顶部
@@ -221,7 +221,8 @@
 					src: '../../static/back-top/backtop.png',
 					scrollTop: 0
 				},
-
+				//控制活动页
+				flag:true,
 
 				/**
 				 * 推荐里的数据
@@ -273,17 +274,16 @@
 				})
 			},
 			//定时器
-			// backTime(){
-			//  setInterval( ()=> {
-			// 	var old = new Date();
-			// 	var future = new Date("2020-07-13 00:00:00")
-			// 	var cha = future - old;
-			// 	if(cha<=0){
-			// 		this.flag = false
-			// 		this.flag1 = false
-			// 	}
-			// 	}, 30);
-			// },
+			backTime(){
+			 setInterval( ()=> {
+				var old = new Date();
+				var future = new Date("2020-07-27 00:00:00")
+				var cha = future - old;
+				if(cha<=0){
+					this.flag = false
+				}
+				}, 30);
+			},
 			_clickBanner(key) {
 				console.log(this.swiperList[key])
 				// this.swiperList[key].type   类型：1不跳转，2:跳转外部页面，3跳转到内部界面'

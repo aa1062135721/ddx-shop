@@ -479,6 +479,13 @@
 				"navigationStyle": "custom",
 				"navigationBarTitleText": "捣蛋熊商城-奶纸大作战"
 			}
+		},
+		{
+			"path": "pages/activity20200713/index",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "捣蛋熊商城-限时抢购"
+			}
 		}
 	],
 	"globalStyle": {

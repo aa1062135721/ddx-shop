@@ -13,20 +13,20 @@
 					<image src="http://picture.ddxm661.com/c4a2f202007111349275830.png" style="width: 704rpx; height: 88rpx;"></image>
 				</div>
 				<div class='price_nav' style="display: flex;">
-					<view style="display: flex;" @click="_goGoods(1)">
-						<image :src="flag == 1?'http://picture.ddxm661.com/9c666202007111433485933.png':'http://picture.ddxm661.com/85ed5202007111433481176.png'" style="width: 17px;height: 23px;margin-right: 20rpx;"></image>
+					<view style="display: flex;" @click="_goGoods(1)" class="item">
+						<image :src="flag == 1?'http://picture.ddxm661.com/9c666202007111433485933.png':'http://picture.ddxm661.com/85ed5202007111433481176.png'" ></image>
 						<view style="color: #C2C2C2; font-size: 32rpx;">9.9</view>
 					</view>
-					<view style="display: flex;" @click="_goGoods(2)">
-						<image :src="flag == 2?'http://picture.ddxm661.com/9c666202007111433485933.png':'http://picture.ddxm661.com/85ed5202007111433481176.png'" style="width: 17px;height: 23px;margin-right: 20rpx;"></image>
+					<view style="display: flex;" @click="_goGoods(2)" class="item">
+						<image :src="flag == 2?'http://picture.ddxm661.com/9c666202007111433485933.png':'http://picture.ddxm661.com/85ed5202007111433481176.png'" ></image>
 						<view style="color: #C2C2C2; font-size: 32rpx;">19.9</view>
 					</view>
-					<view style="display: flex;" @click="_goGoods(3)">
-						<image :src="flag == 3?'http://picture.ddxm661.com/9c666202007111433485933.png':'http://picture.ddxm661.com/85ed5202007111433481176.png'" style="width: 17px;height: 23px;margin-right: 20rpx;"></image>
+					<view style="display: flex;" @click="_goGoods(3)" class="item">
+						<image :src="flag == 3?'http://picture.ddxm661.com/9c666202007111433485933.png':'http://picture.ddxm661.com/85ed5202007111433481176.png'" ></image>
 						<view style="color: #C2C2C2; font-size: 32rpx;">29.9</view>
 					</view>
-					<view style="display: flex;" @click="_goGoods(4)">
-						<image :src="flag == 4?'http://picture.ddxm661.com/9c666202007111433485933.png':'http://picture.ddxm661.com/85ed5202007111433481176.png'" style="width: 17px;height: 23px;margin-right: 20rpx;"></image>
+					<view style="display: flex;" @click="_goGoods(4)" class="item">
+						<image :src="flag == 4?'http://picture.ddxm661.com/9c666202007111433485933.png':'http://picture.ddxm661.com/85ed5202007111433481176.png'"></image>
 						<view style="color: #C2C2C2; font-size: 32rpx;">39.9</view>
 					</view>
 				</div>
@@ -176,7 +176,7 @@
 					uni.createSelectorQuery().select("#t" + val).boundingClientRect((res) => {
 						uni.pageScrollTo({
 							duration: 300,
-							scrollTop: (this.searchBarFixed && val !== 1) ? res.top - data.top - 88 : res.top - data.top + 90
+							scrollTop: (this.searchBarFixed && val !== 1) ? res.top - data.top - 50 : res.top - data.top 
 						})
 					}).exec()
 				}).exec()
@@ -199,7 +199,7 @@
                     // 进入可视区域
                     if (offsetTop <= window.innerHeight && offsetBottom >= 0) {
                         // console.log(node.clientTop, this.scroll, node.offsetTop - 88, '进入可视区域', i)
-                        if (this.scroll >= node.offsetTop - 105) {
+                        if (this.scroll >= node.offsetTop - 60) {
                             this.flag = i+1
                         }
                     }
@@ -288,14 +288,25 @@
 
 	.hot-box {
 		width: 100%;
+		height: 88rpx;
 		position: relative;
 		margin-top: -160rpx;
 		.price_nav{
 			position: absolute;
-			top: 25%;
+			width: 90%;
+			height: 70rpx;
+			line-height: 70rpx;
+			top: 8%;
 			left: 10%;
-			view{
-				margin-right: 30rpx;
+			.item{
+				width: 100%;
+				height: 100%;
+				image{
+					width: 17px;
+					height: 23px;
+					margin-top:10%;
+					margin-right: 8rpx;
+				}
 			}
 		}
 		.isFixed {

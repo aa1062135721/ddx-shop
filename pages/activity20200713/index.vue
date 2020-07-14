@@ -150,26 +150,6 @@
 			    console.log(val)
 			    this._goPage('goods_search_redirect',{title:val})
 			},
-			// 满减
-			_receive(id) {
-				this.$minApi.collectCoupon({
-					id
-				}).then(res => {
-					uni.showToast({
-						title: res.msg,
-						duration: 1500,
-						mask: false,
-						icon: 'none'
-					})
-					setTimeout(() => {
-						if (!this.$store.state.token) {
-							uni.switchTab({
-								url: "/pages/tabs/mine"
-							})
-						}
-					}, 500)
-				})
-			},
 			Jtop(val) {
 			    console.log(this.searchBarFixed, 'this.searchBarFixed')
 				uni.createSelectorQuery().select(".box").boundingClientRect(data => {

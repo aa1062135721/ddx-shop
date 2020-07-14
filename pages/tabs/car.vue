@@ -64,12 +64,17 @@
             <view>
                 <image src="../../static/images/car_empty.png" class="img"></image>
             </view>
-            <view>您的购物车空空如也!</view>
-            <view class="btn">
-                <text @click="_goPage('home')">
-                    去逛逛
-                </text>
-            </view>
+			<view v-if="flag">
+				 <view>您的购物车空空如也!</view>
+				<view class="btn">
+					<text @click="_goPage('home')">
+						去逛逛
+					</text>
+				</view>
+			</view>
+			<view v-else>
+				<view>您还未登陆，请先登陆</view>
+			</view>
         </view>
         <view class="fixed" v-if="myResponseData.length !== 0">
             <view class="chooses-all" @click="choosesAllGoods()">
@@ -109,7 +114,11 @@
                   is_checked:false,//是否全选
                   sum_money:0.00,
                   num:0
-              }
+              },
+			  //判断用户是否登陆
+			  flag:true,
+			  //判断方法是否执行
+			  rod:true,
           }
         },
         async onShow(){
@@ -406,7 +415,25 @@
                     })
                 }
             },
+			//判断有无token
+			landing(){
+				const token = uni.getStorageSync('token')
+				 if(token){
+					this.flag = true;
+				 }else{
+					this.flag = false;
+					let a = setInterval(()=>{
+						uni.switchTab({
+						  url: '/pages/tabs/mine'
+						})
+						 clearInterval(a); 
+					 },2000)
+				 }
+			}
         },
+		onShow(){
+			this.landing()
+		},
         computed:{
             ...mapState(['userInfo']),
         },

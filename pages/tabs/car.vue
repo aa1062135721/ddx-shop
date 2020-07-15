@@ -65,7 +65,7 @@
                 <image src="../../static/images/car_empty.png" class="img"></image>
             </view>
 			<view v-if="flag">
-				 <view>您的购物车空空如也!</view>
+				<view>您的购物车空空如也!</view>
 				<view class="btn">
 					<text @click="_goPage('home')">
 						去逛逛
@@ -115,10 +115,7 @@
                   sum_money:0.00,
                   num:0
               },
-			  //判断用户是否登陆
-			  flag:true,
-			  //判断方法是否执行
-			  rod:true,
+			  flag:false,
           }
         },
         async onShow(){
@@ -416,7 +413,7 @@
                 }
             },
 			//判断有无token
-			landing(){
+			async landing(){
 				const token = uni.getStorageSync('token')
 				 if(token){
 					this.flag = true;
@@ -427,11 +424,11 @@
 						  url: '/pages/tabs/mine'
 						})
 						 clearInterval(a); 
-					 },2000)
+					 },1500)
 				 }
 			}
         },
-		onShow(){
+		onLoad(){
 			this.landing()
 		},
         computed:{

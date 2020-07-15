@@ -169,7 +169,6 @@
 			menu() {
 				this.scroll = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
 				this.searchBarFixed = this.scroll >= 1212;
-
                 for (let i = 0; i <4 ; i++) {
                     let node = document.getElementById("t" + (i+1))
                     const offset = node.getBoundingClientRect();

@@ -790,7 +790,6 @@
 					sumMoney,//总金额
 				})
 			},
-
 			/**
 			 * 小程序的分享功能
 			 * @returns {Promise<void>}

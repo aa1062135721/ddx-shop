@@ -19,7 +19,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "jweixin-module": "^1.4.1",
-    "qs": "^6.9.4",
+    "qs": "^6.9.7",
     "vconsole": "^3.3.4",
     "vue-clipboard2": "^0.3.1"
   }
